@@ -1,0 +1,68 @@
+
+services:
+  fastapi-app:
+    image: fastapi-app
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql+psycopg2://apiculturefromtn:apiculture1fromtn@postgres-db:5432/apiculture
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+    command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
+    networks:
+      - apiculture1-network
+
+  postgres-db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=apiculture
+      - POSTGRES_USER=apiculturefromtn
+      - POSTGRES_PASSWORD=apiculture1fromtn
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U apiculturefromtn -d apiculture"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - apiculture1-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres-db
+    networks:
+      - apiculture1-network
+
+  angular-nginx:
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend/app/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - fastapi-app
+    networks:
+      - apiculture1-network
+
+networks:
+  apiculture1-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
