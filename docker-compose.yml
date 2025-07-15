@@ -53,7 +53,6 @@ services:
       context: ./frontend
     volumes:
       - ./frontend/app/nginx.conf:/etc/nginx/nginx.conf
-      - /home/ubuntu/nginx/certs:/etc/nginx/certs
     ports:
       - "80:80"
     depends_on:
