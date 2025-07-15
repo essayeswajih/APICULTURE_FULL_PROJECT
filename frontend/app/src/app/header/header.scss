@@ -1,0 +1,49 @@
+header {
+  background-color: #fff8e1; /* Light amber for apiculture theme */
+  font-family: 'Roboto', sans-serif;
+}
+
+.navbar-brand span {
+  color: #d97706; /* Amber for brand name */
+}
+
+.nav-link, .dropdown-item {
+  color: #b66407 !important; /* Green for links */
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover, .dropdown-item:hover {
+  color: #d38c07 !important; /* Darker green on hover */
+  background-color: #fef3c7; /* Light amber hover background for dropdown */
+}
+
+.dropdown-menu {
+  background-color: #fff8e1; /* Match header background */
+  border: 1px solid #d97706; /* Amber border */
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.active-route {
+  color: #b16106 !important; /* Darker green for active route */
+  font-weight: bold; /* Emphasize active route */
+  background-color: #e9ce61e1; /* Light amber background for active link */
+}
+.basket-icon {
+  color: red;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.panier{
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fef3c7; /* Light amber background for basket */
+    border-radius: 50%;
+    border: 2px solid #d97706; /* Amber border for basket */
+    transition: background-color 0.3s ease, border-color 0.3s
+}

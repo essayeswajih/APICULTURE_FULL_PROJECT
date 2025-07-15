@@ -1,0 +1,72 @@
+<main *ngIf="product" class="min-h-screen">
+  <!-- Hero Section -->
+  <section class="hero bg-gradient-amber" style="background-image: url('/assets/images/pexels-pixabay-301378.jpg'); background-size: cover; background-position: bottom;">
+    <div class="hero-overlay"></div>
+    <div class="container-md text-center">
+      <h1 class="text-amber">{{ product.name }}</h1>
+      <p class="lead text-success mb-0 panier-section">Découvrez notre produit apicole de qualité, préparé avec soin.</p>
+    </div>
+  </section>
+
+  <!-- Product Details Section -->
+  <section class="product-section container-md py-6">
+    <div class="row">
+      <!-- Product Image -->
+      <div class="col-md-6">
+        <img [src]="product.image_url" [alt]="product.name" class="product-img img-fluid rounded card" />
+      </div>
+
+      <!-- Product Information and Add to Cart -->
+      <div class="col-md-6 product-details">
+        <h2 class="text-amber">{{ product.name }}</h2>
+        <p class="text-dark">{{ product.description }}</p>
+        <p class="text-success font-weight-bold">Prix: {{ product.price | currency:'EUR' }}</p>
+        <p class="text-dark">Stock disponible: {{ product.stock_quantity }}</p>
+
+        <!-- Quantity Selector and Add to Cart Form -->
+        <form [formGroup]="addToCartForm" (ngSubmit)="addToCart()">
+          <div class="mb-3">
+            <label for="quantity" class="form-label text-dark">Quantité:</label>
+            <div class="input-group" style="max-width: 150px;">
+              <button
+                type="button"
+                class="btn btn-outline-success"
+                (click)="updateQuantity(quantity - 1)"
+                [disabled]="quantity <= 1">
+                -
+              </button>
+              <input
+                type="number"
+                id="quantity"
+                class="form-control text-center"
+                formControlName="quantity"
+                min="1"
+                [max]="product.stock_quantity"
+                readonly />
+              <button
+                type="button"
+                class="btn btn-outline-success"
+                (click)="updateQuantity(quantity + 1)"
+                [disabled]="quantity >= product.stock_quantity">
+                +
+              </button>
+            </div>
+          </div>
+          <button
+            type="submit"
+            class="btn btn-warning"
+            [disabled]="!addToCartForm.valid || product.stock_quantity === 0">
+            Ajouter au panier
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Fallback if Product Not Found or Error -->
+<div *ngIf="!product" class="container-md py-6 text-center">
+  <h2 class="text-amber">{{ error || 'Produit non trouvé' }}</h2>
+  <p class="text-dark">{{ error ? 'Une erreur s\'est produite lors du chargement du produit.' : 'Désolé, le produit que vous cherchez n\'existe pas ou n\'est plus disponible.' }}</p>
+  <a routerLink="/" class="btn btn-outline-success">Retour à l'accueil</a>
+</div>

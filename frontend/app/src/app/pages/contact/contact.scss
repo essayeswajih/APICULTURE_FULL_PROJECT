@@ -1,0 +1,102 @@
+main {
+  background-color: #fff8e1; /* Light amber for apiculture theme */
+  font-family: 'Roboto', sans-serif;
+}
+
+.hero {
+  height: 280px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: #f5f1e07e; /* Light amber fallback */
+  padding-top: 8rem; /* Increased for more space */
+  padding-bottom: 8rem;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Darker overlay for text readability */
+  z-index: 1;
+}
+
+.hero h1,
+.hero p {
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for text contrast */
+}
+
+.card {
+  border: none;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-img-top {
+  height: 280px; /* Consistent with À Propos */
+  object-fit: cover;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.form-control {
+  border-color: #d97706; /* Amber border */
+  background-color: #fff8e1; /* Light amber input background */
+}
+
+.form-control:focus {
+  border-color: #14532d; /* Darker green on focus */
+  box-shadow: 0 0 0 0.2rem rgba(20, 83, 45, 0.25);
+}
+
+.text-success {
+  color: #15803d !important; /* Green for text */
+}
+
+.text-success:hover {
+  color: #1ec962 !important; /* Darker green on hover */
+}
+
+.text-amber {
+  color: #d97706 !important; /* Amber for headings */
+}
+
+.btn-warning {
+  background-color: #d97706;
+  border-color: #d97706;
+  padding: 0.75rem 2rem; /* Larger button */
+}
+
+.btn-warning:hover,
+.hover-dark-green:hover {
+  background-color: #14532d; /* Darker green for hover */
+  border-color: #14532d;
+}
+
+.bg-light-amber {
+  background-color: #fff8e1;
+}
+
+.bg-gradient-amber {
+  background: linear-gradient(180deg, #fff8e1 0%, #f5e0b5 100%); /* Subtle amber gradient */
+}
+
+.text-dark {
+  color: #333 !important; /* Darker text for readability */
+}
+
+.container-md {
+  max-width: 960px; /* Narrower for more whitespace */
+}
+
+.py-6 {
+  padding-top: 4.5rem; /* Increased for more free space */
+  padding-bottom: 4.5rem;
+}

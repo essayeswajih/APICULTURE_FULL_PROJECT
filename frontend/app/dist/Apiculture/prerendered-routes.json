@@ -1,0 +1,18 @@
+{
+  "routes": {
+    "/": {},
+    "/a-propos": {},
+    "/boutique": {},
+    "/boutique/Miellerie": {},
+    "/boutique/Nourrisseurs": {},
+    "/boutique/Produits de la ruche": {},
+    "/boutique/Ruches": {},
+    "/boutique/Vêtements": {},
+    "/categories": {},
+    "/contact": {},
+    "/dashboard": {},
+    "/orders": {},
+    "/panier": {},
+    "/products": {}
+  }
+}

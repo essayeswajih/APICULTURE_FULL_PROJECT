@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["src/app/app.scss"],
+  "sourcesContent": ["// src/app/app.scss\n@font-face {\n  font-family: 'Roboto';\n  src: url('/assets/fonts/roboto-v30-latin-400.woff2') format('woff2');\n  font-weight: 400;\n  font-style: normal;\n  font-display: swap;\n}\n\n@font-face {\n  font-family: 'Roboto';\n  src: url('/assets/fonts/roboto-v30-latin-700.woff2') format('woff2');\n  font-weight: 700;\n  font-style: normal;\n  font-display: swap;\n}"],
+  "mappings": ";AACA;AACE,eAAA;AACA,OAAA,8CAAA,OAAA;AACA,eAAA;AACA,cAAA;AACA,gBAAA;;AAGF;AACE,eAAA;AACA,OAAA,8CAAA,OAAA;AACA,eAAA;AACA,cAAA;AACA,gBAAA;;",
+  "names": []
+}

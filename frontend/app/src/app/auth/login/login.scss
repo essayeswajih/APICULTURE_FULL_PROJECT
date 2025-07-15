@@ -1,0 +1,52 @@
+.container-fluid.login-container {
+  background-color: #fff8e1; /* Light amber for apiculture theme */
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  font-family: 'Roboto', sans-serif;
+}
+
+.login-card {
+  background-color: #fff7d87e; /* Light amber for card background */
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+}
+
+.card-title {
+  color: #d97706; /* Amber for headings */
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.form-label {
+  color: #15803d; /* Green for labels */
+}
+
+.form-control {
+  border-color: #d97706; /* Amber for input borders */
+}
+
+.form-check-label {
+  color: #333; /* Darker text for readability */
+}
+
+.text-success {
+  color: #15803d !important; /* Green for text */
+}
+
+.text-success:hover {
+  color: #14532d !important; /* Darker green on hover */
+}
+
+.btn-warning {
+  background-color: #d97706; /* Amber for button */
+  border-color: #d97706;
+}
+
+.btn-warning:hover {
+  background-color: #14532d; /* Darker green for hover */
+  border-color: #14532d;
+}
+
+p {
+  color: #333; /* Darker text for readability */
+}

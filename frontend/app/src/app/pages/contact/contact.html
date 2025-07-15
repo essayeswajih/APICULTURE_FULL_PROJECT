@@ -1,0 +1,115 @@
+<main class="min-h-screen">
+  <!-- Hero Section with Background Image -->
+  <section class="hero py-6 text-center bg-light-amber position-relative"  style="background-image: url('/assets/images/pexels-pixabay-301378.jpg'); background-size: cover; background-position:bottom;">
+    <div class="container-md">
+      <div class="hero-overlay"></div>
+      <h1 class="display-3 text-amber mb-4 contact-section">Nous Contacter</h1>
+      <p class="lead text-success mb-0 contact-section">Vous avez une question ou besoin de conseils sur l’apiculture ? Contactez l’équipe d’Apiculture Galai !</p>
+    </div>
+  </section>
+
+  <!-- Contact Form and Info Section -->
+  <section class="container-md py-6">
+    <div class="row g-5">
+      <!-- Contact Form -->
+      <div class="col-12 col-lg-6 contact-section">
+        <div class="card shadow-sm rounded">
+          <div class="card-body">
+            <h2 class="h3 text-success mb-4">Envoyez-nous un Message</h2>
+            <form #contactForm="ngForm" (ngSubmit)="onSubmit(contactForm)" novalidate>
+              <div class="mb-3">
+                <label for="name" class="form-label text-dark">Nom</label>
+                <input
+                  type="text"
+                  id="name"
+                  class="form-control"
+                  [(ngModel)]="contactFormModel.name"
+                  name="name"
+                  required
+                  aria-required="true"
+                  placeholder="Votre nom"
+                  #name="ngModel"
+                >
+                <div *ngIf="name.touched && name.invalid" class="text-danger mt-1">Le nom est requis.</div>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label text-dark">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  class="form-control"
+                  [(ngModel)]="contactFormModel.email"
+                  name="email"
+                  required
+                  email
+                  aria-required="true"
+                  placeholder="votre.email@exemple.com"
+                  #email="ngModel"
+                >
+                <div *ngIf="email.touched && email.invalid" class="text-danger mt-1">
+                  <div *ngIf="email.errors?.['required']">L’email est requis.</div>
+                  <div *ngIf="email.errors?.['email']">Veuillez entrer un email valide.</div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="subject" class="form-label text-dark">Sujet</label>
+                <input
+                  type="text"
+                  id="subject"
+                  class="form-control"
+                  [(ngModel)]="contactFormModel.subject"
+                  name="subject"
+                  required
+                  aria-required="true"
+                  placeholder="Objet de votre message"
+                  #subject="ngModel"
+                >
+                <div *ngIf="subject.touched && subject.invalid" class="text-danger mt-1">Le sujet est requis.</div>
+              </div>
+              <div class="mb-3">
+                <label for="message" class="form-label text-dark">Message</label>
+                <textarea
+                  id="message"
+                  class="form-control"
+                  [(ngModel)]="contactFormModel.message"
+                  name="message"
+                  required
+                  aria-required="true"
+                  rows="5"
+                  placeholder="Votre message"
+                  #message="ngModel"
+                ></textarea>
+                <div *ngIf="message.touched && message.invalid" class="text-danger mt-1">Le message est requis.</div>
+              </div>
+              <button type="submit" class="btn btn-warning text-light hover-dark-green w-100" [disabled]="contactForm.invalid" aria-label="Envoyer le message à Apiculture Galai">Envoyer</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Information -->
+      <div class="col-12 col-lg-6 contact-section">
+        <div class="card shadow-sm rounded">
+          <iframe  class="card-img-top contact-img rounded-top" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3996.2750169902274!2d10.801113920253313!3d35.70221972561486!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sfr!2stn!4v1752073927439!5m2!1sfr!2stn" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          <div class="card-body">
+            <h2 class="h3 text-success mb-4">Nos Coordonnées</h2>
+            <ul class="text-dark list-unstyled">
+              <li class="mb-2"><strong>Email :</strong> <a href="mailto:contact&#64;apiculturegalai.fr" class="text-success">contact&#64;apiculturegalai.fr</a></li>
+              <li class="mb-2"><strong>Téléphone :</strong> +216 27 553 981</li>
+              <li class="mb-2"><strong>Adresse :</strong> Rue de El Yassamine, 5021 Bembla, Monatsir</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="py-6 text-center bg-gradient-amber">
+    <div class="container-md contact-section">
+      <h2 class="h3 text-amber mb-4">Découvrez Nos Produits</h2>
+      <p class="text-dark mb-4">Explorez notre gamme de matériel apicole et produits de la ruche pour tous les passionnés d’apiculture.</p>
+      <a routerLink="/boutique" class="btn btn-warning text-light hover-dark-green btn-lg" aria-label="Visiter la boutique apicole d'Apiculture Galai">Visiter la Boutique</a>
+    </div>
+  </section>
+</main>

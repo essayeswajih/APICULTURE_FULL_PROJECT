@@ -1,0 +1,71 @@
+<div class="container py-5">
+  <h2>Product Management</h2>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Add New Product</h5>
+      <form (ngSubmit)="addProduct()">
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name" name="name" [(ngModel)]="newProduct.name" required>
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea class="form-control" id="description" name="description" [(ngModel)]="newProduct.description"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="price" class="form-label">Price</label>
+          <input type="number" class="form-control" id="price" name="price" [(ngModel)]="newProduct.price" required>
+        </div>
+        <div class="mb-3">
+          <label for="stock_quantity" class="form-label">Stock Quantity</label>
+          <input type="number" class="form-control" id="stock_quantity" name="stock_quantity" [(ngModel)]="newProduct.stock_quantity" required>
+        </div>
+        <div class="mb-3">
+          <label for="category_id" class="form-label">Category</label>
+          <select class="form-control" id="category_id" name="category_id" [(ngModel)]="newProduct.category_id" required>
+            <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="discounted_price" class="form-label">Discounted Price (Optional)</label>
+          <input type="number" class="form-control" id="discounted_price" name="discounted_price" [(ngModel)]="newProduct.discounted_price">
+        </div>
+        <div class="mb-3">
+          <label for="image_url" class="form-label">Image URL</label>
+          <input type="text" class="form-control" id="image_url" name="image_url" [(ngModel)]="newProduct.image_url">
+        </div>
+        <div class="mb-3">
+          <label for="promo" class="form-label">On Promotion</label>
+          <input type="checkbox" class="form-check-input" id="promo" name="promo" [(ngModel)]="newProduct.promo">
+        </div>
+        <div class="mb-3">
+          <label for="buzzent" class="form-label">Buzz or Marketing Text</label>
+          <textarea class="form-control" id="buzzent" name="buzzent" [(ngModel)]="newProduct.buzzent"></textarea>
+        </div>
+        <button type="submit" class="btn btn-warning">{{ editMode ? 'Update' : 'Add' }} Product</button>
+        <button type="button" class="btn btn-secondary ms-2" *ngIf="editMode" (click)="resetForm()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <h3>Existing Products</h3>
+  <div class="row">
+    <div class="col-md-4" *ngFor="let product of products; trackBy: trackById">
+      <div class="card mb-3">
+        <img src="{{ product.image_url || 'https://via.placeholder.com/200?text=Product' }}" class="card-img-top" alt="Product">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text">{{ product.description || 'No description' }}</p>
+          <p class="card-text">Price: ${{ product.price | number:'1.2-2' }}</p>
+          <p class="card-text">Stock: {{ product.stock_quantity }}</p>
+          <p class="card-text">Category: {{ product.category_id }}</p>
+          <p class="card-text">Discounted: ${{ product.discounted_price || 'N/A' }}</p>
+          <p class="card-text" *ngIf="product.promo">Promo: Yes</p>
+          <p class="card-text" *ngIf="product.buzzent">Marketing Text: {{ product.buzzent }}</p>
+          <button class="btn btn-outline-warning me-2" (click)="editProduct(product)">Edit</button>
+          <button class="btn btn-danger" (click)="deleteProduct(product.id)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

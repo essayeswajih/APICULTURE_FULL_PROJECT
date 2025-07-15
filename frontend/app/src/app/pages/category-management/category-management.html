@@ -1,0 +1,50 @@
+<div class="container py-5">
+  <h2>Category Management</h2>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Add New Category</h5>
+      <form #categoryForm="ngForm" (ngSubmit)="addCategory()">
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            [(ngModel)]="newCategory.name"
+            name="categoryName"
+            required
+          >
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            class="form-control"
+            id="description"
+            [(ngModel)]="newCategory.description"
+            name="categoryDescription"
+          ></textarea>
+        </div>
+        @if(editMode) {
+          <button type="submit" class="btn btn-warning">Update Category</button>
+        }@else {
+          <button type="submit" class="btn btn-success">Add Category</button>
+        }
+      </form>
+    </div>
+  </div>
+  <h3>Existing Categories</h3>
+  <div class="row">
+    @for (category of categories; track category.id) {
+      <div class="col-md-4">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">{{ category.name }}</h5>
+            <p class="card-text">{{ category.description || 'No description' }}</p>
+            <button class="btn btn-outline-warning me-2" (click)="editCategory(category)">Edit</button>
+            <button class="btn btn-danger" (click)="deleteCategory(category.id)">Delete</button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

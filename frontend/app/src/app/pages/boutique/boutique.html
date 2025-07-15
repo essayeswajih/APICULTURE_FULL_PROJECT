@@ -1,0 +1,55 @@
+<main class="min-h-screen">
+  <!-- Hero Section -->
+  <section class="hero py-6 text-center bg-light-amber position-relative" style="background-image: url('/assets/images/pexels-pixabay-301378.jpg'); background-size: cover; background-position:bottom;">
+    <div class="container">
+      <div class="hero-overlay"></div>
+      <h1 class="display-4 text-amber mb-3 boutique-section">Notre Boutique Apicole</h1>
+      <p class="lead text-success boutique-section">Découvrez notre sélection de matériel apicole et produits de la ruche.</p>
+    </div>
+  </section>
+
+  <!-- Filters -->
+  <section class="container py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+      <div class="d-flex flex-wrap gap-2 mb-3 mb-md-0">
+        @for (category of categories; track category) {
+          <button
+            class="btn btncategory"
+            [ngClass]="{
+              'btn-warning text-light': selectedCategory === category,
+              'btn-outline-warning': selectedCategory !== category
+            }"
+            (click)="selectCategory(category.name)"
+          >
+            {{ category?.name }}
+          </button>
+        }
+      </div>
+      <select
+        class="form-select w-auto border border-amber text-amber bg-light-amber"
+        [(ngModel)]="sortBy"
+        (change)="sortProducts()"
+      >
+        <option value="popularite" selected >Trier par popularité</option>
+        <option value="prix-asc">Prix : croissant</option>
+        <option value="prix-desc">Prix : décroissant</option>
+      </select>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+      @for (product of sortedProducts; track product.id) {
+        <div class="col">
+          <div class="card h-100 product-card">
+            <img [src]="product.image_url" class="card-img-top" alt="{{ product.name }}" (click)="goToProduct(product.id)" style="width: 100%;height: auto;padding: 20px;cursor: pointer;">
+            <div class="card-body">
+              <h5 class="card-title text-success" (click)="goToProduct(product.id)" >{{ product.name }}</h5>
+              <p class="card-text fw-bold text-amber" (click)="goToProduct(product.id)">{{ product.price }} DT</p>
+              <button class="btn btn-warning w-100 text-light hover-dark-green" (click)="addToCart(product)">Ajouter au panier</button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+</main>

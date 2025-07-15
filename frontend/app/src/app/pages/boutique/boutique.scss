@@ -1,0 +1,90 @@
+main {
+  background-color: #fff8e1; /* Light amber for apiculture theme */
+  font-family: 'Roboto', sans-serif;
+}
+
+.hero {
+  height: 280px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: #f5f1e07e; /* Light amber fallback */
+  padding-top: 8rem; /* Increased for more space */
+  padding-bottom: 8rem;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Darker overlay for text readability */
+  z-index: 1;
+}
+
+.hero h1,
+.hero p {
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for text contrast */
+}
+
+.card {
+  border: none;
+  transition: transform 0.3s ease;
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.text-success {
+  color: #15803d !important; /* Green for text */
+}
+
+.text-success:hover {
+  color: #1ec962 !important; /* Darker green on hover */
+}
+
+.text-amber {
+  color: #d97706 !important; /* Amber for headings and prices */
+}
+
+.btn-outline-warning {
+  border-color: #d97706;
+  color: #d97706;
+}
+
+.btn-outline-warning:hover {
+  background-color: #d97706;
+  color: #fff8e1;
+}
+
+.btn-warning {
+  background-color: #d97706;
+  border-color: #d97706;
+}
+
+.btn-warning:hover, .hover-dark-green:hover {
+  background-color: #14532d; /* Darker green for hover */
+  border-color: #14532d;
+}
+
+.bg-light-amber {
+  background-color: #fff8e1;
+}
+
+.text-dark {
+  color: #333 !important; /* Darker text for readability */
+}
+.card:hover {
+  transform: scale(1.05); /* Slight scale-up on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add subtle shadow */
+}
+
+.btn:hover {
+  transform: scale(1.1); /* Slight scale-up on hover */
+  transition: transform 0.2s ease;
+}

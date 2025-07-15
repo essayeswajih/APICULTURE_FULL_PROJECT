@@ -1,0 +1,88 @@
+footer {
+  background-color: #fff8e1; /* Light amber for apiculture theme */
+  font-family: 'Roboto', sans-serif;
+}
+
+h5 {
+  color: #d97706; /* Amber for headings */
+}
+
+.text-success, a.text-success {
+  color: #15803d !important; /* Green for links and text */
+  transition: color 0.3s ease;
+}
+
+a.text-success:hover {
+  color: #14532d !important; /* Darker green on hover */
+}
+
+.dropdown-toggle {
+  background: none;
+  border: none;
+  color: #15803d !important;
+  font-size: 1rem;
+  padding: 0;
+}
+
+.dropdown-toggle:hover {
+  color: #14532d !important;
+}
+
+.dropdown-menu {
+  background-color: #fff8e1; /* Match footer background */
+  border: 1px solid #d97706; /* Amber border */
+}
+
+.dropdown-menu.show {
+  display: block;
+}
+
+.dropdown-item {
+  color: #15803d !important;
+}
+
+.dropdown-item:hover {
+  color: #14532d !important;
+  background-color: #fef3c7; /* Light amber hover background */
+}
+
+.active-route {
+  color: #d97706 !important; /* Amber for active route */
+  font-weight: bold;
+  background-color: transparent; /* No background for active link */
+}
+
+.basket-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.panier {
+  height: 20px;
+  width: 20px;
+  background-color: #fef3c7; /* Light amber background for basket */
+  border-radius: 50%;
+  border: 2px solid #d97706; /* Amber border for basket */
+  transition: background-color 0.3s ease, border-color 0.3s;
+}
+
+.panier path {
+  stroke: #d97706; /* Amber stroke for SVG */
+}
+
+.btn-outline-warning {
+  border-color: #d97706;
+  color: #d97706;
+}
+
+.btn-outline-warning:hover {
+  background-color: #d97706;
+  color: #fff8e1;
+}
+
+@media (max-width: 767px) {
+  .dropdown-menu {
+    background-color: #fef3c7; /* Slightly lighter amber for contrast */
+    border: none;
+  }
+}

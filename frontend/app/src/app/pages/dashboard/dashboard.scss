@@ -1,0 +1,152 @@
+body {
+  background-color: #fff8e1; /* Light amber */
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.hero {
+  background-color: #fff7d87e; /* Light amber for hero */
+  padding: 60px 0; /* Add some padding to the top and bottom */
+  position: relative;
+  z-index: 1;
+  min-height: 60vh !important;
+}
+
+h2 {
+  color: #d97706; /* Amber for headings */
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.card-title {
+  color: #15803d; /* Green for card titles */
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.card-text {
+  color: #333; /* Darker text */
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 2rem;
+}
+
+.card {
+  border: none;
+  border-radius: 10px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.text-success {
+  color: #15803d !important;
+}
+
+.text-success:hover {
+  color: #14532d !important;
+}
+
+.btn-outline-warning {
+  border-color: #d97706;
+  color: #d97706;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-warning:hover {
+  background-color: #d97706;
+  color: #fff8e1;
+}
+
+.btn-warning {
+  background-color: #d97706;
+  border-color: #d97706;
+  transition: all 0.3s ease;
+}
+
+.btn-warning:hover {
+  background-color: #14532d;
+  border-color: #14532d;
+  color: #fff8e1;
+}
+
+#beeBox, #beeBox1 {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 100px;
+  z-index: 0;
+  pointer-events: none; /* Prevent interaction with bee boxes */
+}
+
+#beeBox {
+  left: 0;
+}
+
+#beeBox1 {
+  right: 0;
+}
+
+#bee, #bee1 {
+  width: 125px;
+  box-sizing: border-box;
+  will-change: transform;
+  position: absolute;
+  pointer-events: none; /* Prevent interaction with bees */
+}
+
+#bee {
+  top: 20vh;
+  animation: beeAnimation 10s ease-in-out infinite;
+}
+
+#bee1 {
+  right: 0;
+  top: 30vh;
+  animation: beeAnimation 12s ease-in-out infinite reverse;
+}
+
+/* Animation for the bees */
+@keyframes beeAnimation {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(80vw) translateY(50vh);
+  }
+  100% {
+    transform: translateX(0) translateY(0);
+  }
+}
+
+/* Media Query for responsiveness */
+@media (max-width: 767px) {
+  h2 {
+    font-size: 2rem;
+  }
+
+  .card {
+    margin-bottom: 15px;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+
+  .hero {
+    padding: 40px 0;
+  }
+}

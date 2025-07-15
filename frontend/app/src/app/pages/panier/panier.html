@@ -1,0 +1,193 @@
+<main class="min-h-screen">
+  <!-- Hero Section with Background Image -->
+  <section class="hero py-6 text-center bg-light-amber position-relative" style="background-image: url('/assets/images/pexels-pixabay-301378.jpg'); background-size: cover; background-position:bottom;">
+    <div class="container-md">
+      <div class="hero-overlay"></div>
+      <h1 class="display-3 text-amber mb-4 panier-section">Votre Panier</h1>
+      <p class="lead text-success mb-0 panier-section">Consultez vos produits apicoles sélectionnés et passez à la caisse avec Apiculture Galai.</p>
+    </div>
+  </section>
+
+  <!-- Cart Table and Summary Section -->
+  <section class="container-md py-6">
+    <div class="row g-5">
+      <!-- Cart Table -->
+      <div class="col-12 col-lg-8 panier-section">
+        <div class="card shadow-sm rounded">
+          <div class="card-body">
+            <h2 class="h3 text-success mb-4">Articles dans le Panier</h2>
+            @if (cartItems.length === 0) {
+              <p class="text-dark">Votre panier est vide. <a routerLink="/boutique" class="text-success">Continuez vos achats</a>.</p>
+            } @else {
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Produit</th>
+                      <th scope="col">Nom</th>
+                      <th scope="col">Quantité</th>
+                      <th scope="col">Prix</th>
+                      <th scope="col">Total</th>
+                      <th scope="col"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (item of cartItems; track item.id) {
+                      <tr>
+                        <td>
+                          <img [src]="item.image" class="panier-img rounded" style="width: auto; height: 80px; object-fit: cover;" [alt]="'Produit ' + item.name + ' d\'Apiculture Galai'">
+                        </td>
+                        <td class="align-middle">{{ item.name }}</td>
+                        <td class="align-middle">
+                          <input
+                            id="quantity-{{ item.id }}"
+                            type="number"
+                            class="form-control w-25 d-inline-block"
+                            [(ngModel)]="item.quantity"
+                            (ngModelChange)="updateQuantity(item, $event)"
+                            min="1"
+                            [attr.aria-label]="'Quantité de ' + item.name"
+                          >
+                        </td>
+                        <td class="align-middle">{{ item.price | number:'1.2-2' }} DNT</td>
+                        <td class="align-middle">{{ (item.price * item.quantity) | number:'1.2-2' }} DNT</td>
+                        <td class="align-middle">
+                          <button
+                            class="btn btn-outline-danger btn-sm"
+                            (click)="removeItem(item.id)"
+                            [attr.aria-label]="'Supprimer ' + item.name + ' du panier'"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                              <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                            </svg>
+                          </button>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Cart Summary -->
+      <div class="col-12 col-lg-4 panier-section">
+        <div class="card shadow-sm rounded">
+          <div class="card-body">
+            <h2 class="h3 text-success mb-4">Résumé du Panier</h2>
+            <ul class="text-dark list-unstyled">
+              <li class="mb-2"><strong>HT :</strong> {{ getSubtotal() | number:'1.2-2' }} DNT</li>
+              <li class="mb-2"><strong>Taxe (19%) :</strong> {{ getTax() | number:'1.2-2' }} DNT</li>
+              <li class="mb-3"><strong>Total :</strong> {{ getTotal() | number:'1.2-2' }} DNT</li>
+            </ul>
+            <!-- Payment Method Selection -->
+            <div class="mb-3">
+              <label for="paymentMethod" class="form-label text-dark"><strong>Méthode de paiement :</strong></label>
+              <select
+                id="paymentMethod"
+                class="form-select"
+                [(ngModel)]="paymentMethod"
+                aria-label="Choisir une méthode de paiement"
+              >
+                <option value="online">Payer en ligne</option>
+                <option value="cod">Payer à la livraison</option>
+              </select>
+            </div>
+            <button
+              class="btn btn-warning text-light hover-dark-green w-100 mb-3"
+              (click)="openCheckoutModal()"
+              aria-label="Passer à la caisse avec Apiculture Galai"
+              [disabled]="cartItems.length === 0"
+            >
+              Commander
+            </button>
+            <a routerLink="/boutique" class="btn btn-outline-success w-100" aria-label="Continuer les achats chez Apiculture Galai">Continuer les Achats</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Checkout Modal -->
+  <div class="modal fade" id="checkoutModal" tabindex="-1" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-light-amber">
+          <h5 class="modal-title text-amber" id="checkoutModalLabel">Finaliser votre commande</h5>
+          <button type="button" class="btn-close" (click)="closeModal()" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="checkoutForm" (ngSubmit)="finalizeOrder()">
+            <div class="mb-3">
+              <label for="fullName" class="form-label text-dark">Nom complet</label>
+              <input
+                type="text"
+                class="form-control"
+                id="fullName"
+                formControlName="fullName"
+                aria-describedby="fullNameError"
+                [class.is-invalid]="checkoutForm.get('fullName')?.invalid && checkoutForm.get('fullName')?.touched"
+              >
+              <div *ngIf="checkoutForm.get('fullName')?.invalid && checkoutForm.get('fullName')?.touched" class="invalid-feedback">
+                Veuillez entrer un nom valide (minimum 2 caractères).
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label text-dark">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                formControlName="email"
+                aria-describedby="emailError"
+                [class.is-invalid]="checkoutForm.get('email')?.invalid && checkoutForm.get('email')?.touched"
+              >
+              <div *ngIf="checkoutForm.get('email')?.invalid && checkoutForm.get('email')?.touched" class="invalid-feedback">
+                Veuillez entrer un email valide.
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label text-dark">Numéro de téléphone</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="phone"
+                formControlName="phone"
+                aria-describedby="phoneError"
+                [class.is-invalid]="checkoutForm.get('phone')?.invalid && checkoutForm.get('phone')?.touched"
+              >
+              <div *ngIf="checkoutForm.get('phone')?.invalid && checkoutForm.get('phone')?.touched" class="invalid-feedback">
+                Veuillez entrer un numéro de téléphone valide (8 chiffres).
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="deliveryLocation" class="form-label text-dark">Lieu de livraison</label>
+              <input
+                type="text"
+                class="form-control"
+                id="deliveryLocation"
+                formControlName="deliveryLocation"
+                aria-describedby="deliveryLocationError"
+                [class.is-invalid]="checkoutForm.get('deliveryLocation')?.invalid && checkoutForm.get('deliveryLocation')?.touched"
+              >
+              <div *ngIf="checkoutForm.get('deliveryLocation')?.invalid && checkoutForm.get('deliveryLocation')?.touched" class="invalid-feedback">
+                Veuillez entrer une adresse de livraison valide (minimum 5 caractères).
+              </div>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-warning text-light hover-dark-green w-100"
+              [disabled]="checkoutForm.invalid"
+              aria-label="Finaliser la commande avec Apiculture Galai"
+            >
+              Finaliser la commande
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

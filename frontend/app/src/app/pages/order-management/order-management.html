@@ -1,0 +1,36 @@
+<div class="container py-5">
+  <h2>Order Management</h2>
+  <div class="row">
+    @for (order of orders; track order.id) {
+      <div class="col-md-6">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Order #{{ order.id }}</h5>
+            <p class="card-text">Customer: {{ order.username }}</p>
+            <p class="card-text">Email: {{ order.email }}</p>
+            <p class="card-text">Phone: {{ order.telephone }}</p>
+            <p class="card-text">Address: {{ order.location }}</p>
+            <p class="card-text">Items:</p>
+            <ul class="list-group mb-3" style="list-style-type: none; padding-left: 0;">
+              @for (item of order.items; track item.product_id) {
+                <li class="">{{ item.product_id }} ({{ item.quantity }}) - ${{ item.price | number:'1.2-2' }}</li>
+              }
+            </ul>
+            <p class="card-text">Total: ${{ order.total_amount | number:'1.2-2' }}</p>
+            <p class="card-text">Status: {{ order.status | titlecase }}</p>
+            <p class="card-text">Created: {{ order.created_at | date:'short' }}</p>
+            <div class="mb-3">
+              <label for="status-{{ order.id }}" class="form-label">Update Status</label>
+              <select class="form-control" id="status-{{ order.id }}" name="status" [(ngModel)]="order.status" (ngModelChange)="updateOrderStatus(order.id, $event)">
+                @for (status of orderStatuses; track status) {
+                  <option [value]="status">{{ status | titlecase }}</option>
+                }
+              </select>
+            </div>
+            <button class="btn btn-danger" (click)="deleteOrder(order.id)">Delete</button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
