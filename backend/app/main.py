@@ -13,7 +13,7 @@ from controller.vetineController import router as VetrineRouter
 limiter = Limiter(key_func=get_remote_address)
 
 app = FastAPI()
-
+Base.metadata.create_all(bind=engine)
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
