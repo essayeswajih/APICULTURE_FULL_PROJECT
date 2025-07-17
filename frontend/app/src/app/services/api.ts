@@ -84,6 +84,8 @@ export class Api {
       .pipe(catchError(this.handleError));
   }
 
+
+  
   addCategory(category: Category): Observable<Category> {
     return this.http
       .post<Category>(`${this.apiUrl}/categories`, category, { headers: this.getAuthHeaders() })
