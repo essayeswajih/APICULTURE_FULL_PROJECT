@@ -5,15 +5,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { gsap } from 'gsap';
 import { isPlatformBrowser } from '@angular/common';
 import { Api, Category, Product } from '../../services/api';
-
 export interface CartItem {
   id: number;
   name: string;
-  image: string | null;
+  image: string | null; // Image can be null if not available
   price: number;
   quantity: number;
 }
-
 @Component({
   selector: 'app-boutique',
   templateUrl: './boutique.html',
@@ -24,34 +22,37 @@ export class Boutique implements OnInit {
   products: Product[] = [];
   categories: Category[] = [];
   selectedCategory: Category = { id: 0, name: 'Tous' };
-  sortBy: string = 'popularite'; // Default sorting method
+  sortBy: string = 'popularite';
   sortedProducts: Product[] = [];
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private route: ActivatedRoute,
     private RouterS: Router,
-    private apiService: Api,
+    private apiService: Api, // Inject the service
     private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.loadCategories();
-    
-    // Fetch query params and load products with category and sortBy
-    this.route.queryParams.subscribe(params => {
-      const categoryFromUrl = params['category'] || 'Tous';
-      const sortByFromUrl = params['sortBy'] || 'popularite';
+    this.loadProducts();
 
-      // Normalize the category name from the URL
-      const matchedCategory = this.categories.find(
-        cat => cat.name.toLowerCase() === categoryFromUrl.toLowerCase()
-      );
-      this.selectedCategory = matchedCategory || { id: 0, name: 'Tous' };
-      this.sortBy = sortByFromUrl;
+    // Handle category from URL if available
+    this.route.paramMap.subscribe(params => {
+      const categoryFromUrl = params.get('category');
+      if (categoryFromUrl) {
+        // Normalize the category name to match exactly
+        const matchedCategory = this.categories.find(
+          cat => cat.name.toLowerCase() === categoryFromUrl.toLowerCase()
+        );
+        this.selectedCategory = matchedCategory || { id: 0, name: 'Tous' };
+      }
 
-      // Fetch products from the API with selected parameters
-      this.loadProducts();
+      // Filter and sort products on page load
+      this.filterAndSortProducts();
+      this.animateProducts();
+      this.animateHeroSection();
+      this.animateCategoryButtons();
     });
   }
 
@@ -60,50 +61,46 @@ export class Boutique implements OnInit {
     const tousCategory: Category = { id: 0, name: 'Tous' };
     this.apiService.getCategories().subscribe((categories) => {
       if (!categories.some(cat => cat.name === 'Tous')) {
-        categories.unshift(tousCategory); // Add 'Tous' at the beginning
+        categories.unshift(tousCategory); // Add at the beginning
       }
       this.categories = categories;
       this.cdRef.detectChanges(); // Trigger change detection manually after loading categories
     });
   }
 
-  // Fetch products from the API based on category and sorting options
+  // Fetch products from the API
   loadProducts() {
-    const categoryQuery = this.selectedCategory.name === 'Tous' ? '' : this.selectedCategory.name;
-    this.apiService.getProducts(categoryQuery, this.sortBy).subscribe((products) => {
+    this.apiService.getProducts(this.selectedCategory.name, this.sortBy).subscribe((products) => {
       this.products = products;
-      this.cdRef.detectChanges();  // Trigger change detection after loading products
+      this.filterAndSortProducts();  // Apply filtering and sorting after loading products
+      this.cdRef.detectChanges(); // Trigger change detection after loading products
     });
   }
-
   // Handle category selection
   selectCategory(categoryName: string): void {
     this.selectedCategory = this.categories.find(cat => cat.name === categoryName) || { id: 0, name: 'Tous' };
-    
-    // Update query params in the URL
-    this.updateQueryParams();
-
-    // Fetch filtered and sorted products from the backend
-    this.loadProducts();
+    this.filterAndSortProducts();
+    this.animateProducts();
+    this.animateCategoryButtons();
   }
 
   // Handle sorting products
   sortProducts(): void {
-    // Update query params in the URL
-    this.updateQueryParams();
-
-    // Fetch sorted products from the backend
-    this.loadProducts();
+    this.filterAndSortProducts();
+    this.animateProducts();
   }
 
-  // Update query parameters in the URL without reloading the page
-  private updateQueryParams(): void {
-    this.RouterS.navigate([], {
-      queryParams: {
-        category: this.selectedCategory.name,
-        sortBy: this.sortBy
-      },
-      queryParamsHandling: 'merge'  // Merges with existing query params
+  // Filter and sort products based on selected category and sorting option
+  private filterAndSortProducts(): void {
+    let filteredProducts = this.selectedCategory.name === 'Tous'
+      ? [...this.products] // Include all products
+      : this.products.filter(product => product.category_id === this.selectedCategory.id);
+
+    // Sort the products based on the selected sorting option
+    this.sortedProducts = filteredProducts.sort((a, b) => {
+      if (this.sortBy === 'prix-asc') return a.price - b.price;
+      if (this.sortBy === 'prix-desc') return b.price - a.price;
+      return 0; // Default sorting (e.g., by popularity)
     });
   }
 
@@ -164,17 +161,20 @@ export class Boutique implements OnInit {
   trackByProductId(index: number, product: Product): number {
     return product.id;
   }
-
-  // Add product to cart
+    // Add product to cart
   addToCart(product: Product): void {
     if (isPlatformBrowser(this.platformId)) {
+      // Retrieve existing cart items from localStorage
       const storedCart = localStorage.getItem('cartItems');
       let cartItems: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
 
+      // Check if the product is already in the cart
       const existingItem = cartItems.find(item => item.id === product.id);
       if (existingItem) {
+        // Increment quantity if item exists
         existingItem.quantity += 1;
       } else {
+        // Add new item to cart
         const cartItem: CartItem = {
           id: product.id,
           name: product.name,
@@ -185,13 +185,13 @@ export class Boutique implements OnInit {
         cartItems.push(cartItem);
       }
 
+      // Save updated cart to localStorage
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
       this.cdRef.detectChanges();
     }
   }
-
-  // Go to product details page
-  goToProduct(id: number): void {
+  goToProduct(id:number): void {
+    // Navigate to the product details page
     this.RouterS.navigate(['/product', id]);
   }
 }

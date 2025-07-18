@@ -48,14 +48,14 @@ export default {
   {
     "renderMode": 2,
     "preload": [
-      "chunk-6DULXJNN.js"
+      "chunk-RSLOIBMS.js"
     ],
     "route": "/panier"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-V3EFPM56.js"
+      "chunk-A3MP7FIQ.js"
     ],
     "route": "/dashboard"
   },
@@ -73,28 +73,61 @@ export default {
   },
   {
     "renderMode": 2,
+    "route": "/product/1"
+  },
+  {
+    "renderMode": 2,
+    "route": "/product/2"
+  },
+  {
+    "renderMode": 2,
+    "route": "/product/3"
+  },
+  {
+    "renderMode": 2,
+    "route": "/product/4"
+  },
+  {
+    "renderMode": 2,
+    "route": "/product/5"
+  },
+  {
+    "renderMode": 0,
+    "route": "/product/*"
+  },
+  {
+    "renderMode": 2,
+    "preload": [
+      "chunk-BPECV5RF.js"
+    ],
+    "route": "/login"
+  },
+  {
+    "renderMode": 2,
     "redirectTo": "/",
     "route": "/**"
   }
 ],
   entryPointToBrowserMapping: undefined,
   assets: {
-    'index.csr.html': {size: 7251, hash: 'f7870c9dd35d3def8df6a39b00eab449e3fc1c9e41671813bdfc6a3d40232499', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
-    'index.server.html': {size: 3234, hash: '785a403fe13c4b7c8dd06e9a150c1057c7a4840f0102ef188f6928775626ff45', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
-    'boutique/Produits de la ruche/index.html': {size: 44311, hash: '3c0e70381bee60f1eaf310b3f1da67ca71a4abb65df936edc92a6bc63ea6147b', text: () => import('./assets-chunks/boutique_Produits de la ruche_index_html.mjs').then(m => m.default)},
-    'boutique/Nourrisseurs/index.html': {size: 44323, hash: '4c84eeafb4f5808c54992cb2a96ffdb15f4c178e43409e3592468453dfa81750', text: () => import('./assets-chunks/boutique_Nourrisseurs_index_html.mjs').then(m => m.default)},
-    'boutique/index.html': {size: 47004, hash: '054ecb27f62c971f34d7161e6fef1673115004865dfa44960bb082c0a43b3339', text: () => import('./assets-chunks/boutique_index_html.mjs').then(m => m.default)},
-    'dashboard/index.html': {size: 41213, hash: 'e05a01dd92a9175aae08a9de33eccdbb7c6eda9052c3c84639125427988f1825', text: () => import('./assets-chunks/dashboard_index_html.mjs').then(m => m.default)},
-    'boutique/Ruches/index.html': {size: 44358, hash: 'ef47b8a02958bf3e5f851cabc886cd36dbda8454efa73fb8f9e512f3af8d77b3', text: () => import('./assets-chunks/boutique_Ruches_index_html.mjs').then(m => m.default)},
-    'boutique/Miellerie/index.html': {size: 44324, hash: 'c2c0770d26866a6358fd1995f4000157e79beb32b2dc32f9c6b99bf6897c534c', text: () => import('./assets-chunks/boutique_Miellerie_index_html.mjs').then(m => m.default)},
-    'products/index.html': {size: 41908, hash: '0f561ea7960158f9141de14f6b45aab2d62c04290e060e180c316f2e12fd8f4f', text: () => import('./assets-chunks/products_index_html.mjs').then(m => m.default)},
-    'contact/index.html': {size: 45411, hash: 'c0b6a52a088de239d80bdc7f7283ae548b17b68462be0d790b9c79fcb5227600', text: () => import('./assets-chunks/contact_index_html.mjs').then(m => m.default)},
-    'index.html': {size: 60598, hash: 'b3ed26c59535d400e9acb1c60104663b2f9a0d26715a76ff272b3b15be61607b', text: () => import('./assets-chunks/index_html.mjs').then(m => m.default)},
-    'categories/index.html': {size: 40386, hash: 'c8cecde3251d38bd795f2425868e4265a4b789a20216525dadb465ba745f9d56', text: () => import('./assets-chunks/categories_index_html.mjs').then(m => m.default)},
-    'boutique/Vêtements/index.html': {size: 47004, hash: '054ecb27f62c971f34d7161e6fef1673115004865dfa44960bb082c0a43b3339', text: () => import('./assets-chunks/boutique_Vêtements_index_html.mjs').then(m => m.default)},
-    'panier/index.html': {size: 49092, hash: '8681ed614648d3a3c71b28a8d03c792231f4a39423048595967a62d7487b835c', text: () => import('./assets-chunks/panier_index_html.mjs').then(m => m.default)},
-    'a-propos/index.html': {size: 44416, hash: 'a182186a74c1aec14ed338135d57d0bd5e96d402040cc4ec580f621e9ccb2d0e', text: () => import('./assets-chunks/a-propos_index_html.mjs').then(m => m.default)},
-    'orders/index.html': {size: 37138, hash: 'ba77d91a4015dffff197b95f802e0fb5203139afa18c3b0829c349600e374ff3', text: () => import('./assets-chunks/orders_index_html.mjs').then(m => m.default)},
+    'index.csr.html': {size: 7353, hash: 'a40c49041b733bd12126de57680877588551fa46f5ee1f7f93b0c25d8fd26dde', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
+    'index.server.html': {size: 3336, hash: '6dd71f7e49925ea8984e927ac132d737ce509576035acc6847b1efdcfc22b991', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
+    'boutique/Produits de la ruche/index.html': {size: 39045, hash: '4215df20f4943edc635ff98bedf6390889853ef7e2ab958671508513d8dcf750', text: () => import('./assets-chunks/boutique_Produits de la ruche_index_html.mjs').then(m => m.default)},
+    'boutique/Nourrisseurs/index.html': {size: 39045, hash: '4215df20f4943edc635ff98bedf6390889853ef7e2ab958671508513d8dcf750', text: () => import('./assets-chunks/boutique_Nourrisseurs_index_html.mjs').then(m => m.default)},
+    'index.html': {size: 51094, hash: '2c26cb1a73773fe44739605240bddf769223d02845c210a8820c7985bda3fc00', text: () => import('./assets-chunks/index_html.mjs').then(m => m.default)},
+    'boutique/index.html': {size: 39045, hash: '4215df20f4943edc635ff98bedf6390889853ef7e2ab958671508513d8dcf750', text: () => import('./assets-chunks/boutique_index_html.mjs').then(m => m.default)},
+    'product/1/index.html': {size: 36913, hash: '00ed79eed9058fa5140520f1c6515fcd3b68872f046d6307d45294eef9c43017', text: () => import('./assets-chunks/product_1_index_html.mjs').then(m => m.default)},
+    'product/3/index.html': {size: 36913, hash: '00ed79eed9058fa5140520f1c6515fcd3b68872f046d6307d45294eef9c43017', text: () => import('./assets-chunks/product_3_index_html.mjs').then(m => m.default)},
+    'product/5/index.html': {size: 36913, hash: '00ed79eed9058fa5140520f1c6515fcd3b68872f046d6307d45294eef9c43017', text: () => import('./assets-chunks/product_5_index_html.mjs').then(m => m.default)},
+    'boutique/Miellerie/index.html': {size: 39045, hash: 'a4d0f5b7cb427c11d7e832181c125a04670c8931323669555676ce249eb72ec3', text: () => import('./assets-chunks/boutique_Miellerie_index_html.mjs').then(m => m.default)},
+    'boutique/Ruches/index.html': {size: 39045, hash: '4215df20f4943edc635ff98bedf6390889853ef7e2ab958671508513d8dcf750', text: () => import('./assets-chunks/boutique_Ruches_index_html.mjs').then(m => m.default)},
+    'contact/index.html': {size: 44028, hash: '4cdad0b34a61920b0b00a132d25bf8cc4b2b643361b625f2994ed963757fed39', text: () => import('./assets-chunks/contact_index_html.mjs').then(m => m.default)},
+    'login/index.html': {size: 38587, hash: '969644960b3c7b3fa0d43f2040a18b5a1e1601d462a07371dfc50c7fea09d808', text: () => import('./assets-chunks/login_index_html.mjs').then(m => m.default)},
+    'a-propos/index.html': {size: 42792, hash: '99635a3816a62e80fe2e0df53ab5cb00f7a5fee9761b579702bd53209392ae95', text: () => import('./assets-chunks/a-propos_index_html.mjs').then(m => m.default)},
+    'product/2/index.html': {size: 36913, hash: '00ed79eed9058fa5140520f1c6515fcd3b68872f046d6307d45294eef9c43017', text: () => import('./assets-chunks/product_2_index_html.mjs').then(m => m.default)},
+    'boutique/Vêtements/index.html': {size: 39045, hash: '4215df20f4943edc635ff98bedf6390889853ef7e2ab958671508513d8dcf750', text: () => import('./assets-chunks/boutique_Vêtements_index_html.mjs').then(m => m.default)},
+    'product/4/index.html': {size: 36913, hash: '00ed79eed9058fa5140520f1c6515fcd3b68872f046d6307d45294eef9c43017', text: () => import('./assets-chunks/product_4_index_html.mjs').then(m => m.default)},
+    'panier/index.html': {size: 50532, hash: '022b5ef50b47ceab9e65d1b72f77ae37b77fe73a7ad394ebf3325d0d0ee02c79', text: () => import('./assets-chunks/panier_index_html.mjs').then(m => m.default)},
     'styles-BVJQD57C.css': {size: 230873, hash: 'YU+im7r2LDs', text: () => import('./assets-chunks/styles-BVJQD57C_css.mjs').then(m => m.default)}
   },
 };

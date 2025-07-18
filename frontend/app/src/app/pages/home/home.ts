@@ -46,7 +46,7 @@ export class Home implements OnInit, AfterViewInit {
   }
 
   private loadProducts(): void {
-    this.apiService.getProducts().subscribe({
+    this.apiService.getProducts("","").subscribe({
       next: (products) => {
         this.products = products;
         const isMobile = isPlatformBrowser(this.platformId) && window.innerWidth <= 767;
