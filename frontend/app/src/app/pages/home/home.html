@@ -49,16 +49,17 @@
   </section>
 
   <!-- Featured Products -->
+<!-- Featured Products -->
 <section class="featured-products py-5">
   <div class="container">
     <h2 class="text-warning fw-bold text-center mb-4">Nos Produits Phares</h2>
     <div id="featuredProductCarousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         @for (chunk of productChunks; track $index; let isFirst = $first) {
-          <div class="carousel-item" [class.active]="isFirst">
+          <div class="carousel-item" [ngClass]="{'active': isFirst}">
             <div class="row justify-content-center">
               @for (product of chunk; track product.id) {
-                <div class="col-12 col-md-3 mb-3" [class.d-none]="!$first && $index > 0" [class.d-md-block]="true">
+                <div class="col-12 col-md-3 mb-3">
                   <div class="card h-100">
                     <img
                       style="width: 100%; height: auto; padding: 20px; cursor: pointer;"
@@ -76,7 +77,6 @@
                         aria-label="Ajouter au panier">
                         Acheter
                       </button>
-
                     </div>
                   </div>
                 </div>
@@ -95,20 +95,18 @@
         }
       </div>
       <button
-        class="carousel-control-prev carousel-control-prev1"
+        class="carousel-control-prev"
         type="button"
         data-bs-target="#featuredProductCarousel"
-        data-bs-slide="prev"
-        style="z-index: 1!important;">
+        data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
       </button>
       <button
-        class="carousel-control-next .carousel-control-next"
+        class="carousel-control-next"
         type="button"
         data-bs-target="#featuredProductCarousel"
-        data-bs-slide="next"
-        style="z-index: 1!important;">
+        data-bs-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
@@ -118,6 +116,8 @@
     </div>
   </div>
 </section>
+
+
 
 
   <!-- About Section -->

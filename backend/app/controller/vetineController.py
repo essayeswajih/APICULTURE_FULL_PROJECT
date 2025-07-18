@@ -24,11 +24,21 @@ def check_admin(current_user: User = Depends(get_current_user)):
 # Route to get all products with filtering options
 @router.get("/products", response_model=List[ProductBase])
 def get_all_products(
-    skip: int = 0, limit: int = 10, 
-    category_id: Optional[int] = None, max_price: Optional[float] = None,
+    skip: int = 0,
+    limit: int = 10,
+    category_id: Optional[int] = None,
+    max_price: Optional[float] = None,
+    sortBy: Optional[str] = 'popularite',  # Default sortBy value
     db: Session = Depends(get_db)
 ):
-    return get_products(db, skip=skip, limit=limit, category_id=category_id, max_price=max_price)
+    return get_products(
+        db,
+        skip=skip,
+        limit=limit,
+        category_id=category_id,
+        max_price=max_price,
+        sortBy=sortBy
+    )
 
 # Route to get a single product by ID
 @router.get("/products/{product_id}", response_model=ProductBase)

@@ -1,7 +1,6 @@
 main {
   background-color: #fff8e1; /* Light amber for apiculture theme */
   font-family: 'Roboto', sans-serif;
-  /* Background image for main content */
 }
 
 .hero {
@@ -13,16 +12,16 @@ main {
   object-fit: cover;
 }
 
+.carousel-caption {
+  background: rgba(255, 248, 225, 0.8); /* Semi-transparent amber for readability */
+  padding: 20px;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+}
+
 .carousel-caption h2 {
   color: #d97706; /* Amber for headings */
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-}
-.carousel-caption {
-
-    background: rgba(255, 248, 225, 0.8); /* Semi-transparent amber for readability */
-    padding: 20px;
-    border-radius: 10px;
-    backdrop-filter: blur(5px);
 }
 
 .carousel-caption p {
@@ -49,7 +48,10 @@ main {
   border-color: #14532d;
 }
 
-.products h2, .about h2, .blog h2, .newsletter h2 {
+.products h2,
+.about h2,
+.blog h2,
+.newsletter h2 {
   color: #d97706; /* Amber for headings */
 }
 
@@ -74,17 +76,24 @@ main {
   color: #14532d !important; /* Darker green on hover */
 }
 
-@media (max-width: 767px) {
-  .carousel-caption {
-    display: block !important; /* Ensure captions are visible on mobile */
-    background: rgba(255, 248, 225, 0.8); /* Semi-transparent amber for readability */
-    padding: 10px;
-    border-radius: 5px;
-  }
+.carousel-item {
+  padding: 0 15px;
+}
 
-  .newsletter .input-group {
-    width: 100% !important; /* Full width on mobile */
-  }
+.carousel-control-next,
+.carousel-control-prev {
+  width: 10%; /* Adjust width for better visibility */
+  height: 100px; /* Adjust height for better visibility */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Center vertically */
+  border-radius: 10px;
+}
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+  background-color: #a19f9d4f; /* Amber for carousel controls */
+  border-radius: 50%;
+  padding: 20px; /* Larger padding for better tap area */
 }
 
 #beeBox {
@@ -93,12 +102,12 @@ main {
   height: 100vh; /* Full height of the viewport */
   overflow: hidden; /* Hide anything that goes outside the box */
   z-index: 0; /* Ensure the bee box is above other content */
-  top: 100px; /* Adjust the box position as necessary */
-  left: 0; /* Align the box to the left edge */
+  top: 100px; /* Adjust the box position */
+  left: 0; /* Align to the left edge */
 }
 
 #bee {
-width: 125px;
+  width: 125px;
   box-sizing: border-box;
   will-change: transform;
   position: absolute;
@@ -110,41 +119,64 @@ width: 125px;
   height: 100vh; /* Full height of the viewport */
   overflow: hidden; /* Hide anything that goes outside the box */
   z-index: 0; /* Ensure the bee box is above other content */
-  top: 100px; /* Adjust the box position as necessary */
-  right: 0; /* Align the box to the left edge */
+  top: 100px; /* Adjust the box position */
+  right: 0; /* Align to the right edge */
 }
 
 #bee1 {
-width: 125px;
+  width: 125px;
   box-sizing: border-box;
   will-change: transform;
   position: absolute;
   right: 0;
   top: 30vh; /* Align the bee to the top right corner */
 }
-  .carousel-item {
-    padding: 0 15px;
+
+@media (min-width: 768px) {
+  .carousel-item .row {
+    justify-content: center;
   }
-  @media (min-width: 768px) {
-    .carousel-item .row {
-      justify-content: center;
-    }
-    .carousel-item .col-md-4 {
-      flex: 0 0 33.333333%;
-      max-width: 33.333333%;
-    }
+  .carousel-item .col-md-3 {
+    flex: 0 0 25%; /* 4 products per row on desktop */
+    max-width: 25%;
   }
-.carousel-control-next-icon,
-.carousel-control-prev-icon {
-  background-color: #a19f9d4f; /* Amber for carousel controls */
-  border-radius: 50%;
-  margin: 10px;
-  padding: 10px !important; /* Ensure the icon is visible */
 }
-.carousel-control-next1,
-.carousel-control-prev1 {
-  width: 10vw; /* Adjust width for better visibility */
-  height: 100px; /* Adjust height for better visibility */
-  top: 50%; /* Center vertically */
-  transform: translateY(-50%); /* Center vertically */
+
+@media (max-width: 767px) {
+  .carousel-caption {
+    display: block !important; /* Ensure captions are visible on mobile */
+    background: rgba(255, 248, 225, 0.8); /* Semi-transparent amber for readability */
+    padding: 10px;
+    border-radius: 5px;
+  }
+  .card-title .text-success{
+    font-size: .6rem !important; /* Slightly larger text for better readability */
+  }
+  .newsletter .input-group {
+    width: 100% !important; /* Full width on mobile */
+  }
+
+  .carousel-item .row {
+    justify-content: center;
+  }
+
+  .carousel-item .col-12.col-md-3 {
+    flex: 0 0 100%; /* 2 products per row on mobile */
+    max-width: 100%;
+    padding: 0 5px; /* Reduced padding for better spacing */
+  }
+
+  .carousel-control-next,
+  .carousel-control-prev {
+    width: 15%; /* Larger width for mobile */
+    height: 80px; /* Adjusted height for mobile */
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 10px;
+  }
+
+  .carousel-control-next-icon,
+  .carousel-control-prev-icon {
+    padding: 15px; /* Slightly smaller padding for mobile */
+  }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../environments/environments';
@@ -104,11 +104,21 @@ export class Api {
       .pipe(catchError(this.handleError));
   }
 
-  // Products API
-  getProducts(): Observable<Product[]> {
+    // Products API
+  getProducts(categoryQuery: string, sortBy: string): Observable<Product[]> {
+    let params = new HttpParams();
+
+    if (categoryQuery) {
+      params = params.set('category', categoryQuery); // Send category as query param
+    }
+
+    if (sortBy) {
+      params = params.set('sortBy', sortBy); // Send sortBy as query param
+    }
+
     return this.http
-      .get<Product[]>(`${this.apiUrl}/products`)
-      .pipe(catchError(this.handleError));
+      .get<Product[]>(`${this.apiUrl}/products`, { params }) // Passing params to the GET request
+      .pipe(catchError(this.handleError));  // Handle errors
   }
 
   getProductById(id: number): Observable<Product> {

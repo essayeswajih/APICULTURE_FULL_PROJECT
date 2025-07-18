@@ -1,3 +1,4 @@
+from sqlalchemy import asc, desc
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from models.vetrineModels import OrderStatus, Product, Order, OrderItem, CartItem, Category
@@ -7,17 +8,38 @@ from fastapi import HTTPException
 from random import randint
 
 # CRUD operations for Product
-def get_products(db: Session, skip: int = 0, limit: int = 10, category_id: Optional[int] = None, max_price: Optional[float] = None) -> List[Product]:
-    if skip < 0 or limit <= 0: 
-        raise HTTPException(status_code=400, detail="Invalid pagination parameters.")
-    
+def get_products(
+    db: Session,
+    skip: int = 0,
+    limit: int = 10,
+    category_id: Optional[int] = None,
+    max_price: Optional[float] = None,
+    sortBy: Optional[str] = 'popularite'
+):
     query = db.query(Product)
-    if category_id is not None:
+
+    # Filter by category if category_id is provided
+    if category_id:
         query = query.filter(Product.category_id == category_id)
-    if max_price is not None:
+
+    # Filter by price if max_price is provided
+    if max_price:
         query = query.filter(Product.price <= max_price)
-    
-    return query.offset(skip).limit(limit).all()
+
+    # Apply sorting
+    if sortBy == 'prix-asc':
+        query = query.order_by(asc(Product.price))  # Sort by price ascending
+    elif sortBy == 'prix-desc':
+        query = query.order_by(desc(Product.price))  # Sort by price descending
+    elif sortBy == 'popularite':
+        query = query.order_by(asc(Product.buzzent))  # Sort by popularity (ascending or descending)
+    else:
+        query = query.order_by(asc(Product.id))  # Default sorting by ID or any other field
+
+    # Apply pagination
+    query = query.offset(skip).limit(limit)
+
+    return query.all()
 
 def get_product_by_id(db: Session, product_id: int) -> Optional[Product]:
     return db.query(Product).filter(Product.id == product_id).first()

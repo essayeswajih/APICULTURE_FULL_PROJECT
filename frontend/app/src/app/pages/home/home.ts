@@ -21,6 +21,7 @@ if (typeof window !== 'undefined') {
   styleUrls: ['./home.scss']
 })
 export class Home implements OnInit, AfterViewInit {
+
   products: Product[] = [];
   productChunks: Product[][] = []; // Grouped products for carousel items
 
@@ -48,7 +49,9 @@ export class Home implements OnInit, AfterViewInit {
     this.apiService.getProducts().subscribe({
       next: (products) => {
         this.products = products;
-        this.productChunks = this.chunkArray(products, 4);
+        const isMobile = isPlatformBrowser(this.platformId) && window.innerWidth <= 767;
+        const chunkSize = isMobile ? 1 : 4;
+        this.productChunks = this.chunkArray(products, chunkSize);
         this.cdRef.detectChanges(); // Trigger change detection after updating data
         if (isPlatformBrowser(this.platformId)) {
           setTimeout(() => {
