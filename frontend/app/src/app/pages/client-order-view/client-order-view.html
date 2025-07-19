@@ -1,34 +1,45 @@
 <div class="container py-5">
-  <h2>Your Order</h2>
+  <h2 class="order-title mb-4">Your Order Details</h2>
   @if (order) {
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card mb-3">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="card order-card shadow-sm">
           <div class="card-body">
             <h5 class="card-title">Order #{{ order.code }}</h5>
-            <p class="card-text">Customer: {{ order.username }}</p>
-            <p class="card-text">Email: {{ order.email }}</p>
-            <p class="card-text">Phone: {{ order.telephone }}</p>
-            <p class="card-text">Address: {{ order.location }}</p>
-            <p class="card-text">Items:</p>
-            <ul class="list-group mb-3" style="list-style-type: none; padding-left: 0;">
+            <div class="order-details">
+              <p class="card-text"><strong>Customer:</strong> {{ order.username }}</p>
+              <p class="card-text"><strong>Email:</strong> {{ order.email }}</p>
+              <p class="card-text"><strong>Phone:</strong> {{ order.telephone }}</p>
+              <p class="card-text"><strong>Address:</strong> {{ order.location }}</p>
+            </div>
+            <h6 class="items-title mt-4">Items</h6>
+            <ul class="list-group item-list mb-3">
               @for (item of order.items; track item.product_id) {
-                <li class="">{{ item.product_id }} ({{ item.quantity }}) - {{ item.price | number:'1.2-2' }}DT</li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <span>{{ item.product_id }} (x{{ item.quantity }})</span>
+                  <span>{{ item.price | number:'1.2-2' }} DT</span>
+                </li>
               }
             </ul>
-            <p class="card-text">Total: {{ order.total_amount | number:'1.2-2' }}DT</p>
-            <p class="card-text">Status: {{ order.status | titlecase }}</p>
-            <p class="card-text">Created: {{ order.created_at | date:'short' }}</p>
+            <div class="order-summary mt-4">
+              <p class="card-text total"><strong>Total:</strong> {{ order.total_amount | number:'1.2-2' }} DT</p>
+              <p class="card-text"><strong>Status:</strong> <span class="status {{ order.status }}">{{ order.status | titlecase }}</span></p>
+              <p class="card-text"><strong>Created:</strong> {{ order.created_at | date:'medium' }}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   } @else if (error) {
-    <div class="alert alert-danger" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
       {{ error }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
   } @else {
     <div class="alert alert-info" role="alert">
+      <div class="spinner-border spinner-border-sm me-2" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
       Loading order details...
     </div>
   }
