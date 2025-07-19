@@ -65,9 +65,10 @@
           <li class="nav-item dropdown">
             <button
               class="nav-link text-success dropdown-toggle"
-              (click)="toggleDropdown()"
+              (mouseenter)="toggleDropdown()"
               id="boutiqueDropdown"
               [attr.aria-expanded]="isDropdownOpen"
+              [routerLink]="['/boutique']"
             >
               Boutique
             </button>
@@ -75,7 +76,7 @@
               <li *ngFor="let category of categories">
                 <a
                   class="dropdown-item text-success"
-                  [routerLink]="['/boutique', category.name]"
+                  [routerLink]="['/boutique']" [queryParams]="{ category: category.name }"
                   routerLinkActive="active-route"
                   (click)="isDropdownOpen = false; isMobileMenuOpen = false"
                 >{{ category.name }}</a>

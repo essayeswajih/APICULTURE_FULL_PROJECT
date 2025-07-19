@@ -64,6 +64,24 @@ export class Boutique implements OnInit, OnDestroy {
         this.cdRef.markForCheck();
       }
     });
+    if (isPlatformBrowser(this.platformId)) {
+      gsap.from('.contact-section', {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        stagger: 0.3,
+        ease: 'power3.out',
+        delay: 0.2
+      });
+      gsap.from('.contact-img', {
+        opacity: 0,
+        scale: 0.9,
+        duration: 1.2,
+        stagger: 0.3,
+        ease: 'power3.out',
+        delay: 0.4
+      });
+    }
   }
 
   ngOnDestroy(): void {
@@ -104,7 +122,6 @@ export class Boutique implements OnInit, OnDestroy {
         this.products = products;
         this.isLoading = false;
         if (isPlatformBrowser(this.platformId)) {
-          //this.animateHeroSection();
           // this.animateProducts();
         }
         this.cdRef.markForCheck();
@@ -144,19 +161,6 @@ export class Boutique implements OnInit, OnDestroy {
       },
       queryParamsHandling: 'merge'
     });
-  }
-
-  private animateHeroSection(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      gsap.from('.boutique-section', {
-        opacity: 0,
-        y: 50,
-        duration: 1,
-        stagger: 0.3,
-        ease: 'power3.out',
-        delay: 0.2
-      });
-    }
   }
 
   private animateProducts(): void {
