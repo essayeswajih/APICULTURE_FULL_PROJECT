@@ -172,7 +172,8 @@ export class Panier implements OnInit {
       items: this.cartItems.map(item => ({
         product_id: item.id,
         quantity: item.quantity,
-        price: item.price
+        price: item.price,
+        name: item.name 
       })),
       id: 0,
       username: this.checkoutForm.value.fullName,

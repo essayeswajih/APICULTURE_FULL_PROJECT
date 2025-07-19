@@ -37,7 +37,7 @@ export interface Order {
   total_amount: number;
   status: OrderStatus;
   created_at: string;
-  items: { product_id: number; quantity: number; price: number }[];
+  items: { product_id: number; quantity: number; price: number,name:string }[];
   username: string;
   email: string;
   telephone: string;

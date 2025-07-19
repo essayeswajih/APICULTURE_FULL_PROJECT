@@ -23,7 +23,7 @@
               <ul class="list-group item-list mb-3">
                 @for (item of order.items; track item.product_id) {
                   <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>{{ item.product_id }} (x{{ item.quantity }})</span>
+                    <span>{{ item.name }} (x{{ item.quantity }})</span>
                     <span>{{ item.price | number:'1.2-2' }} DT</span>
                   </li>
                 }
