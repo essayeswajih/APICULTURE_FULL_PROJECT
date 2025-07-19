@@ -191,7 +191,7 @@ def get_order_by_code(
     order_code: str,
     db: Session = Depends(get_db),
 ):
-    db_order = db.query(Order).filter(Order.order_code == order_code).first()
+    db_order = db.query(Order).filter(Order.code == order_code).first()
     if not db_order:
         raise HTTPException(status_code=404, detail="Order not found or not authorized")
     return db_order
