@@ -1,7 +1,7 @@
 <main class="min-h-screen">
   <!-- Hero Section -->
-  <section class="hero py-6 text-center bg-light-amber position-relative" style="background-image: url('/assets/images/pexels-pixabay-301378.jpg'); background-size: cover; background-position:bottom;">
-    <div class="container">
+  <section class="hero py-6 text-center bg-light-amber position-relative" style="background-image: url('/assets/images/pexels-pixabay-301378.jpg'); background-size: cover; background-position: bottom;">
+    <div class="container position-relative">
       <div class="hero-overlay"></div>
       <h1 class="display-4 text-amber mb-3 boutique-section">Notre Boutique Apicole</h1>
       <p class="lead text-success boutique-section">Découvrez notre sélection de matériel apicole et produits de la ruche.</p>
@@ -10,27 +10,41 @@
 
   <!-- Filters -->
   <section class="container py-4">
+    <div *ngIf="isLoading" class="text-center py-4">
+      <div class="spinner-border text-amber" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div *ngIf="error" class="alert alert-danger" role="alert">
+      {{ error }}
+    </div>
+
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
       <div class="d-flex flex-wrap gap-2 mb-3 mb-md-0">
-        @for (category of categories; track category) {
+        @for (category of categories; track trackByCategoryId($index, category)) {
           <button
             class="btn btncategory"
+            role="button"
             [ngClass]="{
-              'btn-warning text-light': selectedCategory === category,
-              'btn-outline-warning': selectedCategory !== category
+              'btn-warning text-light': selectedCategory.id === category.id,
+              'btn-outline-warning': selectedCategory.id !== category.id
             }"
-            (click)="selectCategory(category.name)"
+            (click)="selectCategory(category)"
+            [attr.aria-pressed]="selectedCategory.id === category.id"
+            [attr.aria-label]="'Filter by category ' + category.name"
           >
-            {{ category?.name }}
+            {{ category.name }}
           </button>
         }
       </div>
       <select
         class="form-select w-auto border border-amber text-amber bg-light-amber"
         [(ngModel)]="sortBy"
-        (change)="sortProducts()"
+        (ngModelChange)="changeSortBy($event)"
+        aria-label="Sort products"
       >
-        <option value="popularite" selected >Trier par popularité</option>
+        <option value="popularite">Trier par popularité</option>
         <option value="prix-asc">Prix : croissant</option>
         <option value="prix-desc">Prix : décroissant</option>
       </select>
@@ -38,16 +52,39 @@
 
     <!-- Product Grid -->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-      @for (product of sortedProducts; track product.id) {
+      @for (product of products; track trackByProductId($index, product)) {
         <div class="col">
           <div class="card h-100 product-card">
-            <img [src]="product.image_url" class="card-img-top" alt="{{ product.name }}" (click)="goToProduct(product.id)" style="width: 100%;height: auto;padding: 20px;cursor: pointer;">
+            <img 
+              [src]="product.image_url || '/assets/images/placeholder.jpg'" 
+              class="card-img-top" 
+              [alt]="product.name"
+              (click)="goToProduct(product.id)"
+              style="width: 100%; height: auto; padding: 20px; cursor: pointer;"
+              loading="lazy"
+            >
             <div class="card-body">
-              <h5 class="card-title text-success" (click)="goToProduct(product.id)" >{{ product.name }}</h5>
-              <p class="card-text fw-bold text-amber" (click)="goToProduct(product.id)">{{ product.price }} DT</p>
-              <button class="btn btn-warning w-100 text-light hover-dark-green" (click)="addToCart(product)">Ajouter au panier</button>
+              <h5 
+                class="card-title text-success" 
+                (click)="goToProduct(product.id)"
+                style="cursor: pointer;"
+              >
+                {{ product.name }}
+              </h5>
+              <p class="card-text fw-bold text-amber">{{ product.price | currency:'TND':'symbol':'1.2-2' }} DT</p>
+              <button 
+                class="btn btn-warning w-100 text-light hover-dark-green"
+                (click)="addToCart(product)"
+                [disabled]="isLoading">
+                Ajouter au panier
+              </button>
             </div>
           </div>
+        </div>
+      }
+      @empty {
+        <div class="?category=vetementscol-12 text-center py-4">
+          <p class="text-muted">Aucun produit trouvé</p>
         </div>
       }
     </div>

@@ -14,16 +14,7 @@ import { SingleProduct } from "./pages/single-product/single-product";
 export const routes: Routes = [
   { path: '', component: Home },
   { path: 'boutique', component: Boutique },
-  {
-    path: 'boutique/:category',
-    component: Boutique,
-    data: {
-      prerender: {
-        // Dynamically generate prerender params based on categories
-        getPrerenderParams: () => categories.map(category => ({ category }))
-      }
-    }
-  },
+
   { path: 'a-propos', component: About },
   { path: 'contact', component: Contact },
   {

@@ -1,14 +1,6 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
-   {
-    path: 'boutique/:category',
-    renderMode: RenderMode.Prerender, // Ensure prerender is set here
-    async getPrerenderParams() {
-      const category = categories; // Import routes-ids correctly
-      return category.map(category => ({ category })); // This will match the dynamic `:id` param
-    },
-  },
   {
     path: 'product/:id',
     renderMode: RenderMode.Prerender, // Ensure prerender is set here

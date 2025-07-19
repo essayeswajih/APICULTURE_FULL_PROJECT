@@ -1,110 +1,151 @@
-import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, OnDestroy, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { gsap } from 'gsap';
 import { isPlatformBrowser } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 import { Api, Category, Product } from '../../services/api';
+
 export interface CartItem {
   id: number;
   name: string;
-  image: string | null; // Image can be null if not available
+  image: string | null;
   price: number;
   quantity: number;
 }
+
 @Component({
   selector: 'app-boutique',
   templateUrl: './boutique.html',
   styleUrls: ['./boutique.scss'],
   imports: [CommonModule, FormsModule],
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class Boutique implements OnInit {
+export class Boutique implements OnInit, OnDestroy {
   products: Product[] = [];
   categories: Category[] = [];
   selectedCategory: Category = { id: 0, name: 'Tous' };
   sortBy: string = 'popularite';
-  sortedProducts: Product[] = [];
+  isLoading: boolean = false;
+  error: string | null = null;
+  
+  private destroy$ = new Subject<void>();
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private route: ActivatedRoute,
-    private RouterS: Router,
-    private apiService: Api, // Inject the service
+    private router: Router,
+    private apiService: Api,
     private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.loadCategories();
-    this.loadProducts();
-
-    // Handle category from URL if available
-    this.route.paramMap.subscribe(params => {
-      const categoryFromUrl = params.get('category');
-      if (categoryFromUrl) {
-        // Normalize the category name to match exactly
-        const matchedCategory = this.categories.find(
-          cat => cat.name.toLowerCase() === categoryFromUrl.toLowerCase()
-        );
-        this.selectedCategory = matchedCategory || { id: 0, name: 'Tous' };
+    this.route.queryParams.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: params => {
+        this.isLoading = true;
+        this.error = null;
+        const categoryFromUrl = params['category']?.toLowerCase() || 'Tous';
+        this.sortBy = params['sortBy'] || 'popularite';
+        if (this.categories.length) {
+          this.selectedCategory = this.categories.find(cat => 
+            cat.name.toLowerCase() === categoryFromUrl) || { id: 0, name: 'Tous' };
+          this.loadProducts();
+        }
+        this.cdRef.markForCheck();
+      },
+      error: err => {
+        this.error = 'Failed to load parameters';
+        this.isLoading = false;
+        this.cdRef.markForCheck();
       }
-
-      // Filter and sort products on page load
-      this.filterAndSortProducts();
-      this.animateProducts();
-      this.animateHeroSection();
-      this.animateCategoryButtons();
     });
   }
 
-  // Fetch categories from the API
-  loadCategories() {
-    const tousCategory: Category = { id: 0, name: 'Tous' };
-    this.apiService.getCategories().subscribe((categories) => {
-      if (!categories.some(cat => cat.name === 'Tous')) {
-        categories.unshift(tousCategory); // Add at the beginning
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  private loadCategories(): void {
+    this.isLoading = true;
+    this.apiService.getCategories().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (categories) => {
+        const tousCategory: Category = { id: 0, name: 'Tous' };
+        this.categories = [tousCategory, ...categories.filter(cat => cat.name !== 'Tous')];
+        const categoryFromUrl = this.route.snapshot.queryParams['category']?.toLowerCase() || 'Tous';
+        this.selectedCategory = this.categories.find(cat => 
+          cat.name.toLowerCase() === categoryFromUrl) || { id: 0, name: 'Tous' };
+        this.isLoading = false;
+        this.loadProducts();
+        this.cdRef.markForCheck();
+      },
+      error: (error) => {
+        this.error = 'Failed to load categories';
+        this.isLoading = false;
+        console.error('Error loading categories:', error);
+        this.cdRef.markForCheck();
       }
-      this.categories = categories;
-      this.cdRef.detectChanges(); // Trigger change detection manually after loading categories
     });
   }
 
-  // Fetch products from the API
-  loadProducts() {
-    this.apiService.getProducts(this.selectedCategory.name, this.sortBy).subscribe((products) => {
-      this.products = products;
-      this.filterAndSortProducts();  // Apply filtering and sorting after loading products
-      this.cdRef.detectChanges(); // Trigger change detection after loading products
-    });
-  }
-  // Handle category selection
-  selectCategory(categoryName: string): void {
-    this.selectedCategory = this.categories.find(cat => cat.name === categoryName) || { id: 0, name: 'Tous' };
-    this.filterAndSortProducts();
-    this.animateProducts();
-    this.animateCategoryButtons();
-  }
-
-  // Handle sorting products
-  sortProducts(): void {
-    this.filterAndSortProducts();
-    this.animateProducts();
-  }
-
-  // Filter and sort products based on selected category and sorting option
-  private filterAndSortProducts(): void {
-    let filteredProducts = this.selectedCategory.name === 'Tous'
-      ? [...this.products] // Include all products
-      : this.products.filter(product => product.category_id === this.selectedCategory.id);
-
-    // Sort the products based on the selected sorting option
-    this.sortedProducts = filteredProducts.sort((a, b) => {
-      if (this.sortBy === 'prix-asc') return a.price - b.price;
-      if (this.sortBy === 'prix-desc') return b.price - a.price;
-      return 0; // Default sorting (e.g., by popularity)
+  private loadProducts(): void {
+    this.isLoading = true;
+    this.apiService.getProducts(this.selectedCategory.name, this.sortBy).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (products) => {
+        this.products = products;
+        this.isLoading = false;
+        if (isPlatformBrowser(this.platformId)) {
+          //this.animateHeroSection();
+          // this.animateProducts();
+        }
+        this.cdRef.markForCheck();
+      },
+      error: (error) => {
+        this.error = 'Failed to load products';
+        this.isLoading = false;
+        console.error('Error loading products:', error);
+        this.cdRef.markForCheck();
+      }
     });
   }
 
-  // Animate hero section
+  changeSortBy(sortBy: string): void {
+    console.log("clicked")
+    console.log(sortBy)
+      this.sortBy = sortBy;
+      this.updateRoute();
+      this.loadProducts();
+  }
+
+  selectCategory(category: Category): void {
+    if (this.selectedCategory.id !== category.id) {
+      this.selectedCategory = category;
+      this.updateRoute();
+      this.loadProducts();
+    }
+  }
+
+  private updateRoute(): void {
+    console.log(this.sortBy)
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { 
+        category: this.selectedCategory.name !== 'Tous' ? this.selectedCategory.name : null,
+        sortBy: this.sortBy !== 'popularite' ? this.sortBy : null 
+      },
+      queryParamsHandling: 'merge'
+    });
+  }
+
   private animateHeroSection(): void {
     if (isPlatformBrowser(this.platformId)) {
       gsap.from('.boutique-section', {
@@ -115,18 +156,9 @@ export class Boutique implements OnInit {
         ease: 'power3.out',
         delay: 0.2
       });
-      gsap.from('.contact-img', {
-        opacity: 0,
-        scale: 0.9,
-        duration: 1.2,
-        stagger: 0.3,
-        ease: 'power3.out',
-        delay: 0.4
-      });
     }
   }
 
-  // Animate products in the grid
   private animateProducts(): void {
     if (isPlatformBrowser(this.platformId)) {
       gsap.from('.product-card', {
@@ -134,64 +166,64 @@ export class Boutique implements OnInit {
         y: 50,
         duration: 0.8,
         stagger: 0.2,
-        ease: 'power2.out',
+        ease: 'power2.out'
       });
     }
   }
 
-  // Animate category buttons
-  private animateCategoryButtons(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      gsap.from('.btncategory', {
-        opacity: 0,
-        x: -50,
-        duration: 0.5,
-        stagger: 0.1,
-        ease: 'power3.out',
-      });
-    }
-  }
-
-  // Track categories by their ID for optimization
   trackByCategoryId(index: number, category: Category): number {
     return category.id;
   }
 
-  // Track products by their ID for optimization
   trackByProductId(index: number, product: Product): number {
     return product.id;
   }
-    // Add product to cart
-  addToCart(product: Product): void {
-    if (isPlatformBrowser(this.platformId)) {
-      // Retrieve existing cart items from localStorage
-      const storedCart = localStorage.getItem('cartItems');
-      let cartItems: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
 
-      // Check if the product is already in the cart
+  addToCart(product: Product): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    try {
+      const storedCart = localStorage.getItem('cartItems');
+      const cartItems: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
+      
       const existingItem = cartItems.find(item => item.id === product.id);
       if (existingItem) {
-        // Increment quantity if item exists
-        existingItem.quantity += 1;
+        existingItem.quantity = Math.min(existingItem.quantity + 1, 99);
       } else {
-        // Add new item to cart
-        const cartItem: CartItem = {
+        cartItems.push({
           id: product.id,
           name: product.name,
           image: product.image_url ?? null,
           price: product.price,
           quantity: 1
-        };
-        cartItems.push(cartItem);
+        });
       }
 
-      // Save updated cart to localStorage
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
-      this.cdRef.detectChanges();
+      this.cdRef.markForCheck();
+    } catch (error) {
+      console.error('Error updating cart:', error);
+      this.error = 'Failed to add item to cart';
+      this.cdRef.markForCheck();
     }
   }
-  goToProduct(id:number): void {
-    // Navigate to the product details page
-    this.RouterS.navigate(['/product', id]);
+
+  goToProduct(id: number): void {
+    this.router.navigate(['/product', id]);
+  }
+
+  goTo(category?: string, sortBy?: string): void {
+    console.log('Navigating to boutique with category:', category, 'and sortBy:', sortBy);
+    
+    if (category) {
+      this.selectedCategory = this.categories.find(cat => cat.name.toLowerCase() === category.toLowerCase()) || { id: 0, name: 'Tous' };
+    }
+    
+    if (sortBy) {
+      this.sortBy = sortBy;
+    }
+    
+    this.updateRoute();
+    this.loadProducts();
   }
 }
