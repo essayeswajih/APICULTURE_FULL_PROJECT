@@ -180,7 +180,8 @@ export class Panier implements OnInit {
       telephone: this.checkoutForm.value.phone.toString(),
       location: this.checkoutForm.value.deliveryLocation,
       payment_method: this.paymentMethod,
-      created_at: new Date().toISOString()
+      created_at: new Date().toISOString(),
+      code: ''
     };
 
     this.api.createOrder(orderData).subscribe({
