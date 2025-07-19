@@ -1,4 +1,4 @@
-
+version: '3.8'
 services:
   fastapi-app:
     image: fastapi-app
@@ -12,11 +12,10 @@ services:
       postgres-db:
         condition: service_healthy
     volumes:
-      - ./backend:/app
+      - ./backend:/app:rw
     command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
     networks:
       - apiculture1-network
-
   postgres-db:
     image: postgres:latest
     environment:
@@ -24,8 +23,8 @@ services:
       - POSTGRES_USER=apiculturefromtn
       - POSTGRES_PASSWORD=apiculture1fromtn
     volumes:
-      - postgres-data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres-data:/var/lib/postgresql/data:rw
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     ports:
       - "5432:5432"
     healthcheck:
@@ -35,7 +34,6 @@ services:
       retries: 5
     networks:
       - apiculture1-network
-
   pgadmin:
     image: dpage/pgadmin4
     environment:
@@ -47,22 +45,20 @@ services:
       - postgres-db
     networks:
       - apiculture1-network
-
   angular-nginx:
     build:
       context: ./frontend
     volumes:
-      - ./frontend/app/nginx.conf:/etc/nginx/nginx.conf
+      - ./frontend/dist:/usr/share/nginx/html:ro
+      - ./frontend/app/nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
       - "80:80"
     depends_on:
       - fastapi-app
     networks:
       - apiculture1-network
-
 networks:
   apiculture1-network:
     driver: bridge
-
 volumes:
   postgres-data:
