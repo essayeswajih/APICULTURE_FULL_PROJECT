@@ -165,7 +165,8 @@ def create_order(db: Session, order_create: OrderCreate, total_amount: float) ->
             order_id=order.id,
             product_id=item.product_id,
             quantity=item.quantity,
-            price=item.price
+            price=item.price,
+            name=product.name if product else None 
         )
         db.add(order_item)
         product.stock_quantity -= item.quantity  # Update stock

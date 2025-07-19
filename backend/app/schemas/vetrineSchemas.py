@@ -49,6 +49,7 @@ class OrderItemBase(BaseModel):
     product_id: int
     quantity: int
     price: float
+    name: Optional[str] = None 
 
     class Config:
         from_attributes = True
