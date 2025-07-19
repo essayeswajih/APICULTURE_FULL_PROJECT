@@ -1,9 +1,4 @@
-body {
-  background-color: #fff8e1; /* Light amber background */
-  font-family: 'Roboto', sans-serif;
-  color: #333333;
-  line-height: 1.6;
-}
+
 
 .container {
   max-width: 1200px;
@@ -228,10 +223,17 @@ body {
   background: rgba(0, 0, 0, 0.5); /* Darker overlay for text readability */
   z-index: 1;
 }
+main {
+  background-color: #fff8e1; /* Light amber for apiculture theme */
+  font-family: 'Roboto', sans-serif;
+}
 
 .hero h1,
 .hero p {
   position: relative;
   z-index: 2;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Subtle shadow for text contrast */
+}
+.text-amber {
+  color: #d97706 !important; /* Amber for headings */
 }

@@ -1,51 +1,54 @@
-<div class="container py-5">
-  <section class="hero py-6 text-center bg-light-amber position-relative"  style="background-image: url('/assets/images/pexels-pixabay-301378.jpg'); background-size: cover; background-position:bottom;">
+<main>
+  <section class="hero py-6 text-center bg-light-amber position-relative" style="background-image: url('/assets/images/pexels-pixabay-301378.jpg'); background-size: cover; background-position:bottom;">
     <div class="container-md">
       <div class="hero-overlay"></div>
-      <h1 class="display-3 text-amber mb-4 contact-section">Your Order Details</h1>
+      <h1 class="display-3 text-amber mb-4 client-order-section">Détails de votre commande</h1>
+      <p class="lead text-success mb-0 client-order-section">Découvrez votre commande.</p>
     </div>
   </section>
-  @if (order) {
-    <div class="row justify-content-center">
-      <div class="col-md-8 col-lg-6">
-        <div class="card order-card shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">Order #{{ order.code }}</h5>
-            <div class="order-details">
-              <p class="card-text"><strong>Customer:</strong> {{ order.username }}</p>
-              <p class="card-text"><strong>Email:</strong> {{ order.email }}</p>
-              <p class="card-text"><strong>Phone:</strong> {{ order.telephone }}</p>
-              <p class="card-text"><strong>Address:</strong> {{ order.location }}</p>
-            </div>
-            <h6 class="items-title mt-4">Items</h6>
-            <ul class="list-group item-list mb-3">
-              @for (item of order.items; track item.product_id) {
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                  <span>{{ item.product_id }} (x{{ item.quantity }})</span>
-                  <span>{{ item.price | number:'1.2-2' }} DT</span>
-                </li>
-              }
-            </ul>
-            <div class="order-summary mt-4">
-              <p class="card-text total"><strong>Total:</strong> {{ order.total_amount | number:'1.2-2' }} DT</p>
-              <p class="card-text"><strong>Status:</strong> <span class="status {{ order.status }}">{{ order.status | titlecase }}</span></p>
-              <p class="card-text"><strong>Created:</strong> {{ order.created_at | date:'medium' }}</p>
+  <div class="container py-5">
+    @if (order) {
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+          <div class="card order-card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Commande #{{ order.code }}</h5>
+              <div class="order-details">
+                <p class="card-text"><strong>Client :</strong> {{ order.username }}</p>
+                <p class="card-text"><strong>Email :</strong> {{ order.email }}</p>
+                <p class="card-text"><strong>Téléphone :</strong> {{ order.telephone }}</p>
+                <p class="card-text"><strong>Adresse :</strong> {{ order.location }}</p>
+              </div>
+              <h6 class="items-title mt-4">Articles</h6>
+              <ul class="list-group item-list mb-3">
+                @for (item of order.items; track item.product_id) {
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>{{ item.product_id }} (x{{ item.quantity }})</span>
+                    <span>{{ item.price | number:'1.2-2' }} DT</span>
+                  </li>
+                }
+              </ul>
+              <div class="order-summary mt-4">
+                <p class="card-text total"><strong>Total :</strong> {{ order.total_amount | number:'1.2-2' }} DT</p>
+                <p class="card-text"><strong>Statut :</strong> <span class="status {{ order.status }}">{{ order.status | titlecase }}</span></p>
+                <p class="card-text"><strong>Créée le :</strong> {{ order.created_at | date:'medium' }}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  } @else if (error) {
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      {{ error }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  } @else {
-    <div class="alert alert-info" role="alert">
-      <div class="spinner-border spinner-border-sm me-2" role="status">
-        <span class="visually-hidden">Loading...</span>
+    } @else if (error) {
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ error }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-      Loading order details...
-    </div>
-  }
-</div>
+    } @else {
+      <div class="alert alert-info" role="alert">
+        <div class="spinner-border spinner-border-sm me-2" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+        Chargement des détails de la commande...
+      </div>
+    }
+  </div>
+</main>
