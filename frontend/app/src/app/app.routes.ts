@@ -33,6 +33,7 @@ export const routes: Routes = [
       }
     } 
   },
+  { path: 'client-order-view', loadComponent: () => import('./pages/client-order-view/client-order-view').then(m => m.ClientOrderView) },
   { path: 'login', loadComponent: () => import('./auth/login/login').then(m => m.Login) },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
