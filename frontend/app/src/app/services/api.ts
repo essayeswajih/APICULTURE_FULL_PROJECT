@@ -43,6 +43,7 @@ export interface Order {
   telephone: string;
   location: string;
   payment_method: string;
+  code: string; // Unique code for the order
 }
 
 @Injectable({

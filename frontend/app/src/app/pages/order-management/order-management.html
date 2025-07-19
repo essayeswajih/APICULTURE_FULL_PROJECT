@@ -13,10 +13,10 @@
             <p class="card-text">Items:</p>
             <ul class="list-group mb-3" style="list-style-type: none; padding-left: 0;">
               @for (item of order.items; track item.product_id) {
-                <li class="">{{ item.product_id }} ({{ item.quantity }}) - ${{ item.price | number:'1.2-2' }}</li>
+                <li class="">{{ item.product_id }} ({{ item.quantity }}) - {{ item.price | number:'1.2-2' }}DT</li>
               }
             </ul>
-            <p class="card-text">Total: ${{ order.total_amount | number:'1.2-2' }}</p>
+            <p class="card-text">Total: {{ order.total_amount | number:'1.2-2' }}DT</p>
             <p class="card-text">Status: {{ order.status | titlecase }}</p>
             <p class="card-text">Created: {{ order.created_at | date:'short' }}</p>
             <div class="mb-3">

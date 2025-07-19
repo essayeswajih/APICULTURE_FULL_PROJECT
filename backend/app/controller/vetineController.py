@@ -193,6 +193,6 @@ def get_order_by_code(
 ):
     db_order = db.query(Order).filter(Order.code == order_code).first()
     if not db_order:
-        raise HTTPException(status_code=404, detail="Order not found or not authorized")
+        raise HTTPException(status_code=404, detail="Order not found")
     return db_order
 
