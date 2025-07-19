@@ -1,0 +1,83 @@
+body {
+  background-color: #fff8e1; /* Light amber */
+  font-family: 'Roboto', sans-serif;
+}
+
+.hero {
+  background-color: #fff7d87e; /* Light amber for hero */
+}
+
+h2 {
+  color: #d97706; /* Amber for headings */
+}
+
+.card-title {
+  color: #15803d; /* Green for card titles */
+}
+
+.card-text {
+  color: #333; /* Darker text */
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.text-success {
+  color: #15803d !important;
+}
+
+.text-success:hover {
+  color: #14532d !important;
+}
+
+.btn-outline-warning {
+  border-color: #d97706;
+  color: #d97706;
+}
+
+.btn-outline-warning:hover {
+  background-color: #d97706;
+  color: #fff8e1;
+}
+
+.btn-warning {
+  background-color: #d97706;
+  border-color: #d97706;
+}
+
+.btn-warning:hover {
+  background-color: #14532d;
+  border-color: #14532d;
+  color: #fff8e1;
+}
+
+#beeBox, #beeBox1 {
+  position: absolute;
+  width: 95vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 0;
+  top: 100px;
+}
+
+#beeBox {
+  left: 0;
+}
+
+#beeBox1 {
+  right: 0;
+}
+
+#bee, #bee1 {
+  width: 125px;
+  box-sizing: border-box;
+  will-change: transform;
+  position: absolute;
+}
+
+#bee1 {
+  right: 0;
+  top: 30vh;
+}

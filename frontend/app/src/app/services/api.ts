@@ -179,4 +179,9 @@ export class Api {
       .get(`${this.apiUrl}/auth/users/me`, { headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError));
   }
+  getOrderByCode(code:string): Observable<any> {
+    return this.http
+      .get<Order>(`${this.apiUrl}/orders/orderCode/${code}`, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
 }

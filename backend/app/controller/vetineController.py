@@ -185,3 +185,14 @@ def remove_item_from_cart(
     
     remove_from_cart(db, user_id=current_user.id, cart_item_id=cart_item_id)
     return {"message": "Item removed from cart successfully."}
+
+@router.get("/orders/orderCode/{order_code}", response_model=OrderBase)
+def get_order_by_code(
+    order_code: str,
+    db: Session = Depends(get_db),
+):
+    db_order = db.query(Order).filter(Order.order_code == order_code).first()
+    if not db_order:
+        raise HTTPException(status_code=404, detail="Order not found or not authorized")
+    return db_order
+
