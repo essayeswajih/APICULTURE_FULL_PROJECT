@@ -1,27 +1,30 @@
-name: Deploy to Server
+name: CI/CD with Docker Compose
 
 on:
   push:
     branches:
-      - main
+      - main  # Runs when changes are pushed to 'main'
+  pull_request:
+    branches:
+      - main  # Runs when a PR is opened against 'main'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-      # Checkout code
-      - name: Checkout repository
+      # Checkout the latest code
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      # SSH deployment step
-      - name: Deploy using SSH
+      # Set up SSH key for deploying to the server
+      - name: Set up SSH key
         uses: appleboy/ssh-action@v0.1.6
         with:
-          host: ${{ secrets.SSH_HOST }}            # your server IP
-          username: ${{ secrets.SSH_USERNAME }}    # your SSH username
-          key: ${{ secrets.SSH_PRIVATE_KEY }}      # the SSH private key (stored in GitHub secrets)
-          port: 22                                # optional, change if needed
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: 49152
           script: |
             cd ~/workspace/APICULTURE_FULL_PROJECT
             git pull
