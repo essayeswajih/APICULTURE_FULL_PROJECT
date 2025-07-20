@@ -12,15 +12,18 @@ def get_products(
     db: Session,
     skip: int = 0,
     limit: int = 10,
-    category_id: Optional[int] = None,
+    category_name: Optional[str] = None,
     max_price: Optional[float] = None,
     sortBy: Optional[str] = 'popularite'
 ):
-    query = db.query(Product)
+    query = db.query(Product, Category.name.label("category_name"))
 
-    # Filter by category if category_id is provided
-    if category_id:
-        query = query.filter(Product.category_id == category_id)
+    # Join with Category table to get category name
+    query = query.join(Category, Product.category_id == Category.id)
+
+    # Filter by category if category_name is provided
+    if category_name:
+        query = query.filter(Category.name.lower() == category_name.lower())
 
     # Filter by price if max_price is provided
     if max_price:
@@ -39,6 +42,7 @@ def get_products(
     # Apply pagination
     query = query.offset(skip).limit(limit)
 
+    # Format the result into a list of dictionaries if necessary
     return query.all()
 
 def get_product_by_id(db: Session, product_id: int) -> Optional[Product]:
@@ -68,7 +72,7 @@ def update_product(db: Session, product_id: int, product: ProductBase) -> Option
         db_product.price = product.price
         db_product.stock_quantity = product.stock_quantity
         db_product.category_id = product.category_id,
-        db_product.discounted_price = product.discounted_price
+        db_product.discounted_price = product.discounted_price if product.discounted_price is not None else product.price
         db_product.image_url = product.image_url
         db_product.promo = product.promo
         db_product.buzzent = product.buzzent

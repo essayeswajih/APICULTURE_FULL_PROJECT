@@ -26,7 +26,7 @@ def check_admin(current_user: User = Depends(get_current_user)):
 def get_all_products(
     skip: int = 0,
     limit: int = 10,
-    category_id: Optional[int] = None,
+    category_name: Optional[str] = None,
     max_price: Optional[float] = None,
     sortBy: Optional[str] = 'popularite',  # Default sortBy value
     db: Session = Depends(get_db)
@@ -35,7 +35,7 @@ def get_all_products(
         db,
         skip=skip,
         limit=limit,
-        category_id=category_id,
+        category_name=category_name,
         max_price=max_price,
         sortBy=sortBy
     )
