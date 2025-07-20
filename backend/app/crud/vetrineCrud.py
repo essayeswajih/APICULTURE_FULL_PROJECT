@@ -23,6 +23,7 @@ def get_products(
         category = db.query(Category).filter(func.lower(Category.name) == category_name.lower()).first()
         if not category:
             raise HTTPException(status_code=404, detail="Category not found")
+        print(category.id)
         query = query.filter(Product.category_id == category.id)
 
     # Filter by price if max_price is provided
