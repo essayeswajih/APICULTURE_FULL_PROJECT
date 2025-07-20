@@ -1,4 +1,4 @@
-from sqlalchemy import asc, desc
+from sqlalchemy import asc, desc, func
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from models.vetrineModels import OrderStatus, Product, Order, OrderItem, CartItem, Category
@@ -18,9 +18,9 @@ def get_products(
 ):
     query = db.query(Product)
 
-    # Filter by category if category_id is provided
-    if category_name and category_name != "tous":
-        category = db.query(Category).filter(Category.name == category_name).first()
+    # Filter by category if category_name is provided (except "tous")
+    if category_name and category_name.lower() != "tous":
+        category = db.query(Category).filter(func.lower(Category.name) == category_name.lower()).first()
         if not category:
             raise HTTPException(status_code=404, detail="Category not found")
         query = query.filter(Product.category_id == category.id)
@@ -42,6 +42,7 @@ def get_products(
     # Apply pagination
     query = query.offset(skip).limit(limit)
 
+    # Fetch the products and convert them to dictionaries (to return a formatted response)
     return query.all()
 
 def get_product_by_id(db: Session, product_id: int) -> Optional[Product]:
