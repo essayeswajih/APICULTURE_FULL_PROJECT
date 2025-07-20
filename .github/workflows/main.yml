@@ -32,5 +32,3 @@ jobs:
             docker-compose build
             docker-compose up -d
 
-  env:
-    ACTIONS_STEP_DEBUG: true
