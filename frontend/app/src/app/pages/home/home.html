@@ -1,10 +1,10 @@
 
 <main class="bg-light">
   <div id="beeBox">
-    <img id="bee" src="/assets/images/bee.png" alt="" srcset="">
+    <img id="bee" src="/assets/images/bee.png" alt="" srcset="" loading="lazy">
   </div>
     <div id="beeBox1">
-    <img id="bee1" src="/assets/images/bee-ezgif.com-rotate.png" alt="" srcset="">
+    <img id="bee1" src="/assets/images/bee-ezgif.com-rotate.png" alt="" srcset="" loading="lazy">
   </div>
   <!-- Hero Section -->
   <section class="hero py-5">
@@ -28,7 +28,7 @@
             </div>
           </div>
           <div class="carousel-item">
-            <img src="/assets/images/Outils_de_Miellerie.jpg" class="d-block w-100" alt="Outils de miellerie">
+            <img src="/assets/images/Outils_de_Miellerie.jpg" class="d-block w-100" alt="Outils de miellerie" loading="lazy">
             <div class="carousel-caption d-none d-md-block">
               <h2 class="text-warning fw-bold">Outils de Miellerie</h2>
               <p class="text-success">Tout pour une récolte réussie.</p>
@@ -67,6 +67,7 @@
                       class="card-img-top"
                       [alt]="product.name"
                       (click)="goToProduct(product.id)"
+                      loading="lazy"
                     >
                     <div class="card-body">
                       <h5 class="card-title text-success">{{ product.name }}</h5>
@@ -143,7 +144,7 @@
       <div class="row">
         <div class="col-md-4 mb-4">
           <div class="card h-100">
-            <img src="/assets/images/src756538dac3af8b889dc1740bb79c23c4_para1de415a1c80557d3d831911055dfe3d_dat1461867883.jpeg" class="card-img-top" alt="Conseils Débutants">
+            <img src="/assets/images/src756538dac3af8b889dc1740bb79c23c4_para1de415a1c80557d3d831911055dfe3d_dat1461867883.jpeg" class="card-img-top" alt="Conseils Débutants" loading="lazy">
             <div class="card-body">
               <h5 class="card-title text-success">Débuter en Apiculture</h5>
               <p class="card-text">Conseils pratiques pour lancer votre première ruche.</p>
@@ -153,7 +154,7 @@
         </div>
         <div class="col-md-4 mb-4">
           <div class="card h-100">
-            <img src="/assets/images/Apiculture.gif" class="card-img-top" alt="Entretien Ruches">
+            <img src="/assets/images/Apiculture.gif" class="card-img-top" alt="Entretien Ruches" loading="lazy">
             <div class="card-body">
               <h5 class="card-title text-success">Entretien des Ruches</h5>
               <p class="card-text">Comment maintenir vos ruches en bonne santé.</p>
@@ -163,7 +164,7 @@
         </div>
         <div class="col-md-4 mb-4">
           <div class="card h-100">
-            <img src="/assets/images/22.jpg" class="card-img-top" alt="Bienfaits Miel">
+            <img src="/assets/images/22.jpg" class="card-img-top" alt="Bienfaits Miel" loading="lazy">
             <div class="card-body">
               <h5 class="card-title text-success">Bienfaits du Miel</h5>
               <p class="card-text">Découvrez les vertus des produits de la ruche.</p>

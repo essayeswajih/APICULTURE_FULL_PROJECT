@@ -52,7 +52,7 @@
   <div class="row">
     <div class="col-md-4" *ngFor="let product of products; trackBy: trackById">
       <div class="card mb-3">
-        <img src="{{ product.image_url || 'https://via.placeholder.com/200?text=Product' }}" class="card-img-top" alt="Product">
+        <img src="{{ product.image_url || 'https://via.placeholder.com/200?text=Product' }}" class="card-img-top" alt="Product" loading="lazy">
         <div class="card-body">
           <h5 class="card-title">{{ product.name }}</h5>
           <p class="card-text">{{ product.description || 'No description' }}</p>

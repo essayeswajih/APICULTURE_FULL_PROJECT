@@ -35,7 +35,7 @@
                     @for (item of cartItems; track item.id) {
                       <tr>
                         <td>
-                          <img [src]="item.image" class="panier-img rounded" style="width: auto; height: 80px; object-fit: cover;" [alt]="'Produit ' + item.name + ' d\'Apiculture Galai'">
+                          <img [src]="item.image" class="panier-img rounded" style="width: auto; height: 80px; object-fit: cover;" [alt]="'Produit ' + item.name + ' d\'Apiculture Galai'" loading="lazy">
                         </td>
                         <td class="align-middle">{{ item.name }}</td>
                         <td class="align-middle">
