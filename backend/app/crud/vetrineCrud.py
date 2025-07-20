@@ -12,15 +12,18 @@ def get_products(
     db: Session,
     skip: int = 0,
     limit: int = 10,
-    category_id: Optional[int] = None,
+    category_name: Optional[str] = None,
     max_price: Optional[float] = None,
     sortBy: Optional[str] = 'popularite'
 ):
     query = db.query(Product)
 
     # Filter by category if category_id is provided
-    if category_id:
-        query = query.filter(Product.category_id == category_id)
+    if category_name and category_name != "tous":
+        category = db.query(Category).filter(Category.name == category_name).first()
+        if not category:
+            raise HTTPException(status_code=404, detail="Category not found")
+        query = query.filter(Product.category_id == category.id)
 
     # Filter by price if max_price is provided
     if max_price:
