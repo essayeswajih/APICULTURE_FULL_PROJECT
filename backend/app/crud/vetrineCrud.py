@@ -22,7 +22,7 @@ def get_products(
     query = query.join(Category, Product.category_id == Category.id)
 
     # Filter by category if category_name is provided
-    if category_name:
+    if category_name and category_name.lower() != "tous".lower():
         query = query.filter(Category.name.lower() == category_name.lower())
 
     # Filter by price if max_price is provided
