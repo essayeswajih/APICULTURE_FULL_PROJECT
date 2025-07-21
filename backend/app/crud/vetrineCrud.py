@@ -55,7 +55,7 @@ def create_product(db: Session, product: ProductBase) -> Product:
         description=product.description,
         price=product.price,
         stock_quantity=product.stock_quantity,
-        category_id=product.category_id,
+        category_id=product.category_id if product.category_id else 1,  # Handle optional category_id
         discounted_price=product.discounted_price,
         image_url=product.image_url,
         promo=product.promo,
