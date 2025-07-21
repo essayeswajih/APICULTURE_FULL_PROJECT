@@ -78,7 +78,6 @@ class CartItemBase(BaseModel):
         from_attributes = True
 
 # Order Related Schemas
-
 class OrderCreate(BaseModel):
     items: List[OrderItemBase]
     username: str
