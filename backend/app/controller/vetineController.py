@@ -195,4 +195,3 @@ def get_order_by_code(
     if not db_order:
         raise HTTPException(status_code=404, detail="Order not found")
     return db_order
-
