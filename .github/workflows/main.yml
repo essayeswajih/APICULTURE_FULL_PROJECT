@@ -1,34 +1,29 @@
-name: CI/CD with Docker Compose
+name: CI CD wWith docker Compose
 
 on:
   push:
     branches:
       - main  # Runs when changes are pushed to 'main'
-  pull_request:
-    branches:
-      - main  # Runs when a PR is opened against 'main'
 
 jobs:
-  deploy:
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the latest code
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Set up SSH key for deploying to the server
-      - name: Set up SSH key
-        uses: appleboy/ssh-action@v0.1.6
+      # Execute remote SSH commands using password-based authentication
+      - name: Executing remote SSH commands using password
+        uses: appleboy/ssh-action@v0.1.7
         with:
-          host: ${{ secrets.DEPLOY_HOST }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          port: 49152
+          host: ${{ secrets.SSH_HOST }}
+          username: root
+          password: ${{ secrets.SSH_PRIVATE_KEY }}  
+          port: 49152 
           script: |
             cd ~/workspace/APICULTURE_FULL_PROJECT
             git pull
             docker-compose down
             docker-compose build
-            docker-compose up -d
+            docker-compose up -d  # Deploy in detached mode
+
 
