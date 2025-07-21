@@ -15,9 +15,9 @@ jobs:
       - name: Executing remote SSH commands using password
         uses: appleboy/ssh-action@v0.1.7
         with:
-          host: ${{ secrets.SSH_HOST }}
+          host: ${{ secrets.DEPLOY_HOST }}
           username: root
-          password: ${{ secrets.SSH_PRIVATE_KEY }}  
+          password: ${{ secrets.DEPLOY_SSH_KEY }}  
           port: 49152 
           script: |
             cd ~/workspace/APICULTURE_FULL_PROJECT
