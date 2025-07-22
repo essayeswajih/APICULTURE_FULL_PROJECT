@@ -60,7 +60,7 @@
             <div class="row justify-content-center">
               @for (product of chunk; track product.id) {
                 @if(product.promo){
-                  <div style="position:absolute"><img src="/assets/images/promo.png" style="height: 60px;" alt="promo" srcset=""></div>
+                  <div style="position:absolute;z-index:100"><img src="/assets/images/promo.png" style="height: 60px;" alt="promo" srcset=""></div>
                 }
                 <div class="col-12 col-md-3 mb-3">
                   <div class="card h-100">
