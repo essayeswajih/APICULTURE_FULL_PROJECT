@@ -1,51 +1,83 @@
 export default `<!doctype html>
+<html lang="fr">
+
 <html lang="en">
 <head>
   <meta charset="utf-8">
+  <title>Apiculture Galai – Matériel Apicole de Qualité</title>
   <title>Apiculture</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Google Fonts (optional) -->
   <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"> -->
+
   <meta name="description" content="Découvrez du matériel apicole de haute qualité pour apiculteurs professionnels et amateurs. Achetez vos fournitures apicoles en ligne avec livraison rapide."/>
-  <meta name="keywords" content="apiculture, matériel apicole, apiculteur, ruche, miel, fourniture apicole, apiculture professionnelle"/>
+  <meta name="keywords" content="apiculture, matériel apicole, apiculteur, ruche, miel, fourniture apicole, apiculture professionnelle, galai, galai miel, https://apiculturegalai.tn, Apiculture, Apiculture Galai, Apiculture Tunisie,قلعي,عسل,نحل,تربية النحل"/>
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:title" content="Apiculture Galai – Matériel Apicole de Qualité"/>
+  <meta property="og:description" content="Apiculture Galai propose du matériel apicole de qualité pour apiculteurs débutants et professionnels. Découvrez nos produits."/>
+  <meta property="og:image" content="/assets/images/logo1.png"/>
+  <meta name="keywords" content="apiculture, matériel apicole, apiculteur, ruche, miel, fourniture apicole, apiculture professionnelle,galai,galai miel,https://apiculturegalai.tn, Apiculture,Apiculture galai,Apiculturegalai,Apiculture tunisie"/>
   <meta property="og:title" content="Apiculture: Matériel Apicole de Qualité pour Apiculteurs"/>
   <meta property="og:description" content="Découvrez du matériel apicole de haute qualité pour apiculteurs professionnels et amateurs. Achetez vos fournitures apicoles en ligne."/>
-  <meta property="og:image" content="https://yourdomain.com/path-to-image.jpg"/>
-  <meta property="og:url" content="https://yourdomain.com/"/>
+  <meta property="og:image" content="/assets/images/logo1.png"/>
+  <meta property="og:url" content="https://apiculturegalai.tn/"/>
   <meta property="og:type" content="website"/>
+  
+  <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Apiculture Galai – Matériel Apicole de Qualité"/>
   <meta name="twitter:title" content="Apiculture: Matériel Apicole de Qualité pour Apiculteurs"/>
   <meta name="twitter:description" content="Découvrez du matériel apicole de haute qualité pour apiculteurs professionnels et amateurs. Achetez vos fournitures apicoles en ligne."/>
-  <meta name="twitter:image" content="https://yourdomain.com/path-to-image.jpg"/>
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <meta name="twitter:image" content="/assets/images/logo1.png"/>
+  
+  <!-- Favicon and other icons -->
+  <link rel="icon" href="/assets/images/logo1.png" type="image/x-icon">
+  <link rel="apple-touch-icon" href="/assets/images/logo1.png">
+  <link rel="icon" sizes="192x192" href="/assets/images/logo1.png">
+  
+  <!-- Canonical Link -->
+  <link rel="canonical" href="https://apiculturegalai.tn">
+  <meta name="twitter:image" content="/assets/images/logo1.png"/>
+  <link rel="icon" type="image/x-icon" href="/assets/images/logo1.png">
   <script type="application/ld+json">
   {
     "@context": "http://schema.org",
     "@type": "Store",
     "name": "Apiculture Galai",
-    "url": "https://Apiculture-Galai.com/",
-    "logo": "https://Apiculture-Galai.com/logo1.png",
+    "url": "https://apiculturegalai.tn/",
+    "logo": "/assets/images/logo1.png",
     "description": "Magasin de matériel apicole de qualité pour apiculteurs professionnels et amateurs.",
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "123 Rue Apiculture",
-      "addressLocality": "Paris",
-      "addressRegion": "Île-de-France",
-      "postalCode": "75000",
-      "addressCountry": "FR"
+      "streetAddress": "5021 Bemnbla, Monastir",
+      "addressLocality": "Tunis",
+      "addressRegion": "Monastir",
+      "postalCode": "5021",
+      "addressCountry": "TN",
+      "telephone": "+216 55 716 454",
+      "email": "info@apiculturegalai.tn",
+      "openingHours": "Mo-Fr 08:00-18:00, Sa 09:00-14:00",
     },
     "contactPoint": {
-      "@type": "ContactPoint",
-      "telephone": "+216 27 553 981",
-      "contactType": "customer service"
+        "@type": "ContactPoint",
+        "contactType": "customer support",
+        "telephone": "+216 55 716 454",
+        "email": "info@apiculturegalai.tn",
     }
   }
   </script>
+
+  <!-- Preload Key Assets (optional) -->
+  <!-- <link rel="preload" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" as="style"> -->
+
 <link rel="stylesheet" href="styles-BVJQD57C.css"></head>
 
 <body><script type="text/javascript" id="ng-event-dispatch-contract">(()=>{function p(t,n,r,o,e,i,f,m){return{eventType:t,event:n,targetElement:r,eic:o,timeStamp:e,eia:i,eirp:f,eiack:m}}function u(t){let n=[],r=e=>{n.push(e)};return{c:t,q:n,et:[],etc:[],d:r,h:e=>{r(p(e.type,e,e.target,t,Date.now()))}}}function s(t,n,r){for(let o=0;o<n.length;o++){let e=n[o];(r?t.etc:t.et).push(e),t.c.addEventListener(e,t.h,r)}}function c(t,n,r,o,e=window){let i=u(t);e._ejsas||(e._ejsas={}),e._ejsas[n]=i,s(i,r),s(i,o,!0)}window.__jsaction_bootstrap=c;})();
 </script>
   <app-root></app-root>
-<link rel="modulepreload" href="chunk-TVQCBLRU.js"><link rel="modulepreload" href="chunk-GGNV32RQ.js"><link rel="modulepreload" href="chunk-2N6KKN5H.js"><link rel="modulepreload" href="chunk-VUJH7GKN.js"><link rel="modulepreload" href="chunk-IMPBB4AK.js"><script src="scripts-WL2QHKC5.js" defer=""></script><script src="main-QKL3J6KZ.js" type="module"></script></body>
-</html>
-`;
+<link rel="modulepreload" href="chunk-LQHULID4.js"><link rel="modulepreload" href="chunk-GGNV32RQ.js"><link rel="modulepreload" href="chunk-5STRGCPP.js"><link rel="modulepreload" href="chunk-VUJH7GKN.js"><link rel="modulepreload" href="chunk-IMPBB4AK.js"><script src="scripts-WL2QHKC5.js" defer=""></script><script src="main-FY72BSJN.js" type="module"></script></body>
+
+</html>`;
