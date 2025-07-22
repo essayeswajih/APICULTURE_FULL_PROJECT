@@ -73,8 +73,8 @@
                       <h5 class="card-title text-success">{{ product.name }}</h5>
                       @if(product.discounted_price && product.discounted_price < product.price) {
                         <span>         
-                          <span class="card-text text-decoration-line-through" style="display: inline-block !important;">{{ product.price }} DT</span>
-                          <span class="card-text text-danger">{{ product.discounted_price }} DT</span>
+                          <p class="card-text text-decoration-line-through" style="display: inline-block !important;">{{ product.price }} DT</p>
+                          <p class="card-text text-danger" style="display: inline-block !important;">{{ product.discounted_price }} DT</p>
                         </span>
 
                       } @else {
