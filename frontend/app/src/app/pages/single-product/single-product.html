@@ -26,6 +26,7 @@
               [ngClass]="{'active': selectedImage === product.image_url}"
               loading="lazy"/>
           </div>
+          @if(product.image2_url) {
             <div class="col-3" >
             <img 
               [src]="product.image2_url" 
@@ -35,6 +36,8 @@
               [ngClass]="{'active': selectedImage === product.image_url}"
               loading="lazy"/>
           </div>
+          }
+          @if(product.image3_url) {
           <div class="col-3" >
             <img 
               [src]="product.image3_url" 
@@ -44,6 +47,8 @@
               [ngClass]="{'active': selectedImage === product.image_url}"
               loading="lazy"/>
           </div>
+          }
+          @if(product.image4_url) {
           <div class="col-3" >
             <img 
               [src]="product.image4_url" 
@@ -53,6 +58,7 @@
               [ngClass]="{'active': selectedImage === product.image_url}"
               loading="lazy"/>
           </div>
+        }
         </div>
       </div>
 
