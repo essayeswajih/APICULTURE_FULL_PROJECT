@@ -11,7 +11,7 @@ from random import randint
 def get_products(
     db: Session,
     skip: int = 0,
-    limit: int = 10,
+    limit: int = 100,
     category_name: Optional[str] = None,
     max_price: Optional[float] = None,
     sortBy: Optional[str] = 'popularite'

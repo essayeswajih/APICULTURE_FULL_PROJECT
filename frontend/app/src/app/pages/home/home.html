@@ -72,7 +72,7 @@
                       (click)="goToProduct(product.id)"
                       loading="lazy"
                     >
-                    <div style="position: absolute !important;">{{product.buzzent ?? "no buzzent"}}</div>
+                    <div style="position: absolute !important;">{{product.buzzent}}</div>
                     <div class="card-body">
                       <h5 class="card-title text-success">{{ product.name }}</h5>
                       @if(product.discounted_price && product.discounted_price < product.price) {
