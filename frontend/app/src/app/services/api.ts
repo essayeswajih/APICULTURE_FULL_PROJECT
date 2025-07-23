@@ -20,6 +20,9 @@ export interface Product {
   category_id: number;
   discounted_price?: number;  // Optional discounted price
   image_url?: string;         // Optional image URL for the product
+  image2_url?: string; // Optional second image URL
+  image3_url?: string; // Optional third image URL
+  image4_url?: string; // Optional fourth image URL
   promo?: boolean;            // Indicates if the product is on promotion
   buzzent?: string;           // Optional field for buzz or marketing text
 }
