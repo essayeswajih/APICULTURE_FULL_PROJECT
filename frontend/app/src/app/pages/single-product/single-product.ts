@@ -19,6 +19,7 @@ export class SingleProduct implements OnInit {
   quantity: number = 1;
   addToCartForm: FormGroup;
   error: string | null = null;
+  selectedImage: string | null = null;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -47,6 +48,7 @@ export class SingleProduct implements OnInit {
             this.error = null;
             // Set SEO meta tags
             this.title.setTitle(`${product.name} - Apiculture Galai`);
+            this.selectedImage= product.image_url || "";
             this.meta.updateTag({
               name: 'description',
               content: `${product.description || 'Produit apicole de qualité'} - Découvrez nos produits apicoles de qualité chez Apiculture Galai.`
@@ -142,5 +144,8 @@ export class SingleProduct implements OnInit {
         });
       }
     }
+  }
+  selectImage(image?: string): void {
+    this.selectedImage = image ?? ""; // Update main image
   }
 }
