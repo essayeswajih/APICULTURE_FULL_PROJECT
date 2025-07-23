@@ -30,6 +30,7 @@ def get_products(
     if max_price:
         query = query.filter(Product.price <= max_price)
 
+
     # Apply sorting
     if sortBy == 'prix-asc':
         query = query.order_by(asc(Product.price))  # Sort by price ascending
