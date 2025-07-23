@@ -71,7 +71,8 @@ main {
 
 /* Input group */
 .input-group {
-  max-width: 200px; /* Constrain width for better alignment */
+  width: auto;
+  text-align: center;
 }
 
 /* Text colors */
@@ -233,12 +234,12 @@ main {
 
   .btn-warning,
   .btn-outline-success {
-    width: 100%;
+    width: 20%;
     max-width: 300px;
   }
 
   .input-group {
-    max-width: 100%; /* Full width on mobile */
+    max-width: 50%; /* Full width on mobile */
   }
 }
 
