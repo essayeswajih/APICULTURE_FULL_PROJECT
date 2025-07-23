@@ -54,6 +54,9 @@
       @for (product of products; track trackByProductId($index, product)) {
         <div class="col">
           <div class="card h-100 product-card">
+               @if(product.promo){
+                  <div style="position:absolute;z-index:100"><img src="/assets/images/promo.png" style="height: 60px;" alt="promo" srcset=""></div>
+                }
             <img 
               [src]="product.image_url || '/assets/images/placeholder.jpg'" 
               class="card-img-top" 
@@ -62,6 +65,7 @@
               style="width: 100%; height: 100%; padding: 20px; cursor: pointer;"
               loading="lazy"
             >
+             <div style="position:absolute!important;background-color:rgb(226, 75, 28);color:white;font-weight:bold;top:3%;right:0;padding-left:5px;padding-right:5px">{{product.buzzent}}</div>
             <div class="card-body">
               <h5 
                 class="card-title text-success" 
@@ -70,7 +74,7 @@
               >
                 {{ product.name }}
               </h5>
-                                    @if(product.discounted_price && product.discounted_price < product.price) {
+                     @if(product.discounted_price && product.discounted_price < product.price) {
                         <span class="d-block" style="margin-bottom: 5px;">     
                           <p class="card-text text-danger" style="display: inline-block !important; margin-right:5px;">{{ product.discounted_price }} DT</p>    
                           <p class="card-text text-decoration-line-through" style="display: inline-block !important;font-size:0.8em !important;height: 10px !important;">{{ product.price }} DT</p>
