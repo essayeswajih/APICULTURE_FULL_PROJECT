@@ -232,9 +232,12 @@ main {
     height: 60px;
   }
 
-  .btn-warning,
-  .btn-outline-success {
+  .btn-warning{
     width: 20%;
+    max-width: 300px;
+  }
+  .btn-outline-success {
+    width: 100%;
     max-width: 300px;
   }
 
