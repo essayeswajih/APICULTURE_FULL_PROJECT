@@ -9,57 +9,109 @@
   </section>
 
   <!-- Product Details Section -->
-<section class="product-section container-md py-6">
-  <div class="col-md-6 mx-auto offset-3">
-    <!-- Main Product Image -->
-    <img [src]="selectedImage || product.image_url" [alt]="product.name" class="product-img img-fluid rounded card" loading="lazy"/>
-    <!-- Thumbnail Gallery -->
-    <div class="other-images row mt-3" *ngIf="product">
-      <div class="col-3">
-        <img 
-          [src]="product.image_url" 
-          [alt]="product.name + ' image 1'" 
-          class="thumbnail-img img-fluid rounded" 
-          (click)="selectImage(product.image_url)"
-          [ngClass]="{'active': selectedImage === product.image_url}"
-          loading="lazy"/>
+  <section class="product-section container-md py-6">
+    <div class="row">
+      <!-- Product Image and Gallery -->
+      <div class="col-md-6 mx-auto offset-3">
+        <!-- Main Product Image -->
+        <img [src]="selectedImage || product.image_url" [alt]="product.name" class="product-img img-fluid rounded card" loading="lazy"/>
+        <!-- Thumbnail Gallery -->
+        <div class="other-images row mt-3"  style="width: 100% !important;" *ngIf="product">
+          <div class="col-3" >
+            <img 
+              [src]="product.image_url" 
+              [alt]="product.name + ' image ' + (1)" 
+              class="thumbnail-img img-fluid rounded" 
+              (click)="selectImage(product.image_url)"
+              [ngClass]="{'active': selectedImage === product.image_url}"
+              loading="lazy"/>
+          </div>
+          @if(product.image2_url) {
+            <div class="col-3" >
+            <img 
+              [src]="product.image2_url" 
+              [alt]="product.name + ' image ' + (1)" 
+              class="thumbnail-img img-fluid rounded" 
+              (click)="selectImage(product.image_url)"
+              [ngClass]="{'active': selectedImage === product.image2_url}"
+              loading="lazy"/>
+          </div>
+          }
+          @if(product.image3_url) {
+          <div class="col-3" >
+            <img 
+              [src]="product.image3_url" 
+              [alt]="product.name + ' image ' + (1)" 
+              class="thumbnail-img img-fluid rounded" 
+              (click)="selectImage(product.image_url)"
+              [ngClass]="{'active': selectedImage === product.image3_url}"
+              loading="lazy"/>
+          </div>
+          }
+          @if(product.image4_url) {
+          <div class="col-3" >
+            <img 
+              [src]="product.image4_url" 
+              [alt]="product.name + ' image ' + (1)" 
+              class="thumbnail-img img-fluid rounded" 
+              (click)="selectImage(product.image_url)"
+              [ngClass]="{'active': selectedImage === product.image4_url}"
+              loading="lazy"/>
+          </div>
+        }
+        </div>
       </div>
-      @if(product.image2_url) {
-        <div class="col-3">
-          <img 
-            [src]="product.image2_url" 
-            [alt]="product.name + ' image 2'" 
-            class="thumbnail-img img-fluid rounded" 
-            (click)="selectImage(product.image2_url)"
-            [ngClass]="{'active': selectedImage === product.image2_url}"
-            loading="lazy"/>
-        </div>
-      }
-      @if(product.image3_url) {
-        <div class="col-3">
-          <img 
-            [src]="product.image3_url" 
-            [alt]="product.name + ' image 3'" 
-            class="thumbnail-img img-fluid rounded" 
-            (click)="selectImage(product.image3_url)"
-            [ngClass]="{'active': selectedImage === product.image3_url}"
-            loading="lazy"/>
-        </div>
-      }
-      @if(product.image4_url) {
-        <div class="col-3">
-          <img 
-            [src]="product.image4_url" 
-            [alt]="product.name + ' image 4'" 
-            class="thumbnail-img img-fluid rounded" 
-            (click)="selectImage(product.image4_url)"
-            [ngClass]="{'active': selectedImage === product.image4_url}"
-            loading="lazy"/>
-        </div>
-      }
+
+      <!-- Product Information and Add to Cart -->
+      <div class="col-md-6 product-details">
+        <h2 class="text-amber">{{ product.name }}</h2>
+        <p class="text-dark">{{ product.description }}</p>
+        @if(product.discounted_price && product.discounted_price < product.price) {
+          <p class="text-success font-weight-bold">Prix: {{ product.discounted_price + " DNT" }}</p>
+        }
+        @else {
+          <p class="text-success font-weight-bold">Prix: {{ product.price + " DNT" }}</p>
+        }
+        <p class="text-dark">Stock disponible: {{ product.stock_quantity }}</p>
+        <!-- Quantity Selector and Add to Cart Form -->
+        <form [formGroup]="addToCartForm" (ngSubmit)="addToCart()">
+          <div class="mb-3">
+            <label for="quantity" class="form-label text-dark">Quantité:</label>
+            <div class="input-group">
+              <button
+                type="button"
+                class="btn btn-outline-success"
+                (click)="updateQuantity(quantity - 1)"
+                [disabled]="quantity <= 1">
+                -
+              </button>
+              <input
+                type="number"
+                id="quantity"
+                class="form-control text-center"
+                formControlName="quantity"
+                min="1"
+                [max]="product.stock_quantity"
+                readonly />
+              <button
+                type="button"
+                class="btn btn-outline-success"
+                (click)="updateQuantity(quantity + 1)"
+                [disabled]="quantity >= product.stock_quantity">
+                +
+              </button>
+            </div>
+          </div>
+          <button
+            type="submit"
+            class="btn btn-warning"
+            [disabled]="!addToCartForm.valid || product.stock_quantity === 0">
+            Ajouter au panier
+          </button>
+        </form>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 </main>
 
 <!-- Fallback if Product Not Found or Error -->
