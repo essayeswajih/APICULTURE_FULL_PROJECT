@@ -16,7 +16,7 @@
         <!-- Main Product Image -->
         <img [src]="selectedImage || product.image_url" [alt]="product.name" class="product-img img-fluid rounded card" loading="lazy"/>
         <!-- Thumbnail Gallery -->
-        <div class="other-images row mt-3"  style="width: 100% !important;" *ngIf="product">
+        <div class="other-images row mt-3"  style="width: 100% !important; max-height:80px" *ngIf="product">
           <div class="col-3" >
             <img 
               [src]="product.image_url" 
