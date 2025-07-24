@@ -223,13 +223,24 @@ main {
     margin-bottom: 1.5rem;
   }
 
-  .other-images {
-    justify-content: center;
+.other-images {
+    display: flex;
+    flex-wrap: nowrap; /* Prevent wrapping to new rows */
+    justify-content: center; /* Center the thumbnails */
+    gap: 10px; /* Add spacing between thumbnails */
+  }
+
+  .other-images .col-3 {
+    flex: 0 0 auto; /* Prevent columns from growing/shrinking */
+    width: auto; /* Allow columns to size based on content */
+    max-width: 80px; /* Match thumbnail size */
+    padding: 0 5px; /* Reduce padding to fit more thumbnails */
   }
 
   .thumbnail-img {
     max-width: 60px;
     height: 60px;
+    object-fit: cover;
   }
 
   .btn-warning{
