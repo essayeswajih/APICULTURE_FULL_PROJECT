@@ -159,7 +159,7 @@ main {
 .product-img {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, opacity 0.3s ease;
-  max-height: 400px; /* Constrain main image height */
+  height: auto; /* Constrain main image height */
   object-fit: cover; /* Ensure proper image scaling */
 }
 
@@ -177,7 +177,7 @@ main {
 .thumbnail-img {
   width: 100%;
   max-width: 80px; /* Fixed thumbnail size */
-  height: 80px;
+  height: auto;
   object-fit: cover;
   border: 2px solid transparent;
   border-radius: 6px;
