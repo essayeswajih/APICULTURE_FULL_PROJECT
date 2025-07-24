@@ -147,5 +147,6 @@ export class SingleProduct implements OnInit {
   }
   selectImage(image?: string): void {
     this.selectedImage = image ?? ""; // Update main image
+    this.cdr.detectChanges(); // Ensure UI updates
   }
 }
