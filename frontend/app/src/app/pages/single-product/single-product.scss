@@ -224,9 +224,7 @@ main {
   }
 
 .other-images {
-    display: flex;
     flex-wrap: nowrap; /* Prevent wrapping to new rows */
-    justify-content: center; /* Center the thumbnails */
     gap: 10px; /* Add spacing between thumbnails */
   }
 
