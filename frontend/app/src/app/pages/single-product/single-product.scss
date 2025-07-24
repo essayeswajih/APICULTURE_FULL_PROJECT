@@ -102,6 +102,8 @@ main {
   padding: 0.875rem 2.5rem;
   font-weight: 500;
   transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+  color: #ffffff;
+  font-weight: bold;
 }
 
 .btn-warning:hover {
@@ -234,7 +236,6 @@ main {
 
   .btn-warning{
     width: 100%;
-    max-width: 300px;
   }
   .btn-outline-success {
     width: 20%;
