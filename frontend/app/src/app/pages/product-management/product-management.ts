@@ -22,6 +22,9 @@ export class ProductManagement implements OnInit {
     category_id: 0,
     discounted_price: 0,  // New field for discounted price
     image_url: '',           // New field for image URL
+    image2_url: '',          // New field for secondary image URL
+    image3_url: '',          // New field for tertiary image URL
+    image4_url: '',          // New field for quaternary image URL
     promo: false,            // New field for promotional status
     buzzent: '',             // New field for buzz or marketing text
   };
