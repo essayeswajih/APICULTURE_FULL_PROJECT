@@ -66,9 +66,13 @@
       <div class="col-md-6 product-details">
         <h2 class="text-amber">{{ product.name }}</h2>
         <p class="text-dark">{{ product.description }}</p>
-        <p class="text-success font-weight-bold">Prix: {{ product.discounted_price + " DNT" }}</p>
+        @if(product.discounted_price && product.discounted_price < product.price) {
+          <p class="text-success font-weight-bold">Prix: {{ product.discounted_price + " DNT" }}</p>
+        }
+        @else {
+          <p class="text-success font-weight-bold">Prix: {{ product.price + " DNT" }}</p>
+        }
         <p class="text-dark">Stock disponible: {{ product.stock_quantity }}</p>
-
         <!-- Quantity Selector and Add to Cart Form -->
         <form [formGroup]="addToCartForm" (ngSubmit)="addToCart()">
           <div class="mb-3">
