@@ -17,7 +17,7 @@
         <img [src]="selectedImage || product.image_url" [alt]="product.name" class="product-img img-fluid rounded card" loading="lazy"/>
         <!-- Thumbnail Gallery -->
         <div class="other-images row mt-3" *ngIf="product">
-          <div class="col-3" >
+          <div class="col-3" style="max-width: 400px !important;">
             <img 
               [src]="product.image_url" 
               [alt]="product.name + ' image ' + (1)" 
