@@ -12,7 +12,7 @@
   <section class="product-section container-md py-6">
     <div class="row">
       <!-- Product Image and Gallery -->
-      <div class="col-md-6 text-center">
+      <div class="col-md-6 center">
         <!-- Main Product Image -->
         <img [src]="selectedImage || product.image_url" [alt]="product.name" class="product-img img-fluid rounded card" loading="lazy"/>
         <!-- Thumbnail Gallery -->
@@ -116,7 +116,7 @@
 
 <!-- Fallback if Product Not Found or Error -->
 <div *ngIf="!product" class="container-md py-6 text-center">
-  <h2 class="text-amber">{{ error || 'Produit non trouvé' }}</h2>
+  <h2 class="text-amber">{{'Produit non trouvé' }}</h2>
   <p class="text-dark">{{ error ? 'Une erreur s\'est produite lors du chargement du produit.' : 'Désolé, le produit que vous cherchez n\'existe pas ou n\'est plus disponible.' }}</p>
   <a routerLink="/" class="btn btn-outline-success">Retour à l'accueil</a>
 </div>
