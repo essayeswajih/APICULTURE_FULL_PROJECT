@@ -13,6 +13,9 @@ class ProductBase(BaseModel):
     category_id: int
     discounted_price: Optional[float] = None
     image_url: Optional[str] = None  # Optional image URL for the product
+    image2_url: Optional[str] = None
+    image3_url: Optional[str] = None
+    image4_url: Optional[str] = None
     promo: Optional[bool] = False  # Indicates if the product is on promotion
     buzzent: Optional[str] = None  # Optional field for buzz or marketing text
 
