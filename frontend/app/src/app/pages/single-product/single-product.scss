@@ -159,7 +159,7 @@ main {
 .product-img {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, opacity 0.3s ease;
-  height: auto; /* Constrain main image height */
+  max-height: 400px; /* Constrain main image height */
   object-fit: cover; /* Ensure proper image scaling */
 }
 
@@ -169,17 +169,19 @@ main {
 }
 
 /* Thumbnail gallery */
-.other-images .col-3 {
+.other-images {
   display: flex;
-  justify-content: center; /* Centers the images horizontally in each column */
+  gap: 0.5rem; /* Space between thumbnails */
+  justify-content: center;
+  margin-top: 1rem;
 }
 
 .thumbnail-img {
   width: 100%;
   max-width: 80px; /* Fixed thumbnail size */
-  height: auto;
+  height: 80px;
   object-fit: cover;
-  border: 2px solid transparent;
+  border: 2px solid transparent; /* Default border */
   border-radius: 6px;
   cursor: pointer;
   transition: border-color 0.3s ease, transform 0.2s ease, opacity 0.2s ease;
