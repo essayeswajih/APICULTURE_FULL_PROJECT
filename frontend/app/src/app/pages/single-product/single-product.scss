@@ -169,11 +169,9 @@ main {
 }
 
 /* Thumbnail gallery */
-.other-images {
+.other-images .col-3 {
   display: flex;
-  gap: 0.5rem; /* Space between thumbnails */
-  justify-content: center;
-  margin-top: 1rem;
+  justify-content: center; /* Centers the images horizontally in each column */
 }
 
 .thumbnail-img {
@@ -181,7 +179,7 @@ main {
   max-width: 80px; /* Fixed thumbnail size */
   height: 80px;
   object-fit: cover;
-  border: 2px solid transparent; /* Default border */
+  border: 2px solid transparent;
   border-radius: 6px;
   cursor: pointer;
   transition: border-color 0.3s ease, transform 0.2s ease, opacity 0.2s ease;
