@@ -51,6 +51,8 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
 # Route to create a new product
 @router.post("/products", response_model=ProductBase, dependencies=[Depends(check_admin)])
 def create_new_product(product: ProductBase, db: Session = Depends(get_db)):
+    if(not product.category_id):
+        raise HTTPException(status_code=400, detail="Category ID is required for product creation.")
     return create_product(db, product)
 
 # Route to update an existing product
