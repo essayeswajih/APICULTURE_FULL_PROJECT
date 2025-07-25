@@ -51,3 +51,9 @@ header {
     border: 2px solid #d97706; /* Amber border for basket */
     transition: background-color 0.3s ease, border-color 0.3s
 }
+.itemsum{
+  background-color:red;
+  color:white;
+  border-radius:50%;
+  position:absolute!important;
+}
