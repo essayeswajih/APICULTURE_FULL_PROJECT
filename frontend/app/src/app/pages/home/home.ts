@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { Api, Product } from '../../services/api';
 import { HttpClientModule } from '@angular/common/http';
 import { CartItem } from '../boutique/boutique';
+import { ToastrService } from 'ngx-toastr';
 
 let ScrollTrigger: any;
 if (typeof window !== 'undefined') {
@@ -30,7 +31,8 @@ export class Home implements OnInit, AfterViewInit {
     private apiService: Api,
     private RouterS: Router, // Inject Router for navigation
     @Inject(PLATFORM_ID) private platformId: Object,
-    private cdRef: ChangeDetectorRef // Inject ChangeDetectorRef
+    private cdRef: ChangeDetectorRef, // Inject ChangeDetectorRef
+    private toastService: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -155,6 +157,12 @@ export class Home implements OnInit, AfterViewInit {
             quantity: 1
           };
           cartItems.push(cartItem);
+          this.toastService.success('Product added to cart', 'Success', {
+            timeOut: 2000,
+            positionClass: 'toast-bottom-right',
+            progressBar: true,
+            closeButton: true,
+          });
         }
   
         // Save updated cart to localStorage
