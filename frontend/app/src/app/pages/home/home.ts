@@ -157,14 +157,13 @@ export class Home implements OnInit, AfterViewInit {
             quantity: 1
           };
           cartItems.push(cartItem);
-          this.toastService.success('Product added to cart', 'Success', {
+        }
+            this.toastService.success('Product added to cart', 'Success', {
             timeOut: 2000,
             positionClass: 'toast-bottom-right',
             progressBar: true,
             closeButton: true,
           });
-        }
-  
         // Save updated cart to localStorage
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
         this.cdRef.detectChanges();
