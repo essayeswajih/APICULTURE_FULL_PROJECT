@@ -1,4 +1,4 @@
-import { ɵConsole as _Console, ApplicationRef, InjectionToken, provideEnvironmentInitializer, inject, makeEnvironmentProviders, ɵENABLE_ROOT_COMPONENT_BOOTSTRAP as _ENABLE_ROOT_COMPONENT_BOOTSTRAP, Compiler, runInInjectionContext, ɵresetCompiledComponents as _resetCompiledComponents, REQUEST, REQUEST_CONTEXT, RESPONSE_INIT, LOCALE_ID } from '@angular/core';
+import { ɵConsole as _Console, ApplicationRef, InjectionToken, provideEnvironmentInitializer, inject, makeEnvironmentProviders, ɵENABLE_ROOT_COMPONENT_BOOTSTRAP as _ENABLE_ROOT_COMPONENT_BOOTSTRAP, Compiler, createEnvironmentInjector, EnvironmentInjector, runInInjectionContext, ɵresetCompiledComponents as _resetCompiledComponents, REQUEST, REQUEST_CONTEXT, RESPONSE_INIT, LOCALE_ID } from '@angular/core';
 import { platformServer, INITIAL_CONFIG, ɵSERVER_CONTEXT as _SERVER_CONTEXT, ɵrenderInternal as _renderInternal, provideServerRendering as provideServerRendering$1 } from '@angular/platform-server';
 import { ActivatedRoute, Router, ROUTES, ɵloadChildren as _loadChildren } from '@angular/router';
 import { APP_BASE_HREF, PlatformLocation } from '@angular/common';
@@ -907,9 +907,12 @@ async function* handleRoute(options) {
             if (ɵentryName) {
                 appendPreloadToMetadata(ɵentryName, entryPointToBrowserMapping, metadata);
             }
-            const loadedChildRoutes = await _loadChildren(route, compiler, parentInjector).toPromise();
+            const routeInjector = route.providers
+                ? createEnvironmentInjector(route.providers, parentInjector.get(EnvironmentInjector), `Route: ${route.path}`)
+                : parentInjector;
+            const loadedChildRoutes = await _loadChildren(route, compiler, routeInjector).toPromise();
             if (loadedChildRoutes) {
-                const { routes: childRoutes, injector = parentInjector } = loadedChildRoutes;
+                const { routes: childRoutes, injector = routeInjector } = loadedChildRoutes;
                 yield* traverseRoutesConfig({
                     ...options,
                     routes: childRoutes,
