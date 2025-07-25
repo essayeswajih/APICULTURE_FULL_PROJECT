@@ -1,8 +1,9 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, ChangeDetectorRef, HostListener, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostListener, Inject, PLATFORM_ID, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Api } from '../services/api'; // Import the CategoryService
 import type { Category } from '../services/api'; // Import the Category type (adjust path if needed)
+import { CartItem } from '../pages/boutique/boutique';
 
 @Component({
   selector: 'app-header',
@@ -16,6 +17,8 @@ export class Header implements OnInit {
   isDropdownOpen = false;
   isDesktop = true; // Default to true, will be updated in ngOnInit for browser
   categories: Category[] = []; // Initialize categories as an empty array with explicit type
+  itemssum = signal(0); // Signal to track the number of items in the cart
+  cartItems: CartItem[] = [];
 
   constructor(
     private categoryService: Api, // Inject the service
@@ -26,12 +29,15 @@ export class Header implements OnInit {
 
   ngOnInit() {
     // Call the API to load categories when the component is initialized
+    this.cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]'); // Load cart items from localStorage
+    this.itemssum.set(this.cartItems.length); // Calculate total items in cart
     this.loadCategories();
     // Set isDesktop based on window width only in browser
     if (isPlatformBrowser(this.platformId)) {
       this.isDesktop = window.innerWidth >= 920;
       this.cdRef.detectChanges();
     }
+
   }
 
   @HostListener('window:resize')
