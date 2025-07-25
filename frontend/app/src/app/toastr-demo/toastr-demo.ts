@@ -10,6 +10,9 @@ import { ToasterManager } from '../services/toaster-manager';
 export class ToastrDemo {
 constructor(private toaster: ToasterManager) {}
 
+ngOnInit(){
+  this.showSuccess();
+}
   showSuccess() {
     this.toaster.success('Operation successful!', 'Success');
   }
