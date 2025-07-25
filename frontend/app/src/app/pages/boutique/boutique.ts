@@ -6,6 +6,7 @@ import { gsap } from 'gsap';
 import { isPlatformBrowser } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { Api, Category, Product } from '../../services/api';
+import { ToastrService } from 'ngx-toastr';
 
 export interface CartItem {
   id: number;
@@ -38,7 +39,8 @@ export class Boutique implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private apiService: Api,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private toastService: ToastrService // Assuming you have a ToastService for notifications
   ) {}
 
   ngOnInit(): void {
@@ -202,7 +204,12 @@ export class Boutique implements OnInit, OnDestroy {
           quantity: 1
         });
       }
-
+         this.toastService.success('Product added to cart', 'Success', {
+            timeOut: 2000,
+            positionClass: 'toast-bottom-right',
+            progressBar: true,
+            closeButton: true,
+          });
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
       this.cdRef.markForCheck();
     } catch (error) {

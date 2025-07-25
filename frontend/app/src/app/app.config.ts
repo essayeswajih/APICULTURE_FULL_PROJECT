@@ -16,7 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(), // Required for ngx-toastr animations
     provideToastr({
       timeOut: 2000,
-      positionClass: 'toast-bottom-right',
+      positionClass: 'toast-top-right',
       progressBar: true,
       closeButton: true,
       preventDuplicates: true

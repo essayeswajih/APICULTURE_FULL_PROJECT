@@ -6,6 +6,7 @@ import { Meta, Title } from '@angular/platform-browser';
 import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { gsap } from 'gsap';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-single-product',
@@ -29,7 +30,8 @@ export class SingleProduct implements OnInit {
     private route: ActivatedRoute,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
-    private api: Api // Inject Api service
+    private api: Api, // Inject Api service
+    private toastService: ToastrService // Inject ToastrService for notifications
   ) {
     // Initialize reactive form for adding to cart
     this.addToCartForm = this.fb.group({
@@ -127,6 +129,12 @@ export class SingleProduct implements OnInit {
         } else {
           cartItems.push(cartItem);
         }
+         this.toastService.success('Product added to cart', 'Success', {
+            timeOut: 2000,
+            positionClass: 'toast-bottom-right',
+            progressBar: true,
+            closeButton: true,
+          });
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
       }
 
