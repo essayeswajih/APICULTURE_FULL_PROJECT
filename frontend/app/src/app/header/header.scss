@@ -1,7 +1,5 @@
 header {
-  background-color: transparent !important; /* Light amber for apiculture theme */
-  //filter: blur(0px); /* No blur effect */
-  backdrop-filter: blur(10px); /* No backdrop filter */
+  background-color: #fff8e1; /* Light amber for apiculture theme */
   font-family: 'Roboto', sans-serif;
 }
 
@@ -52,10 +50,4 @@ header {
     border-radius: 50%;
     border: 2px solid #d97706; /* Amber border for basket */
     transition: background-color 0.3s ease, border-color 0.3s
-}
-.me-2{
-  height: 40px;
-  background-image: url('/assets/logo1.png');
-background-size: cover; /* Or 'contain' */
-background-position: center;
 }
