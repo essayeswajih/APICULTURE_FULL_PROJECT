@@ -7,7 +7,7 @@ from datetime import datetime
 from fastapi import HTTPException
 from random import randint
 
-from sendMail import send_email_via_gmail
+from controller.sendMail import send_email_via_gmail
 
 # CRUD operations for Product
 def get_products(
