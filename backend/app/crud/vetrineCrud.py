@@ -188,9 +188,9 @@ def create_order(db: Session, order_create: OrderCreate, total_amount: float) ->
         subject="Confirmation de commande",
         body=(
             f"Merci pour votre commande {order.code}.\n"
-            f"Votre commande sera traitée prochainement.\n"
+            f"Votre commande sera traitée rapidement.\n"
             f"Montant total : {order.total_amount}.\n"
-            f"Statut : {order.status}\n"
+            f"Statut : {str(order.status)}\n"
             f"Vous pouvez suivre votre commande en cliquant sur ce lien : "
             f"https://apiculturegalai.tn/client-order-view?ordercode={order.code}\n\n"
             "Cordialement,\n"
