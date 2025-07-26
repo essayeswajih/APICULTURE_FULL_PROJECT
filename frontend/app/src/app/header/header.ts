@@ -28,12 +28,10 @@ export class Header implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    window.addEventListener('storage', this.onStorageChange.bind(this));
     // Load cart items and categories on component initialization
     this.cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
     this.itemssum.set(this.cartItems.length);
-    alert(`Cart items loaded: ${this.cartItems.length}`);
-    alert(`Cart items loaded: ${this.itemssum()}`); 
-    console.log('Cart items loaded:', this.cartItems.length);
     this.cdRef.detectChanges();
     this.loadCategories();
 
@@ -43,7 +41,7 @@ export class Header implements OnInit, OnDestroy {
       this.cdRef.detectChanges();
       
       // Listen for changes in localStorage in other tabs/windows
-      window.addEventListener('storage', this.onStorageChange.bind(this));
+      
     }
   }
 
