@@ -6,6 +6,9 @@ WORKDIR /code
 # Copy requirements.txt into the container
 COPY ./requirements.txt /code/requirements.txt
 
+# Install system dependencies
+RUN apt-get update && apt-get install -y libpq-dev gcc
+
 # Install dependencies
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
