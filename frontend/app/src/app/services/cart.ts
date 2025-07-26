@@ -1,43 +1,43 @@
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class Cart {
-  private cartItemCountSubject = new BehaviorSubject<number>(0);  // Holds the cart item count
-  cartItemCount$ = this.cartItemCountSubject.asObservable();  // Observable for components to subscribe to
+private cartItemCountSubject = new BehaviorSubject<number>(0);
+  cartItemCount$ = this.cartItemCountSubject.asObservable();
 
-  constructor() {
-    // Initialize cart item count from localStorage when the service is created
-    const savedCartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-    this.updateCartItemCount(savedCartItems.length);  // Initialize count from localStorage
-  }
-
-  // Add an item to the cart (increment count)
-  add(): void {
-    const currentCount = this.cartItemCountSubject.value;
-    this.updateCartItemCount(currentCount + 1);  // Increment the count
-  }
-
-  // Remove an item from the cart (decrement count)
-  remove(): void {
-    const currentCount = this.cartItemCountSubject.value;
-    if (currentCount > 0) {
-      this.updateCartItemCount(currentCount - 1);  // Decrement the count
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    // Only access localStorage in the browser
+    if (isPlatformBrowser(this.platformId)) {
+      const savedCartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+      this.updateCartItemCount(savedCartItems.length);
     }
   }
 
-  // Update the cart item count in both the service and localStorage
-  private updateCartItemCount(count: number): void {
-    // Save the new count to localStorage (this could be used for persistence or multi-tab sync)
-    localStorage.setItem('cartItemCount', JSON.stringify(count));  // Sync with localStorage
-    this.cartItemCountSubject.next(count);  // Update the count in the BehaviorSubject
+  add(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const currentCount = this.cartItemCountSubject.value;
+      this.updateCartItemCount(currentCount + 1);
+    }
   }
 
-  // Method to update cart items manually (to use in other cases like cart update)
-  updateCartItems(cartItems: any[]): void {
-    const count = cartItems.length;
-    this.updateCartItemCount(count);  // Set the count from updated cart items
+  remove(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const currentCount = this.cartItemCountSubject.value;
+      if (currentCount > 0) {
+        this.updateCartItemCount(currentCount - 1);
+      }
+    }
+  }
+
+  private updateCartItemCount(count: number): void {
+    if (isPlatformBrowser(this.platformId)) {
+      // Update localStorage and BehaviorSubject only in the browser
+      localStorage.setItem('cartItemCount', JSON.stringify(count));
+    }
+    this.cartItemCountSubject.next(count);
   }
 }

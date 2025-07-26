@@ -7,7 +7,7 @@ import { ToastrDemo } from "./toastr-demo/toastr-demo";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Footer, ToastrDemo],
+  imports: [RouterOutlet, Header, Footer],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
