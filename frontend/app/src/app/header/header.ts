@@ -31,6 +31,7 @@ export class Header implements OnInit, OnDestroy {
     // Load cart items and categories on component initialization
     this.cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
     this.itemssum.set(this.cartItems.length);
+    alert(`Cart items loaded: ${this.cartItems.length}`);
     console.log('Cart items loaded:', this.cartItems.length);
     this.loadCategories();
 
