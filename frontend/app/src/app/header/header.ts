@@ -28,7 +28,6 @@ export class Header implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    window.addEventListener('storage', this.onStorageChange.bind(this));
     // Load cart items and categories on component initialization
     this.cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
     this.itemssum.set(this.cartItems.length);
