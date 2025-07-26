@@ -13,12 +13,12 @@ import { Cart } from '../services/cart';
   styleUrls: ['./header.scss'],
   standalone: true
 })
-export class Header implements OnInit, OnDestroy {
+export class Header implements OnInit {
   isMobileMenuOpen = false;
   isDropdownOpen = false;
   isDesktop = true;
   categories: Category[] = [];
-  itemssum = signal(0); // Signal to track the number of items in the cart
+  itemssum = 0; // Signal to track the number of items in the cart
   cartItems: CartItem[] = [];
 
   constructor(
@@ -26,13 +26,14 @@ export class Header implements OnInit, OnDestroy {
     private cdRef: ChangeDetectorRef,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private cart: Cart // Inject the Cart service
+    private cartService: Cart // Inject the Cart service
   ) {}
 
   ngOnInit() {
     // Load cart items and categories on component initialization
-    this.cart.cartItemCount$.subscribe(count => {
-      this.itemssum.set(count);
+    this.cartService.cartItemCount$.subscribe(count => {
+      this.itemssum = count;  // Update count when cart changes
+      this.cdRef.detectChanges();  // Trigger change detection
     });
 
     this.cdRef.detectChanges();
@@ -45,23 +46,6 @@ export class Header implements OnInit, OnDestroy {
       
       // Listen for changes in localStorage in other tabs/windows
       
-    }
-  }
-
-  ngOnDestroy() {
-    // Cleanup the event listener when the component is destroyed
-    if (isPlatformBrowser(this.platformId)) {
-      window.removeEventListener('storage', this.onStorageChange.bind(this));
-    }
-  }
-
-  onStorageChange(event: StorageEvent) {
-    // Check if 'cartItems' has been modified in localStorage
-    if (event.key === 'cartItems') {
-      // Reload the cart items from localStorage and update the itemssum signal
-      this.cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-      this.itemssum.set(this.cartItems.length);
-      this.cdRef.detectChanges(); // Trigger change detection to update the view
     }
   }
 

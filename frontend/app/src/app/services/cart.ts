@@ -5,14 +5,13 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class Cart {
-  
   private cartItemCountSubject = new BehaviorSubject<number>(0);  // Holds the cart item count
   cartItemCount$ = this.cartItemCountSubject.asObservable();  // Observable for components to subscribe to
 
   constructor() {
     // Initialize cart item count from localStorage when the service is created
     const savedCartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-    this.cartItemCountSubject.next(savedCartItems.length);  // Set the initial count
+    this.updateCartItemCount(savedCartItems.length);  // Initialize count from localStorage
   }
 
   // Add an item to the cart (increment count)
@@ -28,7 +27,17 @@ export class Cart {
       this.updateCartItemCount(currentCount - 1);  // Decrement the count
     }
   }
-private updateCartItemCount(count: number): void {
+
+  // Update the cart item count in both the service and localStorage
+  private updateCartItemCount(count: number): void {
+    // Save the new count to localStorage (this could be used for persistence or multi-tab sync)
+    localStorage.setItem('cartItemCount', JSON.stringify(count));  // Sync with localStorage
     this.cartItemCountSubject.next(count);  // Update the count in the BehaviorSubject
+  }
+
+  // Method to update cart items manually (to use in other cases like cart update)
+  updateCartItems(cartItems: any[]): void {
+    const count = cartItems.length;
+    this.updateCartItemCount(count);  // Set the count from updated cart items
   }
 }
