@@ -172,6 +172,7 @@ export class Home implements OnInit, AfterViewInit {
         // Update cart item count in Cart service
         this.cartService.updateCartItems(cartItems);
         alert("hi")
+        console.log(cartItems.length + ' item(s) in cart');
         alert(cartItems.length + ' item(s) in cart');
         this.cdRef.detectChanges();
       }
