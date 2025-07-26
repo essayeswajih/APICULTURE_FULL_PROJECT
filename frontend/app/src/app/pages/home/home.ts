@@ -168,6 +168,7 @@ export class Home implements OnInit, AfterViewInit {
           });
         // Save updated cart to localStorage
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        this.cdRef.detectChanges();
         this.cartService.add(); 
         this.cdRef.detectChanges();
       }
