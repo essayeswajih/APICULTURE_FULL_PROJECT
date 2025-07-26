@@ -127,12 +127,13 @@ export class SingleProduct implements OnInit {
             existingItem.quantity += this.quantity;
           } else {
             cartItems.push(cartItem);
+            this.cartService.add();
           }
         } else {
           cartItems.push(cartItem);
-          this.cartService.add();
+          
         }
-         this.toastService.success('Product added to cart', 'Success', {
+         this.toastService.success('Produit Ajouter Au Panier', 'Success', {
             timeOut: 2000,
             positionClass: 'toast-bottom-right',
             progressBar: true,
@@ -149,9 +150,6 @@ export class SingleProduct implements OnInit {
           yoyo: true,
           repeat: 1,
           ease: 'power1.inOut',
-          onComplete: () => {
-            this.router.navigate(['/panier']);
-          }
         });
       }
     }
