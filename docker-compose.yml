@@ -8,6 +8,9 @@ services:
       - "8000:8000"
     environment:
       - DATABASE_URL=postgresql+psycopg2://apiculturefromtn:apiculture1fromtn@postgres-db:5432/apiculture
+      - SECRET_KEY=V0hxRkBhamoyODc0NDV4NDg1MXNxQGRqcWQxampqSDA3RDJmZmZxZHNxZHFzbSptKvlnO3V6cw==
+      - SENDER_EMAIL=wajihsayes@gmail.com
+      - SENDER_PASSWORD=lzmy nuqu svmp aury 
     depends_on:
       postgres-db:
         condition: service_healthy

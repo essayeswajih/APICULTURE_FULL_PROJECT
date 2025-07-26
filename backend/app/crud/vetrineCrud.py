@@ -7,6 +7,8 @@ from datetime import datetime
 from fastapi import HTTPException
 from random import randint
 
+from sendMail import send_email_via_gmail
+
 # CRUD operations for Product
 def get_products(
     db: Session,
@@ -183,6 +185,21 @@ def create_order(db: Session, order_create: OrderCreate, total_amount: float) ->
     # Commit all changes at once
     db.commit()
     db.refresh(order)
+    # send_email_via_gmail
+    send_email_via_gmail(
+        to_email=order.email,
+        subject="Confirmation de commande",
+        body=(
+            f"Merci pour votre commande {order.code}.\n"
+            f"Votre commande sera traitée prochainement.\n"
+            f"Montant total : {order.total_amount}.\n"
+            f"Statut : {order.status}\n"
+            f"Vous pouvez suivre votre commande en cliquant sur ce lien : "
+            f"https://apiculturegalai.tn/client-order-view?ordercode={order.code}\n\n"
+            "Cordialement,\n"
+            "Votre entreprise"
+        )
+    )
     return order
 
 # CRUD operations for CartItem
