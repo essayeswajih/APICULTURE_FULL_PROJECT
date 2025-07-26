@@ -32,6 +32,7 @@ export class Header implements OnInit, OnDestroy {
     this.cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
     this.itemssum.set(this.cartItems.length);
     alert(`Cart items loaded: ${this.cartItems.length}`);
+    alert(`Cart items loaded: ${this.itemssum()}`); 
     console.log('Cart items loaded:', this.cartItems.length);
     this.cdRef.detectChanges();
     this.loadCategories();
