@@ -17,7 +17,7 @@ export class Header implements OnInit, OnDestroy {
   isDropdownOpen = false;
   isDesktop = true;
   categories: Category[] = [];
-  itemssum = signal(0); // Signal to track the number of items in the cart
+  itemssum : number = 0; // Signal to track the number of items in the cart
   cartItems: CartItem[] = [];
 
   constructor(
@@ -30,9 +30,9 @@ export class Header implements OnInit, OnDestroy {
   ngOnInit() {
     // Load cart items and categories on component initialization
     this.cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-    this.itemssum.set(this.cartItems.length);
+    this.itemssum=this.cartItems.length;
     alert(`Cart items loaded: ${this.cartItems.length}`);
-    alert(`Cart items loaded: ${this.itemssum()}`); 
+    alert(`Cart items loaded: ${this.itemssum}`); 
     console.log('Cart items loaded:', this.cartItems.length);
     this.cdRef.detectChanges();
     this.loadCategories();
@@ -59,7 +59,7 @@ export class Header implements OnInit, OnDestroy {
     if (event.key === 'cartItems') {
       // Reload the cart items from localStorage and update the itemssum signal
       this.cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-      this.itemssum.set(this.cartItems.length);
+      this.itemssum = this.cartItems.length;
       this.cdRef.detectChanges(); // Trigger change detection to update the view
     }
   }
