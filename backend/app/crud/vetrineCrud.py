@@ -150,9 +150,6 @@ def create_order(db: Session, order_create: OrderCreate, total_amount: float) ->
             raise HTTPException(status_code=404, detail=f"Product with ID {item.product_id} not found.")
         if item.quantity <= 0:
             raise HTTPException(status_code=400, detail=f"Quantity for product {product.name} must be positive.")
-        if item.quantity > product.stock_quantity:
-            raise HTTPException(status_code=400, detail=f"Insufficient stock for product {product.name}. Available: {product.stock_quantity}, Requested: {item.quantity}.")
-
     # Create the order
     order = Order(
         total_amount=total_amount,
