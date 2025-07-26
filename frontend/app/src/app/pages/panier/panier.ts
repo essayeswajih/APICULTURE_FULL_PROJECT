@@ -5,6 +5,8 @@ import { RouterLink, Router } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { gsap } from 'gsap';
 import { Api, Order, OrderStatus } from '../../services/api';
+import { ToastrService } from 'ngx-toastr';
+import { Cart } from '../../services/cart';
 
 interface CartItem {
   id: number;
@@ -33,7 +35,9 @@ export class Panier implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private cdr: ChangeDetectorRef,
-    private api: Api // Inject Api service
+    private api: Api, // Inject Api service
+    private toastService: ToastrService, // Inject ToastrService for notifications
+    private cartService: Cart // Inject Cart service
   ) {
     // Initialize reactive form
     this.checkoutForm = this.fb.group({
@@ -107,6 +111,13 @@ export class Panier implements OnInit {
   removeItem(itemId: number): void {
     this.cartItems = this.cartItems.filter(item => item.id !== itemId);
     this.saveCartToLocalStorage(); // Save updated cart to localStorage
+    this.toastService.success('Product removed from cart', 'Success', {
+            timeOut: 2000,
+            positionClass: 'toast-bottom-right',
+            progressBar: true,
+            closeButton: true,
+  });
+    this.cartService.remove();
     this.cdr.detectChanges(); // Explicitly trigger change detection
   }
 
@@ -192,6 +203,7 @@ export class Panier implements OnInit {
         // Clear cart after order finalization
         this.cartItems = [];
         this.saveCartToLocalStorage();
+        this.cartService.setzero(); 
       },
       error: (err) => {
         console.error('Failed to create order:', err);

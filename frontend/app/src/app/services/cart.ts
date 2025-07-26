@@ -32,6 +32,11 @@ private cartItemCountSubject = new BehaviorSubject<number>(0);
       }
     }
   }
+  setzero(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.updateCartItemCount(0);
+    }
+  }
 
   private updateCartItemCount(count: number): void {
     if (isPlatformBrowser(this.platformId)) {

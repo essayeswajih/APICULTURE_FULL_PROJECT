@@ -159,8 +159,8 @@ export class Home implements OnInit, AfterViewInit {
             quantity: 1
           };
           cartItems.push(cartItem);
+          this.cartService.add();
         }
-        alert("hi")
             this.toastService.success('Product added to cart', 'Success', {
             timeOut: 2000,
             positionClass: 'toast-bottom-right',
@@ -170,10 +170,7 @@ export class Home implements OnInit, AfterViewInit {
         // Save updated cart to localStorage
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
         // Update cart item count in Cart service
-        this.cartService.add();
-        alert("hi")
-        console.log(cartItems.length + ' item(s) in cart');
-        alert(cartItems.length + ' item(s) in cart');
+        
         this.cdRef.detectChanges();
       }
     }

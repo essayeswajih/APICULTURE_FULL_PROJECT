@@ -7,6 +7,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { Api, Category, Product } from '../../services/api';
 import { ToastrService } from 'ngx-toastr';
+import { Cart } from '../../services/cart';
 
 export interface CartItem {
   id: number;
@@ -40,7 +41,8 @@ export class Boutique implements OnInit, OnDestroy {
     private router: Router,
     private apiService: Api,
     private cdRef: ChangeDetectorRef,
-    private toastService: ToastrService // Assuming you have a ToastService for notifications
+    private toastService: ToastrService, // Assuming you have a ToastService for notifications
+    private cartService: Cart // Inject the Cart service
   ) {}
 
   ngOnInit(): void {
@@ -203,6 +205,7 @@ export class Boutique implements OnInit, OnDestroy {
           price: product.price,
           quantity: 1
         });
+        this.cartService.add();
       }
          this.toastService.success('Product added to cart', 'Success', {
             timeOut: 2000,
