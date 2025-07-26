@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { Api } from '../services/api'; // Import the CategoryService
 import type { Category } from '../services/api'; // Import the Category type
 import { CartItem } from '../pages/boutique/boutique';
+import { Cart } from '../services/cart';
 
 @Component({
   selector: 'app-header',
@@ -24,13 +25,16 @@ export class Header implements OnInit, OnDestroy {
     private categoryService: Api,
     private cdRef: ChangeDetectorRef,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private cart: Cart // Inject the Cart service
   ) {}
 
   ngOnInit() {
     // Load cart items and categories on component initialization
-    this.cartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
-    this.itemssum.set(this.cartItems.length);
+    this.cart.cartItemCount$.subscribe(count => {
+      this.itemssum.set(count);
+    });
+
     this.cdRef.detectChanges();
     this.loadCategories();
 

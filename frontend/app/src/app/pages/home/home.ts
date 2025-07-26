@@ -6,6 +6,7 @@ import { Api, Product } from '../../services/api';
 import { HttpClientModule } from '@angular/common/http';
 import { CartItem } from '../boutique/boutique';
 import { ToastrService } from 'ngx-toastr';
+import { Cart } from '../../services/cart';
 
 let ScrollTrigger: any;
 if (typeof window !== 'undefined') {
@@ -32,7 +33,8 @@ export class Home implements OnInit, AfterViewInit {
     private RouterS: Router, // Inject Router for navigation
     @Inject(PLATFORM_ID) private platformId: Object,
     private cdRef: ChangeDetectorRef, // Inject ChangeDetectorRef
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private cartService: Cart // Inject Cart service
   ) {}
 
   ngOnInit(): void {
@@ -166,6 +168,7 @@ export class Home implements OnInit, AfterViewInit {
           });
         // Save updated cart to localStorage
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        this.cartService.add(); 
         this.cdRef.detectChanges();
       }
     }
