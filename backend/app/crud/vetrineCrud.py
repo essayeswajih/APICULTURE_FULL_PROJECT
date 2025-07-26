@@ -194,7 +194,7 @@ def create_order(db: Session, order_create: OrderCreate, total_amount: float) ->
             f"Vous pouvez suivre votre commande en cliquant sur ce lien : "
             f"https://apiculturegalai.tn/client-order-view?ordercode={order.code}\n\n"
             "Cordialement,\n"
-            "Votre entreprise"
+            "Apiculture Galai Team"
         )
     )
     return order
