@@ -33,6 +33,7 @@ export class Header implements OnInit, OnDestroy {
     this.itemssum.set(this.cartItems.length);
     alert(`Cart items loaded: ${this.cartItems.length}`);
     console.log('Cart items loaded:', this.cartItems.length);
+    this.cdRef.detectChanges();
     this.loadCategories();
 
     // Set isDesktop based on window width only in browser
