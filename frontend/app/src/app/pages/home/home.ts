@@ -160,6 +160,7 @@ export class Home implements OnInit, AfterViewInit {
           };
           cartItems.push(cartItem);
         }
+        alert("hi")
             this.toastService.success('Product added to cart', 'Success', {
             timeOut: 2000,
             positionClass: 'toast-bottom-right',
