@@ -114,8 +114,7 @@ export class Home implements OnInit, AfterViewInit {
     });
   }
   fromLeftAnnimation(id:string): void {
-    gsap.fromTo(id,
-      { x: '-100%' },
+    gsap.to(id,
       {
         x: '0%',
         duration: 1,
