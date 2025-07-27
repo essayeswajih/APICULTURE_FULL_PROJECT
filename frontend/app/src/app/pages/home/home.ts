@@ -46,10 +46,7 @@ export class Home implements OnInit, AfterViewInit {
       gsap.registerPlugin(ScrollTrigger);
       this.moveBee();
       this.moveBee1();
-      this.fromLeftAnnimation('.c1');
-      this.fromLeftAnnimation('.c2');
-      this.fromLeftAnnimation('.c3');
-      this.fromLeftAnnimation('.c4');
+      this.fromLeftAnnimation('#c1');
     }
   }
 
