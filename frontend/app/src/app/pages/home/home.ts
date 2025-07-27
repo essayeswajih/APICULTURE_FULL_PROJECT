@@ -46,7 +46,10 @@ export class Home implements OnInit, AfterViewInit {
       gsap.registerPlugin(ScrollTrigger);
       this.moveBee();
       this.moveBee1();
-      this.fromLeftAnnimation('#c1');
+      this.fromLeftAnnimation('.c1');
+      this.fromLeftAnnimation('.c2');
+      this.fromLeftAnnimation('.c3');
+      this.fromLeftAnnimation('.c4');
     }
   }
 
@@ -119,7 +122,7 @@ export class Home implements OnInit, AfterViewInit {
         ease: 'power2.out',
         scrollTrigger: {
           trigger: id,
-          start: 'top 70%',
+          start: 'top 75%',
           toggleActions: 'play none none reverse', // slides in on scroll down, out on scroll up
         }
       });
