@@ -46,6 +46,10 @@ export class Home implements OnInit, AfterViewInit {
       gsap.registerPlugin(ScrollTrigger);
       this.moveBee();
       this.moveBee1();
+      this.fromLeftAnnimation('.c1');
+      this.fromLeftAnnimation('.c2');
+      this.fromLeftAnnimation('.c3');
+      this.fromLeftAnnimation('.c4');
     }
   }
 
@@ -109,7 +113,20 @@ export class Home implements OnInit, AfterViewInit {
       },
     });
   }
-
+  fromLeftAnnimation(id:string): void {
+    gsap.fromTo(id,
+      { x: '-100%' },
+      {
+        x: '0%',
+        duration: 1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: id,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse', // slides in on scroll down, out on scroll up
+        }
+      });
+  }
   moveBee1() {
     const moveBeeRandomly = () => {
       gsap.to('#bee1', {
@@ -161,7 +178,7 @@ export class Home implements OnInit, AfterViewInit {
           cartItems.push(cartItem);
           this.cartService.add();
         }
-            this.toastService.success('Product added to cart', 'Success', {
+            this.toastService.success('Produit Ajouter Au Panier', 'Success', {
             timeOut: 2000,
             positionClass: 'toast-bottom-right',
             progressBar: true,
