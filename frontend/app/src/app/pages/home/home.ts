@@ -41,17 +41,26 @@ export class Home implements OnInit, AfterViewInit {
     this.loadProducts();
   }
 
-  ngAfterViewInit(): void {
-    if (isPlatformBrowser(this.platformId)) {
-      gsap.registerPlugin(ScrollTrigger);
+async ngAfterViewInit(): Promise<void> {
+  if (isPlatformBrowser(this.platformId)) {
+    const module = await import('gsap/ScrollTrigger');
+    ScrollTrigger = module.ScrollTrigger;
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ✅ FIX: Delay until DOM is truly ready
+    setTimeout(() => {
       this.moveBee();
       this.moveBee1();
       this.fromLeftAnnimation('.c1');
       this.fromLeftAnnimation('.c2');
       this.fromLeftAnnimation('.c3');
       this.fromLeftAnnimation('.c4');
-    }
+
+      console.log("ScrollTrigger.refresh() called");
+      ScrollTrigger.refresh();
+    }, 300); // ⏱️ Increased delay to ensure elements are painted
   }
+}
 
   private loadProducts(): void {
     this.apiService.getProducts("","").subscribe({
@@ -122,8 +131,10 @@ export class Home implements OnInit, AfterViewInit {
         ease: 'power2.out',
         scrollTrigger: {
           trigger: id,
-          start: 'top 70%',
-          toggleActions: 'play none none reverse', // slides in on scroll down, out on scroll up
+          start: 'top 90%',
+          //end: 'top 50%',
+          toggleActions: 'play none none reverse', // slides in on scroll down, out on scroll up reset or reverse
+          markers:true,
         }
       });
   }
