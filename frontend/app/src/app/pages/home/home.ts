@@ -134,7 +134,7 @@ async ngAfterViewInit(): Promise<void> {
           start: 'top 90%',
           //end: 'top 50%',
           toggleActions: 'play none none reverse', // slides in on scroll down, out on scroll up reset or reverse
-          markers:true,
+          markers:false,
         }
       });
   }
