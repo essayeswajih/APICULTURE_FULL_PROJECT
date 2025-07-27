@@ -207,7 +207,7 @@ export class Boutique implements OnInit, OnDestroy {
         });
         this.cartService.add();
       }
-         this.toastService.success('Product added to cart', 'Success', {
+         this.toastService.success('Produit Ajouter Au Panier', 'Success', {
             timeOut: 2000,
             positionClass: 'toast-bottom-right',
             progressBar: true,

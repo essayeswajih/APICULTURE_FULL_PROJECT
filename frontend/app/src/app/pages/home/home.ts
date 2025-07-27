@@ -122,6 +122,7 @@ async ngAfterViewInit(): Promise<void> {
       },
     });
   }
+  
   fromLeftAnnimation(id:string): void {
     gsap.fromTo(id,
       { x: '-100%' },
