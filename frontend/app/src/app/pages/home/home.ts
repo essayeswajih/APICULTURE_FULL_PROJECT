@@ -122,7 +122,7 @@ export class Home implements OnInit, AfterViewInit {
         ease: 'power2.out',
         scrollTrigger: {
           trigger: id,
-          start: 'top 90%',
+          start: 'top 70%',
           toggleActions: 'play none none reverse', // slides in on scroll down, out on scroll up
         }
       });
