@@ -5,11 +5,18 @@ main {
 
 .hero {
   //background-color: #fff7d87e; /* Light amber for hero background */
+  min-height: 100vh;
+  align-content: center;
 }
 
 .carousel img {
   max-height: 500px;
   object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+#heroCarousel{
+  width: 100vw;
 }
 
 .carousel-caption {
