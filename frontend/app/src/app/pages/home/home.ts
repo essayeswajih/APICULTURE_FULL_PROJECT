@@ -53,7 +53,6 @@ async ngAfterViewInit(): Promise<void> {
 
     // ✅ FIX: Delay until DOM is truly ready
     setTimeout(() => {
-      this.moveBee1();
       this.fromLeftAnnimation('.c1');
       this.fromLeftAnnimation('.c2');
       this.fromLeftAnnimation('.c3');
@@ -116,34 +115,8 @@ async ngAfterViewInit(): Promise<void> {
         }
       });
   }
-  moveBee1() {
-    const moveBeeRandomly = () => {
-      gsap.to('#bee1', {
-        x: 'random(80vh, -200)',
-        y: 'random(30vh, 300vh)',
-        duration: 4 + Math.random() * 4,
-        ease: 'sine.inOut',
-        onComplete: moveBeeRandomly,
-      });
-    };
 
-    moveBeeRandomly();
-
-    gsap.to('#bee1', {
-      scrollTrigger: {
-        trigger: '#beeBox1',
-        start: 'top 10%',
-        end: 'bottom 90%',
-        scrub: true,
-        markers: false,
-        onUpdate: (self) => {
-          const speed = self.progress * 100;
-          gsap.to('#bee1', { duration: speed });
-        },
-      },
-    });
-  }
-      // Add product to cart
+    //Add product to cart
     addToCart(product: Product): void {
       if (isPlatformBrowser(this.platformId)) {
         // Retrieve existing cart items from localStorage
