@@ -82,7 +82,7 @@
           <p class="text-success font-weight-bold">Prix: {{ product.discounted_price + " DNT" }}</p>
         }
         @else {
-          <p class="text-success font-weight-bold">Prix: {{ product.price + " DNT" }}</p>
+          <p class="text-amber font-weight-bold">Prix: {{ product.price + " DNT" }}</p>
         }
         @if(product.stock_quantity > 0) {
           <p class="text-success">En stock</p>
