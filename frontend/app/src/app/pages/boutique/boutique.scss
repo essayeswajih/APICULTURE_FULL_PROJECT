@@ -33,6 +33,7 @@ main {
 .card {
   border: none;
   transition: transform 0.3s ease;
+  box-shadow: 0 4px 8px rgba(110, 110, 110, 0.062);
 }
 
 .card-img-top {
