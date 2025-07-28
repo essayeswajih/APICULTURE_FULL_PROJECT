@@ -84,7 +84,11 @@
         @else {
           <p class="text-success font-weight-bold">Prix: {{ product.price + " DNT" }}</p>
         }
-        <p class="text-dark">Stock disponible: {{ product.stock_quantity }}</p>
+        @if(product.stock_quantity > 0) {
+          <p class="text-dark">En stock: {{ product.stock_quantity }}</p>
+        } @else {
+          <p class="text-danger">Sur commande</p>
+        }
         <!-- Quantity Selector and Add to Cart Form -->
         <form [formGroup]="addToCartForm" (ngSubmit)="addToCart()">
           <div class="mb-3">
