@@ -22,6 +22,7 @@ export class SingleProduct implements OnInit {
   addToCartForm: FormGroup;
   error: string | null = null;
   selectedImage: string | null = null;
+  isLoading: boolean = true;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -57,6 +58,7 @@ export class SingleProduct implements OnInit {
               name: 'description',
               content: `${product.description || 'Produit apicole de qualité'} - Découvrez nos produits apicoles de qualité chez Apiculture Galai.`
             });
+            this.isLoading = false;
             this.cdr.detectChanges(); // Ensure UI updates
           },
           error: (err) => {

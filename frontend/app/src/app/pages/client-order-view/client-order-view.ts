@@ -14,6 +14,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 export class ClientOrderView implements OnInit {
   order: Order | null = null;
   error: string | null = null;
+  isLoading: boolean = false;
 
   constructor(
     private apiService: Api,
@@ -39,6 +40,7 @@ export class ClientOrderView implements OnInit {
       next: (order) => {
         this.order = order;
         this.error = null;
+        this.isLoading = false;
         this.cdRef.detectChanges();
 
         if (isPlatformBrowser(this.platformId)) {

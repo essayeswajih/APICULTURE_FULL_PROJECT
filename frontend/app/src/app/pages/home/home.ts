@@ -27,6 +27,7 @@ export class Home implements OnInit, AfterViewInit {
   products: Product[] = [];
   productChunks: Product[][] = []; // Grouped products for carousel items
   isDesktop: boolean = false;
+  isLoading: boolean = true; // Loading state for products
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -72,6 +73,7 @@ async ngAfterViewInit(): Promise<void> {
         const isMobile = isPlatformBrowser(this.platformId) && window.innerWidth <= 767;
         const chunkSize = isMobile ? 1 : 4;
         this.productChunks = this.chunkArray(products, chunkSize);
+        this.isLoading = false; // Set loading to false after products are loaded
         this.cdRef.detectChanges(); // Trigger change detection after updating data
         if (isPlatformBrowser(this.platformId)) {
           setTimeout(() => {

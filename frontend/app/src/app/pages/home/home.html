@@ -146,6 +146,14 @@
         <span class="visually-hidden">Next</span>
       </button>
     </div>
+    @if(isLoading) {
+      <div class="text-center mt-4">
+        <p class="text-muted">Chargement des produits...</p>
+        <div class="spinner-border text-warning" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+    }
     <div class="text-center mt-4">
       <a routerLink="/boutique" class="btn btn-warning text-white">Voir Tous les Produits</a>
     </div>
