@@ -49,7 +49,6 @@ async ngAfterViewInit(): Promise<void> {
 
     // ✅ FIX: Delay until DOM is truly ready
     setTimeout(() => {
-      this.moveBee();
       this.moveBee1();
       this.fromLeftAnnimation('.c1');
       this.fromLeftAnnimation('.c2');
@@ -94,34 +93,6 @@ async ngAfterViewInit(): Promise<void> {
       chunks.push(array.slice(i, i + size));
     }
     return chunks;
-  }
-
-  moveBee() {
-    const moveBeeRandomly = () => {
-      gsap.to('#bee', {
-        x: 'random(200, 100vw)',
-        y: 'random(5, 300vh)',
-        duration: 4 + Math.random() * 4,
-        ease: 'sine.inOut',
-        onComplete: moveBeeRandomly,
-      });
-    };
-
-    moveBeeRandomly();
-
-    gsap.to('#bee', {
-      scrollTrigger: {
-        trigger: '#beeBox',
-        start: 'top 10%',
-        end: 'bottom 90%',
-        scrub: true,
-        markers: false,
-        onUpdate: (self) => {
-          const speed = self.progress * 100;
-          gsap.to('#bee', { duration: speed });
-        },
-      },
-    });
   }
   
   fromLeftAnnimation(id:string): void {
