@@ -26,7 +26,7 @@ export class Home implements OnInit, AfterViewInit {
 
   products: Product[] = [];
   productChunks: Product[][] = []; // Grouped products for carousel items
-  isDesktop: boolean = true;
+  isDesktop: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
