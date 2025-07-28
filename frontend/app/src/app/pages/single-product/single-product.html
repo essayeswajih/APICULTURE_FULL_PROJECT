@@ -130,7 +130,7 @@
 </main>
 
 <!-- Fallback if Product Not Found or Error -->
-<div *ngIf="error" class="container-md py-6 text-center">
+<div *ngIf="!product && !isLoading" class="container-md py-6 text-center">
   <h2 class="text-amber">{{'Produit non trouvé' }}</h2>
   <p class="text-dark">{{ error ? 'Une erreur s\'est produite lors du chargement du produit.' : 'Désolé, le produit que vous cherchez n\'existe pas ou n\'est plus disponible.' }}</p>
   <a routerLink="/" class="btn btn-outline-success">Retour à l'accueil</a>

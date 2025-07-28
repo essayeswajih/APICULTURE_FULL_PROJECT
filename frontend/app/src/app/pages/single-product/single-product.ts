@@ -67,6 +67,7 @@ export class SingleProduct implements OnInit {
             if (err.status === 404) {
               this.error = 'Product not found';
             }
+            this.isLoading = false;
             this.cdr.detectChanges();
           }
         });
