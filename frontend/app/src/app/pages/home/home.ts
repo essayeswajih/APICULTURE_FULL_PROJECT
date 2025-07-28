@@ -45,6 +45,7 @@ export class Home implements OnInit, AfterViewInit {
 
 async ngAfterViewInit(): Promise<void> {
   if (isPlatformBrowser(this.platformId)) {
+    this.isDesktop = window.innerWidth >= 920;
     const module = await import('gsap/ScrollTrigger');
     ScrollTrigger = module.ScrollTrigger;
     gsap.registerPlugin(ScrollTrigger);
