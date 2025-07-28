@@ -55,6 +55,7 @@ async ngAfterViewInit(): Promise<void> {
       this.fromLeftAnnimation('.c2');
       this.fromLeftAnnimation('.c3');
       this.fromLeftAnnimation('.c4');
+      this.fromLeftAnnimation('.c5');
 
       console.log("ScrollTrigger.refresh() called");
       ScrollTrigger.refresh();
