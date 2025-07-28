@@ -132,7 +132,7 @@ async ngAfterViewInit(): Promise<void> {
         ease: 'power2.out',
         scrollTrigger: {
           trigger: id,
-          start: 'top 90%',
+          start: 'top 80%',
           //end: 'top 50%',
           toggleActions: 'play none none reverse', // slides in on scroll down, out on scroll up reset or reverse
           markers:false,
