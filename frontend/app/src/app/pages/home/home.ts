@@ -26,6 +26,7 @@ export class Home implements OnInit, AfterViewInit {
 
   products: Product[] = [];
   productChunks: Product[][] = []; // Grouped products for carousel items
+  isDesktop: boolean = true;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -39,6 +40,7 @@ export class Home implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.loadProducts();
+    this.isDesktop = window.innerWidth >= 920;
   }
 
 async ngAfterViewInit(): Promise<void> {
