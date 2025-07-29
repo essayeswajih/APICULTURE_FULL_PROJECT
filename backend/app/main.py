@@ -8,6 +8,7 @@ from slowapi.errors import RateLimitExceeded
 from db.database import Base, engine, get_db
 from controller.Oauth2C import router as Oauth2CRouter
 from controller.vetineController import router as VetrineRouter
+from controller.imagesUpload import router as ImagesUploadRouter
 
 # Initialize the rate limiter
 limiter = Limiter(key_func=get_remote_address)
@@ -41,6 +42,7 @@ app.add_middleware(SlowAPIMiddleware)
 # Include routers
 app.include_router(Oauth2CRouter, prefix="/auth", tags=["Authentication"])
 app.include_router(VetrineRouter, tags=["vetrine"])
+app.include_router(ImagesUploadRouter, tags=["Images Upload"])
 
 # Initialize database on startup
 @app.on_event("startup")
