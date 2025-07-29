@@ -7,10 +7,10 @@
       <p class="lead text-success mb-0 contact-section">Découvrez notre sélection de matériel apicole et produits de la ruche.</p>
     </div>
   </section>
-  <section class="container ">
+  <section class="container mt-4">
       <form class="input-group w-50 mx-auto" #newsletterForm="ngForm">
-        <input type="email" [(ngModel)]="searchQuery" class="form-control" placeholder="Votre e-mail" aria-label="Email">
-        <button class="btn btn-warning text-white" type="button" (click)="search()">S'inscrire</button>
+        <input type="email" [(ngModel)]="searchQuery" class="form-control" placeholder="Search for" aria-label="Search">
+        <button class="btn btn-warning text-white" type="button" (click)="search()">Search</button>
       </form>
   </section>
   <!-- Filters -->
