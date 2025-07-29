@@ -160,6 +160,7 @@ async ngAfterViewInit(): Promise<void> {
     this.RouterS.navigate(['/product', id]);
   }
   subscribe(): void {
+    this.cdRef.detectChanges();
     if (this.email) {
       this.apiService.subscribeToNewsletter(this.email).subscribe({
         next: () => {
