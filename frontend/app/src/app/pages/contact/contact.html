@@ -52,19 +52,19 @@
                 </div>
               </div>
               <div class="mb-3">
-                <label for="subject" class="form-label text-dark">Sujet</label>
+                <label for="sujet" class="form-label text-dark">Sujet</label>
                 <input
                   type="text"
-                  id="subject"
+                  id="sujet"
                   class="form-control"
-                  [(ngModel)]="contactFormModel.subject"
-                  name="subject"
+                  [(ngModel)]="contactFormModel.sujet"
+                  name="sujet"
                   required
                   aria-required="true"
                   placeholder="Objet de votre message"
-                  #subject="ngModel"
+                  #sujet="ngModel"
                 >
-                <div *ngIf="subject.touched && subject.invalid" class="text-danger mt-1">Le sujet est requis.</div>
+                <div *ngIf="sujet.touched && sujet.invalid" class="text-danger mt-1">Le sujet est requis.</div>
               </div>
               <div class="mb-3">
                 <label for="message" class="form-label text-dark">Message</label>
