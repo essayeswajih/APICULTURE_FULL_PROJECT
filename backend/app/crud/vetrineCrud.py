@@ -34,12 +34,12 @@ def get_products(
         query = query.filter(Product.price <= max_price)
 
     if searchFor and searchFor.strip():
+        search_query = f"%{searchFor.strip()}%"
         query = query.filter(
-        or_(
-            func.lower(Product.name).like(f"%{searchFor.lower()}%"),
-            func.lower(Product.description).like(f"%{searchFor.lower()}%")
+            Product.name.ilike(search_query) |
+            Product.description.ilike(search_query)
         )
-    )
+
 
 
     # Apply sorting
