@@ -4,9 +4,9 @@ import { HttpEvent, HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-images',
-  standalone: true,
+  imports: [],
   templateUrl: './images.html',
-  styleUrl: './images.scss',
+  styleUrl: './images.scss'
 })
 export class Images implements OnInit {
   uploadProgress: number = 0;
