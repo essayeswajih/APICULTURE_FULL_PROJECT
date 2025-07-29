@@ -31,7 +31,7 @@ def list_uploaded_images():
     try:
         files = os.listdir(UPLOAD_DIR)
         image_files = [
-            f"{BASE_STATIC_URL}/{filename}"
+            f"{BASE_STATIC_URL}/api/{filename}"
             for filename in files
             if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp'))
         ]
