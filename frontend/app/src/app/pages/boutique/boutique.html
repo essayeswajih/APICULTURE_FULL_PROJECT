@@ -7,6 +7,12 @@
       <p class="lead text-success mb-0 contact-section">Découvrez notre sélection de matériel apicole et produits de la ruche.</p>
     </div>
   </section>
+  <section class="container ">
+      <form class="input-group w-50 mx-auto" #newsletterForm="ngForm">
+        <input type="email" [(ngModel)]="searchQuery" class="form-control" placeholder="Votre e-mail" aria-label="Email">
+        <button class="btn btn-warning text-white" type="button" (click)="search()">S'inscrire</button>
+      </form>
+  </section>
   <!-- Filters -->
   <section class="container py-4">
     <div *ngIf="isLoading" class="text-center py-4">
@@ -93,11 +99,6 @@
               </button>
             </div>
           </div>
-        </div>
-      }
-      @empty {
-        <div class="?category=vetementscol-12 text-center py-4">
-          <p class="text-muted">Aucun produit trouvé</p>
         </div>
       }
     </div>

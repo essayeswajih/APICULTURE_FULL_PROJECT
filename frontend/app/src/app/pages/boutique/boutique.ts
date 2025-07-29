@@ -32,6 +32,7 @@ export class Boutique implements OnInit, OnDestroy {
   sortBy: string = 'popularite';
   isLoading: boolean = false;
   error: string | null = null;
+  searchQuery: string = '';
   
   private destroy$ = new Subject<void>();
 
@@ -239,5 +240,20 @@ export class Boutique implements OnInit, OnDestroy {
     
     this.updateRoute();
     this.loadProducts();
+  }
+  search(): void {
+    if (this.searchQuery.trim()) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { search: this.searchQuery },
+        queryParamsHandling: 'merge'
+      });
+    } else {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { search: null },
+        queryParamsHandling: 'merge'
+      });
+    }
   }
 }
