@@ -183,7 +183,7 @@ async ngAfterViewInit(): Promise<void> {
         }
       });
     } else {
-      console.warn('Email is empty');
+      console.warn('Email: ', this.email);
       this.toastService.error('Veuillez entrer une adresse e-mail valide', 'Erreur', {
         timeOut: 2000,
         positionClass: 'toast-bottom-right',
