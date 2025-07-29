@@ -7,7 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CartItem } from '../boutique/boutique';
 import { ToastrService } from 'ngx-toastr';
 import { Cart } from '../../services/cart';
-import { FormControl, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 let ScrollTrigger: any;
 if (typeof window !== 'undefined') {
@@ -19,7 +19,7 @@ if (typeof window !== 'undefined') {
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, RouterModule, HttpClientModule],
+  imports: [CommonModule, RouterModule, HttpClientModule,FormsModule],
   templateUrl: './home.html',
   styleUrls: ['./home.scss']
 })
@@ -29,7 +29,7 @@ export class Home implements OnInit, AfterViewInit {
   productChunks: Product[][] = []; // Grouped products for carousel items
   isDesktop: boolean = false;
   isLoading: boolean = true; // Loading state for products
-  emailControl = new FormControl('', [Validators.required, Validators.email]);
+  email: string = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -159,18 +159,34 @@ async ngAfterViewInit(): Promise<void> {
     // Navigate to the product details page
     this.RouterS.navigate(['/product', id]);
   }
-  subscribe() {
-    if (this.emailControl.valid) {
-      this.isLoading = true;
-      const email = this.emailControl.value!;
-      this.apiService.subscribeToNewsletter(email).subscribe({
-        next: (response) => {
-          this.isLoading = false;
-          this.emailControl.reset();
+  subscribe(): void {
+    if (this.email) {
+      this.apiService.subscribeToNewsletter(this.email).subscribe({
+        next: () => {
+          this.toastService.success('Inscription réussie à la newsletter', 'Succès', {
+            timeOut: 2000,
+            positionClass: 'toast-bottom-right',
+            progressBar: true,
+            closeButton: true,
+          });
+          this.email = ''; // Clear the email input after successful subscription
         },
-        error: (error) => {
-          this.isLoading = false;
+        error: (err) => {
+          console.error('Erreur lors de l\'inscription à la newsletter:', err);
+          this.toastService.error('Erreur lors de l\'inscription à la newsletter', 'Erreur', {
+            timeOut: 2000,
+            positionClass: 'toast-bottom-right',
+            progressBar: true,
+            closeButton: true,
+          });
         }
+      });
+    } else {
+      this.toastService.error('Veuillez entrer une adresse e-mail valide', 'Erreur', {
+        timeOut: 2000,
+        positionClass: 'toast-bottom-right',
+        progressBar: true,
+        closeButton: true,
       });
     }
   }
