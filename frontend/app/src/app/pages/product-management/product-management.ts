@@ -99,7 +99,7 @@ export class ProductManagement implements OnInit {
   }
 
   private loadProducts() {
-    this.apiService.getProducts("","").subscribe(products => {
+    this.apiService.getProducts("","","").subscribe(products => {
       this.products = products;
       this.cdRef.detectChanges();  // Trigger change detection after loading products
 

@@ -120,7 +120,7 @@ export class Api {
       params = params.set('sortBy', sortBy); // Send sortBy as query param
     }
 
-    if (searchQuery && searchQuery.trim() !== '') {
+    if (searchQuery) {
       params = params.set('search', searchQuery); // Send search query as param
     }
 

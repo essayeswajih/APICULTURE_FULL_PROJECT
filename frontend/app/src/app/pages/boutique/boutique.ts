@@ -56,6 +56,7 @@ export class Boutique implements OnInit, OnDestroy {
         this.error = null;
         const categoryFromUrl = params['category']?.toLowerCase() || 'Tous';
         this.sortBy = params['sortBy'] || 'popularite';
+        this.searchQuery = params['search'] || '';
         if (this.categories.length) {
           this.selectedCategory = this.categories.find(cat => 
             cat.name.toLowerCase() === categoryFromUrl) || { id: 0, name: 'Tous' };
@@ -120,7 +121,7 @@ export class Boutique implements OnInit, OnDestroy {
 
   private loadProducts(): void {
     this.isLoading = true;
-    this.apiService.getProducts(this.selectedCategory.name, this.sortBy).pipe(
+    this.apiService.getProducts(this.selectedCategory.name, this.sortBy, this.searchQuery).pipe(
       takeUntil(this.destroy$)
     ).subscribe({
       next: (products) => {
