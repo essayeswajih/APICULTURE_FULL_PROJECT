@@ -16,7 +16,8 @@ def get_products(
     limit: int = 100,
     category_name: Optional[str] = None,
     max_price: Optional[float] = None,
-    sortBy: Optional[str] = 'popularite'
+    sortBy: Optional[str] = 'popularite',
+    searchFor: Optional[str] = None
 ):
     query = db.query(Product)
 
@@ -32,6 +33,13 @@ def get_products(
     if max_price:
         query = query.filter(Product.price <= max_price)
 
+    if searchFor:
+        # Search for products by name or description
+        search_query = f"%{searchFor}%"
+        query = query.filter(
+            (Product.name.ilike(search_query)) | 
+            (Product.description.ilike(search_query))
+        )
 
     # Apply sorting
     if sortBy == 'prix-asc':

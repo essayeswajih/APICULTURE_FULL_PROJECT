@@ -109,7 +109,7 @@ export class Api {
   }
 
     // Products API
-  getProducts(categoryQuery: string, sortBy: string): Observable<Product[]> {
+  getProducts(categoryQuery: string, sortBy: string, searchQuery: string): Observable<Product[]> {
     let params = new HttpParams();
 
     if (categoryQuery) {
@@ -118,6 +118,10 @@ export class Api {
 
     if (sortBy) {
       params = params.set('sortBy', sortBy); // Send sortBy as query param
+    }
+
+    if (searchQuery && searchQuery.trim() !== '') {
+      params = params.set('search', searchQuery); // Send search query as param
     }
 
     return this.http
