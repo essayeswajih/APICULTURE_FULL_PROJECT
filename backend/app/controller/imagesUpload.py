@@ -1,29 +1,32 @@
-
-
 import os
 import shutil
-from fastapi import APIRouter
-
+from fastapi import APIRouter, UploadFile, File
+from fastapi.responses import JSONResponse
+import re
+import unicodedata
 
 router = APIRouter()
 
-from fastapi import UploadFile, File
-from fastapi.responses import JSONResponse
-
 UPLOAD_DIR = "uploads/"
-BASE_URL = "https://apiculturegalai.tn/api"  # Or your domain name
-
+BASE_URL = "https://apiculturegalai.tn"  # Adjust accordingly
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+def slugify(value: str) -> str:
+    value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore').decode('ascii')
+    value = re.sub(r'[^\w\s-]', '', value).strip().lower()
+    value = re.sub(r'[-\s]+', '-', value)
+    return value
 
 @router.post("/upload")
 async def upload_image(file: UploadFile = File(...)):
-    file_path = os.path.join(UPLOAD_DIR, file.filename)
+    filename = slugify(file.filename)
+    file_path = os.path.join(UPLOAD_DIR, filename)
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    public_url = f"{BASE_URL}/uploads/{file.filename}"
+    public_url = f"{BASE_URL}/uploads/{filename}"
     return JSONResponse(content={
-        "filename": file.filename,
+        "filename": filename,
         "url": public_url
     })
 
