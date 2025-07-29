@@ -11,6 +11,7 @@ from crud.vetrineCrud import (
     get_products, get_product_by_id, create_product, get_orders, create_order,
     get_cart_items, add_to_cart, remove_from_cart, update_category, update_product
 )
+from controller.sendMail import AdminEmail, send_email_via_gmail
 
 router = APIRouter()
 
@@ -197,3 +198,36 @@ def get_order_by_code(
     if not db_order:
         raise HTTPException(status_code=404, detail="Order not found")
     return db_order
+# subscribe to newsletter sending emil and return 201
+@router.post("/subscribe_to_newsletter", response_model=dict)
+def subscribe_to_newsletter(
+    email: str, db: Session = Depends(get_db)
+):
+    if not email:
+        raise HTTPException(status_code=400, detail="Email is required for subscription.")
+    
+    send_email_via_gmail(
+        subject="Apiculture Newsletter Subscription",
+        message=email+" has subscribed to the Apiculture newsletter.",
+        to_email=AdminEmail
+    )
+    # For simplicity, we just return a success message
+    return {"message": "Successfully subscribed to the newsletter."}
+
+# contact form
+@router.post("support-contact",response_model=dict)
+def contact_form(
+    name: str,
+    email:str,
+    sujet:str,
+    message:str):
+
+    if( (not name ) and (not email) and (not sujet) and (not message)):
+        raise HTTPException(status_code=400, detail="All fields are required.")
+    
+    send_email_via_gmail(
+        subject = "Apiculture Contact Message",
+        message = f"Name: {name}\nEmail: {email}\nSujet: {sujet}\nMessage: {message}",
+        to_email = AdminEmail
+    )
+    return {"message":"Successfully sent the message."}

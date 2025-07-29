@@ -3,6 +3,10 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+Amir = "abdelbassetgalai3@gmail.com"
+wajih = "wajih-essayes@outlook.fr"
+AdminEmail = wajih
+
 def send_email_via_gmail(to_email, subject, body):
 
 
@@ -31,5 +35,3 @@ def send_email_via_gmail(to_email, subject, body):
     server.sendmail(sender_email, to_email, text)
     server.quit()
 
-# Usage example:
-send_email_via_gmail("recipient@example.com", "Test Subject", "This is the email body.")
