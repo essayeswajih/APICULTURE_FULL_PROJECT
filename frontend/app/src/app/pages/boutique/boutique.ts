@@ -243,18 +243,22 @@ export class Boutique implements OnInit, OnDestroy {
     this.loadProducts();
   }
   search(): void {
+    this.cdRef.detectChanges();
     if (this.searchQuery.trim()) {
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams: { search: this.searchQuery },
         queryParamsHandling: 'merge'
       });
+      this.loadProducts();
     } else {
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams: { search: null },
         queryParamsHandling: 'merge'
       });
+      this.loadProducts();
     }
+      this.cdRef.detectChanges();
   }
 }
