@@ -202,4 +202,21 @@ export class Api {
       .post(`${this.apiUrl}/support-contact`, { name, email, sujet, message }, { headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError));
   }
+  uploadImage(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+
+    return this.http.post(`${this.apiUrl}/upload`, formData, {
+      headers: this.getAuthHeaders(), // Your token headers
+      reportProgress: true,
+      observe: 'events', // Needed to track progress
+    }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  getAllImages(): Observable<{ images: string[] }> {
+    return this.http
+      .get<{ images: string[] }>(`${this.apiUrl}/images`, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
 }

@@ -1,0 +1,17 @@
+<input type="file" (change)="onFileSelected($event)" />
+
+<div *ngIf="uploadProgress > 0 && uploadProgress < 100">
+  Uploading: {{ uploadProgress }}%
+</div>
+
+<div *ngIf="uploadedUrl">
+  <p>Last uploaded:</p>
+  <img [src]="uploadedUrl" alt="Uploaded Image" style="max-width: 200px;" />
+</div>
+
+<hr />
+
+<h3>All Uploaded Images:</h3>
+<div *ngFor="let img of images">
+  <img [src]="img" alt="Image" style="max-width: 150px; margin: 10px;" />
+</div>
