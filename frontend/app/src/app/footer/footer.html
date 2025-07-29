@@ -48,10 +48,10 @@
       <div class="col-md-3 mb-3">
         <h5 class="text-warning fw-bold">Newsletter</h5>
         <p class="text-success">Inscrivez-vous pour recevoir nos promotions et actualités.</p>
-        <div class="input-group">
-          <input type="email" class="form-control" placeholder="Votre e-mail" aria-label="Email">
-          <button class="btn btn-outline-warning" type="button">S'inscrire</button>
-        </div>
+        <form class="input-group" #newsletterForm="ngForm">
+          <input type="email" [(ngModel)]="email" class="form-control" placeholder="Votre e-mail" aria-label="Email">
+          <button class="btn btn-outline-warning" type="button" (click)="subscribe()">S'inscrire</button>
+        </form>
       </div>
 
       <!-- Social Media and Legal -->
