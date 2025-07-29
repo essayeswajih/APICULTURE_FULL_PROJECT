@@ -17,5 +17,5 @@
 {{ images.length > 0 ? images.length + ' images found' : 'No images uploaded yet.' }}
 
 <div class="image-item" *ngFor="let image of images; let i = index">
-  <img [src]="image" [alt]="'Image ' + (i + 1)" style="max-width: 200px; margin: 10px;" />
+  <img [src]="image" lazy [alt]="'Image ' + (i + 1)" style="max-width: 200px; margin: 10px;" />
 </div>
