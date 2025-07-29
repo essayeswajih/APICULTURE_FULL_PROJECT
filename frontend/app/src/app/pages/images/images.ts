@@ -12,6 +12,7 @@ export class Images implements OnInit {
   uploadProgress: number = 0;
   uploadedUrl?: string;
   images: string[] = [];
+  selectedFile?: File;
 
   constructor(
     private apiService: Api,
@@ -36,9 +37,11 @@ export class Images implements OnInit {
   }
 
   onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.apiService.uploadImage(file).subscribe({
+    this.selectedFile = event.target.files[0];
+  }
+  uploadImage(): void {
+    if (this.selectedFile) {
+      this.apiService.uploadImage(this.selectedFile).subscribe({
         next: (event: HttpEvent<any>) => {
           if (event.type === HttpEventType.UploadProgress && event.total) {
             this.uploadProgress = Math.round((event.loaded / event.total) * 100);
@@ -54,5 +57,7 @@ export class Images implements OnInit {
         },
       });
     }
+    this.uploadProgress = 0; // Reset progress after upload
+    this.cdr.detectChanges(); // Ensure the view updates}
   }
 }

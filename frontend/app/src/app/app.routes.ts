@@ -33,7 +33,7 @@ export const routes: Routes = [
       }
     } 
   },
-  { path: 'images', loadComponent: () => import('./pages/images/images').then(m => m.Images) },
+  { path: 'images', loadComponent: () => import('./pages/images/images').then(m => m.Images),canActivate: [authGuard] },
   { path: 'client-order-view', loadComponent: () => import('./pages/client-order-view/client-order-view').then(m => m.ClientOrderView) },
   { path: 'login', loadComponent: () => import('./auth/login/login').then(m => m.Login) },
   { path: '**', redirectTo: '', pathMatch: 'full' }
