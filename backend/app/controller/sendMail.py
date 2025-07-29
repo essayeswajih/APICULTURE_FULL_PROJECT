@@ -3,9 +3,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-Amir = "abdelbassetgalai3@gmail.com"
-wajih = "wajih-essayes@outlook.fr"
-AdminEmail = wajih
+AdminEmail = os.getenv('SENDER_EMAIL')
 
 def send_email_via_gmail(to_email, subject, body):
 
