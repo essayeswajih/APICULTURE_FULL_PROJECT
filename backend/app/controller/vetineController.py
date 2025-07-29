@@ -32,7 +32,7 @@ def get_all_products(
     category: Optional[str] = None,
     max_price: Optional[float] = None,
     sortBy: Optional[str] = 'popularite',  # Default sortBy value
-    searchFor: Optional[str] = None,
+    search: Optional[str] = None,
     db: Session = Depends(get_db)
 ):
     return get_products(
@@ -42,7 +42,7 @@ def get_all_products(
         category_name=category,
         max_price=max_price,
         sortBy=sortBy,
-        searchFor=searchFor
+        searchFor=search
     )
 
 # Route to get a single product by ID
