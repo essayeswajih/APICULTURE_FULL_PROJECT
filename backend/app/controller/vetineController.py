@@ -214,7 +214,7 @@ def subscribe_to_newsletter(newsletter: Newsletter):
             to_email=AdminEmail
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Failed to send subscription email."+e)
+        raise HTTPException(status_code=500, detail="Failed to send subscription email." 'email :' +email + " error: "+ str(e))
     
     return {"message": "Successfully subscribed to the newsletter."}
 
