@@ -210,11 +210,11 @@ def subscribe_to_newsletter(newsletter: Newsletter):
     try:
         send_email_via_gmail(
             subject="Apiculture Newsletter Subscription",
-            body=f"A {email} has subscribed to the Apiculture newsletter.",
+            body=f"{email} has subscribed to the Apiculture newsletter.",
             to_email=AdminEmail
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Failed to send subscription email." 'email :' +email + " error: "+ str(e))
+        raise HTTPException(status_code=500, detail="Failed to send subscription email.")
     
     return {"message": "Successfully subscribed to the newsletter."}
 
