@@ -1,4 +1,4 @@
-from sqlalchemy import asc, desc, func
+from sqlalchemy import asc, desc, func, or_
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from models.vetrineModels import OrderStatus, Product, Order, OrderItem, CartItem, Category
@@ -33,13 +33,14 @@ def get_products(
     if max_price:
         query = query.filter(Product.price <= max_price)
 
-    if searchFor:
-        # Search for products by name or description
-        search_query = f"%{searchFor}%"
+    if searchFor and searchFor.strip():
         query = query.filter(
-            (Product.name.ilike(search_query)) | 
-            (Product.description.ilike(search_query))
+        or_(
+            func.lower(Product.name).like(f"%{searchFor.lower()}%"),
+            func.lower(Product.description).like(f"%{searchFor.lower()}%")
         )
+    )
+
 
     # Apply sorting
     if sortBy == 'prix-asc':
