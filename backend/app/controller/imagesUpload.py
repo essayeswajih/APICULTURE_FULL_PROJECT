@@ -11,7 +11,7 @@ from fastapi import UploadFile, File
 from fastapi.responses import JSONResponse
 
 UPLOAD_DIR = "uploads/"
-BASE_URL = "http://apiculturegalai.tn/api"  # Or your domain name
+BASE_URL = "https://apiculturegalai.tn/api"  # Or your domain name
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
