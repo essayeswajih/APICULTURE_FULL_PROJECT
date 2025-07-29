@@ -11,7 +11,7 @@ import { Api } from '../../services/api';
 interface ContactForm {
   name: string;
   email: string;
-  subject: string;
+  sujet: string;
   message: string;
 }
 
