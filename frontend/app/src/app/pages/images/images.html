@@ -15,7 +15,7 @@
 
 <h3>All Uploaded Images:</h3>
 {{ images.length > 0 ? images.length + ' images found' : 'No images uploaded yet.' }}
-<div *ngFor="let img of images">
-  <img [src]="img" alt="Image" style="max-width: 150px; margin: 10px;" />
-  <p>{{img}}</p>
+
+<div class="image-item" *ngFor="let image of images; let i = index">
+  <img [src]="image" [alt]="'Image ' + (i + 1)" style="max-width: 200px; margin: 10px;" />
 </div>
