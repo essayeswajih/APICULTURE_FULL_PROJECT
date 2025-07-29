@@ -210,7 +210,7 @@ def subscribe_to_newsletter(newsletter: Newsletter):
     try:
         send_email_via_gmail(
             subject="Apiculture Newsletter Subscription",
-            message=f"A {email} has subscribed to the Apiculture newsletter.",
+            body=f"A {email} has subscribed to the Apiculture newsletter.",
             to_email=AdminEmail
         )
     except Exception as e:
@@ -238,7 +238,7 @@ def contact_form(contact_form: contactRequest):
     try:
         send_email_via_gmail(
             subject="Apiculture Contact Message",
-            message=f"Name: {name}\nEmail: {contact_form.email}\nSujet: {sujet}\nMessage: {message}",
+            body=f"Name: {name}\nEmail: {contact_form.email}\nSujet: {sujet}\nMessage: {message}",
             to_email=AdminEmail,
             reply_to=contact_form.email
         )
