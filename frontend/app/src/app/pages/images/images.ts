@@ -27,6 +27,7 @@ export class Images implements OnInit {
       next: (res) => {
         this.images = res.images;
         console.log('Images fetched successfully:', res.images);
+        this.cdr.detectChanges(); // Ensure the view updates with the new images
       },
       error: (err) => {
         console.error('Error fetching images:', err);
