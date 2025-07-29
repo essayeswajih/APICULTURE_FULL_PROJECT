@@ -1,24 +1,26 @@
 import os
 import shutil
-from fastapi import APIRouter, UploadFile, File
-from fastapi.responses import JSONResponse
 import re
 import unicodedata
+from fastapi import APIRouter, UploadFile, File
+from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
 UPLOAD_DIR = "uploads/"
-BASE_URL = "https://apiculturegalai.tn/api"  # Adjust accordingly
+BASE_STATIC_URL = "https://apiculturegalai.tn/uploads"  # ✅ DO NOT use /api here
 os.makedirs(UPLOAD_DIR, exist_ok=True)
+
 
 @router.post("/upload")
 async def upload_image(file: UploadFile = File(...)):
     filename = file.filename
     file_path = os.path.join(UPLOAD_DIR, filename)
+    
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
 
-    public_url = f"{BASE_URL}/uploads/{filename}"
+    public_url = f"{BASE_STATIC_URL}/{filename}"  # ✅ Correct image URL
     return JSONResponse(content={
         "filename": filename,
         "url": public_url
@@ -29,7 +31,7 @@ def list_uploaded_images():
     try:
         files = os.listdir(UPLOAD_DIR)
         image_files = [
-            f"{BASE_URL}/uploads/{filename}"
+            f"{BASE_STATIC_URL}/{filename}"
             for filename in files
             if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp'))
         ]

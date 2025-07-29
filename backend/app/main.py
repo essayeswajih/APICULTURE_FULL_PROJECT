@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Response, Request, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from slowapi import Limiter
 from slowapi.util import get_remote_address
 from slowapi.middleware import SlowAPIMiddleware
@@ -43,6 +44,9 @@ app.add_middleware(SlowAPIMiddleware)
 app.include_router(Oauth2CRouter, prefix="/auth", tags=["Authentication"])
 app.include_router(VetrineRouter, tags=["vetrine"])
 app.include_router(ImagesUploadRouter, tags=["Images Upload"])
+
+# Mount uploads (NOT under /api!)
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 # Initialize database on startup
 @app.on_event("startup")
