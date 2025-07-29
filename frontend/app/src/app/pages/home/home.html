@@ -220,10 +220,10 @@
     <div class="container text-center">
       <h2 class="text-warning fw-bold mb-3">Inscrivez-vous à Notre Newsletter</h2>
       <p class="text-success mb-4">Recevez nos dernières promotions, nouveaux produits et conseils apicoles.</p>
-      <div class="input-group w-50 mx-auto">
+      <form (ngSubmit)="subscribe()"  class="input-group w-50 mx-auto" #newsletterForm="ngForm">
         <input type="email" class="form-control" placeholder="Votre e-mail" aria-label="Email">
-        <button class="btn btn-warning text-white" type="button">S'inscrire</button>
-      </div>
+        <button class="btn btn-warning text-white" type="button" (click)="subscribe()">S'inscrire</button>
+      </form>
     </div>
   </section>
 </main>

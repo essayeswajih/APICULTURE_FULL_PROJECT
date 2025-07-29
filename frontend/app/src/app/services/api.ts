@@ -188,4 +188,14 @@ export class Api {
       .get<Order>(`${this.apiUrl}/orders/orderCode/${code}`, { headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError));
   }
+  subscribeToNewsletter(email: string): Observable<any> {
+    return this.http
+      .post(`${this.apiUrl}/subscribe_to_newsletter`, { email }, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+  sendContactMessage(name: string, email: string, sujet: string, message: string): Observable<any> {
+    return this.http
+      .post(`${this.apiUrl}/support-contact`, { name, email, sujet, message }, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
 }

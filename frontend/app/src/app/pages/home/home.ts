@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CartItem } from '../boutique/boutique';
 import { ToastrService } from 'ngx-toastr';
 import { Cart } from '../../services/cart';
+import { FormControl, Validators } from '@angular/forms';
 
 let ScrollTrigger: any;
 if (typeof window !== 'undefined') {
@@ -28,6 +29,7 @@ export class Home implements OnInit, AfterViewInit {
   productChunks: Product[][] = []; // Grouped products for carousel items
   isDesktop: boolean = false;
   isLoading: boolean = true; // Loading state for products
+  emailControl = new FormControl('', [Validators.required, Validators.email]);
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -156,5 +158,20 @@ async ngAfterViewInit(): Promise<void> {
       goToProduct(id:number): void {
     // Navigate to the product details page
     this.RouterS.navigate(['/product', id]);
+  }
+  subscribe() {
+    if (this.emailControl.valid) {
+      this.isLoading = true;
+      const email = this.emailControl.value!;
+      this.apiService.subscribeToNewsletter(email).subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          this.emailControl.reset();
+        },
+        error: (error) => {
+          this.isLoading = false;
+        }
+      });
+    }
   }
 }
