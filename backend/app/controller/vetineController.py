@@ -206,14 +206,15 @@ class Newsletter(BaseModel):
 
 @router.post("/subscribe_to_newsletter", response_model=dict)
 def subscribe_to_newsletter(newsletter: Newsletter):
+    email = newsletter.email
     try:
         send_email_via_gmail(
             subject="Apiculture Newsletter Subscription",
-            message="A new user has subscribed to the Apiculture newsletter.",
+            message=f"A {email} has subscribed to the Apiculture newsletter.",
             to_email=AdminEmail
         )
-    except Exception:
-        raise HTTPException(status_code=500, detail="Failed to send subscription email.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Failed to send subscription email."+e)
     
     return {"message": "Successfully subscribed to the newsletter."}
 
