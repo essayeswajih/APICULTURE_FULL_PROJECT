@@ -89,3 +89,8 @@ main {
   transform: scale(1.1); /* Slight scale-up on hover */
   transition: transform 0.2s ease;
 }
+@media screen and (max-width: 768px) {
+  .searchonmobile {
+    width: 100% !important; /* Full width on mobile */
+  }
+}
