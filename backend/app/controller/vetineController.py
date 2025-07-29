@@ -202,7 +202,7 @@ def get_order_by_code(
     return db_order
 # subscribe to newsletter sending emil and return 201
 class Newsletter(BaseModel):
-    email: EmailStr
+    email: str
 
 @router.post("/subscribe_to_newsletter", response_model=dict)
 def subscribe_to_newsletter(newsletter: Newsletter):
