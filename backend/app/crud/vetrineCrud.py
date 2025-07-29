@@ -56,6 +56,8 @@ def get_products(
     query = query.offset(skip).limit(limit)
 
     # Fetch the products and convert them to dictionaries (to return a formatted response)
+    raise HTTPException(status_code=400, detail=str(query.statement.compile(compile_kwargs={"literal_binds": True}))
+) 
     return query.all()
 
 def get_product_by_id(db: Session, product_id: int) -> Optional[Product]:
