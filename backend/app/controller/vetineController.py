@@ -1,6 +1,5 @@
-import bleach
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from controller.Oauth2C import get_current_user
@@ -202,57 +201,40 @@ def get_order_by_code(
     return db_order
 # subscribe to newsletter sending emil and return 201
 class Newsletter(BaseModel):
-    email: EmailStr
-
+    email: str
 @router.post("/subscribe_to_newsletter", response_model=dict)
-def subscribe_to_newsletter(newsletter: Newsletter, db: Session = Depends(get_db)):
-    # Save to database
-    db_subscriber = NewsletterSubscribers(email=newsletter.email)
-    try:
-        db.add(db_subscriber)
-        db.commit()
-    except IntegrityError:
-        db.rollback()
-        raise HTTPException(status_code=400, detail="Email already subscribed.")
-
-    # Send notification email
-    try:
-        send_email_via_gmail(
-            subject="Apiculture Newsletter Subscription",
-            message="A new user has subscribed to the Apiculture newsletter.",
-            to_email=AdminEmail
-        )
-    except Exception:
-        raise HTTPException(status_code=500, detail="Failed to send subscription email.")
+def subscribe_to_newsletter(
+    newsletter: Newsletter, db: Session = Depends(get_db)
+):
+    if not newsletter.email:
+        raise HTTPException(status_code=400, detail="Email is required for subscription.")
     
+    send_email_via_gmail(
+        subject="Apiculture Newsletter Subscription",
+        message=newsletter.email+" has subscribed to the Apiculture newsletter.",
+        to_email=AdminEmail
+    )
+    # For simplicity, we just return a success message
     return {"message": "Successfully subscribed to the newsletter."}
 
-# Contact Form
+# contact form
 class contactRequest(BaseModel):
-    name: str
-    email: EmailStr
-    sujet: str
-    message: str
+    name:str
+    email:str
+    sujet:str
+    message:str
 
-@router.post("/support-contact", response_model=dict)
-def contact_form(contact_form: contactRequest):
-    if not contact_form.name or not contact_form.email or not contact_form.sujet or not contact_form.message:
+@router.post("support-contact",response_model=dict)
+def contact_form(contact_form : contactRequest):
+
+    name, email, sujet, message = contact_form.name, contact_form.email, contact_form.sujet, contact_form.message
+
+    if( (not name ) and (not email) and (not sujet) and (not message)):
         raise HTTPException(status_code=400, detail="All fields are required.")
     
-    # Sanitize inputs
-    name = bleach.clean(contact_form.name)
-    sujet = bleach.clean(contact_form.sujet)
-    message = bleach.clean(contact_form.message)
-    
-    # Send email
-    try:
-        send_email_via_gmail(
-            subject="Apiculture Contact Message",
-            message=f"Name: {name}\nEmail: {contact_form.email}\nSujet: {sujet}\nMessage: {message}",
-            to_email=AdminEmail,
-            reply_to=contact_form.email
-        )
-    except Exception:
-        raise HTTPException(status_code=500, detail="Failed to send contact message.")
-    
-    return {"message": "Successfully sent the message."}
+    send_email_via_gmail(
+        subject = "Apiculture Contact Message",
+        message = f"Name: {name}\nEmail: {email}\nSujet: {sujet}\nMessage: {message}",
+        to_email = AdminEmail
+    )
+    return {"message":"Successfully sent the message."}
