@@ -9,7 +9,7 @@ router = APIRouter()
 
 UPLOAD_DIR = "uploads/"
 BASE_STATIC_URL = "https://apiculturegalai.tn/uploads"  # ✅ DO NOT use /api here
-
+ge_tUrl = "https://apiculturegalai.tn/api/uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
@@ -32,7 +32,7 @@ def list_uploaded_images():
     try:
         files = os.listdir(UPLOAD_DIR)
         image_files = [
-            f"https://apiculturegalai.tn/api/{filename}"
+            f"{BASE_STATIC_URL}/{filename}"
             for filename in files
             if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp'))
         ]
