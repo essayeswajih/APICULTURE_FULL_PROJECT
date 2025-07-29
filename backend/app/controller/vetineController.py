@@ -240,7 +240,6 @@ def contact_form(contact_form: contactRequest):
             subject="Apiculture Contact Message",
             body=f"Name: {name}\nEmail: {contact_form.email}\nSujet: {sujet}\nMessage: {message}",
             to_email=AdminEmail,
-            reply_to=contact_form.email
         )
     except Exception as e :
         raise HTTPException(status_code=500, detail="Failed to send contact message."+"email: "+contact_form.email+"sujet: "+sujet+"message: "+message+"error : "+str(e))
