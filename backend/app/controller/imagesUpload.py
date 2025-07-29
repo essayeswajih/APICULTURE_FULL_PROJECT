@@ -27,7 +27,7 @@ async def upload_image(file: UploadFile = File(...)):
         "url": public_url
     })
 
-@router.get("/images/")
+@router.get("/images")
 def list_uploaded_images():
     try:
         files = os.listdir(UPLOAD_DIR)
