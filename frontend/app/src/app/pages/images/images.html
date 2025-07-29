@@ -14,6 +14,7 @@
 <hr />
 
 <h3>All Uploaded Images:</h3>
+{{ images.length > 0 ? images.length + ' images found' : 'No images uploaded yet.' }}
 <div *ngFor="let img of images">
   <img [src]="img" alt="Image" style="max-width: 150px; margin: 10px;" />
   <p>{{img}}</p>
