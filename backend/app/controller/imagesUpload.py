@@ -8,7 +8,7 @@ import unicodedata
 router = APIRouter()
 
 UPLOAD_DIR = "uploads/"
-BASE_URL = "https://apiculturegalai.tn"  # Adjust accordingly
+BASE_URL = "https://apiculturegalai.tn/api"  # Adjust accordingly
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @router.post("/upload")
