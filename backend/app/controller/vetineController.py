@@ -242,6 +242,6 @@ def contact_form(contact_form: contactRequest):
             to_email=AdminEmail,
         )
     except Exception as e :
-        raise HTTPException(status_code=500, detail="Failed to send contact message."+"email: "+contact_form.email+"sujet: "+sujet+"message: "+message+"error : "+str(e))
+        raise HTTPException(status_code=500, detail="Failed to send contact message.")
     
     return {"message": "Successfully sent the message."}
