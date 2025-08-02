@@ -16,7 +16,7 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/app
-      - uploads:/app/uploads   # Shared volume for uploads
+      - uploads:/uploads  # Shared volume for uploads
     command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
     networks:
       - apiculture1-network
