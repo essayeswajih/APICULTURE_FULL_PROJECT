@@ -33,6 +33,9 @@ export const routes: Routes = [
       }
     } 
   },
+  {path: 'debuter-en-apiculture', loadComponent: () => import('./pages/blogs/debuteren-apiculture/debuteren-apiculture').then(m => m.DebuterenApiculture)},
+  {path: 'entretien-des-ruches', loadComponent: () => import('./pages/blogs/entretiendes-ruches/entretiendes-ruches').then(m => m.EntretiendesRuches)},
+  {path: 'bienfaits-miel', loadComponent: () => import('./pages/blogs/bienfaitsdu-miel/bienfaitsdu-miel').then(m => m.BienfaitsduMiel)},
   { path: 'images', loadComponent: () => import('./pages/images/images').then(m => m.Images),canActivate: [authGuard] },
   { path: 'client-order-view', loadComponent: () => import('./pages/client-order-view/client-order-view').then(m => m.ClientOrderView) },
   { path: 'login', loadComponent: () => import('./auth/login/login').then(m => m.Login) },
