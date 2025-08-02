@@ -10,12 +10,13 @@ services:
       - DATABASE_URL=postgresql+psycopg2://apiculturefromtn:apiculture1fromtn@postgres-db:5432/apiculture
       - SECRET_KEY=V0hxRkBhamoyODc0NDV4NDg1MXNxQGRqcWQxampqSDA3RDJmZmZxZHNxZHFzbSptKvlnO3V6cw==
       - SENDER_EMAIL=wajihsayes@gmail.com
-      - SENDER_PASSWORD=lzmy nuqu svmp aury 
+      - SENDER_PASSWORD=lzmy nuqu svmp aury
     depends_on:
       postgres-db:
         condition: service_healthy
     volumes:
       - ./backend:/app
+      - uploads:/uploads  # Shared volume for uploads
     command: ["uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"]
     networks:
       - apiculture1-network
@@ -57,7 +58,8 @@ services:
     volumes:
       - ./frontend/app/nginx.conf:/etc/nginx/nginx.conf
       - certbot-certs:/etc/letsencrypt
-      - ./empty-conf.d:/etc/nginx/conf.d  # Mount empty directory to override default.conf
+      - ./empty-conf.d:/etc/nginx/conf.d
+      - uploads:/uploads  # Shared volume for uploads
     ports:
       - "80:80"
       - "443:443"
@@ -85,3 +87,4 @@ networks:
 volumes:
   postgres-data:
   certbot-certs:
+  uploads:
