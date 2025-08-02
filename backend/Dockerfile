@@ -12,6 +12,12 @@ RUN apt-get update && apt-get install -y libpq-dev gcc
 # Install dependencies
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
+# Create non-root user and set permissions
+RUN useradd -m -u 1000 appuser && \
+    mkdir -p /uploads && \
+    chown -R appuser:appuser /uploads && \
+    chmod -R 755 /uploads
+
 # Copy the application code into the container
 COPY ./app .
 
