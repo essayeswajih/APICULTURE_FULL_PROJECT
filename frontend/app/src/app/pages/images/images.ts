@@ -1,10 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Api } from '../../services/api';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-images',
-  imports: [],
+  imports: [
+    CommonModule,
+  ],
   templateUrl: './images.html',
   styleUrl: './images.scss'
 })

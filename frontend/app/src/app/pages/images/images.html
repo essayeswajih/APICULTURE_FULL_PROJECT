@@ -15,7 +15,7 @@
 
 <h3>All Uploaded Images:</h3>
 {{ images.length > 0 ? images.length + ' images found' : 'No images uploaded yet.' }}
-
+ {{images | json}}
 <div class="image-item" *ngFor="let image of images; let i = index">
   {{image}}
   <img [src]="image" lazy [alt]="'Image ' + (i + 1)" style="max-width: 200px; margin: 10px;" />
