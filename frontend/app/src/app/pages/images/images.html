@@ -1,19 +1,40 @@
+<div class="container py-5">
+  <!-- Image Upload Section -->
+  <div class="image-upload-section">
+    <h2>Upload an Image</h2>
+    <div class="input-group mb-3">
+      <input type="file" class="form-control custom-file-input" (change)="onFileSelected($event)" accept="image/*" />
+      <button class="btn btn-upload" (click)="uploadImage()" [disabled]="!selectedFile">Upload Image</button>
+    </div>
 
-<input type="file" (change)="onFileSelected($event)" />
-<button class="btn" (click)="uploadImage()">upload</button>
+    <!-- Upload Progress -->
+    <div *ngIf="uploadProgress > 0 && uploadProgress < 100" class="upload-progress">
+      <div class="progress">
+        <div class="progress-bar bg-primary" role="progressbar" [style.width]="uploadProgress + '%'" [attr.aria-valuenow]="uploadProgress" aria-valuemin="0" aria-valuemax="100">
+          {{ uploadProgress }}%
+        </div>
+      </div>
+    </div>
 
-<div *ngIf="uploadProgress > 0 && uploadProgress < 100">
-  Uploading: {{ uploadProgress }}%
-</div>
+    <!-- Last Uploaded Image Preview -->
+    <div *ngIf="uploadedUrl" class="preview-image">
+      <p class="mb-2">Last Uploaded Image:</p>
+      <img [src]="uploadedUrl" alt="Uploaded Image" class="img-fluid" style="max-height: 250px;" />
+    </div>
+  </div>
 
-<div *ngIf="uploadedUrl">
-  <p>Last uploaded:</p>
-  <img [src]="uploadedUrl" alt="Uploaded Image" style="max-width: 200px;" />
-</div>
+  <hr />
 
-<hr />
-
-<h3>All Uploaded Images:</h3>
-<div class="image-item" *ngFor="let image of images; let i = index">
-  <img [src]="image" lazy [alt]="'Image ' + (i + 1)" style="max-width: 200px; margin: 10px;" />
+  <!-- Image Gallery Section -->
+  <div class="gallery-section">
+    <h3>All Uploaded Images</h3>
+    <div class="gallery-grid">
+      <div class="image-item" *ngFor="let image of images; let i = index">
+        <img [src]="image" [alt]="'Image ' + (i + 1)" loading="lazy" />
+      </div>
+    </div>
+    <div *ngIf="images.length === 0" class="text-muted text-center">
+      No images uploaded yet.
+    </div>
+  </div>
 </div>
