@@ -46,7 +46,7 @@ app.include_router(VetrineRouter, tags=["vetrine"])
 app.include_router(ImagesUploadRouter, tags=["Images Upload"])
 
 # Mount uploads (NOT under /api!)
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+app.mount("/uploads", StaticFiles(directory="/uploads"), name="uploads")
 
 # Initialize database on startup
 @app.on_event("startup")
