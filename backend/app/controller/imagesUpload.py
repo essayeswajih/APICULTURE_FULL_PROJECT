@@ -5,8 +5,7 @@ from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
-# ✅ Use absolute path to match Docker volume
-UPLOAD_DIR = "/uploads"
+UPLOAD_DIR = "uploads/"
 BASE_STATIC_URL = "https://apiculturegalai.tn/uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
@@ -14,19 +13,15 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 async def upload_image(file: UploadFile = File(...)):
     filename = file.filename
     file_path = os.path.join(UPLOAD_DIR, filename)
+    
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
 
-    try:
-        with open(file_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-
-        public_url = f"{BASE_STATIC_URL}/{filename}"
-        return JSONResponse(content={
-            "filename": filename,
-            "url": public_url
-        })
-
-    except Exception as e:
-        return JSONResponse(status_code=500, content={"error": str(e)})
+    public_url = f"{BASE_STATIC_URL}/{filename}"
+    return JSONResponse(content={
+        "filename": filename,
+        "url": public_url
+    })
 
 @router.get("/images")
 def list_uploaded_images():
@@ -38,6 +33,5 @@ def list_uploaded_images():
             if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.webp'))
         ]
         return JSONResponse(content={"images": image_files})
-
     except Exception as e:
         return JSONResponse(status_code=500, content={"error": str(e)})
