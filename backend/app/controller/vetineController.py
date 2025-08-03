@@ -127,7 +127,7 @@ def create_new_order(
         raise HTTPException(status_code=400, detail="Quantity must be a positive number.")
     
     # Calculate total amount
-    total_amount = sum(item.price * item.quantity for item in order_create.items)
+    total_amount = sum(item.price * item.quantity for item in order_create.items) + 8
     
     return create_order(db,order_create=order_create, total_amount=total_amount)
 # Update Order Status

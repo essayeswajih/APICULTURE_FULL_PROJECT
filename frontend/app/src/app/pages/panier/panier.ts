@@ -132,7 +132,7 @@ export class Panier implements OnInit {
   }
 
   getTotal(): number {
-    const total = this.getSubtotal() + this.getTax();
+    const total = this.getSubtotal() + this.getTax() + 8;
     return total;
   }
 
