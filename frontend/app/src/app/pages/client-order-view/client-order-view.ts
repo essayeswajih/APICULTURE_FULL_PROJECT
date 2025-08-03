@@ -28,9 +28,6 @@ export class ClientOrderView implements OnInit {
       const orderCode = params['ordercode'];
       if (orderCode) {
         this.loadOrder(orderCode);
-      } else {
-        this.error = 'No order code provided';
-        this.cdRef.detectChanges();
       }
     });
   }
