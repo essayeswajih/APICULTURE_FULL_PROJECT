@@ -3,7 +3,7 @@ import shutil
 from fastapi import APIRouter, Depends, UploadFile, File
 from fastapi.responses import JSONResponse
 
-from Oauth2C import get_current_user
+from controller.Oauth2C import get_current_user
 from models.Oauth2Models import User
 
 router = APIRouter()
