@@ -37,7 +37,6 @@ export class CategoryManagement implements OnInit {
         this.loadCategories();
       });
     } else {
-      console.log('Adding new category:', this.newCategory)
       this.apiService.addCategory(this.newCategory).subscribe(() => {
         this.resetForm();
         this.loadCategories();
@@ -69,8 +68,6 @@ export class CategoryManagement implements OnInit {
     // Directly call the API without zone.js
     this.apiService.getCategories().subscribe((categories) => {
       this.categories = categories;
-      console.log('Categories loaded:', this.categories);
-
       if (isPlatformBrowser(this.platformId)) {
         // Apply GSAP animation after categories are loaded
         setTimeout(() => {

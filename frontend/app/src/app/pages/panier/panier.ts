@@ -157,7 +157,6 @@ export class Panier implements OnInit {
   }
 
   closeModal(): void {
-    console.log('Closing checkout modal');
     if (isPlatformBrowser(this.platformId)) {
       const modalElement = document.getElementById('checkoutModal');
       if (modalElement) {
@@ -176,7 +175,6 @@ export class Panier implements OnInit {
 
   finalizeOrder(): void {
   if (this.checkoutForm.valid) {
-    console.log('Finalizing order:', this.checkoutForm.value);
     const orderData: Order = {
       total_amount: this.getTotal(),
       status: OrderStatus.PENDING,
@@ -198,16 +196,25 @@ export class Panier implements OnInit {
 
     this.api.createOrder(orderData).subscribe({
       next: (order) => {
-        console.log('Order created successfully:', order);
         this.router.navigate(['/order-confirmation', order.id]);
         // Clear cart after order finalization
+        this.toastService.success('Order placed successfully!', 'Success', {
+          timeOut: 2000,
+          positionClass: 'toast-bottom-right',
+          progressBar: true,
+          closeButton: true,
+        });
         this.cartItems = [];
         this.saveCartToLocalStorage();
         this.cartService.setzero(); 
       },
       error: (err) => {
-        console.error('Failed to create order:', err);
-        alert('An error occurred while finalizing your order. Please try again later.');
+        this.toastService.error('Failed to place order. Please try again.', 'Error', {
+          timeOut: 2000,
+          positionClass: 'toast-bottom-right',
+          progressBar: true,
+          closeButton: true,
+        });
       }
     });
     this.closeModal();

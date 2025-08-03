@@ -142,8 +142,6 @@ export class Boutique implements OnInit, OnDestroy {
   }
 
   changeSortBy(sortBy: string): void {
-    console.log("clicked")
-    console.log(sortBy)
       this.sortBy = sortBy;
       this.updateRoute();
       this.loadProducts();
@@ -158,7 +156,6 @@ export class Boutique implements OnInit, OnDestroy {
   }
 
   private updateRoute(): void {
-    console.log(this.sortBy)
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { 
@@ -229,8 +226,6 @@ export class Boutique implements OnInit, OnDestroy {
   }
 
   goTo(category?: string, sortBy?: string): void {
-    console.log('Navigating to boutique with category:', category, 'and sortBy:', sortBy);
-    
     if (category) {
       this.selectedCategory = this.categories.find(cat => cat.name.toLowerCase() === category.toLowerCase()) || { id: 0, name: 'Tous' };
     }

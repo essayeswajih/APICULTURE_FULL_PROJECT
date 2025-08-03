@@ -30,7 +30,6 @@ export class Images implements OnInit {
     this.apiService.getAllImages().subscribe({
       next: (res) => {
         this.images = res.images;
-        console.log('Images fetched successfully:', res.images);
         this.cdr.detectChanges(); // Ensure the view updates with the new images
       },
       error: (err) => {
@@ -50,7 +49,6 @@ export class Images implements OnInit {
             this.uploadProgress = Math.round((event.loaded / event.total) * 100);
             this.cdr.detectChanges();
           } else if (event.type === HttpEventType.Response) {
-            console.log('Upload complete:', event.body);
             this.uploadedUrl = event.body?.url;
             this.getAllImages(); // Refresh image list after upload
           }

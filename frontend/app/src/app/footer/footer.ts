@@ -32,8 +32,6 @@ export class Footer implements OnInit {
   loadCategories() {
     this.apiService.getCategories().subscribe((categories) => {
       this.categories = categories;
-      console.log('Footer categories loaded:', this.categories);
-
       // If we're in the browser environment, apply change detection
       if (isPlatformBrowser(this.platformId)) {
         this.cdRef.detectChanges(); // Trigger change detection manually

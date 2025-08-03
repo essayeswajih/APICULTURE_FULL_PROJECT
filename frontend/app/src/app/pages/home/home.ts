@@ -61,7 +61,6 @@ async ngAfterViewInit(): Promise<void> {
       this.fromLeftAnnimation('.c4');
       this.fromLeftAnnimation('.c5');
 
-      console.log("ScrollTrigger.refresh() called");
       ScrollTrigger.refresh();
     }, 300); // ⏱️ Increased delay to ensure elements are painted
   }
