@@ -1,7 +1,10 @@
 import os
 import shutil
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, Depends, UploadFile, File
 from fastapi.responses import JSONResponse
+
+from Oauth2C import get_current_user
+from models.Oauth2Models import User
 
 router = APIRouter()
 
@@ -11,7 +14,7 @@ BASE_STATIC_URL = "https://apiculturegalai.tn/uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @router.post("/upload")
-async def upload_image(file: UploadFile = File(...)):
+async def upload_image(file: UploadFile = File(...), user: User = Depends(get_current_user)):
     filename = file.filename
     file_path = os.path.join(UPLOAD_DIR, filename)
 
@@ -29,7 +32,7 @@ async def upload_image(file: UploadFile = File(...)):
         return JSONResponse(status_code=500, content={"error": str(e)})
 
 @router.get("/images")
-def list_uploaded_images():
+def list_uploaded_images(user: User = Depends(get_current_user)):
     try:
         files = os.listdir(UPLOAD_DIR)
         image_files = [
