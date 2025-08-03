@@ -93,8 +93,9 @@
                 [(ngModel)]="paymentMethod"
                 aria-label="Choisir une méthode de paiement"
               >
-                <option value="online">Payer en ligne</option>
                 <option value="cod">Payer à la livraison</option>
+                <option value="online" disabled>Payer en ligne</option>
+                
               </select>
             </div>
             <button
