@@ -25,7 +25,7 @@ interface CartItem {
 export class Panier implements OnInit {
   cartItems: CartItem[] = [];
 
-  paymentMethod: string = 'online'; // Default to 'online'
+  paymentMethod: string = 'cod'; // Default to 'online'
   checkoutForm: FormGroup;
 
   constructor(
