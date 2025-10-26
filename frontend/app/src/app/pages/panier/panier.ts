@@ -135,6 +135,11 @@ export class Panier implements OnInit {
     const total = this.getSubtotal() + this.getTax() + 8;
     return total;
   }
+  getTotalWithoutTax(): number {
+    //TVA non incluse
+    const total = this.getSubtotal() + 8;
+    return total;
+  }
 
   openCheckoutModal(): void {
     if (this.cartItems.length > 0) {
