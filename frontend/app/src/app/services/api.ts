@@ -173,7 +173,7 @@ export class Api {
 
   createOrder(order: Order): Observable<Order> {
     return this.http
-      .post<Order>(`${this.apiUrl}/orders`, order, { headers: this.getAuthHeaders() })
+      .post<Order>(`${this.apiUrl}/orders`, order)
       .pipe(catchError(this.handleError));
   }
 
@@ -189,17 +189,17 @@ export class Api {
   }
   getOrderByCode(code:string): Observable<any> {
     return this.http
-      .get<Order>(`${this.apiUrl}/orders/orderCode/${code}`, { headers: this.getAuthHeaders() })
+      .get<Order>(`${this.apiUrl}/orders/orderCode/${code}`)
       .pipe(catchError(this.handleError));
   }
   subscribeToNewsletter(email: string): Observable<any> {
     return this.http
-      .post(`${this.apiUrl}/subscribe_to_newsletter`, { email }, { headers: this.getAuthHeaders() })
+      .post(`${this.apiUrl}/subscribe_to_newsletter`, { email })
       .pipe(catchError(this.handleError));
   }
   sendContactMessage(name: string, email: string, sujet: string, message: string): Observable<any> {
     return this.http
-      .post(`${this.apiUrl}/support-contact`, { name, email, sujet, message }, { headers: this.getAuthHeaders() })
+      .post(`${this.apiUrl}/support-contact`, { name, email, sujet, message })
       .pipe(catchError(this.handleError));
   }
   uploadImage(file: File): Observable<any> {

@@ -1,4 +1,4 @@
 export const environment = {
-  production: false,        // Set to `true` for production environment
-  apiUrl: 'https://apiculturegalai.tn/api',  // Your FastAPI backend URL during development
+  production: true,        // Set to `true` for production environment
+  apiUrl: 'https://api.apiculturegalai.tn',  // Your FastAPI backend URL during development
 };

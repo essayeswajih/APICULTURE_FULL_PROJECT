@@ -128,8 +128,10 @@ def create_new_order(
     
     total = sum(item.price * item.quantity for item in order_create.items)
 
-    # Calculate total amount
-    total_amount = total +(total*0.19) + 8
+    # Calculate total amount with 19% tax and 8 units shipping fee
+    #total_amount = total +(total*0.19) + 8
+    total_amount = total + 8
+
     
     return create_order(db,order_create=order_create, total_amount=total_amount)
 # Update Order Status

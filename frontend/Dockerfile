@@ -1,33 +1,32 @@
-# Step 1: Build the Angular app
+# ===========================
+# Stage 1: Build Angular App
+# ===========================
 FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Copy package.json and package-lock.json from the app folder
-COPY ./app/package.json ./
-COPY ./app/package-lock.json ./
+# Copy package files and install dependencies (including dev deps)
+COPY app/package*.json ./
+RUN npm install
 
-# Install dependencies
-RUN npm install -g @angular/cli@20 && npm install
+# Ensure Angular CLI is available (global install)
+RUN npm install -g @angular/cli
 
-# Copy the rest of the Angular project files into the container
-COPY ./app ./
+# Copy the rest of your Angular project
+COPY app/. .
 
-# Build the Angular project in production mode
-RUN npm run build -- --configuration production
+# Build Angular app for production
+RUN ng build --configuration production
 
-# Step 2: Serve the Angular app with NGINX
+# ===========================
+# Stage 2: Serve with Nginx
+# ===========================
 FROM nginx:alpine
 
-# Copy the built Angular app from the build stage to NGINX's default html folder
-COPY --from=build ./app/dist/Apiculture /usr/share/nginx/html
+RUN rm -rf /usr/share/nginx/html/*
+COPY --from=build /app/dist/Apiculture/browser /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy the custom NGINX configuration (optional)
-COPY ./app/nginx.conf /etc/nginx/nginx.conf 
-
-# Expose port 80 to make the app accessible
 EXPOSE 80
-
-# Optionally, you can set a default command (nginx starts by default)
 CMD ["nginx", "-g", "daemon off;"]
 
