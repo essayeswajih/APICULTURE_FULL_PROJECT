@@ -14,10 +14,8 @@ from crud.vetrineCrud import (
     get_cart_items, add_to_cart, remove_from_cart, update_category, update_product
 )
 from controller.sendMail import AdminEmail, send_email_via_gmail
-from slowapi.util import get_remote_address
-from slowapi import Limiter
-from fastapi import Request
-limiter = Limiter(key_func=get_remote_address)
+
+from config.limiter_config import limiter
 
 router = APIRouter()
 
