@@ -233,7 +233,7 @@ class contactRequest(BaseModel):
 
 @router.post("/support-contact", response_model=dict)
 @limiter.limit("3/minute")
-def contact_form(contact_form: contactRequest):
+def contact_form(request: Request, contact_form: contactRequest):
     if not contact_form.name or not contact_form.email or not contact_form.sujet or not contact_form.message:
         raise HTTPException(status_code=400, detail="All fields are required.")
     
@@ -248,7 +248,7 @@ def contact_form(contact_form: contactRequest):
             body=f"Name: {name}\nEmail: {contact_form.email}\nSujet: {sujet}\nMessage: {message}",
             to_email=AdminEmail,
         )
-    except Exception as e :
+    except Exception as e:
         raise HTTPException(status_code=500, detail="Failed to send contact message.")
     
     return {"message": "Successfully sent the message."}
