@@ -1,0 +1,16 @@
+# Stage 1: Build the Angular Application
+ARG NODE_VERSION=24.7.0-alpine
+
+FROM node:${NODE_VERSION} AS builder
+WORKDIR /app
+COPY app/package.json app/package-lock.json ./
+RUN npm install -g @angular/cli@20
+RUN --mount=type=cache,target=/root/.npm npm ci
+COPY app ./
+RUN npm run build -- --configuration production --output-path dist/Apiculture --base-href /
+
+# Stage 2: Output build artifacts
+FROM alpine:latest
+WORKDIR /app
+COPY --from=builder /app/dist/Apiculture/browser /app/dist/Apiculture
+RUN chmod -R 755 /app/dist/Apiculture

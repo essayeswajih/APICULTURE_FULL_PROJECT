@@ -189,7 +189,7 @@ export class Api {
   }
   getOrderByCode(code:string): Observable<any> {
     return this.http
-      .get<Order>(`${this.apiUrl}/orders/orderCode/${code}`, { headers: this.getAuthHeaders() })
+      .get<Order>(`${this.apiUrl}/orders/orderCode/${code}`)
       .pipe(catchError(this.handleError));
   }
   subscribeToNewsletter(email: string): Observable<any> {

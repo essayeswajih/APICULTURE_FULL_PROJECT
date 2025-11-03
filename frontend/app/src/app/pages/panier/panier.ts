@@ -131,8 +131,13 @@ export class Panier implements OnInit {
     return tax;
   }
 
-  getTotal(): number {
+  getTotalWithTax(): number {
     const total = this.getSubtotal() + this.getTax() + 8;
+    return total;
+  }
+  getTotalWithoutTax(): number {
+    //TVA non incluse
+    const total = this.getSubtotal() + 8;
     return total;
   }
 
@@ -176,7 +181,7 @@ export class Panier implements OnInit {
   finalizeOrder(): void {
   if (this.checkoutForm.valid) {
     const orderData: Order = {
-      total_amount: this.getTotal(),
+      total_amount: this.getTotalWithoutTax(),
       status: OrderStatus.PENDING,
       items: this.cartItems.map(item => ({
         product_id: item.id,

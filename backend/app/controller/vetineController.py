@@ -18,6 +18,7 @@ from slowapi.util import get_remote_address
 from slowapi import Limiter
 from fastapi import Request
 from main import limiter
+
 router = APIRouter()
 
 # Role Check - Admin Access
@@ -119,7 +120,6 @@ def get_user_orders(
 
 # Route to create an order
 @router.post("/orders", response_model=OrderBase)
-@limiter.limit("3/minute")
 def create_new_order(
     order_create: OrderCreate, db: Session = Depends(get_db),
 ):

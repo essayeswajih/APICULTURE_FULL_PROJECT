@@ -10,7 +10,7 @@ router = APIRouter()
 
 # ✅ Use absolute path to match Docker volume
 UPLOAD_DIR = "/uploads"
-BASE_STATIC_URL = "https://apiculturegalai.tn/uploads"
+BASE_STATIC_URL = "https://api.apiculturegalai.tn/uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @router.post("/upload")
