@@ -14,7 +14,7 @@ from crud.vetrineCrud import (
     get_cart_items, add_to_cart, remove_from_cart, update_category, update_product
 )
 from controller.sendMail import AdminEmail, send_email_via_gmail
-
+from fastapi import Request
 from config.limiter_config import limiter
 
 router = APIRouter()
