@@ -118,8 +118,11 @@ def get_user_orders(
 
 # Route to create an order
 @router.post("/orders", response_model=OrderBase)
+@limiter.limit("5/minute")
 def create_new_order(
-    order_create: OrderCreate, db: Session = Depends(get_db),
+    request: Request, 
+    order_create: OrderCreate,
+    db: Session = Depends(get_db),
 ):
     if not order_create.items:
         raise HTTPException(status_code=400, detail="Order must contain items.")
@@ -211,7 +214,8 @@ class Newsletter(BaseModel):
     email: str
 
 @router.post("/subscribe_to_newsletter", response_model=dict)
-def subscribe_to_newsletter(newsletter: Newsletter):
+@limiter.limit("3/minute")
+def subscribe_to_newsletter(request: Request, newsletter: Newsletter):
     email = newsletter.email
     try:
         send_email_via_gmail(
