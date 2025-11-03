@@ -15,7 +15,17 @@ from crud.vetrineCrud import (
 )
 from controller.sendMail import AdminEmail, send_email_via_gmail
 
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+
+limiter = Limiter(key_func=get_remote_address)
+
 router = APIRouter()
+
+# <<< REGISTER THE EXCEPTION HANDLER (once) >>>
+router.state.limiter = limiter
+router.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Role Check - Admin Access
 def check_admin(current_user: User = Depends(get_current_user)):
@@ -116,6 +126,7 @@ def get_user_orders(
 
 # Route to create an order
 @router.post("/orders", response_model=OrderBase)
+@limiter.limit("5/minute")
 def create_new_order(
     order_create: OrderCreate, db: Session = Depends(get_db),
 ):
@@ -211,6 +222,7 @@ class Newsletter(BaseModel):
     email: str
 
 @router.post("/subscribe_to_newsletter", response_model=dict)
+@limiter.limit("5/minute")
 def subscribe_to_newsletter(newsletter: Newsletter):
     email = newsletter.email
     try:
@@ -232,6 +244,7 @@ class contactRequest(BaseModel):
     message: str
 
 @router.post("/support-contact", response_model=dict)
+@limiter.limit("5/minute")
 def contact_form(contact_form: contactRequest):
     if not contact_form.name or not contact_form.email or not contact_form.sujet or not contact_form.message:
         raise HTTPException(status_code=400, detail="All fields are required.")

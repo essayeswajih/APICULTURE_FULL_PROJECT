@@ -57,4 +57,4 @@ def startup_event():
 @app.get("/")
 @limiter.limit("5/minute")
 def read_root(request: Request, db=Depends(get_db)):
-    return {"message": "API is working"}
+    return {"message": "Not allowed here."}
