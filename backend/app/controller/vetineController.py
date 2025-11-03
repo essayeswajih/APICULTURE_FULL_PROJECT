@@ -17,7 +17,7 @@ from controller.sendMail import AdminEmail, send_email_via_gmail
 from slowapi.util import get_remote_address
 from slowapi import Limiter
 from fastapi import Request
-from main import limiter
+limiter = Limiter(key_func=get_remote_address)
 
 router = APIRouter()
 
