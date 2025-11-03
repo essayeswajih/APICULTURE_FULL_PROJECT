@@ -14,7 +14,10 @@ from crud.vetrineCrud import (
     get_cart_items, add_to_cart, remove_from_cart, update_category, update_product
 )
 from controller.sendMail import AdminEmail, send_email_via_gmail
-
+from slowapi.util import get_remote_address
+from slowapi import Limiter
+from fastapi import Request
+from main import limiter
 router = APIRouter()
 
 # Role Check - Admin Access
@@ -116,6 +119,7 @@ def get_user_orders(
 
 # Route to create an order
 @router.post("/orders", response_model=OrderBase)
+@limiter.limit("3/minute")
 def create_new_order(
     order_create: OrderCreate, db: Session = Depends(get_db),
 ):
@@ -230,6 +234,7 @@ class contactRequest(BaseModel):
     message: str
 
 @router.post("/support-contact", response_model=dict)
+@limiter.limit("3/minute")
 def contact_form(contact_form: contactRequest):
     if not contact_form.name or not contact_form.email or not contact_form.sujet or not contact_form.message:
         raise HTTPException(status_code=400, detail="All fields are required.")
