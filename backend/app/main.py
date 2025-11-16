@@ -12,7 +12,7 @@ from controller.vetineController import router as VetrineRouter
 from controller.imagesUpload import router as ImagesUploadRouter
 
 # Initialize the rate limiter
-limiter = Limiter(key_func=get_remote_address)
+from config.limiter_config import limiter
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)

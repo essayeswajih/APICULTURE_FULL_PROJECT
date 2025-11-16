@@ -14,18 +14,10 @@ from crud.vetrineCrud import (
     get_cart_items, add_to_cart, remove_from_cart, update_category, update_product
 )
 from controller.sendMail import AdminEmail, send_email_via_gmail
-
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.util import get_remote_address
-from slowapi.errors import RateLimitExceeded
-
-limiter = Limiter(key_func=get_remote_address)
+from fastapi import Request
+from config.limiter_config import limiter
 
 router = APIRouter()
-
-# <<< REGISTER THE EXCEPTION HANDLER (once) >>>
-router.state.limiter = limiter
-router.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # Role Check - Admin Access
 def check_admin(current_user: User = Depends(get_current_user)):
@@ -128,7 +120,9 @@ def get_user_orders(
 @router.post("/orders", response_model=OrderBase)
 @limiter.limit("5/minute")
 def create_new_order(
-    order_create: OrderCreate, db: Session = Depends(get_db),
+    request: Request, 
+    order_create: OrderCreate,
+    db: Session = Depends(get_db),
 ):
     if not order_create.items:
         raise HTTPException(status_code=400, detail="Order must contain items.")
@@ -139,10 +133,8 @@ def create_new_order(
     
     total = sum(item.price * item.quantity for item in order_create.items)
 
-    # Calculate total amount with 19% tax and 8 units shipping fee
-    #total_amount = total +(total*0.19) + 8
-    total_amount = total + 8
-
+    # Calculate total amount
+    total_amount = total +(total*0.19) + 8
     
     return create_order(db,order_create=order_create, total_amount=total_amount)
 # Update Order Status
@@ -222,8 +214,8 @@ class Newsletter(BaseModel):
     email: str
 
 @router.post("/subscribe_to_newsletter", response_model=dict)
-@limiter.limit("5/minute")
-def subscribe_to_newsletter(newsletter: Newsletter):
+@limiter.limit("3/minute")
+def subscribe_to_newsletter(request: Request, newsletter: Newsletter):
     email = newsletter.email
     try:
         send_email_via_gmail(
@@ -244,8 +236,8 @@ class contactRequest(BaseModel):
     message: str
 
 @router.post("/support-contact", response_model=dict)
-@limiter.limit("5/minute")
-def contact_form(contact_form: contactRequest):
+@limiter.limit("3/minute")
+def contact_form(request: Request, contact_form: contactRequest):
     if not contact_form.name or not contact_form.email or not contact_form.sujet or not contact_form.message:
         raise HTTPException(status_code=400, detail="All fields are required.")
     
@@ -260,7 +252,7 @@ def contact_form(contact_form: contactRequest):
             body=f"Name: {name}\nEmail: {contact_form.email}\nSujet: {sujet}\nMessage: {message}",
             to_email=AdminEmail,
         )
-    except Exception as e :
+    except Exception as e:
         raise HTTPException(status_code=500, detail="Failed to send contact message.")
     
     return {"message": "Successfully sent the message."}
