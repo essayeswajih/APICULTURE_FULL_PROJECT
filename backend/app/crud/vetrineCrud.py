@@ -91,6 +91,9 @@ def update_product(db: Session, product_id: int, product: ProductBase) -> Option
         db_product.category_id = product.category_id,
         db_product.discounted_price = product.discounted_price
         db_product.image_url = product.image_url
+        db_product.image2_url = product.image2_url
+        db_product.image3_url = product.image3_url
+        db_product.image4_url = product.image4_url
         db_product.promo = product.promo
         db_product.buzzent = product.buzzent
         db.commit()
