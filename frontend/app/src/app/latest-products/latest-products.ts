@@ -67,6 +67,10 @@ export class LatestProducts {
     goToProduct(id: number): void {
     this.RouterS.navigate(['/product', id]);
   }
+  getStars(n: number | null | undefined) {
+    const value = n ?? 0;     // if n is null or undefined → use 0
+    return Array(value).fill(0);
+  }
 
   /*products = [
     { name: 'Sunstar Fresh Melon Juice', img: '/assets/images/product-thumb-20.png', price: 18, oldPrice: 24 },

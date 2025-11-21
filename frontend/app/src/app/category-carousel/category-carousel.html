@@ -5,10 +5,9 @@
         <div class="section-header d-flex justify-content-between my-4">
           <h2 class="section-title">Category</h2>
           <div class="d-flex align-items-center">
-            <a href="#" class="btn btn-primary me-2">View All</a>
             <div class="swiper-buttons">
-              <button class="category-carousel-prev btn btn-yellow">❮</button>
-              <button class="category-carousel-next btn btn-yellow">❯</button>
+              <button class="category-carousel-prev btn btn-primary">❮</button>
+              <button class="category-carousel-next btn btn-primary">❯</button>
             </div>
           </div>
         </div>
@@ -18,12 +17,11 @@
     <swiper-container
       [slides-per-view]="5"
       [space-between]="20"
-      [navigation]="{
-        nextEl: '.category-carousel-next',
-        prevEl: '.category-carousel-prev'
-      }"
       [breakpoints]="swiperConfig.breakpoints"
       class="mySwiper"
+      navigation="true"
+      navigation-prev-el=".category-carousel-prev"
+      navigation-next-el=".category-carousel-next"
     >
       <swiper-slide *ngFor="let c of categories">
         <div class="category-item text-center">

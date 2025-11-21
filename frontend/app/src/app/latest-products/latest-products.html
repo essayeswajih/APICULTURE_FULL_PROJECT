@@ -7,8 +7,8 @@
           <div class="d-flex align-items-center">
             <a href="#" class="btn btn-primary me-2">View All</a>
             <div class="swiper-buttons">
-              <button class="products-carousel-prev btn btn-primary">❮</button>
-              <button class="products-carousel-next btn btn-primary">❯</button>
+              <button class="products-carousel-prev-latest btn btn-primary">❮</button>
+              <button class="products-carousel-next-latest btn btn-primary">❯</button>
             </div>
           </div>
         </div>
@@ -20,10 +20,13 @@
       [slides-per-view]="4"
       [space-between]="20"
       navigation="true"
+      navigation-prev-el=".products-carousel-prev-latest"
+      navigation-next-el=".products-carousel-next-latest"
       [breakpoints]="swiperConfig.breakpoints"
       class="mySwiper"
     >
-<swiper-slide *ngFor="let p of products">
+      <!-- ✔ Web Component slides -->
+      <swiper-slide *ngFor="let p of products">
 
         <div class="product-item" style="cursor:pointer;">
           <div (click)="goToProduct(p.id)">
@@ -36,17 +39,29 @@
             <h3 class="fs-6 fw-normal">{{ p.name }}</h3>
 
             <div>
-              <span class="rating">⭐⭐⭐⭐⭐</span>
-              <span>(222)</span>
+              <span class="rating">
+                @for (star of getStars(p.rating); track $index) {
+                  ⭐
+                }
+              </span>
+              <span *ngIf="p.num_ratings" >({{p.num_ratings}})</span>
             </div>
 
-            <div class="d-flex justify-content-center align-items-center gap-2">
-              <del>${{ p.price }}</del>
-              <span class="text-dark fw-semibold">${{ p.discounted_price }}</span>
-              <span class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">
-                10% OFF
-              </span>
-            </div>
+            @if (p?.discounted_price) {
+              <div class="d-flex justify-content-center align-items-center gap-2">
+                <del>{{ p?.price }}DT</del>
+                <span class="text-dark fw-semibold" *ngIf="p.discounted_price">{{ p?.discounted_price }}DT</span>
+
+                <span class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">
+                  {{ ((p?.price! - p?.discounted_price!) / p?.price! * 100) | number:'1.0-0' }}% OFF
+                </span>
+              </div>
+            }
+            @else {
+              <div class="d-flex justify-content-center align-items-center gap-2">
+                <span class="text-dark fw-semibold" *ngIf="p.price">{{ p?.price }}DT</span>
+              </div>
+            }
 
             <div class="button-area p-3 pt-0">
               <div class="row g-1 mt-0 mb-3">

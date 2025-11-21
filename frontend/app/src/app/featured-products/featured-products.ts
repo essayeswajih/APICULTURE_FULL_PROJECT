@@ -104,4 +104,9 @@ export class FeaturedProducts {
       rating: 4.5
     }
   ];*/
+  getStars(n: number | null | undefined) {
+    const value = n ?? 0;     // if n is null or undefined → use 0
+    return Array(value).fill(0);
+  }
+
 }
