@@ -31,6 +31,8 @@ class Product(Base):
     image4_url = Column(Text, nullable=True)
     promo = Column(Boolean, default=False)  # Indicates if the product is on promotion
     buzzent = Column(Text, nullable=True)  # Optional field for buzz or marketing text
+    rating = Column(Float, nullable=True)  # Optional field for product rating
+    num_ratings = Column(Integer, nullable=True)  # Optional field for number of ratings
 
     category = relationship("Category", back_populates="products")
     order_items = relationship("OrderItem", back_populates="product")
@@ -47,6 +49,7 @@ class Category(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False, unique=True)
     description = Column(String)
+    image_url = Column(Text, nullable=True)
 
     products = relationship("Product", back_populates="category")
 

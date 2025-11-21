@@ -29,6 +29,7 @@
                   aria-required="true"
                   placeholder="Votre nom"
                   #name="ngModel"
+                  [ngModelOptions]="{standalone: true}"
                 >
                 <div *ngIf="name.touched && name.invalid" class="text-danger mt-1">Le nom est requis.</div>
               </div>
@@ -45,6 +46,7 @@
                   aria-required="true"
                   placeholder="votre.email@exemple.com"
                   #email="ngModel"
+                  [ngModelOptions]="{standalone: true}"
                 >
                 <div *ngIf="email.touched && email.invalid" class="text-danger mt-1">
                   <div *ngIf="email.errors?.['required']">L’email est requis.</div>
@@ -63,6 +65,7 @@
                   aria-required="true"
                   placeholder="Objet de votre message"
                   #sujet="ngModel"
+                  [ngModelOptions]="{standalone: true}"
                 >
                 <div *ngIf="sujet.touched && sujet.invalid" class="text-danger mt-1">Le sujet est requis.</div>
               </div>
@@ -78,6 +81,7 @@
                   rows="5"
                   placeholder="Votre message"
                   #message="ngModel"
+                  [ngModelOptions]="{standalone: true}"
                 ></textarea>
                 <div *ngIf="message.touched && message.invalid" class="text-danger mt-1">Le message est requis.</div>
               </div>

@@ -75,7 +75,9 @@ def create_product(db: Session, product: ProductBase) -> Product:
         image3_url=product.image3_url,
         image4_url=product.image4_url,
         promo=product.promo,
-        buzzent=product.buzzent
+        buzzent=product.buzzent,
+        rating=product.rating,
+        num_ratings=product.num_ratings,
     )
     db.add(db_product)
     db.commit()
@@ -96,6 +98,8 @@ def update_product(db: Session, product_id: int, product: ProductBase) -> Option
         db_product.image4_url = product.image4_url
         db_product.promo = product.promo
         db_product.buzzent = product.buzzent
+        db_product.rating = product.rating
+        db_product.num_ratings = product.num_ratings
         db.commit()
         db.refresh(db_product)
         return db_product
@@ -121,7 +125,7 @@ def get_category_by_id(db: Session, category_id: int) -> Category:
 
 # Create a new category
 def create_category(db: Session, category: CategoryBase) -> Category:
-    db_category = Category(name=category.name,description=category.description)
+    db_category = Category(name=category.name,description=category.description,image_url=category.image_url)
     db.add(db_category)
     db.commit()
     db.refresh(db_category)
@@ -133,6 +137,7 @@ def update_category(db: Session, category_id: int, category: CategoryBase) -> Ca
     if db_category:
         db_category.name = category.name
         db_category.description = category.description
+        db_category.image_url = category.image_url  
         db.commit()
         db.refresh(db_category)
         return db_category

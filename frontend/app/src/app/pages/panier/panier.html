@@ -47,6 +47,7 @@
                             (ngModelChange)="updateQuantity(item, $event)"
                             min="1"
                             [attr.aria-label]="'Quantité de ' + item.name"
+                            [ngModelOptions]="{standalone: true}"
                           >
                         </td>
                         <td class="align-middle">{{ item.price | number:'1.2-2' }} DNT</td>
@@ -92,6 +93,7 @@
                 class="form-select"
                 [(ngModel)]="paymentMethod"
                 aria-label="Choisir une méthode de paiement"
+                [ngModelOptions]="{standalone: true}"
               >
                 <option value="cod">Payer à la livraison</option>
                 <option value="online" disabled>Payer en ligne</option>

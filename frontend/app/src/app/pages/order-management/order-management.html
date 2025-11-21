@@ -21,7 +21,7 @@
             <p class="card-text">Created: {{ order.created_at | date:'short' }}</p>
             <div class="mb-3">
               <label for="status-{{ order.id }}" class="form-label">Update Status</label>
-              <select class="form-control" id="status-{{ order.id }}" name="status" [(ngModel)]="order.status" (ngModelChange)="updateOrderStatus(order.id, $event)">
+              <select class="form-control" id="status-{{ order.id }}" name="status" [(ngModel)]="order.status" (ngModelChange)="updateOrderStatus(order.id, $event)" [ngModelOptions]="{standalone: true}">
                 @for (status of orderStatuses; track status) {
                   <option [value]="status">{{ status | titlecase }}</option>
                 }

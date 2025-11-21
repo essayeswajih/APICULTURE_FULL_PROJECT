@@ -1,220 +1,596 @@
 
-<main class="bg-light">
-  @if(isDesktop){
-  <div style="position: relative; height: 100%; width: 100%;left: 0; top: 20vh;">
-      <img src="/assets/images/33684.gif"  alt="" style="background-color: transparent; position: absolute; left: 0;width:auto;height:20vh">
-  </div>
-  }
+<!-- Preloader -->
+<div *ngIf="isLoading" class="preloader-wrapper">
+  <div class="preloader"></div>
+</div>
+<!-- WhatsApp Floating Button -->
+<a
+  href="https://wa.me/21600000000"
+  aria-label="Buy Apiculture tools via WhatsApp"
+  alt="Buy Apiculture tools via WhatsApp"
+  class="whatsapp-float"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <i class="fa-brands fa-whatsapp whatsapp-icon"></i>
+</a>
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasCart">
+      <div class="offcanvas-header justify-content-center">
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="order-md-last">
+          <h4 class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-primary">Your cart</span>
+            <span class="badge bg-primary rounded-pill">3</span>
+          </h4>
+          <ul class="list-group mb-3">
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0">Growers cider</h6>
+                <small class="text-body-secondary">Brief description</small>
+              </div>
+              <span class="text-body-secondary">$12</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0">Fresh grapes</h6>
+                <small class="text-body-secondary">Brief description</small>
+              </div>
+              <span class="text-body-secondary">$8</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between lh-sm">
+              <div>
+                <h6 class="my-0">Heinz tomato ketchup</h6>
+                <small class="text-body-secondary">Brief description</small>
+              </div>
+              <span class="text-body-secondary">$5</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+              <span>Total (USD)</span>
+              <strong>$20</strong>
+            </li>
+          </ul>
+  
+          <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+        </div>
+      </div>
+    </div>
+    
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar">
 
-  <!-- Hero Section -->
+      <div class="offcanvas-header justify-content-between">
+        <h4 class="fw-normal text-uppercase fs-6">Menu</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
 
-  <section class="hero py-5 c1">
-    <div class="container">
-      <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item">
-            <img src="/assets/images/Materiel_ Apiculture_Tunisie.png" class="d-block w-100" alt="Outils de miellerie" loading="lazy">
-            <div class="carousel-caption d-none d-md-block">
-              <!--<h2 class="text-warning fw-bold">Outils de Miellerie</h2>
-              <p class="text-success">Tout pour une récolte réussie.</p>-->
-              <a routerLink="/boutique/miellerie" class="btn btn-outline-warning">Voir Plus</a>
+      <div class="offcanvas-body">
+    
+        <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
+          <li class="nav-item border-dashed active">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#fruits"></use></svg>
+              <span>Fruits and vegetables</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#dairy"></use></svg>
+              <span>Dairy and Eggs</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#meat"></use></svg>
+              <span>Meat and Poultry</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#seafood"></use></svg>
+              <span>Seafood</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#bakery"></use></svg>
+              <span>Bakery and Bread</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#canned"></use></svg>
+              <span>Canned Goods</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#frozen"></use></svg>
+              <span>Frozen Foods</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#pasta"></use></svg>
+              <span>Pasta and Rice</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#breakfast"></use></svg>
+              <span>Breakfast Foods</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#snacks"></use></svg>
+              <span>Snacks and Chips</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <button class="btn btn-toggle dropdown-toggle position-relative w-100 d-flex justify-content-between align-items-center text-dark p-2" data-bs-toggle="collapse" data-bs-target="#beverages-collapse" aria-expanded="false">
+              <div class="d-flex gap-3">
+                <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#beverages"></use></svg>
+                <span>Beverages</span>
+              </div>
+            </button>
+            <div class="collapse" id="beverages-collapse">
+              <ul class="btn-toggle-nav list-unstyled fw-normal ps-5 pb-1">
+                <li class="border-bottom py-2"><a href="index.html" class="dropdown-item">Water</a></li>
+                <li class="border-bottom py-2"><a href="index.html" class="dropdown-item">Juice</a></li>
+                <li class="border-bottom py-2"><a href="index.html" class="dropdown-item">Soda</a></li>
+                <li class="border-bottom py-2"><a href="index.html" class="dropdown-item">Tea</a></li>
+              </ul>
             </div>
-          </div>
-          <div class="carousel-item active">
-            <img src="/assets/images/ruches.jpg" class="d-block w-100" alt="Ruches de qualité">
-            <div class="carousel-caption d-none d-md-block">
-              <!--<h2 class="text-warning fw-bold">Ruches</h2>
-              <p class="text-success">Matériel apicole de qualité.</p>-->
-              <a routerLink="/boutique" class="btn btn-outline-warning">Visiter la Boutique</a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#spices"></use></svg>
+              <span>Spices and Seasonings</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#baby"></use></svg>
+              <span>Baby Food and Formula</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#health"></use></svg>
+              <span>Health and Wellness</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#household"></use></svg>
+              <span>Household Supplies</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#personal"></use></svg>
+              <span>Personal Care</span>
+            </a>
+          </li>
+          <li class="nav-item border-dashed">
+            <a href="index.html" class="nav-link d-flex align-items-center gap-3 text-dark p-2">
+              <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#pet"></use></svg>
+              <span>Pet Food and Supplies</span>
+            </a>
+          </li>
+        </ul>
+      
+      </div>
+
+    </div>
+
+
+    
+    <section style="background-image: url('/assets/images/3d-rendering-hexagonal-texture-background_23-2150796428.avif');background-repeat: no-repeat;background-size: cover;">
+      <div class="container-lg">
+        <div class="row">
+          <div class="col-lg-6 pt-5 mt-5">
+            <h2 class="display-1 ls-1"><span class="fw-bold text-primary">Apiculture</span> Vos Outils <span class="fw-bold">Livrés Chez Vous</span></h2>
+            <p class="fs-4">Équipez vos ruches avec nos outils apicoles professionnels.</p>
+            <div class="d-flex gap-3">
+              <a href="#" class="btn btn-primary text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Start Shopping</a>
+              <a href="#" class="btn btn-dark text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Join Now</a>
             </div>
-          </div>
-          <div class="carousel-item">
-            <img src="/assets/images/apicultre1.jpg" class="d-block w-100" alt="Vêtements de protection">
-            <div class="carousel-caption d-none d-md-block">
-              <!--<h2 class="text-warning fw-bold">Vêtements</h2>
-              <p class="text-success">Confort et sécurité.</p>-->
-              <a routerLink="/boutique/vetements" class="btn btn-outline-warning">Découvrir</a>
+            <div class="row my-5">
+              <div class="col">
+                <div class="row text-dark">
+                  <div class="col-auto"><p class="fs-1 fw-bold lh-sm mb-0">14k+</p></div>
+                  <div class="col"><p class="text-uppercase lh-sm mb-0">Product Varieties</p></div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="row text-dark">
+                  <div class="col-auto"><p class="fs-1 fw-bold lh-sm mb-0">50k+</p></div>
+                  <div class="col"><p class="text-uppercase lh-sm mb-0">Happy Customers</p></div>
+                </div>
+              </div>
+              <div class="col">
+                <div class="row text-dark">
+                  <div class="col-auto"><p class="fs-1 fw-bold lh-sm mb-0">10+</p></div>
+                  <div class="col"><p class="text-uppercase lh-sm mb-0">Store Locations</p></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
-    </div>
-  </section>
-  
-<!--<img src="/assets/images/Yellow-Wave-Biodiversity-Corporate-Beekeeping-Service-3.png" alt="" style="background-color: transparent; position: absolute; right: 0; top: 0; max-width:60vw">-->
-
-<section py-5 class="bg-white" style="min-height: 110vh;background-color: #fad647!important;">
-      <svg style="background-color: transparent;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#f8f9fa" fill-opacity="1" d="M0,32L7.7,53.3C15.5,75,31,117,46,144C61.9,171,77,181,93,197.3C108.4,213,124,235,139,245.3C154.8,256,170,256,186,218.7C201.3,181,217,107,232,96C247.7,85,263,139,279,160C294.2,181,310,171,325,165.3C340.6,160,356,160,372,138.7C387.1,117,403,75,418,101.3C433.5,128,449,224,465,256C480,288,495,256,511,256C526.5,256,542,288,557,266.7C572.9,245,588,171,604,122.7C619.4,75,635,53,650,69.3C665.8,85,681,139,697,170.7C712.3,203,728,213,743,213.3C758.7,213,774,203,790,197.3C805.2,192,821,192,836,170.7C851.6,149,867,107,883,112C898.1,117,914,171,929,197.3C944.5,224,960,224,975,213.3C991,203,1006,181,1022,165.3C1037.4,149,1053,139,1068,128C1083.9,117,1099,107,1115,128C1130.3,149,1146,203,1161,208C1176.8,213,1192,171,1208,149.3C1223.2,128,1239,128,1254,117.3C1269.7,107,1285,85,1301,69.3C1316.1,53,1332,43,1347,80C1362.6,117,1378,203,1394,208C1409,213,1425,139,1432,101.3L1440,64L1440,0L1432.3,0C1424.5,0,1409,0,1394,0C1378.1,0,1363,0,1347,0C1331.6,0,1316,0,1301,0C1285.2,0,1270,0,1254,0C1238.7,0,1223,0,1208,0C1192.3,0,1177,0,1161,0C1145.8,0,1130,0,1115,0C1099.4,0,1084,0,1068,0C1052.9,0,1037,0,1022,0C1006.5,0,991,0,975,0C960,0,945,0,929,0C913.5,0,898,0,883,0C867.1,0,852,0,836,0C820.6,0,805,0,790,0C774.2,0,759,0,743,0C727.7,0,712,0,697,0C681.3,0,666,0,650,0C634.8,0,619,0,604,0C588.4,0,573,0,557,0C541.9,0,526,0,511,0C495.5,0,480,0,465,0C449,0,434,0,418,0C402.6,0,387,0,372,0C356.1,0,341,0,325,0C309.7,0,294,0,279,0C263.2,0,248,0,232,0C216.8,0,201,0,186,0C170.3,0,155,0,139,0C123.9,0,108,0,93,0C77.4,0,62,0,46,0C31,0,15,0,8,0L0,0Z"></path></svg>
-                      <div style="position: relative; height: 100%; width: 100%;right: 0; top: 0;">
-                    <img src="/assets/images/1f41d.gif"  alt="" style="background-color: transparent; position: absolute; right: 0;width:auto;height:50vh">
-                  </div>
-      <div class="container" style="background-color: transparent;">
-          <div class="row align-items-center c5">
-              <div class="heading d-flex;" style="align-items: center;">
-                <div style="height: 10VH;"></div>
-
-                <p class="text-center text-white fw-bold" style="font-size: 4em;">Bienvenue sur notre site</p>
-                <p class="text-center text-white"style="font-size: 1.5em;">Découvrez notre sélection de produits apicoles de qualité, conçus pour les apiculteurs passionnés et professionnels. Que vous soyez débutant ou expert, nous avons tout ce dont vous avez besoin pour réussir dans l'apiculture.</p>
-              </div>
-          </div>
-  </div>
-
-</section>
-<!-- Featured Products -->
-<section class="featured-products py-5 c2" style="min-height: 100vh;align-content: center;">
-  <div class="container">
-    <h2 class="text-warning fw-bold text-center mb-4">Nos Produits Phares</h2>
-    <div id="featuredProductCarousel" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
-        @for (chunk of productChunks; track $index; let isFirst = $first) {
-          <div class="carousel-item" [ngClass]="{'active': isFirst}">
-            <div class="row justify-content-center">
-              @for (product of chunk; track product.id) {
-
-                <div class="col-12 col-md-3 mb-3">
-                @if(product.promo){
-                  <div style="position:absolute;z-index:100"><img src="/assets/images/promo.png" style="height: 60px;" alt="promo" srcset=""></div>
-                }
-                  <div class="card h-100">
-                    <img
-                      style="width: 100%; height: 100%; padding: 20px; cursor: pointer;"
-                      [src]="product.image_url"
-                      class="card-img-top"
-                      [alt]="product.name"
-                      (click)="goToProduct(product.id)"
-                      loading="lazy"
-                    >
-                    <div style="position:absolute!important;background-color:rgb(226, 75, 28);color:white;font-weight:bold;top:3%;right:0;padding-left:5px;padding-right:5px">{{product.buzzent}}</div>
-                    <div class="card-body">
-                      <h5 class="card-title text-success">{{ product.name }}</h5>
-                      @if(product.discounted_price && product.discounted_price < product.price) {
-                        <span class="d-block" style="margin-bottom: 5px;">         
-                          <p class="card-text text-decoration-line-through" style="display: inline-block !important; margin-right:7px;font-size:0.8em !important;height: 10px !important;">{{ product.price }} DT</p>
-                          <p class="card-text text-danger" style="display: inline-block !important;">{{ product.discounted_price }} DT</p>
-                        </span>
-
-                      } @else {
-                        <span class="d-block" style="margin-bottom: 5px;">      
-                          <p class="card-text text-danger" style="display: inline-block !important;">{{ product.price }} DT</p>
-                        </span>
-                      }
-                      <button
-                        class="btn btn-outline-warning buy-button"
-                        (click)="addToCart(product)"
-                        aria-label="Ajouter au panier">
-                        Ajouter au Panier
-                      </button>
-                    </div>
+        
+        <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-3 g-0 justify-content-center">
+          <div class="col">
+            <div class="card border-0 bg-primary rounded-0 p-4 text-light">
+              <div class="row">
+                <div class="col-md-3 text-center">
+                  <svg width="60" height="60"><use xlink:href="#fresh"></use></svg>
+                </div>
+                <div class="col-md-9">
+                  <div class="card-body p-0">
+                    <h5 class="text-light">Directement de l'apiculteur</h5>
+                    <p class="card-text">Des outils apicoles sélectionnés pour la qualité et la durabilité.</p>
                   </div>
                 </div>
-              }
+              </div>
             </div>
           </div>
-        }
+          <div class="col">
+            <div class="card border-0 bg-secondary rounded-0 p-4 text-light">
+              <div class="row">
+                <div class="col-md-3 text-center">
+                  <svg width="60" height="60"><use xlink:href="#organic"></use></svg>
+                </div>
+                <div class="col-md-9">
+                  <div class="card-body p-0">
+                    <h5 class="text-light">Outils de qualité</h5>
+                    <p class="card-text">Des équipements fiables pour entretenir vos ruches en toute sécurité.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card border-0 bg-danger rounded-0 p-4 text-light">
+              <div class="row">
+                <div class="col-md-3 text-center">
+                  <svg width="60" height="60"><use xlink:href="#delivery"></use></svg>
+                </div>
+                <div class="col-md-9">
+                  <div class="card-body p-0">
+                    <h5 class="text-light">Livraison rapide</h5>
+                    <p class="card-text">Recevez vos outils apicoles directement chez vous, rapidement et facilement.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
       </div>
-      <button
-        class="carousel-control-prev"
-        type="button"
-        data-bs-target="#featuredProductCarousel"
-        data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button
-        class="carousel-control-next"
-        type="button"
-        data-bs-target="#featuredProductCarousel"
-        data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
-    @if(isLoading) {
-      <div class="text-center mt-4">
-        <p class="text-muted">Chargement des produits...</p>
-        <div class="spinner-border text-warning" role="status">
-          <span class="visually-hidden">Chargement...</span>
+    </section>
+
+    <app-category-carousel [categories]="categories" ></app-category-carousel>
+
+    <section class="py-3">
+      <div class="container-lg">
+        <div class="row">
+          <div class="col-md-12">
+
+            <div class="banner-blocks">
+            
+              <div class="banner-ad d-flex align-items-center large bg-info block-1" style="background: url('/assets/images/banner-ad-1.jpg') no-repeat; background-size: cover;">
+                <div class="banner-content p-5">
+                  <div class="content-wrapper text-light">
+                    <h3 class="banner-title text-light">Items on SALE</h3>
+                    <p>Discounts up to 30%</p>
+                    <a href="#" class="btn-link text-white">Shop Now</a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="banner-ad bg-success-subtle block-2" style="background:url('/assets/images/banner-ad-2.jpg') no-repeat;background-size: cover">
+                <div class="banner-content align-items-center p-5">
+                  <div class="content-wrapper text-light">
+                    <h3 class="banner-title text-light">Combo offers</h3>
+                    <p>Discounts up to 50%</p>
+                    <a href="#" class="btn-link text-white">Shop Now</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="banner-ad bg-danger block-3" style="background:url('/assets/images/banner-ad-3.jpg') no-repeat;background-size: cover">
+                <div class="banner-content align-items-center p-5">
+                  <div class="content-wrapper text-light">
+                    <h3 class="banner-title text-light">Discount Coupons</h3>
+                    <p>Discounts up to 40%</p>
+                    <a href="#" class="btn-link text-white">Shop Now</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <!-- / Banner Blocks -->
+              
+          </div>
         </div>
       </div>
-    }
-    <div class="text-center mt-4">
-      <a routerLink="/boutique" class="btn btn-warning text-white">Voir Tous les Produits</a>
+    </section>
+
+    <app-featured-products [products]="featuredProducts"></app-featured-products>
+
+    <section>
+      <div class="container-lg">
+
+        <div class="bg-secondary text-light py-5 my-5" style="background: url('/assets/images/banner-newsletter.jpg') no-repeat; background-size: cover;">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-md-5 p-3">
+                <div class="section-header">
+                  <h2 class="section-title display-5 text-light">Get 25% Discount on your first purchase</h2>
+                </div>
+                <p>Just Sign Up & Register it now to become member.</p>
+              </div>
+              <div class="col-md-5 p-3">
+                <form>
+                  <div class="mb-3">
+                    <label for="name" class="form-label d-none">Name</label>
+                    <input type="text"
+                      class="form-control form-control-md rounded-0" name="name" id="name" placeholder="Name">
+                  </div>
+                  <div class="mb-3">
+                    <label for="email" class="form-label d-none">Email</label>
+                    <input type="email" class="form-control form-control-md rounded-0" name="email" id="email" placeholder="Email Address">
+                  </div>
+                  <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-dark btn-md rounded-0">Submit</button>
+                  </div>
+                </form>
+                
+              </div>
+              
+            </div>
+            
+          </div>
+        </div>
+        
+      </div>
+    </section>
+    <app-popular-products [products]="popularProducts"></app-popular-products>
+    <app-latest-products [products]="latestProducts"></app-latest-products>
+
+<section id="latest-blog" class="pb-4">
+  <div class="container-lg">
+
+    <div class="row">
+      <div class="section-header d-flex align-items-center justify-content-between my-4">
+        <h2 class="section-title">Our Recent Blog</h2>
+        <a href="#" class="btn btn-primary">View All</a>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <!-- BLOG 1 -->
+      <div class="col-md-4">
+        <article class="post-item card border-0 shadow-sm p-3">
+          <div class="image-holder zoom-effect">
+            <a href="#">
+              <img src="/assets/images/blog_aouclture1.png" alt="post" class="card-img-top">
+            </a>
+          </div>
+          <div class="card-body">
+            <div class="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
+              <div class="meta-date"><svg width="16" height="16"><use xlink:href="#calendar"></use></svg>22 Aug 2021</div>
+              <div class="meta-categories"><svg width="16" height="16"><use xlink:href="#category"></use></svg>apiculture</div>
+            </div>
+            <div class="post-header">
+              <h3 class="post-title">
+                <a href="#" class="text-decoration-none">
+                  10 conseils essentiels pour bien démarrer un rucher en Tunisie
+                </a>
+              </h3>
+              <p>
+                Découvrez les étapes de base pour installer vos premières ruches, choisir le bon emplacement
+                et assurer une bonne santé à vos colonies d’abeilles…
+              </p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- BLOG 2 -->
+      <div class="col-md-4">
+        <article class="post-item card border-0 shadow-sm p-3">
+          <div class="image-holder zoom-effect">
+            <a href="#">
+              <img src="/assets/images/blog_aouclture2.png" alt="post" class="card-img-top">
+            </a>
+          </div>
+          <div class="card-body">
+            <div class="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
+              <div class="meta-date"><svg width="16" height="16"><use xlink:href="#calendar"></use></svg>25 Aug 2021</div>
+              <div class="meta-categories"><svg width="16" height="16"><use xlink:href="#category"></use></svg>guides</div>
+            </div>
+            <div class="post-header">
+              <h3 class="post-title">
+                <a href="#" class="text-decoration-none">
+                  Les meilleures pratiques pour entretenir vos abeilles en été
+                </a>
+              </h3>
+              <p>
+                Températures élevées, manque d’eau, stress thermique… Apprenez comment protéger vos ruches
+                et maintenir une production de miel stable pendant les fortes chaleurs tunisiennes…
+              </p>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <!-- BLOG 3 -->
+      <div class="col-md-4">
+        <article class="post-item card border-0 shadow-sm p-3">
+          <div class="image-holder zoom-effect">
+            <a href="#">
+              <img src="/assets/images/blog_aouclture3.png" alt="post" class="card-img-top">
+            </a>
+          </div>
+          <div class="card-body">
+            <div class="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
+              <div class="meta-date"><svg width="16" height="16"><use xlink:href="#calendar"></use></svg>28 Aug 2021</div>
+              <div class="meta-categories"><svg width="16" height="16"><use xlink:href="#category"></use></svg>inspiration</div>
+            </div>
+            <div class="post-header">
+              <h3 class="post-title">
+                <a href="#" class="text-decoration-none">
+                  Les variétés de miel tunisien à découvrir et leurs bienfaits
+                </a>
+              </h3>
+              <p>
+                Du miel d’eucalyptus au miel de romarin, explorez les saveurs locales les plus appréciées et
+                apprenez comment chaque type de miel contribue à votre bien-être…
+              </p>
+            </div>
+          </div>
+        </article>
+      </div>
+
     </div>
   </div>
 </section>
 
-  <!-- About Section -->
-  <section class="about py-5 bg-white c3" style="min-height: 100vh;align-content: center;">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-md-6">
-          <img src="/assets/images/Apiculture_Galai_Image.png" class="img-fluid rounded" alt="Apiculture Durable">
+
+    <section class="pb-4 my-4">
+      <div class="container-lg">
+
+        <div class="bg-warning pt-5 rounded-5">
+          <div class="container">
+            <div class="row justify-content-center align-items-center">
+              <div class="col-md-4">
+                <h2 class="mt-4">Download Apiculture Galai App</h2>
+                <p>Online Orders made easy, fast and reliable</p>
+                <div class="d-flex gap-2 flex-wrap mb-5">
+                  <a href="#" title="App store"><img src="/assets/images/img-app-store.png" alt="app-store"></a>
+                  <a href="#" title="Google Play"><img src="/assets/images/img-google-play.png" alt="google-play"></a>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <img src="/assets/images/banner-onlineapp.png" alt="phone" class="img-fluid">
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-md-6" style="background-color: #fff8e1; backdrop-filter: blur(15px); padding: 20px; border-radius: 10px;">
-          <h2 class="text-warning fw-bold mb-3">À Propos de Nous</h2>
-          <p class="text-success">Apiculture Galai est dédié à fournir du matériel apicole de haute qualité pour les apiculteurs débutants, amateurs et professionnels. Depuis notre création, nous nous engageons pour une apiculture durable, respectueuse de l’environnement et des abeilles.</p>
-          <a routerLink="/a-propos" class="btn btn-outline-warning">En Savoir Plus</a>
+        
+      </div>
+    </section>
+
+<section class="py-4">
+  <div class="container-lg">
+    <h2 class="my-4">Les internautes recherchent aussi</h2>
+
+    <!-- FR -->
+    <a href="#" class="btn btn-warning me-2 mb-2">Ruche Dadant Tunisie</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">Ruchette 5 cadres</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">Cadres de ruche en bois</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">Cire d'abeille naturelle</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">Matériel apicole Tunisie</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">Extracteur de miel manuel</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">Équipement de protection apiculteur</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">Nourrisseur couvre-cadre</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">Outils apiculture pas cher</a>
+
+    <!-- EN -->
+    <a href="#" class="btn btn-warning me-2 mb-2">Beekeeping equipment Tunisia</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">Natural raw honey Tunisia</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">Beehive frames</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">Bee smoker tool</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">Protective beekeeping suit</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">Honey extractor electric</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">Queen rearing supplies</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">Bee pollen organic</a>
+
+    <!-- AR (4–6 lines) -->
+    <a href="#" class="btn btn-warning me-2 mb-2">عسل طبيعي تونسي</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">معدات تربية النحل تونس</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">خلايا نحل دادان</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">إطارات خشبية للخلايا</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">ملكات نحل ملقحة</a>
+    <a href="#" class="btn btn-warning me-2 mb-2">شمع نحل طبيعي</a>
+
+  </div>
+</section>
+
+
+<section class="py-5">
+  <div class="container-lg">
+    <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-5">
+      
+      <!-- Gardé tel quel -->
+      <div class="col">
+        <div class="card mb-3 border border-dark-subtle p-3">
+          <div class="text-dark mb-3">
+            <svg width="32" height="32"><use xlink:href="#package"></use></svg>
+          </div>
+          <div class="card-body p-0">
+            <h5>Livraison rapide</h5>
+            <p class="card-text">Recevez vos outils apicoles rapidement et facilement.</p>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Blog Preview -->
-  <section class="blog py-5 c4" style="background-image: url('/assets/images/pngtree-vintage-inspired-abstract-texture-background-with-wooden-material-image_13869453.png'); ">
-    <div class="container">
-      <h2 class="text-warning fw-bold text-center mb-4">Nos Conseils Apicoles</h2>
-      <div class="row">
-        <div class="col-md-4 mb-4">
-          <div class="card h-100">
-            <img src="/assets/images/src756538dac3af8b889dc1740bb79c23c4_para1de415a1c80557d3d831911055dfe3d_dat1461867883.jpeg" class="card-img-top" alt="Conseils Débutants" loading="lazy">
-            <div class="card-body">
-              <h5 class="card-title text-success">Débuter en Apiculture</h5>
-              <p class="card-text">Conseils pratiques pour lancer votre première ruche.</p>
-              <a routerLink="/debuter-en-apiculture" class="btn btn-outline-warning">Lire l'Article</a>
-            </div>
+      <!-- Changé -->
+      <div class="col">
+        <div class="card mb-3 border border-dark-subtle p-3">
+          <div class="text-dark mb-3">
+            <svg width="32" height="32"><use xlink:href="#secure"></use></svg>
           </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="card h-100">
-            <img src="/assets/images/Apiculture.gif" class="card-img-top" alt="Entretien Ruches" loading="lazy">
-            <div class="card-body">
-              <h5 class="card-title text-success">Entretien des Ruches</h5>
-              <p class="card-text">Comment maintenir vos ruches en bonne santé.</p>
-              <a routerLink="/entretien-des-ruches" class="btn btn-outline-warning">Lire l'Article</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4 mb-4">
-          <div class="card h-100">
-            <img src="/assets/images/22.jpg" class="card-img-top" alt="Bienfaits Miel" loading="lazy">
-            <div class="card-body">
-              <h5 class="card-title text-success">Bienfaits du Miel</h5>
-              <p class="card-text">Découvrez les vertus des produits de la ruche.</p>
-              <a routerLink="/bienfaits-miel" class="btn btn-outline-warning">Lire l'Article</a>
-            </div>
+          <div class="card-body p-0">
+            <h5>Paiement sécurisé</h5>
+            <p class="card-text">Transactions 100% sécurisées pour vos achats apicoles.</p>
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Newsletter Signup -->
-  <section class="newsletter py-5 bg-white">
-    <div class="container text-center">
-      <h2 class="text-warning fw-bold mb-3">Inscrivez-vous à Notre Newsletter</h2>
-      <p class="text-success mb-4">Recevez nos dernières promotions, nouveaux produits et conseils apicoles.</p>
-      <form class="input-group w-50 mx-auto" #newsletterForm="ngForm">
-        <input type="email" [(ngModel)]="email" class="form-control" placeholder="Votre e-mail" aria-label="Email">
-        <button class="btn btn-warning text-white" type="button" (click)="subscribe()">S'inscrire</button>
-      </form>
+      <!-- Changé -->
+      <div class="col">
+        <div class="card mb-3 border border-dark-subtle p-3">
+          <div class="text-dark mb-3">
+            <svg width="32" height="32"><use xlink:href="#quality"></use></svg>
+          </div>
+          <div class="card-body p-0">
+            <h5>Qualité garantie</h5>
+            <p class="card-text">Du matériel apicole testé et approuvé par les apiculteurs.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Changé -->
+      <div class="col">
+        <div class="card mb-3 border border-dark-subtle p-3">
+          <div class="text-dark mb-3">
+            <svg width="32" height="32"><use xlink:href="#savings"></use></svg>
+          </div>
+          <div class="card-body p-0">
+            <h5>Économies garanties</h5>
+            <p class="card-text">Les meilleurs prix du marché pour votre matériel apicole.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Changé -->
+      <div class="col">
+        <div class="card mb-3 border border-dark-subtle p-3">
+          <div class="text-dark mb-3">
+            <svg width="32" height="32"><use xlink:href="#offers"></use></svg>
+          </div>
+          <div class="card-body p-0">
+            <h5>Offres quotidiennes</h5>
+            <p class="card-text">Promotions régulières sur ruches, cadres, cire et équipements.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
-  </section>
-</main>
+  </div>
+</section>

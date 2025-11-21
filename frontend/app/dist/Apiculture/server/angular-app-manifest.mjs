@@ -24,14 +24,14 @@ export default {
   {
     "renderMode": 2,
     "preload": [
-      "chunk-4ZYXBONE.js"
+      "chunk-XHHVZ23J.js"
     ],
     "route": "/panier"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-35V7ECTW.js"
+      "chunk-TBCQMA6R.js"
     ],
     "route": "/dashboard"
   },
@@ -74,42 +74,42 @@ export default {
   {
     "renderMode": 2,
     "preload": [
-      "chunk-L33DG3WZ.js"
+      "chunk-UEUFEYXY.js"
     ],
     "route": "/debuter-en-apiculture"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-WSTA7XFL.js"
+      "chunk-XTZRTH6X.js"
     ],
     "route": "/entretien-des-ruches"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-BTUSNBVX.js"
+      "chunk-RURUVTXD.js"
     ],
     "route": "/bienfaits-miel"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-S36SQC4X.js"
+      "chunk-Y6RWCEF3.js"
     ],
     "route": "/images"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-N3J7RVJ4.js"
+      "chunk-CBBYUJKK.js"
     ],
     "route": "/client-order-view"
   },
   {
     "renderMode": 2,
     "preload": [
-      "chunk-5DDODT5G.js"
+      "chunk-RNJPUJJT.js"
     ],
     "route": "/login"
   },
@@ -121,23 +121,23 @@ export default {
 ],
   entryPointToBrowserMapping: undefined,
   assets: {
-    'index.csr.html': {size: 9287, hash: 'c23498fd52033abb34bdb38eee83cd3b448be2d9d7cf31c3eecd6c1a2b24062c', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
-    'index.server.html': {size: 5269, hash: 'd89413389067118f99880b2990bcc9dd4902793af7a8aaa20acaa42234c89d92', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
-    'index.html': {size: 57370, hash: '358131bbcfe368d7ce2c7bd8b410947e942d9e60c82620f7402d2c9f0296bb2f', text: () => import('./assets-chunks/index_html.mjs').then(m => m.default)},
-    'a-propos/index.html': {size: 45186, hash: 'cfe128a25f8e51134a93b19b296843114895348da53945f7c976004efbe70ccd', text: () => import('./assets-chunks/a-propos_index_html.mjs').then(m => m.default)},
-    'panier/index.html': {size: 52887, hash: '7ab16225daa9191b92fd4877b824f27aabe9cf88ef6c98e73d47909d4d95ad96', text: () => import('./assets-chunks/panier_index_html.mjs').then(m => m.default)},
-    'product/2/index.html': {size: 42509, hash: '3fbc337bb7845390619dc1fdd4728f9a341567a3aa1b1a1a6a5d4932e07a1185', text: () => import('./assets-chunks/product_2_index_html.mjs').then(m => m.default)},
-    'product/4/index.html': {size: 42509, hash: '3fbc337bb7845390619dc1fdd4728f9a341567a3aa1b1a1a6a5d4932e07a1185', text: () => import('./assets-chunks/product_4_index_html.mjs').then(m => m.default)},
-    'debuter-en-apiculture/index.html': {size: 58558, hash: '5202a5753963700a4436c9356e3ed26d6b2679d7660705c71f015abddb0ba9cc', text: () => import('./assets-chunks/debuter-en-apiculture_index_html.mjs').then(m => m.default)},
-    'bienfaits-miel/index.html': {size: 59185, hash: '4718b101dd445c61b9e575aa1d105320c5d7e27ff5121d9b92905515cd1de897', text: () => import('./assets-chunks/bienfaits-miel_index_html.mjs').then(m => m.default)},
-    'client-order-view/index.html': {size: 42492, hash: 'df29118478e239a8e4141382be3b68a843ab142fd1d4f13375d74d45ef316909', text: () => import('./assets-chunks/client-order-view_index_html.mjs').then(m => m.default)},
-    'boutique/index.html': {size: 42915, hash: 'c9c8cdc69ef4510b2a246268b2d171b9510636f8a5c541c0de9d36102adfad6a', text: () => import('./assets-chunks/boutique_index_html.mjs').then(m => m.default)},
-    'product/1/index.html': {size: 42509, hash: '3fbc337bb7845390619dc1fdd4728f9a341567a3aa1b1a1a6a5d4932e07a1185', text: () => import('./assets-chunks/product_1_index_html.mjs').then(m => m.default)},
-    'product/5/index.html': {size: 42509, hash: '3fbc337bb7845390619dc1fdd4728f9a341567a3aa1b1a1a6a5d4932e07a1185', text: () => import('./assets-chunks/product_5_index_html.mjs').then(m => m.default)},
-    'contact/index.html': {size: 46357, hash: 'a3be6cf836401c60a62205f0bdc2d998abffafc999b77f4d01f4b8df8b616b21', text: () => import('./assets-chunks/contact_index_html.mjs').then(m => m.default)},
-    'product/3/index.html': {size: 42509, hash: '3fbc337bb7845390619dc1fdd4728f9a341567a3aa1b1a1a6a5d4932e07a1185', text: () => import('./assets-chunks/product_3_index_html.mjs').then(m => m.default)},
-    'login/index.html': {size: 40963, hash: '926eac88624e187f44142150bbafc1b3f6fce7f6fa85cda2fe78a477b03916c4', text: () => import('./assets-chunks/login_index_html.mjs').then(m => m.default)},
-    'entretien-des-ruches/index.html': {size: 58985, hash: 'e69f64483581874eabafb7a9bed587557c2538e00a7758a9302967234ca1aa92', text: () => import('./assets-chunks/entretien-des-ruches_index_html.mjs').then(m => m.default)},
-    'styles-JTUKHJ3N.css': {size: 236298, hash: 'tAzvSA1SQww', text: () => import('./assets-chunks/styles-JTUKHJ3N_css.mjs').then(m => m.default)}
+    'index.csr.html': {size: 70027, hash: '43406c293c3aff43bca4c38e22d5b1d24b201f6611afcd595ac85d0ad60daf6f', text: () => import('./assets-chunks/index_csr_html.mjs').then(m => m.default)},
+    'index.server.html': {size: 65301, hash: 'c3c3d81e894f1521977fd6ce87f66f1809f50defb3d9a283143532c782786427', text: () => import('./assets-chunks/index_server_html.mjs').then(m => m.default)},
+    'index.html': {size: 215671, hash: '76686f60edb976fc0f228e8643445f3c4c92cf0d12b28798c89c00724d0561ba', text: () => import('./assets-chunks/index_html.mjs').then(m => m.default)},
+    'boutique/index.html': {size: 202780, hash: '60cf4b8e8c62cb76bc7d8a35d830e0459e72323834a3cf4642c24700ddfbd54d', text: () => import('./assets-chunks/boutique_index_html.mjs').then(m => m.default)},
+    'product/2/index.html': {size: 107288, hash: 'cc03a136d4cbcf6b23f19bcc805ad7726110a5cb2e252cc1a37f2857e96e6612', text: () => import('./assets-chunks/product_2_index_html.mjs').then(m => m.default)},
+    'product/4/index.html': {size: 107288, hash: 'cc03a136d4cbcf6b23f19bcc805ad7726110a5cb2e252cc1a37f2857e96e6612', text: () => import('./assets-chunks/product_4_index_html.mjs').then(m => m.default)},
+    'debuter-en-apiculture/index.html': {size: 123425, hash: 'ed10c68c41c23a36e0e8ac911cc5196b3d8096deb9d1dc5b7dc89db935565837', text: () => import('./assets-chunks/debuter-en-apiculture_index_html.mjs').then(m => m.default)},
+    'client-order-view/index.html': {size: 107367, hash: '4d75c0b620a3c48d541278baa4ff4119de129874e1cb3c5ca3bfb2abacc06e14', text: () => import('./assets-chunks/client-order-view_index_html.mjs').then(m => m.default)},
+    'bienfaits-miel/index.html': {size: 124052, hash: '67784334dc8b1c4eee32bcd0c8fda50a92c1a2e0391d06f3c24430d40d3afd5c', text: () => import('./assets-chunks/bienfaits-miel_index_html.mjs').then(m => m.default)},
+    'panier/index.html': {size: 116756, hash: 'bc353f88f2150d10d267417fee9716247d06ab818619101d671efb262baab87b', text: () => import('./assets-chunks/panier_index_html.mjs').then(m => m.default)},
+    'a-propos/index.html': {size: 110382, hash: '0160ceeed5e075647a404afa33e896e316a659ab6228770e63c5c96130ac9f34', text: () => import('./assets-chunks/a-propos_index_html.mjs').then(m => m.default)},
+    'product/3/index.html': {size: 113158, hash: '3340015fe39fc2b56e279c28f20824e8359af2ec547c78aaf9cd00d4f7da1f4d', text: () => import('./assets-chunks/product_3_index_html.mjs').then(m => m.default)},
+    'login/index.html': {size: 106176, hash: '2fd35e65c4c774f664954ad786e094404d57fd33d0d4381d0a906a085fb9e242', text: () => import('./assets-chunks/login_index_html.mjs').then(m => m.default)},
+    'entretien-des-ruches/index.html': {size: 123852, hash: '49deeb94735a0ea74d71542b98b2f5c344fa31faba3fcfcca9cbb1327bfcd7db', text: () => import('./assets-chunks/entretien-des-ruches_index_html.mjs').then(m => m.default)},
+    'product/5/index.html': {size: 107291, hash: '9904eb6c1f587845fcbdae7b9c6ae4b3dc56bcec03791c72260f4fcec5197279', text: () => import('./assets-chunks/product_5_index_html.mjs').then(m => m.default)},
+    'contact/index.html': {size: 111507, hash: '77cff0a059d6ab427e74c02a9d9c6d377c1ec790df238f964c9b4f434b95241f', text: () => import('./assets-chunks/contact_index_html.mjs').then(m => m.default)},
+    'product/1/index.html': {size: 113957, hash: 'aaefb1eb66de8a3768b1be0dd6e28efed366f6bc20428bacb322fe7982843aa4', text: () => import('./assets-chunks/product_1_index_html.mjs').then(m => m.default)},
+    'styles-D3JAG7AP.css': {size: 246563, hash: 'sKY6uVtZ050', text: () => import('./assets-chunks/styles-D3JAG7AP_css.mjs').then(m => m.default)}
   },
 };

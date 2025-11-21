@@ -9,7 +9,7 @@
   </section>
   <section class="container mt-4">
       <form class="input-group w-50 mx-auto searchonmobile" #newsletterForm="ngForm">
-        <input type="email" [(ngModel)]="searchQuery" class="form-control" placeholder="Search for" aria-label="Search">
+        <input type="email" [(ngModel)]="searchQuery" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Search for" aria-label="Search">
         <button class="btn btn-warning text-white" type="button" (click)="search()">Search</button>
       </form>
   </section>
@@ -44,6 +44,7 @@
         [(ngModel)]="sortBy"
         (ngModelChange)="changeSortBy($event)"
         aria-label="Sort products"
+        [ngModelOptions]="{standalone: true}"
       >
         <option value="popularite">Trier par popularité</option>
         <option value="prix-asc">Prix : croissant</option>

@@ -27,6 +27,8 @@ export class ProductManagement implements OnInit {
     image4_url: '',          // New field for quaternary image URL
     promo: false,            // New field for promotional status
     buzzent: '',             // New field for buzz or marketing text
+    rating: 5,               // New field for average rating
+    num_ratings: 10,           // New field for number of ratings
   };
   editMode = false;
   editProductId: number | null = null;
@@ -89,6 +91,11 @@ export class ProductManagement implements OnInit {
       image_url: '',
       promo: false,
       buzzent: '',
+      image2_url: '',
+      image3_url: '',
+      image4_url: '',
+      rating: 5,
+      num_ratings: 10,
     };
     this.editMode = false;
     this.editProductId = null;

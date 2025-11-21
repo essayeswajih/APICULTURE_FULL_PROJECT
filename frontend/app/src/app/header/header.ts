@@ -2,24 +2,29 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, OnInit, ChangeDetectorRef, HostListener, Inject, PLATFORM_ID, signal, OnDestroy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Api } from '../services/api'; // Import the CategoryService
-import type { Category } from '../services/api'; // Import the Category type
+import type { Category, Product } from '../services/api'; // Import the Category type
 import { CartItem } from '../pages/boutique/boutique';
 import { Cart } from '../services/cart';
+import { FormsModule } from '@angular/forms'; 
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule,FormsModule],
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
   standalone: true
 })
 export class Header implements OnInit {
+
   isMobileMenuOpen = false;
   isDropdownOpen = false;
   isDesktop = true;
   categories: Category[] = [];
   itemssum = 0; // Signal to track the number of items in the cart
   cartItems: CartItem[] = [];
+  selectedCategory: string = '';  // Default category value
+  searchQuery: string = '';
+  products: Product[] = []; // To hold filtered products based on search and category
 
   constructor(
     private categoryService: Api,
@@ -79,4 +84,26 @@ export class Header implements OnInit {
     this.isDropdownOpen = false;
     this.cdRef.detectChanges();
   }
+   onSearchChange() {
+    this.loadProducts();
+    this.cdRef.detectChanges();
+  }
+  // Optional: Search method for submit button
+  search() {
+    this.loadProducts();
+    this.cdRef.detectChanges();
+  }
+  loadProducts() {
+    // You can adjust sorting logic here if needed, for example 'sortBy' can be dynamically passed
+    const sortBy = 'popularite'; // Example of sorting, you can replace this as needed
+    this.categoryService.getProducts(this.selectedCategory, sortBy, this.searchQuery)
+      .subscribe((products: Product[]) => {
+        this.products = products; // Update the products list
+        this.cdRef.detectChanges();
+      });
+  }
+  clearSearch() {
+  this.searchQuery = '';
+  this.products = [];
+}
 }

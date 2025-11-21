@@ -6,53 +6,61 @@
       <form (ngSubmit)="addProduct()">
         <div class="mb-3">
           <label for="name" class="form-label">Name</label>
-          <input type="text" class="form-control" id="name" name="name" [(ngModel)]="newProduct.name" required>
+          <input type="text" class="form-control" id="name" name="name" [(ngModel)]="newProduct.name" [ngModelOptions]="{standalone: true}" required>
         </div>
         <div class="mb-3">
           <label for="description" class="form-label">Description</label>
-          <textarea class="form-control" id="description" name="description" [(ngModel)]="newProduct.description"></textarea>
+          <textarea class="form-control" id="description" name="description" [(ngModel)]="newProduct.description" [ngModelOptions]="{standalone: true}"></textarea>
         </div>
         <div class="mb-3">
           <label for="price" class="form-label">Price</label>
-          <input type="number" class="form-control" id="price" name="price" [(ngModel)]="newProduct.price" required>
+          <input type="number" class="form-control" id="price" name="price" [(ngModel)]="newProduct.price" [ngModelOptions]="{standalone: true}" required>
         </div>
         <div class="mb-3">
           <label for="stock_quantity" class="form-label">Stock Quantity</label>
-          <input type="number" class="form-control" id="stock_quantity" name="stock_quantity" [(ngModel)]="newProduct.stock_quantity" required>
+          <input type="number" class="form-control" id="stock_quantity" name="stock_quantity" [(ngModel)]="newProduct.stock_quantity" [ngModelOptions]="{standalone: true}" required>
         </div>
         <div class="mb-3">
           <label for="category_id" class="form-label">Category</label>
-          <select class="form-control" id="category_id" name="category_id" [(ngModel)]="newProduct.category_id" required>
+          <select class="form-control" id="category_id" name="category_id" [(ngModel)]="newProduct.category_id" [ngModelOptions]="{standalone: true}" required>
             <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
           </select>
         </div>
         <div class="mb-3">
           <label for="discounted_price" class="form-label">Discounted Price (Optional)</label>
-          <input type="number" class="form-control" id="discounted_price" name="discounted_price" [(ngModel)]="newProduct.discounted_price">
+          <input type="number" class="form-control" id="discounted_price" name="discounted_price" [(ngModel)]="newProduct.discounted_price" [ngModelOptions]="{standalone: true}">
         </div>
         <div class="mb-3">
           <label for="image_url" class="form-label">Main Image URL</label>
-          <input type="text" class="form-control" id="image_url" name="image_url" [(ngModel)]="newProduct.image_url">
+          <input type="text" class="form-control" id="image_url" name="image_url" [(ngModel)]="newProduct.image_url" [ngModelOptions]="{standalone: true}">
         </div>
         <div class="mb-3">
           <label for="image2_url" class="form-label">Secondary Image URL (OPTIONAL)</label>
-          <input type="text" class="form-control" id="image2_url" name="image2_url" [(ngModel)]="newProduct.image2_url">
+          <input type="text" class="form-control" id="image2_url" name="image2_url" [(ngModel)]="newProduct.image2_url" [ngModelOptions]="{standalone: true}">
         </div>
         <div class="mb-3">
           <label for="image3_url" class="form-label">Tertiary Image URL (OPTIONAL)</label>
-          <input type="text" class="form-control" id="image3_url" name="image3_url" [(ngModel)]="newProduct.image3_url">
+          <input type="text" class="form-control" id="image3_url" name="image3_url" [(ngModel)]="newProduct.image3_url" [ngModelOptions]="{standalone: true}">
         </div>
         <div class="mb-3">
           <label for="image4_url" class="form-label">Quaternary Image URL (OPTIONAL)</label>
-          <input type="text" class="form-control" id="image4_url" name="image4_url" [(ngModel)]="newProduct.image4_url">
+          <input type="text" class="form-control" id="image4_url" name="image4_url" [(ngModel)]="newProduct.image4_url" [ngModelOptions]="{standalone: true}">
         </div>
         <div class="mb-3">
           <label for="promo" class="form-label">On Promotion</label>
-          <input type="checkbox" class="form-check-input" id="promo" name="promo" [(ngModel)]="newProduct.promo">
+          <input type="checkbox" class="form-check-input" id="promo" name="promo" [(ngModel)]="newProduct.promo" [ngModelOptions]="{standalone: true}">
         </div>
         <div class="mb-3">
           <label for="buzzent" class="form-label">Buzz or Marketing Text</label>
-          <textarea class="form-control" id="buzzent" name="buzzent" [(ngModel)]="newProduct.buzzent"></textarea>
+          <textarea class="form-control" id="buzzent" name="buzzent" [(ngModel)]="newProduct.buzzent" [ngModelOptions]="{standalone: true}"></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="rating" class="form-label">Rating</label>
+          <input type="checkbox" class="form-check-input" id="rating" name="rating" [(ngModel)]="newProduct.rating" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="mb-3">
+          <label for="num_ratings" class="form-label">Number of Ratings</label>
+          <input type="checkbox" class="form-check-input" id="num_ratings" name="num_ratings" [(ngModel)]="newProduct.num_ratings" [ngModelOptions]="{standalone: true}">
         </div>
         <button type="submit" class="btn btn-warning">{{ editMode ? 'Update' : 'Add' }} Product</button>
         <button type="button" class="btn btn-secondary ms-2" *ngIf="editMode" (click)="resetForm()">Cancel</button>

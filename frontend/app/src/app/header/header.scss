@@ -1,65 +1,42 @@
-header {
-  background-color: transparent !important; /* Light amber for apiculture theme */
-  backdrop-filter: blur(10px); /* Optional: adds a blur effect */
-  font-family: 'Roboto', sans-serif;
+.nav-link {
+  position: relative;
+  font-weight: 600;
+  padding-bottom: 4px;
+  color: #555;
 }
 
-.navbar-brand span {
-  color: #d97706; /* Amber for brand name */
-}
-
-.nav-link, .dropdown-item {
-  color: #b66407 !important; /* Green for links */
-  transition: color 0.3s ease;
-  padding:10px ;
-  margin: 0 5px;
-  border-radius: 5px;
-}
-
-.nav-link:hover, .dropdown-item:hover {
-  color: #d38c07 !important; /* Darker green on hover */
-  background-color: #fef3c7; /* Light amber hover background for dropdown */
-}
-
-.dropdown-menu {
+.nav-link::after {
+  color: #000;
+  content: "";
   position: absolute;
-  //background-color: #fff8e1; /* Match header background */
-  border: 1px solid #d97706; /* Amber border */
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background-color: #ffc107; /* Yellow – change if needed */
+  transition: width .3s ease;
 }
 
-.dropdown-menu.show {
-  display: block;
+.nav-link:hover::after,
+.nav-link.active-route::after {
+  width: 100%;
+}
+.search-bar {
+  margin-top: 20px;
 }
 
-.active-route {
-  color: #b16106 !important; /* Darker green for active route */
-  font-weight: bold; /* Emphasize active route */
-  background-color: #e9ce61e1; /* Light amber background for active link */
+.product-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
-.basket-icon {
-  color: red;
-  font-size: 1.5rem;
-  line-height: 1;
+
+.product-item img {
+  height: 70px;
+  width: auto;
+  margin-right: 15px;
 }
-.panier{
-    height: 30px;
-    width: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fef3c7; /* Light amber background for basket */
-    border-radius: 50%;
-    border: 2px solid #d97706; /* Amber border for basket */
-    transition: background-color 0.3s ease, border-color 0.3s
-}
-.itemsum{
-  text-align: center;
-    background-color: #f90;
-    color: #fff;
-    border-radius: 50%;
-    position: absolute !important;
-    font-size: .6rem;
-    top: 10px;
-    width: 15px;
-    height: 15px;
+
+.product-item span {
+  font-size: 18px;
 }

@@ -1,97 +1,168 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { AfterViewInit, Component, Inject, OnInit, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { gsap } from 'gsap';
-import { Api, Product } from '../../services/api';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+} from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { Api, Category, Product } from '../../services/api';
 import { HttpClientModule } from '@angular/common/http';
 import { CartItem } from '../boutique/boutique';
 import { ToastrService } from 'ngx-toastr';
 import { Cart } from '../../services/cart';
 import { FormsModule } from '@angular/forms';
-
-let ScrollTrigger: any;
-if (typeof window !== 'undefined') {
-  import('gsap/ScrollTrigger').then(module => {
-    ScrollTrigger = module.ScrollTrigger;
-    gsap.registerPlugin(ScrollTrigger);
-  });
-}
+import { FeaturedProducts } from '../../featured-products/featured-products';
+import { PopularProducts } from '../../popular-products/popular-products';
+import { LatestProducts } from '../../latest-products/latest-products';
+import { CategoryCarousel } from '../../category-carousel/category-carousel';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, RouterModule, HttpClientModule,FormsModule],
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    HttpClientModule,
+    FormsModule,
+    FeaturedProducts,
+    PopularProducts,
+    LatestProducts,
+    CategoryCarousel,
+  ],
   templateUrl: './home.html',
-  styleUrls: ['./home.scss']
+  styleUrls: ['./home.scss'],
 })
-export class Home implements OnInit, AfterViewInit {
-
+export class Home implements OnInit, AfterViewInit, OnDestroy {
   products: Product[] = [];
-  productChunks: Product[][] = []; // Grouped products for carousel items
-  isDesktop: boolean = false;
-  isLoading: boolean = true; // Loading state for products
-  email: string = '';
+  featuredProducts: Product[] = [];
+  popularProducts: Product[] = [];
+  latestProducts: Product[] = [];
+  productChunks: Product[][] = [];
+  categories: Category[] = [];
+  isDesktop = false;
+  isLoading = true;
+  email = '';
+
+  // Preloader control
+  private preloaderTimeout?: any;
+  private productsLoaded = false;
+  private categoriesLoaded = false;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private apiService: Api,
-    private RouterS: Router, // Inject Router for navigation
+    private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private cdRef: ChangeDetectorRef, // Inject ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
     private toastService: ToastrService,
-    private cartService: Cart // Inject Cart service
+    private cartService: Cart
   ) {}
 
   ngOnInit(): void {
+    this.startPreloader();
+    this.checkIfDesktop();
     this.loadProducts();
-    this.isDesktop = window.innerWidth >= 920;
+    this.loadCategories();
   }
 
-async ngAfterViewInit(): Promise<void> {
-  if (isPlatformBrowser(this.platformId)) {
-    this.isDesktop = window.innerWidth >= 920;
-    const module = await import('gsap/ScrollTrigger');
-    ScrollTrigger = module.ScrollTrigger;
-    gsap.registerPlugin(ScrollTrigger);
-
-    // ✅ FIX: Delay until DOM is truly ready
-    setTimeout(() => {
-      this.fromLeftAnnimation('.c1');
-      this.fromLeftAnnimation('.c2');
-      this.fromLeftAnnimation('.c3');
-      this.fromLeftAnnimation('.c4');
-      this.fromLeftAnnimation('.c5');
-
-      ScrollTrigger.refresh();
-    }, 300); // ⏱️ Increased delay to ensure elements are painted
+  ngAfterViewInit(): void {
+    this.checkIfDesktop();
   }
-}
+
+  ngOnDestroy(): void {
+    if (this.preloaderTimeout) {
+      clearTimeout(this.preloaderTimeout);
+    }
+  }
+
+  // Preloader Logic – 100% Reliable
+  private startPreloader(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    document.body.classList.add('preloader-active');
+
+    // Max 3 seconds fallback
+    this.preloaderTimeout = setTimeout(() => {
+      this.hidePreloader();
+    }, 3000);
+  }
+
+  private hidePreloader(): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const preloader = document.querySelector('.preloader-wrapper');
+    const body = document.body;
+
+    if (preloader) preloader.classList.add('loaded');
+    if (body.classList.contains('preloader-active')) {
+      body.classList.remove('preloader-active');
+    }
+
+    if (this.preloaderTimeout) {
+      clearTimeout(this.preloaderTimeout);
+      this.preloaderTimeout = undefined;
+    }
+
+    this.isLoading = false;
+    this.cdRef.detectChanges();
+  }
+
+  private checkAllDataLoaded(): void {
+    if (this.productsLoaded && this.categoriesLoaded) {
+      this.hidePreloader();
+    }
+  }
+
+  private checkIfDesktop(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.isDesktop = window.innerWidth >= 920;
+    }
+  }
 
   private loadProducts(): void {
-    this.apiService.getProducts("","","").subscribe({
+    this.apiService.getProducts('', '', '').subscribe({
       next: (products) => {
         this.products = products;
+
         const isMobile = isPlatformBrowser(this.platformId) && window.innerWidth <= 767;
         const chunkSize = isMobile ? 1 : 4;
         this.productChunks = this.chunkArray(products, chunkSize);
-        this.isLoading = false; // Set loading to false after products are loaded
-        this.cdRef.detectChanges(); // Trigger change detection after updating data
-        if (isPlatformBrowser(this.platformId)) {
-          setTimeout(() => {
-            const cards = document.querySelectorAll('.card');
-            if (cards.length > 0) {
-              gsap.from(cards, { opacity: 0, y: 20, duration: 0.5, stagger: 0.2 });
-            }
-          }, 0);
-        }
+
+        this.popularProducts = products.slice(0, 9);
+        this.latestProducts = products.slice(0, 9);
+        this.featuredProducts = products.slice(0, 9);
+
+        this.productsLoaded = true;
+        this.checkAllDataLoaded();
+        this.cdRef.detectChanges();
       },
       error: (err) => {
         console.error('Failed to load products:', err);
-        this.cdRef.detectChanges(); // Trigger change detection on error to update UI
-      }
+        this.productsLoaded = true;
+        this.checkAllDataLoaded(); // Don't block forever
+      },
     });
   }
 
-  // Utility to group products into chunks for carousel
+  private loadCategories(): void {
+    this.apiService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+        this.categoriesLoaded = true;
+        this.checkAllDataLoaded();
+        this.cdRef.detectChanges();
+      },
+      error: (err) => {
+        console.error('Failed to load categories:', err);
+        this.categoriesLoaded = true;
+        this.checkAllDataLoaded(); // Always unblock
+      },
+    });
+  }
+
   private chunkArray(array: Product[], size: number): Product[][] {
     const chunks: Product[][] = [];
     for (let i = 0; i < array.length; i += size) {
@@ -99,95 +170,55 @@ async ngAfterViewInit(): Promise<void> {
     }
     return chunks;
   }
-  
-  fromLeftAnnimation(id:string): void {
-    gsap.fromTo(id,
-      { x: '-100%' },
-      {
-        x: '0%',
-        duration: 1,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: id,
-          start: 'top 80%',
-          //end: 'top 50%',
-          toggleActions: 'play none none reverse', // slides in on scroll down, out on scroll up reset or reverse
-          markers:false,
-        }
+
+  addToCart(product: Product): void {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    const storedCart = localStorage.getItem('cartItems');
+    let cartItems: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
+
+    const existingItem = cartItems.find((item) => item.id === product.id);
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cartItems.push({
+        id: product.id,
+        name: product.name,
+        image: product.image_url ?? null,
+        price: product.price,
+        quantity: 1,
       });
+      this.cartService.add();
+    }
+
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+    this.toastService.success('Produit ajouté au panier', 'Succès', {
+      timeOut: 2000,
+      positionClass: 'toast-bottom-right',
+      progressBar: true,
+      closeButton: true,
+    });
   }
 
-    //Add product to cart
-    addToCart(product: Product): void {
-      if (isPlatformBrowser(this.platformId)) {
-        // Retrieve existing cart items from localStorage
-        const storedCart = localStorage.getItem('cartItems');
-        let cartItems: CartItem[] = storedCart ? JSON.parse(storedCart) : [];
-  
-        // Check if the product is already in the cart
-        const existingItem = cartItems.find(item => item.id === product.id);
-        if (existingItem) {
-          // Increment quantity if item exists
-          existingItem.quantity += 1;
-        } else {
-          // Add new item to cart
-          const cartItem: CartItem = {
-            id: product.id,
-            name: product.name,
-            image: product.image_url ?? null,
-            price: product.price,
-            quantity: 1
-          };
-          cartItems.push(cartItem);
-          this.cartService.add();
-        }
-            this.toastService.success('Produit Ajouter Au Panier', 'Success', {
-            timeOut: 2000,
-            positionClass: 'toast-bottom-right',
-            progressBar: true,
-            closeButton: true,
-          });
-        // Save updated cart to localStorage
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-        // Update cart item count in Cart service
-        
-        this.cdRef.detectChanges();
-      }
-    }
-      goToProduct(id:number): void {
-    // Navigate to the product details page
-    this.RouterS.navigate(['/product', id]);
+  goToProduct(id: number): void {
+    this.router.navigate(['/product', id]);
   }
+
   subscribe(): void {
-    this.cdRef.detectChanges();
-    if (this.email) {
-      this.apiService.subscribeToNewsletter(this.email).subscribe({
-        next: () => {
-          this.toastService.success('Inscription réussie à la newsletter', 'Succès', {
-            timeOut: 2000,
-            positionClass: 'toast-bottom-right',
-            progressBar: true,
-            closeButton: true,
-          });
-          this.email = ''; // Clear the email input after successful subscription
-        },
-        error: (err) => {
-          console.error('Erreur lors de l\'inscription à la newsletter:', err);
-          this.toastService.error('Erreur lors de l\'inscription à la newsletter', 'Erreur', {
-            timeOut: 2000,
-            positionClass: 'toast-bottom-right',
-            progressBar: true,
-            closeButton: true,
-          });
-        }
-      });
-    } else {
-      this.toastService.error('Veuillez entrer une adresse e-mail valide', 'Erreur', {
-        timeOut: 2000,
-        positionClass: 'toast-bottom-right',
-        progressBar: true,
-        closeButton: true,
-      });
+    if (!this.email || !this.email.includes('@')) {
+      this.toastService.error('Veuillez entrer une adresse e-mail valide', 'Erreur');
+      return;
     }
+
+    this.apiService.subscribeToNewsletter(this.email).subscribe({
+      next: () => {
+        this.toastService.success('Inscription réussie !', 'Succès');
+        this.email = '';
+      },
+      error: () => {
+        this.toastService.error('Erreur lors de l\'inscription', 'Erreur');
+      },
+    });
   }
 }

@@ -9,6 +9,8 @@ export interface Category {
   id: number;
   name: string;
   description?: string;
+  image_url?: string;
+  link?: string;
 }
 
 export interface Product {
@@ -25,6 +27,8 @@ export interface Product {
   image4_url?: string; // Optional fourth image URL
   promo?: boolean;            // Indicates if the product is on promotion
   buzzent?: string;           // Optional field for buzz or marketing text
+  rating?: number;            // Average rating of the product
+  num_ratings?: number;       // Number of ratings for the product
 }
 
 
@@ -71,13 +75,16 @@ export class Api {
   // Helper to handle API errors
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
-    if (error.error instanceof ErrorEvent) {
+
+    // Use optional chaining to safely access message
+    if (error.error?.message) {
       // Client-side or network error
       errorMessage = `Error: ${error.error.message}`;
     } else {
       // Backend returned an unsuccessful response code
       errorMessage = `Error ${error.status}: ${error.error?.detail || error.message}`;
     }
+
     return throwError(() => new Error(errorMessage));
   }
 

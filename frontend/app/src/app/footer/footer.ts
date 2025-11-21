@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectorRef, AfterViewInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Api, Category } from '../services/api'; // Your service to fetch categories
 import { ToastrService } from 'ngx-toastr';
@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './footer.html',
   styleUrls: ['./footer.scss']
 })
-export class Footer implements OnInit {
+export class Footer implements AfterViewInit {
   isDropdownOpen = false;
     email: string = '';
   // Define categories for the footer dropdown
@@ -24,7 +24,7 @@ export class Footer implements OnInit {
     private toastService: ToastrService,
   ) {}
 
-  ngOnInit() {
+  ngAfterViewInit() {
     this.loadCategories();
   }
 
@@ -54,6 +54,7 @@ export class Footer implements OnInit {
             closeButton: true,
           });
           this.email = ''; // Clear the email input after successful subscription
+          this.cdRef.detectChanges();
         },
         error: (err) => {
           console.error('Erreur lors de l\'inscription à la newsletter:', err);

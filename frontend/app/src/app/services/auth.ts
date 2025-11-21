@@ -73,13 +73,16 @@ export class AuthService {
   // Error handling
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'An error occurred';
+
     if (error.status === 401) {
       errorMessage = 'Invalid credentials';
-    } else if (error.error instanceof ErrorEvent) {
+    } else if (error.error?.message) {
+      // Treat any error with a message property as client/network error
       errorMessage = `Client error: ${error.error.message}`;
     } else {
       errorMessage = `Server error: ${error.status} - ${error.message}`;
     }
+
     return throwError(() => new Error(errorMessage));
   }
   

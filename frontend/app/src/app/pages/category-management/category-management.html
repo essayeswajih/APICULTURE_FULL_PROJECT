@@ -22,7 +22,20 @@
             id="description"
             [(ngModel)]="newCategory.description"
             name="categoryDescription"
+            [ngModelOptions]="{standalone: true}"
+            [ngModelOptions]="{standalone: true}"
           ></textarea>
+        </div>
+        <div class="mb-3">
+          <label for="image_url" class="form-label">Image URL</label>
+          <input
+            type="text"
+            class="form-control"
+            id="image_url"
+            [(ngModel)]="newCategory.image_url"
+            name="categoryImageUrl"
+            [ngModelOptions]="{standalone: true}"
+          >
         </div>
         @if(editMode) {
           <button type="submit" class="btn btn-warning">Update Category</button>

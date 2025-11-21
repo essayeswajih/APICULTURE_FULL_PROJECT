@@ -1,14 +1,14 @@
-<header class="shadow-sm sticky-top">
+<!--<header class="shadow-sm sticky-top">
   <div class="container py-3">
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light">-->
       <!-- Logo -->
-      <div class="navbar-brand d-flex align-items-center" (click)="goToHome()" style="cursor: pointer;">
+      <!--<div class="navbar-brand d-flex align-items-center" (click)="goToHome()" style="cursor: pointer;">
         <img src="/assets/logo1.png" alt="Apiculture Galai Logo" class="me-2" style="height: 40px;">
         <span class="fs-4 fw-bold text-warning">Apiculture Galai</span>
-      </div>
+      </div>-->
 
       <!-- Cart Icon (Positioned before toggler on mobile, right on desktop) -->
-      <div class="nav-item cart" *ngIf="!isDesktop">
+      <!--<div class="nav-item cart" *ngIf="!isDesktop">
         <a
           class="nav-link text-success"
           routerLink="/panier"
@@ -39,7 +39,6 @@
         </a>
       </div>
 
-      <!-- Toggler for Mobile -->
       <button
         class="navbar-toggler"
         type="button"
@@ -51,7 +50,6 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <!-- Navigation Menu -->
       <div class="collapse navbar-collapse" id="navbarNav" [ngClass]="{'show': isMobileMenuOpen}">
         <ul class="navbar-nav ms-auto align-items-center">
           <li class="nav-item">
@@ -134,4 +132,119 @@
       </div>
     </nav>
   </div>
+</header> -->
+
+<header>
+  <div class="container-fluid">
+    <div class="row py-3 border-bottom">
+
+      <!-- Logo + Toggler -->
+      <div class="col-sm-4 col-lg-2 text-center text-sm-start d-flex gap-3 justify-content-center justify-content-md-start">
+        <div class="d-flex align-items-center my-3 my-sm-0" style="cursor:pointer;">
+          <a routerLink="/" (click)="isMobileMenuOpen = false">
+            <img src="/assets/logo1.png" alt="Apiculture Galai Logo" height="40px" width="50px" class="img-fluid">
+          </a>
+        </div>
+
+        <button class="navbar-toggler"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar">
+          <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#menu"></use></svg>
+        </button>
+      </div>
+
+      <!-- Search bar -->
+      <div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-4">
+        <div class="search-bar row bg-light p-2 rounded-4 mt-0">
+          <div class="col-md-4 d-none d-md-block">
+            <select class="form-select border-0 bg-transparent" [(ngModel)]="selectedCategory" (change)="onSearchChange()">
+              <option selected value="">All Categories</option>
+              <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+            </select>
+          </div>
+          <div class="col-11 col-md-7">
+            <form id="search-form" class="text-center" (submit)="search()">
+              <input type="text" [(ngModel)]="searchQuery" name="searchQuery" class="form-control border-0 bg-transparent" placeholder="Search for products" (input)="onSearchChange()" required>
+            </form>
+          </div>
+          <div class="col-1">
+          <button *ngIf="products.length > 0"
+                  class="btn p-0"
+                  (click)="clearSearch()">
+            <svg width="22" height="22" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Menu with Angular routing -->
+      <div class="col-lg-4">
+        <ul class="navbar-nav list-unstyled d-flex flex-row gap-3 gap-lg-5 justify-content-center flex-wrap align-items-center mb-0 fw-bold text-uppercase text-dark">
+
+          <li class="nav-item">
+            <a routerLink="/" 
+               routerLinkActive="active-route"
+               [routerLinkActiveOptions]="{ exact: true }"
+               class="nav-link">
+               Accueil
+            </a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle pe-3"
+               role="button"
+               id="pages"
+               data-bs-toggle="dropdown"
+               aria-expanded="false">
+              Boutique
+            </a>
+
+            <ul class="dropdown-menu border-0 p-3 rounded-0 shadow" aria-labelledby="pages">
+              <li *ngFor="let category of categories">
+                <a class="dropdown-item"
+                   [routerLink]="['/boutique']"
+                   [queryParams]="{ category: category.name }">
+                   {{ category.name }}
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a routerLink="/a-propos" routerLinkActive="active-route" class="nav-link">À Propos</a>
+          </li>
+
+          <li class="nav-item">
+            <a routerLink="/contact" routerLinkActive="active-route" class="nav-link">Contact</a>
+          </li>
+
+        </ul>
+      </div>
+
+      <!-- Icons Right -->
+      <div class="col-sm-8 col-lg-2 d-flex gap-5 align-items-center justify-content-center justify-content-sm-end">
+        <ul class="d-flex justify-content-end list-unstyled m-0">
+          <li>
+            <a routerLink="/panier" class="p-2 mx-1">
+              <svg width="24" height="24"><use xlink:href="#shopping-bag"></use></svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
 </header>
+
+<!-- Display Products Below the Search Bar -->
+<div class="container">
+  <div class="row">
+    <div *ngFor="let product of products" class="col-12 d-flex align-items-center mb-3" style="height: 70px;">
+      <img [src]="product.image_url" alt="Product Image" style="height: 70px; width: auto;" class="me-3">
+      <span class="fs-5">{{ product.name }}</span>
+    </div>
+  </div>
+</div>

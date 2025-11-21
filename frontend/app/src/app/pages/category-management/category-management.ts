@@ -14,7 +14,7 @@ import { HttpClientModule } from '@angular/common/http'; // Import this
 })
 export class CategoryManagement implements OnInit {
   categories: Category[] = [];
-  newCategory: Category = { id: 0, name: '', description: '' };
+  newCategory: Category = { id: 0, name: '', description: '', image_url: '' };
   editMode = false;
   editCategoryId: number | null = null;
 
@@ -58,7 +58,7 @@ export class CategoryManagement implements OnInit {
 
   // Reset form after add/update
   resetForm() {
-    this.newCategory = { id: 0, name: '', description: '' };
+    this.newCategory = { id: 0, name: '', description: '', image_url: '' };
     this.editMode = false;
     this.editCategoryId = null;
   }

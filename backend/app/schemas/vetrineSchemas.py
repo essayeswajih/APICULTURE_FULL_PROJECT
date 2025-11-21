@@ -18,6 +18,8 @@ class ProductBase(BaseModel):
     image4_url: Optional[str] = None
     promo: Optional[bool] = False  # Indicates if the product is on promotion
     buzzent: Optional[str] = None  # Optional field for buzz or marketing text
+    rating: Optional[float] = None  # Average rating of the product
+    num_ratings: Optional[int] = None  # Number of ratings for the product
 
     class Config:
         from_attributes = True
@@ -33,6 +35,7 @@ class CategoryBase(BaseModel):
     id: Optional[int] = None 
     name: str
     description: Optional[str] = None
+    image_url: Optional[str] = None
 
     class Config:
         from_attributes = True

@@ -1,0 +1,79 @@
+<section id="featured-products" class="products-carousel">
+  <div class="container-lg overflow-hidden py-5">
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="section-header d-flex flex-wrap justify-content-between my-4">
+          <h2 class="section-title">Featured products</h2>
+
+          <div class="d-flex align-items-center">
+            <a class="btn btn-primary me-2">View All</a>
+
+            <div class="swiper-buttons">
+              <button class="products-carousel-prev btn btn-primary">❮</button>
+              <button class="products-carousel-next btn btn-primary">❯</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ✔ Swiper Web Component -->
+    <swiper-container
+      [slides-per-view]="4"
+      [space-between]="20"
+      navigation="true"
+      [breakpoints]="swiperConfig.breakpoints"
+      class="mySwiper"
+    >
+      <!-- ✔ Web Component slides -->
+      <swiper-slide *ngFor="let p of products">
+
+        <div class="product-item" style="cursor:pointer;">
+          <div (click)="goToProduct(p.id)">
+            <figure  class="product-image mb-3">
+              <img [src]="p.image_url" class="tab-image" [alt]="p.name">
+            </figure>
+          </div>
+
+          <div class="d-flex flex-column text-center">
+            <h3 class="fs-6 fw-normal">{{ p.name }}</h3>
+
+            <div>
+              <span class="rating">⭐⭐⭐⭐⭐</span>
+              <span>(222)</span>
+            </div>
+
+            @if (p?.discounted_price != 0) {
+              <div class="d-flex justify-content-center align-items-center gap-2">
+                <del>{{ p?.price }}D</del>
+                <span class="text-dark fw-semibold">{{ p?.discounted_price }}D</span>
+
+                <span class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">
+                  {{ ((p?.price! - p?.discounted_price!) / p?.price! * 100) | number:'1.0-0' }}% OFF
+                </span>
+              </div>
+            }
+            @else {
+              <div class="d-flex justify-content-center align-items-center gap-2">
+                <span class="text-dark fw-semibold">{{ p?.price }}D</span>
+              </div>
+            }
+
+            <div class="button-area p-3 pt-0">
+              <div class="row g-1 mt-0 mb-3">
+                <div class="col-12">
+                  <button class="btn btn-primary rounded-1 p-2 fs-7" (click)="addToCart(p)">Add to Cart</button>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </swiper-slide>
+    </swiper-container>
+
+  </div>
+</section>

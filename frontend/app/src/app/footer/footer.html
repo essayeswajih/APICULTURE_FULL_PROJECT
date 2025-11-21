@@ -1,7 +1,8 @@
+<!--
 <footer class="bg-light shadow-sm py-4">
   <div class="container">
     <div class="row">
-      <!-- Navigation Links -->
+
       <div class="col-md-3 mb-3">
         <h5 class="text-warning fw-bold">Navigation</h5>
         <ul class="list-unstyled">
@@ -11,7 +12,7 @@
               Boutique
             </button>
             <ul class="dropdown-menu" [ngClass]="{'show': isDropdownOpen}" aria-labelledby="footerBoutiqueDropdown" style="max-height: 140px; overflow-y: auto;">
-              <!-- Dynamically generate categories for the footer -->
+
               <li *ngFor="let category of categories">
                 <a class="dropdown-item text-success" [routerLink]="'/boutique/' + category.name" routerLinkActive="active-route">
                   {{ category.name }}
@@ -34,7 +35,7 @@
         </ul>
       </div>
 
-      <!-- Contact Information -->
+
       <div class="col-md-3 mb-3">
         <h5 class="text-warning fw-bold">Contact</h5>
         <ul class="list-unstyled">
@@ -44,17 +45,17 @@
         </ul>
       </div>
 
-      <!-- Newsletter Signup -->
+
       <div class="col-md-3 mb-3">
         <h5 class="text-warning fw-bold">Newsletter</h5>
         <p class="text-success">Inscrivez-vous pour recevoir nos promotions et actualités.</p>
         <form class="input-group" #newsletterForm="ngForm">
-          <input type="email" [(ngModel)]="email" class="form-control" placeholder="Votre e-mail" aria-label="Email">
+          <input type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Votre e-mail" aria-label="Email">
           <button class="btn btn-outline-warning" type="button" (click)="subscribe()">S'inscrire</button>
         </form>
       </div>
 
-      <!-- Social Media and Legal -->
+
       <div class="col-md-3 mb-3">
         <h5 class="text-warning fw-bold">Suivez-nous</h5>
         <ul class="list-unstyled d-flex">
@@ -69,9 +70,128 @@
       </div>
     </div>
 
-    <!-- Copyright -->
+
     <div class="text-center mt-4">
       <p class="text-success mb-0">&copy; 2025 Apiculture Galai. Tous droits réservés.</p>
     </div>
   </div>
 </footer>
+-->
+ <footer class="py-5">
+  <div class="container-lg">
+    <div class="row">
+      
+      <!-- Logo and Social Links -->
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="footer-menu">
+          <img src="/assets/logo1.png" width="70" height="70" alt="logo">
+          <span style="color: rgb(226, 159, 14); font-weight: bold; font-size: 30px;">Apiculture Galai</span>
+          <div class="social-links mt-3">
+            <ul class="d-flex list-unstyled gap-2">
+              <li>
+                <a href="https://facebook.com" class="btn btn-outline-light" target="_blank" aria-label="Facebook">
+                  <svg width="16" height="16"><use xlink:href="#facebook"></use></svg>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com" class="btn btn-outline-light" target="_blank" aria-label="Twitter">
+                  <svg width="16" height="16"><use xlink:href="#twitter"></use></svg>
+                </a>
+              </li>
+              <li>
+                <a href="https://youtube.com" class="btn btn-outline-light" target="_blank" aria-label="YouTube">
+                  <svg width="16" height="16"><use xlink:href="#youtube"></use></svg>
+                </a>
+              </li>
+              <li>
+                <a href="https://instagram.com" class="btn btn-outline-light" target="_blank" aria-label="Instagram">
+                  <svg width="16" height="16"><use xlink:href="#instagram"></use></svg>
+                </a>
+              </li>
+              <li>
+                <a href="https://amazon.com" class="btn btn-outline-light" target="_blank" aria-label="Amazon">
+                  <svg width="16" height="16"><use xlink:href="#amazon"></use></svg>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Apiculture Galai Section -->
+      <div class="col-md-2 col-sm-6">
+        <div class="footer-menu">
+          <h5 class="widget-title">Apiculture Galai</h5>
+          <ul class="menu-list list-unstyled">
+            <li class="menu-item"><a routerLink="/a-propos" class="nav-link">About us</a></li>
+            <li class="menu-item"><a routerLink="/careers" class="nav-link">Careers</a></li>
+            <li class="menu-item"><a routerLink="/affiliate" class="nav-link">Affiliate Programme</a></li>
+            <li class="menu-item"><a routerLink="/ultras-press" class="nav-link">Ultras Press</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Quick Links Section -->
+      <div class="col-md-2 col-sm-6">
+        <div class="footer-menu">
+          <h5 class="widget-title">Quick Links</h5>
+          <ul class="menu-list list-unstyled">
+            <li class="menu-item"><a routerLink="/boutique" class="nav-link">Shop</a></li>
+            <li class="menu-item"><a routerLink="/boutique" class="nav-link">Offers</a></li>
+            <li class="menu-item"><a routerLink="/discount-coupons" class="nav-link">Discount Coupons</a></li>
+            <li class="menu-item"><a routerLink="/stores" class="nav-link">Stores</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Customer Service Section -->
+      <div class="col-md-2 col-sm-6">
+        <div class="footer-menu">
+          <h5 class="widget-title">Customer Service</h5>
+          <ul class="menu-list list-unstyled">
+            <li class="menu-item"><a routerLink="/contact" class="nav-link">Contact</a></li>
+            <li class="menu-item"><a routerLink="/faq" class="nav-link">FAQ</a></li>
+            <li class="menu-item"><a routerLink="/privacy-policy" class="nav-link">Privacy Policy</a></li>
+            <li class="menu-item"><a routerLink="/returns" class="nav-link">Returns & Refunds</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Subscribe Us Section -->
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="footer-menu">
+          <h5 class="widget-title">Subscribe Us</h5>
+          <p>Subscribe to our newsletter to get updates about our grand offers.</p>
+          <form class="d-flex mt-3 gap-0" (ngSubmit)="subscribe()" #subscribeForm="ngForm">
+            <input
+              class="form-control rounded-start rounded-0 bg-light"
+              type="email"
+              placeholder="Email Address"
+              aria-label="Email Address"
+              [(ngModel)]="email"
+              name="email"
+              required
+              email
+            >
+            <button class="btn btn-dark rounded-end rounded-0" type="submit" [disabled]="!subscribeForm.form.valid">Subscribe</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+<!-- Footer Bottom Section -->
+<div id="footer-bottom">
+  <div class="container-lg">
+    <div class="row">
+      <div class="col-md-6 copyright">
+        <p>© 2026 Apiculture Galai. All rights reserved.</p>
+      </div>
+      <div class="col-md-6 credit-link text-start text-md-end">
+        <p>Developed By <a href="https://softhub.tn" target="_blank" rel="noopener noreferrer">Softhub.tn</a></p>
+      </div>
+    </div>
+  </div>
+</div>
