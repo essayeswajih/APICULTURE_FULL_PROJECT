@@ -133,111 +133,132 @@
     </nav>
   </div>
 </header> -->
+<header class="border-bottom bg-white sticky-top">
+  <div class="container-fluid px-3 py-3">
 
-<header>
-  <div class="container-fluid">
-    <div class="row py-3 border-bottom">
+    <!-- MAIN FLEX ROW -->
+    <div class="d-flex align-items-center gap-3">
 
-      <!-- Logo + Toggler -->
-      <div class="col-sm-4 col-lg-2 text-center text-sm-start d-flex gap-3 justify-content-center justify-content-md-start">
-        <div class="d-flex align-items-center my-3 my-sm-0" style="cursor:pointer;">
-          <a routerLink="/" (click)="isMobileMenuOpen = false">
-            <img src="/assets/logo1.png" alt="Apiculture Galai Logo" height="40px" width="50px" class="img-fluid">
-          </a>
-        </div>
-
-        <button class="navbar-toggler"
-          type="button"
-          data-bs-toggle="offcanvas"
-          data-bs-target="#offcanvasNavbar">
-          <svg width="24" height="24" viewBox="0 0 24 24"><use xlink:href="#menu"></use></svg>
-        </button>
+      <!-- 1. LOGO (fixed size) -->
+      <div class="flex-shrink-0">
+        <a routerLink="/" class="d-block">
+          <img src="/assets/logo1.png" alt="Logo" height="50" width="50" class="img-fluid">
+        </a>
       </div>
 
-      <!-- Search bar -->
-      <div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-4">
-        <div class="search-bar row bg-light p-2 rounded-4 mt-0">
-          <div class="col-md-4 d-none d-md-block">
-            <select class="form-select border-0 bg-transparent" [(ngModel)]="selectedCategory" (change)="onSearchChange()">
-              <option selected value="">All Categories</option>
-              <option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</option>
+      <!-- 2. SEARCH BAR – NOW TAKES ALL FREE SPACE ON LARGE SCREENS -->
+      <div class="flex-grow-1 d-flex justify-content-start">
+        <div class="search-bar row bg-light p-2 rounded-4 g-0 align-items-center w-100">
+
+          <!-- Category dropdown (≥ md) -->
+          <div class="col-md-3 d-none d-md-block pe-0">
+            <select class="form-select border-0 bg-transparent"
+                    [(ngModel)]="selectedCategory"
+                    (change)="onSearchChange()">
+              <option value="">All Categories</option>
+              <option *ngFor="let category of categories" [value]="category.name">
+                {{ category.name }}
+              </option>
             </select>
           </div>
-          <div class="col-11 col-md-7">
-            <form id="search-form" class="text-center" (submit)="search()">
-              <input type="text" [(ngModel)]="searchQuery" name="searchQuery" class="form-control border-0 bg-transparent" placeholder="Search for products" (input)="onSearchChange()" required>
+
+          <!-- Search input – takes maximum space -->
+          <div class="col-9 col-md-8">
+            <form (submit)="search()" class="h-100">
+              <input type="text"
+                     [(ngModel)]="searchQuery"
+                     name="searchQuery"
+                     class="form-control border-0 bg-transparent h-100 px-0"
+                     placeholder="Rechercher un produit..."
+                     (input)="onSearchChange()"
+                     required>
             </form>
           </div>
-          <div class="col-1">
-          <button *ngIf="products.length > 0"
-                  class="btn p-0"
-                  (click)="clearSearch()">
-            <svg width="22" height="22" viewBox="0 0 24 24">
-              <path fill="currentColor" d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/>
-            </svg>
-          </button>
+
+          <!-- Clear button -->
+          <div class="col-3 col-md-1 text-end">
+            <button *ngIf="products.length > 0" class="btn p-0" (click)="clearSearch()">
+              <svg width="20" height="20" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </button>
           </div>
         </div>
       </div>
 
-      <!-- Menu with Angular routing -->
-      <div class="col-lg-4">
-        <ul class="navbar-nav list-unstyled d-flex flex-row gap-3 gap-lg-5 justify-content-center flex-wrap align-items-center mb-0 fw-bold text-uppercase text-dark">
-
+      <!-- 3. DESKTOP MENU – appears after search on ≥1500px -->
+      <div class="d-none d-xxl-flex align-items-center menu-pc px-4">
+        <ul class="navbar-nav d-flex flex-row gap-5 fw-bold text-uppercase mb-0">
           <li class="nav-item">
-            <a routerLink="/" 
-               routerLinkActive="active-route"
-               [routerLinkActiveOptions]="{ exact: true }"
-               class="nav-link">
-               Accueil
-            </a>
+            <a routerLink="/" routerLinkActive="active-route" [routerLinkActiveOptions]="{exact: true}" class="nav-link">Accueil</a>
           </li>
-
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle pe-3"
-               role="button"
-               id="pages"
-               data-bs-toggle="dropdown"
-               aria-expanded="false">
-              Boutique
-            </a>
-
-            <ul class="dropdown-menu border-0 p-3 rounded-0 shadow" aria-labelledby="pages">
+            <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Boutique</a>
+            <ul class="dropdown-menu border-0 shadow p-3 rounded-0">
               <li *ngFor="let category of categories">
-                <a class="dropdown-item"
-                   [routerLink]="['/boutique']"
-                   [queryParams]="{ category: category.name }">
-                   {{ category.name }}
+                <a class="dropdown-item" [routerLink]="['/boutique']" [queryParams]="{category: category.name}">
+                  {{ category.name }}
                 </a>
               </li>
             </ul>
           </li>
-
-          <li class="nav-item">
-            <a routerLink="/a-propos" routerLinkActive="active-route" class="nav-link">À Propos</a>
-          </li>
-
-          <li class="nav-item">
-            <a routerLink="/contact" routerLinkActive="active-route" class="nav-link">Contact</a>
-          </li>
-
+          <li class="nav-item"><a routerLink="/a-propos" routerLinkActive="active-route" class="nav-link">À Propos</a></li>
+          <li class="nav-item"><a routerLink="/contact" routerLinkActive="active-route" class="nav-link">Contact</a></li>
         </ul>
       </div>
 
-      <!-- Icons Right -->
-      <div class="col-sm-8 col-lg-2 d-flex gap-5 align-items-center justify-content-center justify-content-sm-end">
-        <ul class="d-flex justify-content-end list-unstyled m-0">
-          <li>
-            <a routerLink="/panier" class="p-2 mx-1">
-              <svg width="24" height="24"><use xlink:href="#shopping-bag"></use></svg>
-            </a>
-          </li>
-        </ul>
+      <!-- 4. RIGHT: Mobile Menu + Cart -->
+      <div class="d-flex align-items-center gap-3 flex-shrink-0">
+
+        <!-- Mobile menu button (only <1500px) -->
+        <button class="navbar-toggler border-0 d-xxl-none"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasNavbar">
+          <svg width="26" height="26" viewBox="0 0 24 24"><use xlink:href="#menu"></use></svg>
+        </button>
+
+        <!-- Cart -->
+        <a routerLink="/panier" class="p-2">
+          <svg width="26" height="26"><use xlink:href="#shopping-bag"></use></svg>
+        </a>
       </div>
 
     </div>
   </div>
+
+  <!-- MOBILE OFFCANVAS – always works -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" data-bs-backdrop="true" data-bs-scroll="true">
+    <div class="offcanvas-header border-bottom">
+      <h5 class="offcanvas-title fw-bold text-uppercase">Menu</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+    </div>
+    <div class="offcanvas-body pt-4">
+      <ul class="list-unstyled fs-5">
+        <li class="mb-4"><a routerLink="/" class="text-dark text-decoration-none" data-bs-dismiss="offcanvas">Accueil</a></li>
+        <li class="mb-4">
+          <a href="javascript:void(0)" class="text-dark text-decoration-none d-flex justify-content-between align-items-center"
+             data-bs-toggle="collapse" href="#mobileBoutique">
+            Boutique <i class="fas fa-chevron-down small"></i>
+          </a>
+          <div class="collapse mt-3" id="mobileBoutique">
+            <ul class="list-unstyled ps-4">
+              <li class="py-2" *ngFor="let category of categories">
+                <a [routerLink]="['/boutique']" [queryParams]="{category: category.name}"
+                   class="text-muted text-decoration-none d-block" data-bs-dismiss="offcanvas">
+                  {{ category.name }}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li class="mb-4"><a routerLink="/a-propos" class="text-dark text-decoration-none" data-bs-dismiss="offcanvas">À Propos</a></li>
+        <li class="mb-4"><a routerLink="/contact" class="text-dark text-decoration-none" data-bs-dismiss="offcanvas">Contact</a></li>
+      </ul>
+    </div>
+  </div>
 </header>
+
 
 <!-- Display Products Below the Search Bar -->
 <div class="container">
