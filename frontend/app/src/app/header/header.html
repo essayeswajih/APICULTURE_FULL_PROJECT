@@ -160,7 +160,7 @@
           <div class="col-md-4 d-none d-md-block">
             <select class="form-select border-0 bg-transparent" [(ngModel)]="selectedCategory" (change)="onSearchChange()">
               <option selected value="">All Categories</option>
-              <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+              <option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</option>
             </select>
           </div>
           <div class="col-11 col-md-7">
