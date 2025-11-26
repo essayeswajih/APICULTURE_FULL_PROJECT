@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { Category } from '../services/api';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-category-carousel',
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './category-carousel.html',
   styleUrl: './category-carousel.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

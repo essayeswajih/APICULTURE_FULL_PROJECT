@@ -25,7 +25,7 @@
     >
       <swiper-slide *ngFor="let c of categories">
         <div class="category-item text-center">
-          <a [href]="c.link || '#'">
+          <a [routerLink]="['/boutique']" [queryParams]="{category: c.name}">
             <img [src]="c.image_url" [alt]="c.name || 'Category'" class="rounded-circle mb-2" style="width: 120px; height: 120px;">
             <h4 class="fs-6 fw-normal">{{ c.name }}</h4>
           </a>
