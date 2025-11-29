@@ -84,12 +84,11 @@
           <p class="card-text">Category: {{ product.category_id }}</p>
           <p class="card-text">Discounted: {{ product.discounted_price || 'N/A' }}DT</p>
           <p class="card-text" *ngIf="product.promo">Promo: Yes</p>
-          <p class="card-text" *ngIf="!product.rating">Rating: {{ product.rating }}</p>
-          <p class="card-text" *ngIf="product.num_ratings">Number of Ratings: {{ product.num_ratings }}</p>
+          @if( product.rating && product.rating > 0 ){
+            <p class="card-text">Rating: {{ product.rating }}</p>
+            <p class="card-text" *ngIf="product.num_ratings">Number of Ratings: {{ product.num_ratings }}</p>
+          }
           <p class="card-text" *ngIf="product.buzzent">Marketing Text: {{ product.buzzent }}</p>
-
-
-
         </div>
         <div class="card-footer d-flex justify-content-between">
           <button class="btn btn-outline-warning me-2" (click)="editProduct(product)">Edit</button>
