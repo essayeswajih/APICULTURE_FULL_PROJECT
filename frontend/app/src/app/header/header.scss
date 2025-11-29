@@ -35,5 +35,8 @@
 
 header.sticky-top {
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  z-index: 1050;
+  z-index: 1000;
+}
+#offcanvasNavbar {
+  z-index: 1060 !important;
 }
