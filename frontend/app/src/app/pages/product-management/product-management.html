@@ -56,11 +56,11 @@
         </div>
         <div class="mb-3">
           <label for="rating" class="form-label">Rating</label>
-          <input type="number" min="0" max="5" class="form-check-input" id="rating" name="rating" [(ngModel)]="newProduct.rating" [ngModelOptions]="{standalone: true}">
+          <input type="number" min="0" max="5" class="form-control" id="rating" name="rating" [(ngModel)]="newProduct.rating" [ngModelOptions]="{standalone: true}">
         </div>
         <div class="mb-3">
           <label for="num_ratings" class="form-label">Number of Ratings</label>
-          <input type="text" class="form-check-input" id="num_ratings" name="num_ratings" [(ngModel)]="newProduct.num_ratings" [ngModelOptions]="{standalone: true}">
+          <input type="text" class="form-control" id="num_ratings" name="num_ratings" [(ngModel)]="newProduct.num_ratings" [ngModelOptions]="{standalone: true}">
         </div>
         <button type="submit" class="btn btn-warning">{{ editMode ? 'Update' : 'Add' }} Product</button>
         <button type="button" class="btn btn-secondary ms-2" *ngIf="editMode" (click)="resetForm()">Cancel</button>
