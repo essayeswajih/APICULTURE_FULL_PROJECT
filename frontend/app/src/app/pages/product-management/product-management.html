@@ -73,7 +73,7 @@
     <div class="col-md-4" *ngFor="let product of products; trackBy: trackById">
       <div class="card mb-3">
         <img src="{{ product.image_url || 'https://via.placeholder.com/200?text=Product' }}" class="card-img-top" alt="Product" loading="lazy">
-        <div class="card-body">
+        <div class="card-body" style="height: 300px; overflow-y: auto;">
           <h5 class="card-title">{{ product.name }}</h5>
           <p class="card-text">{{ product.description || 'No description' }}</p>
           <p class="card-text">Price: {{ product.price | number:'1.2-2' }}DT</p>
@@ -84,7 +84,14 @@
           <p class="card-text">Category: {{ product.category_id }}</p>
           <p class="card-text">Discounted: {{ product.discounted_price || 'N/A' }}DT</p>
           <p class="card-text" *ngIf="product.promo">Promo: Yes</p>
+          <p class="card-text" *ngIf="!product.rating">Rating: {{ product.rating }}</p>
+          <p class="card-text" *ngIf="product.num_ratings">Number of Ratings: {{ product.num_ratings }}</p>
           <p class="card-text" *ngIf="product.buzzent">Marketing Text: {{ product.buzzent }}</p>
+
+
+
+        </div>
+        <div class="card-footer d-flex justify-content-between">
           <button class="btn btn-outline-warning me-2" (click)="editProduct(product)">Edit</button>
           <button class="btn btn-danger" (click)="deleteProduct(product.id)">Delete</button>
         </div>
