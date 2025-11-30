@@ -1,82 +1,4 @@
-<!--
-<footer class="bg-light shadow-sm py-4">
-  <div class="container">
-    <div class="row">
-
-      <div class="col-md-3 mb-3">
-        <h5 class="text-warning fw-bold">Navigation</h5>
-        <ul class="list-unstyled">
-          <li><a class="text-success" routerLink="/" routerLinkActive="active-route" [routerLinkActiveOptions]="{exact: true}">Accueil</a></li>
-          <li>
-            <button class="text-success dropdown-toggle bg-transparent border-0" (click)="toggleDropdown()" id="footerBoutiqueDropdown" aria-expanded="false">
-              Boutique
-            </button>
-            <ul class="dropdown-menu" [ngClass]="{'show': isDropdownOpen}" aria-labelledby="footerBoutiqueDropdown" style="max-height: 140px; overflow-y: auto;">
-
-              <li *ngFor="let category of categories">
-                <a class="dropdown-item text-success" [routerLink]="'/boutique/' + category.name" routerLinkActive="active-route">
-                  {{ category.name }}
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li><a class="text-success" routerLink="/a-propos" routerLinkActive="active-route">À Propos</a></li>
-          <li><a class="text-success" routerLink="/contact" routerLinkActive="active-route">Contact</a></li>
-          <li>
-            <a class="text-success d-flex align-items-center" routerLink="/panier" routerLinkActive="active-route" title="Panier">
-                Panier
-              <span class="basket-icon me-1">
-                <svg class="panier" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24" fill="none" style="margin-left: 5px;">
-                  <path d="M20 10L18.5145 17.4276C18.3312 18.3439 18.2396 18.8021 18.0004 19.1448C17.7894 19.447 17.499 19.685 17.1613 19.8326C16.7783 20 16.3111 20 15.3766 20H8.62337C7.6889 20 7.22166 20 6.83869 19.8326C6.50097 19.685 6.2106 19.447 5.99964 19.1448C5.76041 18.8021 5.66878 18.3439 5.48551 17.4276L4 10M20 10H18M20 10H21M4 10H3M4 10H6M6 10H18M6 10L9 4M18 10L15 4M9 13V16M12 13V16M15 13V16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </span>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-
-      <div class="col-md-3 mb-3">
-        <h5 class="text-warning fw-bold">Contact</h5>
-        <ul class="list-unstyled">
-          <li><a class="text-success" routerLink="/contact">Formulaire de Contact</a></li>
-          <li><a class="text-success" href="mailto:apiculturegalai@gmail.com">apiculturegalai&#64;gmail.com</a></li>
-          <li><span class="text-success">+216 55 716 454</span></li>
-        </ul>
-      </div>
-
-
-      <div class="col-md-3 mb-3">
-        <h5 class="text-warning fw-bold">Newsletter</h5>
-        <p class="text-success">Inscrivez-vous pour recevoir nos promotions et actualités.</p>
-        <form class="input-group" #newsletterForm="ngForm">
-          <input type="email" [(ngModel)]="email" [ngModelOptions]="{standalone: true}" class="form-control" placeholder="Votre e-mail" aria-label="Email">
-          <button class="btn btn-outline-warning" type="button" (click)="subscribe()">S'inscrire</button>
-        </form>
-      </div>
-
-
-      <div class="col-md-3 mb-3">
-        <h5 class="text-warning fw-bold">Suivez-nous</h5>
-        <ul class="list-unstyled d-flex">
-          <li class="me-3"><a class="text-success" href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-          <li><a class="text-success" href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a></li>
-        </ul>
-        <h5 class="text-warning fw-bold mt-3">Informations Légales</h5>
-        <ul class="list-unstyled">
-          <li><a class="text-success" routerLink="/cgv">Conditions Générales de Vente</a></li>
-          <li><a class="text-success" routerLink="/politique-confidentialite">Politique de Confidentialité</a></li>
-        </ul>
-      </div>
-    </div>
-
-
-    <div class="text-center mt-4">
-      <p class="text-success mb-0">&copy; 2025 Apiculture Galai. Tous droits réservés.</p>
-    </div>
-  </div>
-</footer>
--->
+<!-- Footer Top Section-->
  <footer class="py-5">
   <div class="container-lg">
     <div class="row">
@@ -85,7 +7,7 @@
       <div class="col-lg-3 col-md-6 col-sm-6">
         <div class="footer-menu">
           <img src="/assets/logo.png" width="70" height="70" alt="logo">
-          <span style="color: rgb(51, 35, 2); font-weight: bold; font-size: 30px;">Apiculture Galai</span>
+          <span style="color: rgb(82, 56, 4); font-weight: bold; font-size: 30px;">Apiculture Galai</span>
           <div class="social-links mt-3">
             <ul class="d-flex list-unstyled gap-2">
               <li>
