@@ -130,10 +130,10 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         const isMobile = isPlatformBrowser(this.platformId) && window.innerWidth <= 767;
         const chunkSize = isMobile ? 1 : 4;
         this.productChunks = this.chunkArray(products, chunkSize);
-
-        this.popularProducts = products.slice(0, 9);
-        this.latestProducts = products.slice(9, 18);
-        this.featuredProducts = products.slice(18, 27);
+        
+        this.popularProducts = products.slice(0, 16);
+        this.latestProducts = products.slice(16, 32);
+        this.featuredProducts = products.slice(32, 48);
 
         this.productsLoaded = true;
         this.checkAllDataLoaded();
