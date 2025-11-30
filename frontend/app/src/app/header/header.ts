@@ -105,5 +105,6 @@ export class Header implements OnInit {
   clearSearch() {
   this.searchQuery = '';
   this.products = [];
+  this.cdRef.detectChanges();
   }
 }
