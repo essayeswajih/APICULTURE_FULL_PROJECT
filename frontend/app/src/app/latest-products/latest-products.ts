@@ -67,9 +67,17 @@ export class LatestProducts {
     goToProduct(id: number): void {
     this.RouterS.navigate(['/product', id]);
   }
-  getStars(n: number | null | undefined) {
-    const value = n ?? 0;     // if n is null or undefined → use 0
-    return Array(value).fill(0);
+  getStars(n: any) {
+  const value = Number(n);
+
+  if (!Number.isFinite(value) || value <= 0) {
+    return [];
+  }
+
+  // Optional: limit stars between 0 and 5
+  const stars = Math.min(Math.floor(value), 5);
+
+  return Array(stars).fill(0);
   }
 
   /*products = [

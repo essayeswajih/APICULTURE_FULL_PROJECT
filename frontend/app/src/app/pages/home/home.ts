@@ -135,6 +135,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
 
         this.popularProducts = products.slice(0, chunk);
         this.latestProducts = products.slice(chunk, chunk * 2);
+        console.log( "this.latestProducts: ",this.latestProducts);
         this.featuredProducts = products.slice(chunk * 2, products.length);
 
         this.productsLoaded = true;
