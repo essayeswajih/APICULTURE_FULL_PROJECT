@@ -14,7 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CartItem } from '../boutique/boutique';
 import { ToastrService } from 'ngx-toastr';
 import { Cart } from '../../services/cart';
-import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FeaturedProducts } from '../../featured-products/featured-products';
 import { PopularProducts } from '../../popular-products/popular-products';
 import { LatestProducts } from '../../latest-products/latest-products';
@@ -32,6 +32,7 @@ import { CategoryCarousel } from '../../category-carousel/category-carousel';
     PopularProducts,
     LatestProducts,
     CategoryCarousel,
+    ReactiveFormsModule
 ],
   templateUrl: './home.html',
   styleUrls: ['./home.scss'],
