@@ -86,9 +86,37 @@
         </button>
 
         <!-- Cart -->
-        <a routerLink="/panier" class="p-2">
-          <svg width="26" height="26"><use xlink:href="#shopping-bag"></use></svg>
+        <a routerLink="/panier" class="p-2" style="position: relative;">
+          <!-- Badge for item count -->
+           @if(itemssum > 0){
+          <span 
+            style="
+              position: absolute; 
+              top: 5px; 
+              right: -3px; 
+              background-color: red; 
+              border-radius: 50%; 
+              width: 18px; 
+              height: 18px; 
+              display: flex; 
+              justify-content: center; 
+              align-items: center; 
+              color: #fff; 
+              font-size: 12px; 
+              font-weight: bold; 
+              line-height: 1;
+            ">
+            {{ itemssum }}
+          </span>
+           }
+
+          
+          <!-- Shopping bag icon -->
+          <svg width="26" height="26">
+            <use xlink:href="#shopping-bag"></use>
+          </svg>
         </a>
+
       </div>
 
     </div>
