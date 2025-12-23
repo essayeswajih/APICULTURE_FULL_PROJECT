@@ -249,7 +249,7 @@ def subscribe_to_redactions(request: Request, reduction: Reduction):
             to_email=AdminEmail
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Failed to send subscription email.")
+        raise HTTPException(status_code=500, detail="Failed to send subscription email. Error: " + str(e))
     
     return {"message": "Successfully subscribed to the Reduction."}
 
