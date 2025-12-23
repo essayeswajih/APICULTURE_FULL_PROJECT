@@ -14,7 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CartItem } from '../boutique/boutique';
 import { ToastrService } from 'ngx-toastr';
 import { Cart } from '../../services/cart';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { FeaturedProducts } from '../../featured-products/featured-products';
 import { PopularProducts } from '../../popular-products/popular-products';
 import { LatestProducts } from '../../latest-products/latest-products';
@@ -46,8 +46,8 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   isDesktop = false;
   isLoading = true;
   email = '';
-  subName = '';
-  subEmail = '';
+  subForm: FormGroup;
+
 
   // Preloader control
   private preloaderTimeout?: any;
@@ -60,8 +60,14 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     @Inject(PLATFORM_ID) private platformId: Object,
     private cdRef: ChangeDetectorRef,
     private toastService: ToastrService,
-    private cartService: Cart
-  ) {}
+    private cartService: Cart,
+    private fb: FormBuilder
+  ) {
+     this.subForm = this.fb.group({
+      subName: ['', Validators.required],
+      subEmail: ['', [Validators.required, Validators.email]],
+    });
+  }
 
   ngOnInit(): void {
     this.startPreloader();
@@ -229,7 +235,15 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     });
   }
   sub(): void {
-    this.apiService.subscribeToRedections(this.subName,this.email).subscribe({
+
+   if (this.subForm.invalid) {
+      this.subForm.markAllAsTouched();
+      return;
+    }
+
+    const payload = this.subForm.value;
+
+    this.apiService.subscribeToRedections(payload.subName,payload.email).subscribe({
       next: () => {
         this.toastService.success('Inscription réussie !', 'Succès');
         this.email = '';
@@ -238,5 +252,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         this.toastService.error('Erreur lors de l\'inscription', 'Erreur');
       },
     });
+
+    this.subForm.reset();
   }
 }

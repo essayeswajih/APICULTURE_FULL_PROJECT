@@ -207,20 +207,43 @@
                 <p>Inscrivez-vous et enregistrez-vous dès maintenant pour devenir membre.</p>
               </div>
               <div class="col-md-5 p-3">
-                <form>
+                <form [formGroup]="subForm" (ngSubmit)="sub()">
+
                   <div class="mb-3">
-                    <label for="name" class="form-label d-none">Name</label>
-                    <input type="text"
-                      class="form-control form-control-md rounded-0" name="name" id="name" placeholder="Name">
+                    <label for="subName" class="form-label">
+                      Name
+                    </label>
+                    <input
+                      id="subName"
+                      type="text"
+                      class="form-control form-control-md rounded-0"
+                      formControlName="subName"
+                      placeholder="Enter your name">
                   </div>
+
                   <div class="mb-3">
-                    <label for="email" class="form-label d-none">Email</label>
-                    <input type="email" class="form-control form-control-md rounded-0" name="email" id="email" placeholder="Email Address">
+                    <label for="subEmail" class="form-label">
+                      Email
+                    </label>
+                    <input
+                      id="subEmail"
+                      type="email"
+                      class="form-control form-control-md rounded-0"
+                      formControlName="subEmail"
+                      placeholder="Enter your email address">
                   </div>
+
                   <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-dark btn-md rounded-0">Submit</button>
+                    <button
+                      type="submit"
+                      class="btn btn-dark btn-md rounded-0"
+                      [disabled]="subForm.invalid">
+                      Submit
+                    </button>
                   </div>
+
                 </form>
+
                 
               </div>
               
