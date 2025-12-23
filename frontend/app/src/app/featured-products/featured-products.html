@@ -33,7 +33,7 @@
       <swiper-slide *ngFor="let p of products">
 
         <div class="product-item" style="cursor:pointer;">
-          <div (click)="goToProduct(p.id)">
+          <div (click)="goToProductBySlug(p.slug ?? '')">
             <figure  class="product-image mb-3">
               <img [src]="p.image_url" class="tab-image" [alt]="p.name">
             </figure>
