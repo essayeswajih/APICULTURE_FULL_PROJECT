@@ -64,7 +64,7 @@
               [src]="product.image_url || '/assets/images/placeholder.jpg'" 
               class="card-img-top" 
               [alt]="product.name"
-              (click)="goToProduct(product.id)"
+              (click)="goToProductBySlug(product.slug ?? '')"
               style="width: 100%; height: 100%; padding: 20px; cursor: pointer;"
               loading="lazy"
             >
@@ -72,7 +72,7 @@
             <div class="card-body">
               <h5 
                 class="card-title text-success" 
-                (click)="goToProduct(product.id)"
+                (click)="goToProductBySlug(product.slug ?? '')"
                 style="cursor: pointer;"
               >
                 {{ product.name }}

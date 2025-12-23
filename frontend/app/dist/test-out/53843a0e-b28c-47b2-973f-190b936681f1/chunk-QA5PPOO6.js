@@ -3310,7 +3310,7 @@ function isNetlifyUrl(url) {
   return NETLIFY_LOADER_REGEX.test(url);
 }
 function imgDirectiveDetails(ngSrc, includeNgSrc = true) {
-  const ngSrcInfo = includeNgSrc ? `(activated on an <img> element with the \`ngSrc="${ngSrc}"\`) ` : "";
+  const ngSrcInfo = includeNgSrc ? `(activated on an <img> element with the \`src="${ngSrc}"\`) ` : "";
   return `The NgOptimizedImage directive ${ngSrcInfo}has detected that`;
 }
 function assertDevMode(checkName) {
@@ -4006,7 +4006,7 @@ var init_common = __esm({
        *
        * Example:
        * ```html
-       * <img ngSrc="hello.jpg" ngSrcset="100w, 200w" />  =>
+       * <img src="hello.jpg" ngSrcset="100w, 200w" />  =>
        * <img src="path/hello.jpg" srcset="path/hello.jpg?w=100 100w, path/hello.jpg?w=200 200w" />
        * ```
        */

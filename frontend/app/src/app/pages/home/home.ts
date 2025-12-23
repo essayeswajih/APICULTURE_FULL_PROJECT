@@ -32,7 +32,6 @@ import { CategoryCarousel } from '../../category-carousel/category-carousel';
     PopularProducts,
     LatestProducts,
     CategoryCarousel,
-    NgOptimizedImage
 ],
   templateUrl: './home.html',
   styleUrls: ['./home.scss'],
