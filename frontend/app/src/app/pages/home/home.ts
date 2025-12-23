@@ -243,7 +243,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
 
     const payload = this.subForm.value;
 
-    this.apiService.subscribeToRedections(payload.subName,payload.email).subscribe({
+    this.apiService.subscribeToRedections(payload.subName,payload.subEmail).subscribe({
       next: () => {
         this.toastService.success('Inscription réussie !', 'Succès');
         this.email = '';
