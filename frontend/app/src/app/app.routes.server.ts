@@ -16,4 +16,4 @@ export const serverRoutes: ServerRoute[] = [
 ];
 // routes-categories.ts
 export const categories = ['Ruches', 'Vêtements', 'Miellerie', 'Nourrisseurs', 'Produits de la ruche'];
-export const productIds = [1, 2, 3, 4, 5]; // Example product IDs for dynamic routes
+export const productIds = ['cadre', 'ruche', 'miel']; // Example product IDs for dynamic routes
