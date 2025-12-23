@@ -20,7 +20,7 @@ class ProductBase(BaseModel):
     buzzent: Optional[str] = None  # Optional field for buzz or marketing text
     rating: Optional[float] = None  # Average rating of the product
     num_ratings: Optional[int] = None  # Number of ratings for the product
-
+    slug: Optional[str] = None  # Optional slug for the product
     class Config:
         from_attributes = True
 

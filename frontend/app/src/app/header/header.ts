@@ -108,4 +108,10 @@ export class Header implements OnInit {
   this.products = [];
   this.cdRef.detectChanges();
   }
+  goToProduct(slug: string) {
+    this.router.navigateByUrl(`/product/${slug}`);
+    this.isMobileMenuOpen = false;
+    this.isDropdownOpen = false;
+    this.cdRef.detectChanges();
+  }
 }

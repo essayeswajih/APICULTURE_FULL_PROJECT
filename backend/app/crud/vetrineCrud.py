@@ -40,8 +40,6 @@ def get_products(
             Product.description.ilike(search_query)
         )
 
-
-
     # Apply sorting
     if sortBy == 'prix-asc':
         query = query.order_by(asc(Product.price))  # Sort by price ascending
@@ -62,6 +60,9 @@ def get_products(
 def get_product_by_id(db: Session, product_id: int) -> Optional[Product]:
     return db.query(Product).filter(Product.id == product_id).first()
 
+def get_product_by_slug(db: Session, slug: str) -> Optional[Product]:
+    return db.query(Product).filter(Product.slug == slug).first()
+
 def create_product(db: Session, product: ProductBase) -> Product:
     db_product = Product(
         name=product.name,
@@ -78,11 +79,15 @@ def create_product(db: Session, product: ProductBase) -> Product:
         buzzent=product.buzzent,
         rating=product.rating,
         num_ratings=product.num_ratings,
+        slug=create_slug(product.name)
     )
     db.add(db_product)
     db.commit()
     db.refresh(db_product)
     return db_product
+def create_slug(name):
+    slug = name.lower().replace(" ", "-")
+    return slug
 def update_product(db: Session, product_id: int, product: ProductBase) -> Optional[Product]:
     db_product = db.query(Product).filter(Product.id == product_id).first()
     if db_product:
@@ -100,6 +105,7 @@ def update_product(db: Session, product_id: int, product: ProductBase) -> Option
         db_product.buzzent = product.buzzent
         db_product.rating = product.rating
         db_product.num_ratings = product.num_ratings
+        db_product.slug = create_slug(product.name)
         db.commit()
         db.refresh(db_product)
         return db_product

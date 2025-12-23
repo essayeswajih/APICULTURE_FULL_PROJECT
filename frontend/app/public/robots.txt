@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+
+# Block technical or private paths if any
+Disallow: /api/
+Disallow: /dashboard/
+
+# Allow Google to crawl JS & CSS (VERY IMPORTANT for Angular)
+Allow: /*.js$
+Allow: /*.css$
+
+# Sitemap
+Sitemap: https://apiculturegalai.tn/sitemap.xml

@@ -67,6 +67,9 @@ export class PopularProducts {
     goToProduct(id: number): void {
     this.RouterS.navigate(['/product', id]);
   }
+  goToProductBySlug(slug: string): void {
+    this.RouterS.navigate(['/product', slug]);
+  }
   getStars(n: any) {
     const value = Number(n);
 

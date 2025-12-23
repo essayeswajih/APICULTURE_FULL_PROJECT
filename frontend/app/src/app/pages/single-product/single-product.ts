@@ -45,9 +45,9 @@ export class SingleProduct implements OnInit {
   ngOnInit(): void {
     // Fetch product data based on route param
     this.route.paramMap.subscribe(params => {
-      const productId = Number(params.get('id'));
-      if (productId) {
-        this.api.getProductById(productId).subscribe({
+      const productSlug = params.get('slug');
+      if (productSlug) {
+        this.api.getProductBySlug(productSlug).subscribe({
           next: (product) => {
             this.product = product;
             this.error = null;

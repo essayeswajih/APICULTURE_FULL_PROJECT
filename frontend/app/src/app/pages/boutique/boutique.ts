@@ -224,7 +224,9 @@ export class Boutique implements OnInit, OnDestroy {
   goToProduct(id: number): void {
     this.router.navigate(['/product', id]);
   }
-
+  goToProductBySlug(slug: string): void {
+    this.router.navigate(['/product', slug]);
+  }
   goTo(category?: string, sortBy?: string): void {
     if (category) {
       this.selectedCategory = this.categories.find(cat => cat.name.toLowerCase() === category.toLowerCase()) || { id: 0, name: 'Tous' };

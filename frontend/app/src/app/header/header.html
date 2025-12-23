@@ -130,9 +130,9 @@
 <!-- Display Products Below the Search Bar -->
 <div class="container">
   <div class="row">
-    <div *ngFor="let product of products" class="col-12 d-flex align-items-center mb-3" style="height: 70px;">
+    <div *ngFor="let product of products" class="col-12 d-flex align-items-center mb-3" (click)="goToProduct(product.slug ?? '')" style="height: 70px;cursor: pointer">
       <img [src]="product.image_url" alt="Product Image" style="height: 70px; width: auto;" class="me-3">
-      <span class="fs-5">{{ product.name }}</span>
+      <span class="fs-5" >{{ product.name }}</span>
     </div>
   </div>
 </div>

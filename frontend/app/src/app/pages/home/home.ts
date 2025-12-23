@@ -1,4 +1,4 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -32,7 +32,8 @@ import { CategoryCarousel } from '../../category-carousel/category-carousel';
     PopularProducts,
     LatestProducts,
     CategoryCarousel,
-  ],
+    NgOptimizedImage
+],
   templateUrl: './home.html',
   styleUrls: ['./home.scss'],
 })
@@ -135,7 +136,6 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
 
         this.popularProducts = products.slice(0, chunk);
         this.latestProducts = products.slice(chunk, chunk * 2);
-        console.log( "this.latestProducts: ",this.latestProducts);
         this.featuredProducts = products.slice(chunk * 2, products.length);
 
         this.productsLoaded = true;
@@ -206,6 +206,9 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
 
   goToProduct(id: number): void {
     this.router.navigate(['/product', id]);
+  }
+  goToProductBySlug(slug: string): void {
+    this.router.navigate(['/product', slug]);
   }
 
   subscribe(): void {

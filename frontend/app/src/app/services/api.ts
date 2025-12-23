@@ -29,6 +29,7 @@ export interface Product {
   buzzent?: string;           // Optional field for buzz or marketing text
   rating?: number;            // Average rating of the product
   num_ratings?: number;       // Number of ratings for the product
+  slug?: string;              // Optional slug for the product
 }
 
 
@@ -139,6 +140,11 @@ export class Api {
   getProductById(id: number): Observable<Product> {
     return this.http
       .get<Product>(`${this.apiUrl}/products/${id}`)
+      .pipe(catchError(this.handleError));
+  }
+  getProductBySlug(slug: string): Observable<Product> {
+    return this.http
+      .get<Product>(`${this.apiUrl}/products/slug/${slug}`)
       .pipe(catchError(this.handleError));
   }
 

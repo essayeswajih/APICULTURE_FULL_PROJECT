@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { Home } from "./pages/home/home";
 import { Header } from "./header/header";
@@ -89,4 +89,29 @@ menuItems = [
     route: ['/contact']
   }
 ];
+  // Disable right click
+  @HostListener('document:contextmenu', ['$event'])
+  onRightClick(event: MouseEvent) {
+    event.preventDefault();
+  }
+
+  // Disable Ctrl+U, Ctrl+Shift+I, F12
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent) {
+
+    // Ctrl + U
+    if (event.ctrlKey && event.key.toLowerCase() === 'u') {
+      event.preventDefault();
+    }
+
+    // Ctrl + Shift + I (DevTools)
+    if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'i') {
+      event.preventDefault();
+    }
+
+    // F12
+    if (event.key === 'F12') {
+      event.preventDefault();
+    }
+  }
 }

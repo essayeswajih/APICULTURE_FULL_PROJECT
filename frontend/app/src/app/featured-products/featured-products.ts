@@ -4,11 +4,11 @@ import { Api, Product } from '../services/api';
 import { CartItem } from '../pages/boutique/boutique';
 import { ToastrService } from 'ngx-toastr';
 import { Cart } from '../services/cart';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-featured-products',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './featured-products.html',
   styleUrl: './featured-products.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -72,6 +72,9 @@ export class FeaturedProducts {
   }
     goToProduct(id: number): void {
     this.RouterS.navigate(['/product', id]);
+  }
+  goToProductBySlug(slug: string): void {
+    this.RouterS.navigate(['/product', slug]);
   }
 
   /*products = [

@@ -25,7 +25,7 @@ export const routes: Routes = [
   { path: 'categories', component: CategoryManagement, canActivate: [authGuard] },
   { path: 'products', component: ProductManagement, canActivate: [authGuard] },
   { path: 'orders', component: OrderManagement, canActivate: [authGuard] },
-  { path: 'product/:id', component: SingleProduct,
+  { path: 'product/:slug', component: SingleProduct,
     data: {
       prerender: {
         // Dynamically generate prerender params based on categories

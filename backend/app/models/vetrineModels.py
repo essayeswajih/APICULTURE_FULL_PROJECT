@@ -33,7 +33,7 @@ class Product(Base):
     buzzent = Column(Text, nullable=True)  # Optional field for buzz or marketing text
     rating = Column(Float, nullable=True)  # Optional field for product rating
     num_ratings = Column(Integer, nullable=True)  # Optional field for number of ratings
-
+    slug = Column(String, nullable=True)
     category = relationship("Category", back_populates="products")
     order_items = relationship("OrderItem", back_populates="product")
     orders = relationship(
