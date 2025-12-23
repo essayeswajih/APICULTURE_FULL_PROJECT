@@ -2,11 +2,13 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
   {
-    path: 'product/:id',
+    path: 'product/:slug',
     renderMode: RenderMode.Prerender, // Ensure prerender is set here
     async getPrerenderParams() {
-      const productId = productIds; // Import routes-ids correctly
-      return productIds.map(id => ({ id: id.toString() }));// This will match the dynamic `:id` param
+      // Return an array of objects with 'slug' as key to match route param
+      return productIds
+        .filter(slug => typeof slug === 'string' && slug.length > 0) // ensure valid slugs
+        .map(slug => ({ slug }));
     },
   },
   {
