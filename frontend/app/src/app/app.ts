@@ -99,7 +99,7 @@ menuItems = [
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
 
-    // Ctrl + U
+    /* Ctrl + U
     if (event.ctrlKey && event.key.toLowerCase() === 'u') {
       event.preventDefault();
     }
@@ -112,6 +112,6 @@ menuItems = [
     // F12
     if (event.key === 'F12') {
       event.preventDefault();
-    }
+    }*/
   }
 }
