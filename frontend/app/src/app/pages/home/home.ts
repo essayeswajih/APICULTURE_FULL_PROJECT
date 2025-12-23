@@ -46,6 +46,8 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   isDesktop = false;
   isLoading = true;
   email = '';
+  subName = '';
+  subEmail = '';
 
   // Preloader control
   private preloaderTimeout?: any;
@@ -217,6 +219,17 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.apiService.subscribeToNewsletter(this.email).subscribe({
+      next: () => {
+        this.toastService.success('Inscription réussie !', 'Succès');
+        this.email = '';
+      },
+      error: () => {
+        this.toastService.error('Erreur lors de l\'inscription', 'Erreur');
+      },
+    });
+  }
+  sub(): void {
+    this.apiService.subscribeToRedections(this.subName,this.email).subscribe({
       next: () => {
         this.toastService.success('Inscription réussie !', 'Succès');
         this.email = '';

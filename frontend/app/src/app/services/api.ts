@@ -210,6 +210,11 @@ export class Api {
       .post(`${this.apiUrl}/subscribe_to_newsletter`, { email })
       .pipe(catchError(this.handleError));
   }
+  subscribeToRedections(name:string,email: string): Observable<any> {
+    return this.http
+      .post(`${this.apiUrl}/subscribe_to_redactions`, { name,email })
+      .pipe(catchError(this.handleError));
+  }
   sendContactMessage(name: string, email: string, sujet: string, message: string): Observable<any> {
     return this.http
       .post(`${this.apiUrl}/support-contact`, { name, email, sujet, message })

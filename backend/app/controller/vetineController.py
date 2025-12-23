@@ -219,7 +219,9 @@ def get_order_by_code(
 # subscribe to newsletter sending emil and return 201
 class Newsletter(BaseModel):
     email: str
-
+class Reduction(BaseModel):
+    email: str
+    name: str
 @router.post("/subscribe_to_newsletter", response_model=dict)
 @limiter.limit("3/minute")
 def subscribe_to_newsletter(request: Request, newsletter: Newsletter):
@@ -234,6 +236,22 @@ def subscribe_to_newsletter(request: Request, newsletter: Newsletter):
         raise HTTPException(status_code=500, detail="Failed to send subscription email.")
     
     return {"message": "Successfully subscribed to the newsletter."}
+
+@router.post("/subscribe_to_redactions", response_model=dict)
+@limiter.limit("3/minute")
+def subscribe_to_redactions(request: Request, reduction: Reduction):
+    email = reduction.email
+    name = reduction.name
+    try:
+        send_email_via_gmail(
+            subject="Apiculture Reduction Subscription",
+            body=f"{name}with email:{email} has subscribed to the Apiculture Reduction.",
+            to_email=AdminEmail
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Failed to send subscription email.")
+    
+    return {"message": "Successfully subscribed to the Reduction."}
 
 # Contact Form
 class contactRequest(BaseModel):
