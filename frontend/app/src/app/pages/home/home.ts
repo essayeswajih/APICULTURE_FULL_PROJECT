@@ -234,25 +234,27 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
       },
     });
   }
-  sub(): void {
+sub(): void {
 
-   if (this.subForm.invalid) {
-      this.subForm.markAllAsTouched();
-      return;
-    }
-
-    const payload = this.subForm.value;
-
-    this.apiService.subscribeToRedections(payload.subName,payload.subEmail).subscribe({
-      next: () => {
-        this.toastService.success('Inscription réussie !', 'Succès');
-        this.email = '';
-      },
-      error: () => {
-        this.toastService.error('Erreur lors de l\'inscription', 'Erreur');
-      },
-    });
-
-    this.subForm.reset();
+  if (this.subForm.invalid) {
+    this.subForm.markAllAsTouched();
+    return;
   }
+
+  const { subName, subEmail } = this.subForm.value;
+
+  this.apiService.subscribeToRedections(subName, subEmail).subscribe({
+    next: () => {
+      this.toastService.success('Inscription réussie !', 'Succès');
+      this.subForm.reset(); // ✅ reset only on success
+    },
+    error: () => {
+      this.toastService.error(
+        'Erreur lors de l\'inscription',
+        'Erreur'
+      );
+    },
+  });
+}
+
 }
