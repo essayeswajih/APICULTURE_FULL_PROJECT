@@ -10,7 +10,7 @@ services:
       - DATABASE_URL=postgresql+psycopg2://apiculturefromtn:apiculture1fromtn@postgres-db:5432/apiculture
       - SECRET_KEY=V0hxRkBhamoyODc0NDV4NDg1MXNxQGRqcWQxampqSDA3RDJmZmZxZHNxZHFzbSptKvlnO3V6cw==
       - SENDER_EMAIL=apiculturegalai@gmail.com
-      - SENDER_PASSWORD=kyzg svem qgug zbig
+      - SENDER_PASSWORD=wajm xrsj gjab rpir
     depends_on:
       postgres-db:
         condition: service_healthy
