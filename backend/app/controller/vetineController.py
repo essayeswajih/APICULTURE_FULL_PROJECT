@@ -11,7 +11,7 @@ from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, Orde
 from crud.vetrineCrud import (
     create_category, delete_category, delete_product, get_categories, get_category_by_id,
     get_products, get_product_by_id, create_product, get_orders, create_order,
-    get_cart_items, add_to_cart, remove_from_cart, update_category, update_product
+    get_cart_items, add_to_cart, remove_from_cart, update_category, update_product, get_product_by_slug_db
 )
 from controller.sendMail import AdminEmail, send_email_via_gmail
 from fastapi import Request
@@ -57,7 +57,7 @@ def get_product(product_id: int, db: Session = Depends(get_db)):
 # get a single product by Slug
 @router.get("/products/slug/{product_slug}", response_model=ProductBase)
 def get_product_by_slug(product_slug: str, db: Session = Depends(get_db)):
-    db_product = get_product_by_id(db, product_slug)
+    db_product = get_product_by_slug_db(db, product_slug)
     if db_product is None:
         raise HTTPException(status_code=404, detail="Product not found")
     return db_product

@@ -60,7 +60,7 @@ def get_products(
 def get_product_by_id(db: Session, product_id: int) -> Optional[Product]:
     return db.query(Product).filter(Product.id == product_id).first()
 
-def get_product_by_slug(db: Session, slug: str) -> Optional[Product]:
+def get_product_by_slug_db(db: Session, slug: str) -> Optional[Product]:
     return db.query(Product).filter(Product.slug == slug).first()
 
 def create_product(db: Session, product: ProductBase) -> Product:
