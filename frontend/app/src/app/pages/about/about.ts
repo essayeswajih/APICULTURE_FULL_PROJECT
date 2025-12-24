@@ -1,13 +1,13 @@
 import { Component, effect, signal, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
 import { Inject, PLATFORM_ID } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { gsap } from 'gsap';
 import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-about',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './about.html',
   styleUrl: './about.scss'
 })
