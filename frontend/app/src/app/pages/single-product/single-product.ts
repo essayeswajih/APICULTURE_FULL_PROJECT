@@ -103,7 +103,7 @@ export class SingleProduct implements OnInit {
 
   // Update quantity
   updateQuantity(value: number): void {
-    if (value >= 1 && this.product && value <= this.product.stock_quantity) {
+    if (value >= 1 && this.product ) {
       this.quantity = value;
       this.addToCartForm.patchValue({ quantity: this.quantity });
       this.cdr.detectChanges();
