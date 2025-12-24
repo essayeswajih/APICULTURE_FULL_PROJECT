@@ -161,4 +161,57 @@ export class SingleProduct implements OnInit {
     this.selectedImage = image ?? ""; // Update main image
     this.cdr.detectChanges(); // Ensure UI updates
   }
+private setProductSchema(product: Product): void {
+  if (!isPlatformBrowser(this.platformId)) return;
+
+  // Remove only existing Product schemas
+  document
+    .querySelectorAll('script[type="application/ld+json"]')
+    .forEach(script => {
+      try {
+        const json = JSON.parse(script.textContent || '{}');
+        if (json['@type'] === 'Product') {
+          script.remove();
+        }
+      } catch {}
+    });
+
+  const schema: any = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "description": product.description || "Produit apicole de qualité chez Apiculture Galai",
+    "image": product.image_url,
+    "brand": {
+      "@type": "Brand",
+      "name": "Apiculture Galai"
+    },
+    "sku": product.slug,
+    "offers": {
+      "@type": "Offer",
+      "price": product.price,
+      "priceCurrency": "TND",
+      "availability": product.stock_quantity > 0
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      "url": `https://apiculture-galai.tn/product/${product.slug}`,
+      "seller": {
+        "@type": "Organization",
+        "name": "Apiculture Galai"
+      }
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": product.rating ? Number(product.rating.toFixed(1)) : 5,
+      "reviewCount": product.num_ratings ?? 27
+    }
+  };
+
+  const script = document.createElement('script');
+  script.type = 'application/ld+json';
+  script.text = JSON.stringify(schema);
+  document.head.appendChild(script);
+}
+
+
 }
