@@ -92,14 +92,14 @@ menuItems = [
   // Disable right click
   @HostListener('document:contextmenu', ['$event'])
   onRightClick(event: MouseEvent) {
-    //event.preventDefault();
+    event.preventDefault();
   }
 
   // Disable Ctrl+U, Ctrl+Shift+I, F12
   @HostListener('document:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
 
-    /* Ctrl + U
+    // Ctrl + U
     if (event.ctrlKey && event.key.toLowerCase() === 'u') {
       event.preventDefault();
     }
@@ -112,6 +112,6 @@ menuItems = [
     // F12
     if (event.key === 'F12') {
       event.preventDefault();
-    }*/
+    }//
   }
 }
