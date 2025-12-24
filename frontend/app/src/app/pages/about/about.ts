@@ -19,13 +19,6 @@ export class About implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Set SEO meta tags
-    this.title.setTitle('À Propos - Boutique Apicole');
-    this.meta.updateTag({
-      name: 'description',
-      content: 'Découvrez l’histoire, la mission et les valeurs de notre boutique apicole, dédiée à l’apiculture durable et à la qualité des produits.'
-    });
-
     // GSAP animations
     if (isPlatformBrowser(this.platformId)) {
       gsap.from('.about-section', {
