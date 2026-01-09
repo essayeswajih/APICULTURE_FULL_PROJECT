@@ -113,11 +113,12 @@ export class SingleProduct implements OnInit {
   // Add product to cart
   addToCart(): void {
     if (this.addToCartForm.valid && this.product) {
+      let product_price = (this.product.discounted_price && this.product.discounted_price > 0 )? this.product.discounted_price : this.product.price
       const cartItem: CartItem = {
         id: this.product.id,
         name: this.product.name,
         image: this.product.image_url || '',
-        price: this.product.price,
+        price: product_price,
         quantity: this.quantity
       };
 

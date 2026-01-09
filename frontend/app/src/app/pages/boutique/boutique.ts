@@ -201,7 +201,7 @@ export class Boutique implements OnInit, OnDestroy {
           id: product.id,
           name: product.name,
           image: product.image_url ?? null,
-          price: product.price,
+          price: (product.discounted_price && product.discounted_price > 0 )? product.discounted_price : product.price,
           quantity: 1
         });
         this.cartService.add();
