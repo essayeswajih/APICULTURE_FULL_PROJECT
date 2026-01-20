@@ -6,125 +6,163 @@
     </div>
   </div>
 }
-<main *ngIf="product" class="min-h-screen">
-  <!-- Hero Section -->
-  <section class="hero bg-gradient-amber" style="background-image: url('/assets/images/pexels-pixabay-301378.jpg'); background-size: cover; background-position: bottom;">
-    <div class="hero-overlay"></div>
-    <div class="container-md text-center">
-      <h1 class="text-amber">{{ product.name }}</h1>
-      <p class="lead text-success mb-0 panier-section">Découvrez notre produit apicole de qualité, préparé avec soin.</p>
-    </div>
-  </section>
 
-  <!-- Product Details Section -->
-  <section class="product-section container-md py-6">
-    <div class="row">
-      <!-- Product Image and Gallery -->
-      <div class="col-md-6 mx-auto offset-3">
-        <!-- Main Product Image -->
-        @if(product.promo){
-          <div style="position:absolute;z-index:100"><img src="/assets/images/promo.png" style="height: 60px;" alt="promo" srcset=""></div>
-        }
-        <img style="width: 100%;" [src]="selectedImage || product.image_url" [alt]="product.name" class="product-img img-fluid rounded card" loading="lazy"/>
-        <div style="position:absolute!important;background-color:rgb(226, 75, 28);color:white;font-weight:bold;top:3%;right:0;padding-left:5px;padding-right:5px">{{product.buzzent}}</div>
-        <!-- Thumbnail Gallery -->
-        <div class="other-images d-flex mt-3 justify-content-evenly"  style="width: 100% !important;" *ngIf="product">
-          <div class="col-3" >
-            <img 
-              [src]="product.image_url" 
-              [alt]="product.name + ' image ' + (1)" 
-              class="thumbnail-img img-fluid rounded" 
-              (click)="selectImage(product.image_url)"
-              [ngClass]="{'active': selectedImage === product.image_url}"
-              loading="lazy"/>
-          </div>
-          @if(product.image2_url) {
-            <div class="col-3" >
-            <img 
-              [src]="product.image2_url" 
-              [alt]="product.name + ' image ' + (1)" 
-              class="thumbnail-img img-fluid rounded" 
-              (click)="selectImage(product.image2_url)"
-              [ngClass]="{'active': selectedImage === product.image2_url}"
-              loading="lazy"/>
-          </div>
-          }
-          @if(product.image3_url) {
-          <div class="col-3" >
-            <img 
-              [src]="product.image3_url" 
-              [alt]="product.name + ' image ' + (1)" 
-              class="thumbnail-img img-fluid rounded" 
-              (click)="selectImage(product.image3_url)"
-              [ngClass]="{'active': selectedImage === product.image3_url}"
-              loading="lazy"/>
-          </div>
-          }
-          @if(product.image4_url) {
-          <div class="col-3" >
-            <img 
-              [src]="product.image4_url" 
-              [alt]="product.name + ' image ' + (1)" 
-              class="thumbnail-img img-fluid rounded" 
-              (click)="selectImage(product.image4_url)"
-              [ngClass]="{'active': selectedImage === product.image4_url}"
-              loading="lazy"/>
+<main *ngIf="product" class="min-h-screen">
+ <div class="container" style="margin-top: 40px;">
+    <div class="row g-5">
+      <!-- ==================== SIDEBAR GAUCHE (comme Electro) ==================== -->
+      <div class="col-lg-3">
+        <!-- Catégories -->
+        <div class="sidebar-widget mb-4">
+          <h5 class="mb-3 fw-bold text-uppercase">Catégories de produits</h5>
+          <ul class="list-unstyled">
+            @for(cat of categories; track cat.id) {
+              <li class="mb-2">
+                <a [routerLink]="['/boutique']" [queryParams]="{category: cat.name}" class="text-dark">{{ cat.name }}</a>
+                <span class="text-muted" style="padding-left: 3px;">({{ 5 }})</span>
+              </li>
+            }
+            <!-- Exemple statique – remplace par la boucle *ngFor ci-dessus 
+            <li class="mb-2"><a routerLink="/category/outils" class="text-dark">Outils</a> <span class="text-muted">(5)</span></li>
+            -->
+          </ul>
+        </div>
+
+        <!-- Produits en vedette (Featured) -->
+        <div class="sidebar-widget mb-4">
+          <h5 class="mb-3 fw-bold text-uppercase">Produits en vedette</h5>
+          @if(similarProducts.length > 0) {
+          <div class="d-flex flex-column gap-3">
+            <!-- Exemple statique – remplace par *ngFor plus tard -->
+            <div class="d-flex align-items-center">
+              <img [src]="similarProducts[0].image_url" alt="Produit" class="me-3" style="width:60px;height:60px;object-fit:cover;border-radius:8px;">
+              <div>
+                <h6 class="mb-1 small">{{ similarProducts[0].name }}</h6>
+                <div class="text-warning fw-bold">{{ similarProducts[0].discounted_price ? similarProducts[0].discounted_price : similarProducts[0].price }} TND</div>
+              </div>
+            </div>
+            <!-- Répète 4-5 fois -->
           </div>
         }
         </div>
+
+        <!-- Tags -->
+        <div class="sidebar-widget">
+          <h5 class="mb-3 fw-bold text-uppercase">Tags populaires</h5>
+          <div class="d-flex flex-wrap gap-2">
+            <a routerLink="/" class="btn btn-outline-secondary btn-sm">Apiculture</a>
+            <a [routerLink]="['/boutique']" [queryParams]="{category: 'Cadre%20%26%20Cire' }" class="btn btn-outline-secondary btn-sm">Outils</a>
+            <a [routerLink]="['/boutique']" [queryParams]="{category: 'Equipement%20apicultrice' }" class="btn btn-outline-secondary btn-sm">Protection</a>
+            <a [routerLink]="['/boutique']" [queryParams]="{category: 'Compléments%20alimentaires' }" class="btn btn-outline-secondary btn-sm">Compléments</a>
+            <a [routerLink]="['/boutique']" [queryParams]="{category: 'Matériel%20de%20production%20du%20miel' }" class="btn btn-outline-secondary btn-sm">Extracteur du Miel</a>
+            <a [routerLink]="['/boutique']" [queryParams]="{category: 'kit%20apiculture%20complet%20' }" class="btn btn-outline-secondary btn-sm">Kit Apiculture</a>
+            <a [routerLink]="['/boutique']" [queryParams]="{category: 'Emballages%20pour%20miel' }" class="btn btn-outline-secondary btn-sm">Emballages</a>
+            <a [routerLink]="['/boutique']" [queryParams]="{category: 'Cadre%20%26%20Cire' }" class="btn btn-outline-secondary btn-sm">Cire</a>
+            <a [routerLink]="['/boutique']" [queryParams]="{category: 'Cadre%20%26%20Cire' }" class="btn btn-outline-secondary btn-sm">Cadre</a>
+            <a [routerLink]="['/boutique']" [queryParams]="{category: 'Maturateur%20à%20miel' }" class="btn btn-outline-secondary btn-sm">Maturateur</a>
+            <a [routerLink]="['/boutique']" class="btn btn-outline-secondary btn-sm">Autres</a>
+
+          </div>
+        </div>
       </div>
 
-      <!-- Product Information and Add to Cart -->
-      <div class="col-md-6 product-details">
-        <h2 class="text-amber">{{ product.name }}</h2>
-        <p class="text-dark">{{ product.description }}</p>
-        @if(product.discounted_price && product.discounted_price < product.price) {
-          <p class="text-success font-weight-bold">Prix: {{ product.discounted_price + " DNT" }}</p>
-        }
-        @else {
-          <p class="text-amber font-weight-bold">Prix: {{ product.price + " DNT" }}</p>
-        }
-        @if(product.stock_quantity > 0) {
-          <p class="text-success">En stock</p>
-        } @else {
-          <p class="text-danger">Sur commande</p>
-        }
-        <!-- Quantity Selector and Add to Cart Form -->
-        <form [formGroup]="addToCartForm" (ngSubmit)="addToCart()">
-          <div class="mb-3">
-            <label for="quantity" class="form-label text-dark">Quantité:</label>
-            <div class="input-group">
-              <button
-                type="button"
-                class="btn btn-outline-success"
-                (click)="updateQuantity(quantity - 1)"
-                [disabled]="quantity <= 1">
-                -
-              </button>
-              <input
-                type="number"
-                id="quantity"
-                class="form-control text-center"
-                formControlName="quantity"
-                min="1"
-                readonly />
-              <button
-                type="button"
-                class="btn btn-outline-success"
-                (click)="updateQuantity(quantity + 1)">
-                +
-              </button>
+      <!-- ==================== CONTENU PRINCIPAL ==================== -->
+      <div class="col-lg-9">
+        <div class="row g-5">
+          <!-- Images produit (gauche) -->
+          <div class="col-md-6">
+            <div class="position-relative">
+              @if(product.promo) {
+                <img src="/assets/images/promo.png" alt="Promo" class="position-absolute top-0 start-0" style="height:80px;z-index:10;">
+              }
+              <!-- ZOOM CONTAINER -->
+                <!-- LE CONTENEUR ZOOM AVEC LA REFERENCE #zoomContainer -->
+                    <div #zoomContainer class="zoom-container position-relative d-inline-block">
+                      <div class="zoom-img-container position-relative">
+                        <img 
+                          [src]="selectedImage || product.image_url" 
+                          [alt]="product.name" 
+                          class="img-fluid rounded shadow-sm zoom-img"
+                          style="border:1px solid #eee; max-width:100%; height:auto; display:block;">
+                        <div class="zoom-lens"></div>
+                      </div>
+                      <div class="zoom-result"></div>
+                    </div>
+              <div class="position-absolute top-0 end-0 bg-warning text-white fw-bold px-3 py-1 rounded-start">
+                {{ product.buzzent }}
+              </div>
+            </div>
+
+            <!-- Thumbnails (comme le carousel Owl d'Electro) -->
+            <div class="d-flex mt-4 gap-2 justify-content-center flex-wrap">
+              <img 
+                [src]="product.image_url" 
+                (click)="selectImage(product.image_url)"
+                [ngClass]="{ 'border border-primary border-3': selectedImage === product.image_url }"
+                class="rounded thumbnail-img" style="width:80px;height:80px;object-fit:cover;cursor:pointer;">
+              @if(product.image2_url) {
+                <img [src]="product.image2_url" (click)="selectImage(product.image2_url)"
+                  [ngClass]="{ 'border border-primary border-3': selectedImage === product.image2_url }"
+                  class="rounded thumbnail-img" style="width:80px;height:80px;object-fit:cover;cursor:pointer;">
+              }
+              @if(product.image3_url) {
+                <img [src]="product.image3_url" (click)="selectImage(product.image3_url)"
+                  [ngClass]="{ 'border border-primary border-3': selectedImage === product.image3_url }"
+                  class="rounded thumbnail-img" style="width:80px;height:80px;object-fit:cover;cursor:pointer;">
+              }
+              @if(product.image4_url) {
+                <img [src]="product.image4_url" (click)="selectImage(product.image4_url)"
+                  [ngClass]="{ 'border border-primary border-3': selectedImage === product.image4_url }"
+                  class="rounded thumbnail-img" style="width:80px;height:80px;object-fit:cover;cursor:pointer;">
+              }
             </div>
           </div>
-          <button
-            type="submit"
-            class="btn btn-warning">
-            Ajouter au panier
-          </button>
-        </form>
+
+          <!-- Détails produit (droite) -->
+          <div class="col-md-6">
+            <h1 class="display-6 fw-bold text-warning mb-3">{{ product.name }}</h1>
+            
+            <div class="mb-3">
+              @if(product.discounted_price && product.discounted_price < product.price) {
+                <span class="text-muted text-decoration-line-through me-2">{{ product.price }} TND</span>
+                <span class="h3 text-warning fw-bold">{{ product.discounted_price }} TND</span>
+              } @else {
+                <span class="h3 text-warning fw-bold">{{ product.price }} TND</span>
+              }
+            </div>
+
+            <p class="lead text-dark mb-4" style="min-height:200px;max-height:300px;overflow-y:auto;">{{ product.description }}</p>
+
+            <div class="mb-4">
+              <strong>Disponibilité : </strong>
+              @if(product.stock_quantity > 0) {
+                <span class="text-success fw-bold">En stock</span>
+              } @else {
+                <span class="text-danger fw-bold">Sur commande</span>
+              }
+            </div>
+
+            <!-- Quantité + Ajouter au panier -->
+            <form [formGroup]="addToCartForm" (ngSubmit)="addToCart()" class="d-flex align-items-end gap-4">
+              <div>
+                <label class="form-label fw-bold">Quantité :</label>
+                <div class="input-group" style="width:150px;">
+                  <button type="button" class="btn btn-outline-warning" (click)="updateQuantity(quantity - 1)" [disabled]="quantity <= 1">-</button>
+                  <input type="number" class="form-control text-center" formControlName="quantity" readonly>
+                  <button type="button" class="btn btn-outline-warning" (click)="updateQuantity(quantity + 1)">+</button>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-warning btn-lg px-5 fw-bold">
+                Ajouter au panier
+              </button>
+            </form>
+          </div>
+        </div>
+        <app-similar-products [products]="similarProducts"></app-similar-products>
       </div>
     </div>
-  </section>
+  </div>
 </main>
 
 <!-- Fallback if Product Not Found or Error -->

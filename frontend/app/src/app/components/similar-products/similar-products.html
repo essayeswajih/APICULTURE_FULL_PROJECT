@@ -1,0 +1,43 @@
+<section id="featured-products" class="products-carousel">
+  <div class="container-lg overflow-hidden py-5">
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="section-header d-flex flex-wrap justify-content-between my-4">
+          <h2 class="section-title">Produits Similaires</h2>
+
+          <div class="d-flex align-items-center">
+            <a routerLink="/boutique" class="btn btn-primary me-2">View All</a>
+
+            <div class="swiper-buttons">
+              <button class="products-carousel-prev-featured btn btn-primary">❮</button>
+              <button class="products-carousel-next-featured btn btn-primary">❯</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ✔ Swiper Web Component -->
+    <swiper-container
+      [slides-per-view]="4"
+      [space-between]="20"
+      navigation="true"
+      [breakpoints]="swiperConfig.breakpoints"
+      class="mySwiper"
+      navigation-prev-el=".products-carousel-prev-featured"
+      navigation-next-el=".products-carousel-next-featured"
+    >
+      <!-- ✔ Web Component slides -->
+      <swiper-slide *ngFor="let related of products" class="col-md-3 col-6">
+            <div class="text-center" style="cursor: pointer;" (click)="goToProductBySlug(related.slug ?? '')">
+                <img [src]="related.image_url" alt="{{related.name}}" class="img-fluid rounded mb-3" style="height:200px;object-fit:cover;" (click)="goToProductBySlug(related.slug ?? '')">
+                <h6 class="fw-bold">{{ related.name }}</h6>
+                <div class="text-warning fw-bold mb-2">{{ related.discounted_price ? related.discounted_price : related.price }} TND</div>
+            </div>
+      </swiper-slide>
+    </swiper-container>
+  </div>
+</section>
+
