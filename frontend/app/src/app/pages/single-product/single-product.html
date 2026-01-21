@@ -9,7 +9,7 @@
 
 <main *ngIf="product" class="min-h-screen">
  <div class="container" style="margin-top: 40px;">
-    <div class="row g-5">
+    <div class="row g-5 flex-column flex-lg-row">
       <!-- ==================== SIDEBAR GAUCHE (comme Electro) ==================== -->
       <div class="col-lg-3">
         <!-- Catégories -->
@@ -157,12 +157,89 @@
                 Ajouter au panier
               </button>
             </form>
+            <div class="row" style="margin-top:20px !important;">
+              <button type="button" (click)="buyNow()" class="btn btn-warning btn-lg px-5 fw-bold">
+                Acheter maintenant
+              </button>
+            </div>
+
           </div>
         </div>
         <app-similar-products [products]="similarProducts"></app-similar-products>
+              <section class="pb-5">
+        <div class="container-lg">
+          <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-5">
+            
+            <!-- Gardé tel quel -->
+            <div class="col">
+              <div class="card mb-3 border border-dark-subtle p-3">
+                <div class="text-dark mb-3">
+                  <svg width="32" height="32"><use xlink:href="#package"></use></svg>
+                </div>
+                <div class="card-body p-0">
+                  <h5>Livraison rapide</h5>
+                </div>
+              </div>
+            </div>
+
+            <!-- Changé -->
+            <div class="col">
+              <div class="card mb-3 border border-dark-subtle p-3">
+                <div class="text-dark mb-3">
+                  <svg width="32" height="32"><use xlink:href="#secure"></use></svg>
+                </div>
+                <div class="card-body p-0">
+                  <h5>Paiement sécurisé</h5>
+                </div>
+              </div>
+            </div>
+
+            <!-- Changé -->
+            <div class="col">
+              <div class="card mb-3 border border-dark-subtle p-3">
+                <div class="text-dark mb-3">
+                  <svg width="32" height="32"><use xlink:href="#quality"></use></svg>
+                </div>
+                <div class="card-body p-0">
+                  <h5>Qualité garantie</h5>
+                </div>
+              </div>
+            </div>
+
+            <!-- Changé -->
+            <div class="col">
+              <div class="card mb-3 border border-dark-subtle p-3">
+                <div class="text-dark mb-3">
+                  <svg width="32" height="32"><use xlink:href="#savings"></use></svg>
+                </div>
+                <div class="card-body p-0">
+                  <h5>Économies garanties</h5>
+                </div>
+              </div>
+            </div>
+
+            <!-- Changé -->
+            <div class="col">
+              <div class="card mb-3 border border-dark-subtle p-3">
+                <div class="text-dark mb-3">
+                  <svg width="32" height="32"><use xlink:href="#offers"></use></svg>
+                </div>
+                <div class="card-body p-0">
+                  <h5>Promos du jour</h5>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       </div>
+
     </div>
+    
   </div>
+  
 </main>
 
 <!-- Fallback if Product Not Found or Error -->

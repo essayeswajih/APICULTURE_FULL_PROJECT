@@ -317,4 +317,9 @@ private setupZoom(): void {
     this.renderer.appendChild(script, this.renderer.createText(JSON.stringify(schema)));
     this.renderer.appendChild(document.head, script);
   }
+  buyNow(): void {
+    this.addToCart();
+    this.router.navigate(['/panier']);
+    this.cdr.detectChanges();
+  }
 }
