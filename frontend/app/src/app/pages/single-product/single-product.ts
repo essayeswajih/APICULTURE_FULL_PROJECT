@@ -145,7 +145,8 @@ export class SingleProduct implements OnInit, AfterViewInit, OnDestroy {
       name: this.product.name,
       image: this.product.image_url || '',
       price: price,
-      quantity: this.quantity
+      quantity: this.quantity,
+      shipping_cost: this.product.shipping_cost || 9
     };
 
     if (isPlatformBrowser(this.platformId)) {
