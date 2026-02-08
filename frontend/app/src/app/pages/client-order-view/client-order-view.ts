@@ -31,7 +31,12 @@ export class ClientOrderView implements OnInit {
       }
     });
   }
-
+  getShippingCost(items: { quantity: number; shipping_cost?: number }[]): number {
+    if (!items || items.length === 0) {
+      return 9;
+    }
+    return Math.max(...items.map(item => item.shipping_cost || 9));
+  }
   private loadOrder(orderCode: string) {
     this.apiService.getOrderByCode(orderCode).subscribe({
       next: (order) => {
