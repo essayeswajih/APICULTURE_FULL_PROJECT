@@ -21,6 +21,7 @@ class ProductBase(BaseModel):
     rating: Optional[float] = None  # Average rating of the product
     num_ratings: Optional[int] = None  # Number of ratings for the product
     slug: Optional[str] = None  # Optional slug for the product
+    shipping_cost: Optional[float] = 9.0  # Optional field for shipping cost
     class Config:
         from_attributes = True
 
@@ -56,6 +57,7 @@ class OrderItemBase(BaseModel):
     quantity: int
     price: float
     name: Optional[str] = None 
+    shipping_cost: Optional[float] = 9.0
 
     class Config:
         from_attributes = True

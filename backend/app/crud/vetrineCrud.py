@@ -250,3 +250,6 @@ def remove_from_cart(db: Session, user_id: int, cart_item_id: int) -> None:
     
     db.delete(db_cart_item)
     db.commit()
+
+def caclulate_max_shipping_cost(items: List[OrderItemBase]) -> float:
+    return max(item.shipping_cost for item in items)

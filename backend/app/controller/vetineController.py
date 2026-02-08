@@ -11,7 +11,7 @@ from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, Orde
 from crud.vetrineCrud import (
     create_category, delete_category, delete_product, get_categories, get_category_by_id,
     get_products, get_product_by_id, create_product, get_orders, create_order,
-    get_cart_items, add_to_cart, remove_from_cart, update_category, update_product, get_product_by_slug_db
+    get_cart_items, add_to_cart, remove_from_cart, update_category, update_product, get_product_by_slug_db, caclulate_max_shipping_cost
 )
 from controller.sendMail import AdminEmail, send_email_via_gmail
 from fastapi import Request
@@ -140,8 +140,11 @@ def create_new_order(
     
     total = sum(item.price * item.quantity for item in order_create.items)
 
+    shipping_cost = 0
+    if total < 250:
+        shipping_cost = caclulate_max_shipping_cost(items=order_create.items)
     # Calculate total amount
-    total_amount = total + 8
+    total_amount = total + shipping_cost
     
     return create_order(db,order_create=order_create, total_amount=total_amount)
 # Update Order Status

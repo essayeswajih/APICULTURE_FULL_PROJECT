@@ -36,6 +36,7 @@ class Product(Base):
     slug = Column(String, nullable=True)
     category = relationship("Category", back_populates="products")
     order_items = relationship("OrderItem", back_populates="product")
+    shipping_cost = Column(Float, nullable=True, default=9)  # Optional field for shipping cost
     orders = relationship(
         "Order",
         secondary="order_items",
