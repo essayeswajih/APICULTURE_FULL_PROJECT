@@ -62,6 +62,10 @@
           <label for="num_ratings" class="form-label">Number of Ratings</label>
           <input type="text" class="form-control" id="num_ratings" name="num_ratings" [(ngModel)]="newProduct.num_ratings" [ngModelOptions]="{standalone: true}">
         </div>
+        <div class="mb-3">
+          <label for="shipping_cost" class="form-label">Shipping Cost</label>
+          <input type="number" class="form-control" id="shipping_cost" name="shipping_cost" [(ngModel)]="newProduct.shipping_cost" [ngModelOptions]="{standalone: true}">
+        </div>
         <button type="submit" class="btn btn-warning">{{ editMode ? 'Update' : 'Add' }} Product</button>
         <button type="button" class="btn btn-secondary ms-2" *ngIf="editMode" (click)="resetForm()">Cancel</button>
       </form>
@@ -89,6 +93,7 @@
             <p class="card-text" *ngIf="product.num_ratings">Number of Ratings: {{ product.num_ratings }}</p>
           }
           <p class="card-text" *ngIf="product.buzzent">Marketing Text: {{ product.buzzent }}</p>
+          <p class="card-text" *ngIf="product.shipping_cost">Shipping Cost: {{ product.shipping_cost | number:'1.2-2' }}DT</p>
         </div>
         <div class="card-footer d-flex justify-content-between">
           <button class="btn btn-outline-warning me-2" (click)="editProduct(product)">Edit</button>

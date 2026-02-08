@@ -142,12 +142,12 @@ export class Panier implements OnInit {
     return total;
   }
 
-getShippingCost(): number {
-  return this.cartItems.reduce(
-    (max, { shipping_cost }) => Math.max(max, shipping_cost ?? 9.0),
-    0
-  );
-}
+  getShippingCost(): number {
+    return this.cartItems.reduce(
+      (max, { shipping_cost }) => Math.max(max, shipping_cost ?? 9.0),
+      0
+    );
+  }
 
   openCheckoutModal(): void {
     if (this.cartItems.length > 0) {

@@ -29,6 +29,7 @@ export class ProductManagement implements OnInit {
     buzzent: '',             // New field for buzz or marketing text
     rating: 5,               // New field for average rating
     num_ratings: 10,           // New field for number of ratings
+    shipping_cost: 9.0        // New field for shipping cost
   };
   editMode = false;
   editProductId: number | null = null;
@@ -96,6 +97,7 @@ export class ProductManagement implements OnInit {
       image4_url: '',
       rating: 5,
       num_ratings: 10,
+      shipping_cost: 9.0
     };
     this.editMode = false;
     this.editProductId = null;
