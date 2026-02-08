@@ -9,7 +9,7 @@ from models.vetrineModels import Product, Order, OrderItem, CartItem, Category
 from models.Oauth2Models import User
 from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, OrderCreate, CartItemBase, OrderItemBase, OrderBase
 from crud.vetrineCrud import (
-    create_category, delete_category, delete_product, get_categories, get_category_by_id,
+    create_category, delete_category, delete_order, delete_product, get_categories, get_category_by_id,
     get_products, get_product_by_id, create_product, get_orders, create_order,
     get_cart_items, add_to_cart, remove_from_cart, update_category, update_product, get_product_by_slug_db, caclulate_max_shipping_cost
 )
@@ -147,6 +147,12 @@ def create_new_order(
     total_amount = total + shipping_cost
     
     return create_order(db,order_create=order_create, total_amount=total_amount)
+
+# delte order
+@router.delete("/orders/{order_id}", response_model=dict)
+def delete_order_info(order_id: int, db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    delete_order(db, order_id)
+    return {"message": "Order deleted successfully."}
 # Update Order Status
 @router.put("/orders/orderStatus/{order_id}", response_model=OrderBase)
 def update_order_status(
