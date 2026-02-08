@@ -65,6 +65,7 @@ class OrderItem(Base):
     name = Column(String, nullable=True)  # Optional field for product name
     order = relationship("Order", back_populates="items")
     product = relationship("Product", back_populates="order_items")
+    shipping_cost = Column(Float, nullable=True)  # Optional field for shipping cost of this item
 
 # Order Model
 class Order(Base):
