@@ -81,6 +81,7 @@ class OrderBase(BaseModel):
 class CartItemBase(BaseModel):
     product_id: int
     quantity: int
+    shipping_cost: Optional[float] = 9.0
 
     class Config:
         from_attributes = True
