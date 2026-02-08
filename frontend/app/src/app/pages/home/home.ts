@@ -198,6 +198,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         image: product.image_url ?? null,
         price: (product.discounted_price && product.discounted_price > 0 )? product.discounted_price : product.price,
         quantity: 1,
+        shipping_cost: product.shipping_cost || 9 // Add shipping cost if available
       });
       this.cartService.add();
     }
