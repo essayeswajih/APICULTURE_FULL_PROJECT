@@ -80,7 +80,7 @@
           <div class="card-body">
             <h2 class="h3 text-success mb-4">Résumé du Panier</h2>
             <ul class="text-dark list-unstyled">
-              <li class="mb-2"><strong>HT :</strong> {{ getSubtotal() | number:'1.2-2' }} DNT</li>
+              <li class="mb-2"><strong>Sous-total :</strong> {{ getSubtotal() | number:'1.2-2' }} DNT</li>
               <!--<li class="mb-2"><strong>Taxe (19%) :</strong> {{ getTax() | number:'1.2-2' }} DNT</li>-->
               @if (getSubtotal() > 250) {
                 <li class="mb-2"><strong>Livraison :</strong> Gratuit</li>
