@@ -49,7 +49,8 @@
               <span *ngIf="p.num_ratings">({{p.num_ratings}})</span>
             </div>
 
-            @if (p?.discounted_price != 0) {
+            @if (p?.discounted_price != 0 && p?.discounted_price != null ) {
+              @if(p?.discounted_price! < p?.price! && p?.discounted_price! > 0) {
               <div class="d-flex justify-content-center align-items-center gap-2">
                 <del>{{ p?.price }}DT</del>
                 <span class="text-dark fw-semibold">{{ p?.discounted_price }}DT</span>
@@ -58,6 +59,7 @@
                   {{ ((p?.price! - p?.discounted_price!) / p?.price! * 100) | number:'1.0-0' }}% OFF
                 </span>
               </div>
+              }
             }
             @else {
               <div class="d-flex justify-content-center align-items-center gap-2">
