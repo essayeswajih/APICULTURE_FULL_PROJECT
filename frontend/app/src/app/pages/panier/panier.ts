@@ -138,9 +138,16 @@ export class Panier implements OnInit {
   }
   getTotalWithoutTax(): number {
     //TVA non incluse
-    const total = this.getSubtotal() + 8;
+    const total = this.getSubtotal() + (this.getSubtotal() < 250 ? this.getShippingCost() : 0);
     return total;
   }
+
+getShippingCost(): number {
+  return this.cartItems.reduce(
+    (max, { shipping_cost }) => Math.max(max, shipping_cost ?? 9.0),
+    0
+  );
+}
 
   openCheckoutModal(): void {
     if (this.cartItems.length > 0) {

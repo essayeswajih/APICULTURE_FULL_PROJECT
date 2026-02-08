@@ -82,7 +82,11 @@
             <ul class="text-dark list-unstyled">
               <li class="mb-2"><strong>HT :</strong> {{ getSubtotal() | number:'1.2-2' }} DNT</li>
               <!--<li class="mb-2"><strong>Taxe (19%) :</strong> {{ getTax() | number:'1.2-2' }} DNT</li>-->
-              <li class="mb-2"><strong>Livraison :</strong> 8 DNT</li>
+              @if (getSubtotal() > 250) {
+                <li class="mb-2"><strong>Livraison :</strong> Gratuit</li>
+              } @else {
+                <li class="mb-2"><strong>Livraison :</strong> {{ getShippingCost() | number:'1.2-2' }} DNT</li>
+              }
               <li class="mb-3"><strong>Total :</strong> {{ getTotalWithoutTax() | number:'1.2-2' }} DNT</li>
             </ul>
             <!-- Payment Method Selection -->
