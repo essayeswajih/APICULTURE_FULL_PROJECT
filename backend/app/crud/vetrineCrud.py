@@ -229,8 +229,11 @@ def delete_order(db: Session, order_id: int) -> None:
     order = db.query(Order).filter(Order.id == order_id).first()
     if not order:
         raise HTTPException(status_code=404, detail="Order not found.")
+
+    db.query(OrderItem).filter(OrderItem.order_id == order_id).delete()
     db.delete(order)
     db.commit()
+
 
 # CRUD operations for CartItem
 def get_cart_items(db: Session, user_id: int) -> List[CartItem]:
