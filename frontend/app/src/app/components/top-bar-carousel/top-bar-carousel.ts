@@ -17,23 +17,18 @@ export class TopBarCarousel {
   items: TopBarItem[] = [
     {
       icon: '📞',
-      text: '+216 27 612 500',
-      link: 'tel:+21627612500'
-    },
-    {
-      icon: '📞',
-      text: '+216 73 200 169',
-      link: 'tel:+21673200169'
+      text: '+216 55 716 454',
+      link: 'tel:+21655716454'
     },
     {
       icon: '📍',
-      text: 'Notre localisation',
-      link: 'https://maps.app.goo.gl/w2ytnYAKSZDmjznh6',
+      text: 'Monastir, Tunisie',
+      link: 'https://maps.app.goo.gl/3fKZcVqrGqQY11TR6',
       target: '_blank'
     },
     {
       icon: '🚚',
-      text: 'Livraison gratuite à partir de 300 DT',
+      text: 'Livraison gratuite à partir de 250 DT',
       highlight: true
     }
   ];
