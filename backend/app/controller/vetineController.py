@@ -118,7 +118,7 @@ def delete_category_info(category_id: int, db: Session = Depends(get_db)):
 # Route to get orders for a user (use Pydantic schema here)
 @router.get("/orders", response_model=List[OrderBase])
 def get_user_orders(
-    skip: int = 0, limit: int = 10, 
+    skip: int = 0, limit: int = 1000, 
     db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
 ):
     return get_orders(db,skip=skip, limit=limit)
