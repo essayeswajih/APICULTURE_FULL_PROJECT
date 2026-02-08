@@ -90,7 +90,6 @@ menuItems = [
   }
 ];
   // Disable right click
-  /*
   @HostListener('document:contextmenu', ['$event'])
   onRightClick(event: MouseEvent) {
     event.preventDefault();
@@ -114,5 +113,5 @@ menuItems = [
     if (event.key === 'F12') {
       event.preventDefault();
     }//
-  }*/
+  }
 }
