@@ -12,8 +12,22 @@
 .scroll-track {
   display: inline-flex;
   align-items: center;
-  gap: 3rem;
-  animation: scroll-left 30s linear infinite;
+
+  /* 📱 Mobile gap (default) */
+  gap: 2.5rem;
+
+  min-width: max-content;
+  animation: scroll-left 20s linear infinite;
+
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+/* 🖥 Desktop gap */
+@media (min-width: 768px) {
+  .scroll-track {
+    gap: 5rem;
+  }
 }
 
 .scroll-item {
@@ -24,29 +38,15 @@
   color: white;
 }
 
-.scroll-item:hover {
-  text-decoration: underline;
-}
-
 .scroll-item.highlight {
   color: #ffc107;
 }
 
-.icon {
-  font-size: 1rem;
-}
-
-/* Pause on hover */
-.scroll-track:hover {
-  animation-play-state: paused;
-}
-
-/* Animation */
 @keyframes scroll-left {
-  0% {
-    transform: translateX(0);
+  from {
+    transform: translate3d(0, 0, 0);
   }
-  100% {
-    transform: translateX(-50%);
+  to {
+    transform: translate3d(-50%, 0, 0);
   }
 }
