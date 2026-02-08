@@ -162,7 +162,7 @@ def delete_category(db: Session, category_id: int) -> None:
 def get_orders(db: Session, skip: int = 0, limit: int = 10) -> List[Order]:
     if skip < 0 or limit <= 0:
         raise HTTPException(status_code=400, detail="Invalid pagination parameters.")
-    return db.query(Order).offset(skip).limit(limit).all()
+    return db.query(Order).order_by(Order.created_at.desc()).offset(skip).limit(limit).all()
 
 def create_order(db: Session, order_create: OrderCreate, total_amount: float) -> Order:
     # Validate items list
