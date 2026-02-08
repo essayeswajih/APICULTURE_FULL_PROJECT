@@ -35,6 +35,13 @@ export class OrderManagement implements OnInit {
       this.loadOrders();
     });
   }
+  //get max shipping cost from order items
+  calculateShippingCost(items: { quantity: number; shipping_cost?: number }[]): number {
+    if (!items || items.length === 0) {
+      return 9;
+    }
+    return Math.max(...items.map(item => item.shipping_cost || 9));
+  }
 
   private loadOrders() {
     this.apiService.getOrders().subscribe(orders => {
