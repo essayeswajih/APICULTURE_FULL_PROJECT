@@ -15,6 +15,7 @@ export interface CartItem {
   image: string | null;
   price: number;
   quantity: number;
+  shipping_cost?: number; // Optional field for shipping cost
 }
 
 @Component({
