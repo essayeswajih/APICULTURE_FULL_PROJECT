@@ -14,6 +14,7 @@ interface CartItem {
   image: string;
   price: number;
   quantity: number;
+  shipping_cost?: number; // Optional field for shipping cost
 }
 
 @Component({
@@ -187,7 +188,8 @@ export class Panier implements OnInit {
         product_id: item.id,
         quantity: item.quantity,
         price: item.price,
-        name: item.name 
+        name: item.name ,
+        shipping_cost: item.shipping_cost || 9.0
       })),
       id: 0,
       username: this.checkoutForm.value.fullName,
