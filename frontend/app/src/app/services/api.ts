@@ -30,6 +30,7 @@ export interface Product {
   rating?: number;            // Average rating of the product
   num_ratings?: number;       // Number of ratings for the product
   slug?: string;              // Optional slug for the product
+  shipping_cost?: number;     // Optional field for shipping cost
 }
 
 
