@@ -20,6 +20,7 @@
   max-width: 220px;
   text-align: right;
   animation: fadeInUp 0.6s ease;
+  animation: whatsapp-vibrate 1.2s infinite;
 }
 
 /* Fade in + move up animation */
@@ -43,7 +44,6 @@
   justify-content: center;
   transition: transform 0.25s ease;
   text-decoration: none;
-  animation: whatsapp-vibrate 1.2s infinite;
 }
 
 .whatsapp-float:hover {
