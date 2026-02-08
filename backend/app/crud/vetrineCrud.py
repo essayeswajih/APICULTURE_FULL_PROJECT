@@ -79,7 +79,8 @@ def create_product(db: Session, product: ProductBase) -> Product:
         buzzent=product.buzzent,
         rating=product.rating,
         num_ratings=product.num_ratings,
-        slug=create_slug(product.name)
+        slug=create_slug(product.name),
+        shipping_cost=product.shipping_cost
     )
     db.add(db_product)
     db.commit()
@@ -106,6 +107,7 @@ def update_product(db: Session, product_id: int, product: ProductBase) -> Option
         db_product.rating = product.rating
         db_product.num_ratings = product.num_ratings
         db_product.slug = create_slug(product.name)
+        db_product.shipping_cost = product.shipping_cost
         db.commit()
         db.refresh(db_product)
         return db_product
