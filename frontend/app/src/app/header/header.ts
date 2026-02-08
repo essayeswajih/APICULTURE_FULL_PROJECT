@@ -5,11 +5,12 @@ import { Api } from '../services/api'; // Import the CategoryService
 import type { Category, Product } from '../services/api'; // Import the Category type
 import { CartItem } from '../pages/boutique/boutique';
 import { Cart } from '../services/cart';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
+import { TopBarCarousel } from "../components/top-bar-carousel/top-bar-carousel"; 
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule, RouterModule,FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, TopBarCarousel],
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
   standalone: true

@@ -1,0 +1,33 @@
+<!-- Desktop -->
+<div class="top-bar bg-dark text-white border-bottom border-secondary d-none d-md-block">
+  <div class="scroll-container">
+    <div class="scroll-track">
+
+      <ng-container *ngFor="let item of duplicatedItems">
+        <a
+          *ngIf="item.link; else textOnly"
+          [href]="item.link"
+          [target]="item.target || '_self'"
+          class="scroll-item text-decoration-none"
+          [class.highlight]="item.highlight"
+        >
+          <span class="icon">{{ item.icon }}</span>
+          <span>{{ item.text }}</span>
+        </a>
+
+        <ng-template #textOnly>
+          <div class="scroll-item" [class.highlight]="item.highlight">
+            <span class="icon">{{ item.icon }}</span>
+            <span>{{ item.text }}</span>
+          </div>
+        </ng-template>
+      </ng-container>
+
+    </div>
+  </div>
+</div>
+
+<!-- Mobile -->
+<div class="bg-dark text-warning d-md-none text-center py-1 small fw-semibold">
+  🚚 Livraison gratuite dès 300 DT
+</div>

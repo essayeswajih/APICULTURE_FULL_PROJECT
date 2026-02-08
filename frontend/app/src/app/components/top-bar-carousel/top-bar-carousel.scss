@@ -1,0 +1,52 @@
+.top-bar {
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 0.85rem;
+}
+
+.scroll-container {
+  width: 100%;
+  overflow: hidden;
+}
+
+.scroll-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 3rem;
+  animation: scroll-left 30s linear infinite;
+}
+
+.scroll-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: white;
+}
+
+.scroll-item:hover {
+  text-decoration: underline;
+}
+
+.scroll-item.highlight {
+  color: #ffc107;
+}
+
+.icon {
+  font-size: 1rem;
+}
+
+/* Pause on hover */
+.scroll-track:hover {
+  animation-play-state: paused;
+}
+
+/* Animation */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
