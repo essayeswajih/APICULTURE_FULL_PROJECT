@@ -113,6 +113,7 @@ export class Header implements OnInit {
     this.router.navigateByUrl(`/product/${slug}`);
     this.isMobileMenuOpen = false;
     this.isDropdownOpen = false;
+    this.searchQuery = '';
     this.cdRef.detectChanges();
   }
 }
