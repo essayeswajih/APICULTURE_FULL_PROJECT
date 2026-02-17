@@ -131,25 +131,25 @@
     </div>
     <div class="offcanvas-body pt-4">
       <ul class="list-unstyled fs-5">
-        <li class="mb-4"><a routerLink="/" class="text-dark text-decoration-none" data-bs-dismiss="offcanvas">Accueil</a></li>
+        <li class="mb-4"><a routerLink="/" class="text-dark text-decoration-none" data-bs-dismiss="offcanvas" (click)="clearMobileMenu()">Accueil</a></li>
         <li class="mb-4">
           <a href="javascript:void(0)" class="text-dark text-decoration-none d-flex justify-content-between align-items-center"
-             data-bs-toggle="collapse" href="#mobileBoutique">
+             data-bs-toggle="collapse" href="#mobileBoutique" (click)="clearMobileMenu()" >
             Boutique <i class="fas fa-chevron-down small"></i>
           </a>
           <div class="collapse mt-3" id="mobileBoutique">
             <ul class="list-unstyled ps-4">
               <li class="py-2" *ngFor="let category of categories">
                 <a [routerLink]="['/boutique']" [queryParams]="{category: category.name}"
-                   class="text-muted text-decoration-none d-block" data-bs-dismiss="offcanvas">
+                   class="text-muted text-decoration-none d-block" data-bs-dismiss="offcanvas" (click)="clearMobileMenu()">
                   {{ category.name }}
                 </a>
               </li>
             </ul>
           </div>
         </li>
-        <li class="mb-4"><a routerLink="/a-propos" class="text-dark text-decoration-none" data-bs-dismiss="offcanvas">À Propos</a></li>
-        <li class="mb-4"><a routerLink="/contact" class="text-dark text-decoration-none" data-bs-dismiss="offcanvas">Contact</a></li>
+        <li class="mb-4"><a routerLink="/a-propos" class="text-dark text-decoration-none" data-bs-dismiss="offcanvas" (click)="clearMobileMenu()">À Propos</a></li>
+        <li class="mb-4"><a routerLink="/contact" class="text-dark text-decoration-none" data-bs-dismiss="offcanvas" (click)="clearMobileMenu()">Contact</a></li>
       </ul>
     </div>
   </div>
