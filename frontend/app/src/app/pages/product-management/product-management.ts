@@ -21,7 +21,7 @@ export class ProductManagement implements OnInit {
     stock_quantity: 0,
     category_id: 0,
     discounted_price: 0,  // New field for discounted price
-    image_url: '',           // New field for image URL
+    image_url: 'https://api.apiculturegalai.tn/uploads/',           // New field for image URL
     image2_url: '',          // New field for secondary image URL
     image3_url: '',          // New field for tertiary image URL
     image4_url: '',          // New field for quaternary image URL
@@ -89,7 +89,7 @@ export class ProductManagement implements OnInit {
       stock_quantity: 0,
       category_id: 0,
       discounted_price: 0,
-      image_url: '',
+      image_url: 'https://api.apiculturegalai.tn/uploads/',
       promo: false,
       buzzent: '',
       image2_url: '',
