@@ -8,6 +8,7 @@ import { Cart } from '../services/cart';
 import { FormsModule } from '@angular/forms';
 import { TopBarCarousel } from "../components/top-bar-carousel/top-bar-carousel"; 
 
+
 @Component({
   selector: 'app-header',
   imports: [CommonModule, RouterModule, FormsModule, TopBarCarousel],
@@ -117,9 +118,5 @@ export class Header implements OnInit {
     this.products = [];
     this.cdRef.detectChanges();
   }
-  clearMobileMenu() {
-    this.isMobileMenuOpen = false;
-    this.isDropdownOpen = false;
-    this.cdRef.detectChanges();
-  }
+
 }
