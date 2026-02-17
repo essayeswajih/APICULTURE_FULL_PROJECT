@@ -114,6 +114,7 @@ export class Header implements OnInit {
     this.isMobileMenuOpen = false;
     this.isDropdownOpen = false;
     this.searchQuery = '';
+    this.products = [];
     this.cdRef.detectChanges();
   }
 }
