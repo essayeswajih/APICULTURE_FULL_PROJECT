@@ -85,7 +85,7 @@ def delete_product_info(product_id: int, db: Session = Depends(get_db)):
 
 # Route to get all categories
 @router.get("/categories", response_model=List[CategoryBase])
-def get_all_categories(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+def get_all_categories(skip: int = 0, limit: int = 1000, db: Session = Depends(get_db)):
     return get_categories(db, skip=skip, limit=limit)
 
 # Route to get a single category by ID
