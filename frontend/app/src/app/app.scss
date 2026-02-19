@@ -21,7 +21,7 @@
     padding: 5px 0;
     position: absolute;  /* if you want it to stick on top */
     z-index: 22;
-
+    text-align: right; 
 }
 @media screen and (max-width: 600px) {
     .ramadan-topbar img {
@@ -33,5 +33,5 @@
 .ramadan-topbar img {
     max-height: 90vh;  /* keeps it from being too tall */
     width: auto;
-    text-align: right; 
+
 }
