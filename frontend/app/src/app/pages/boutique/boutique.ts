@@ -260,4 +260,16 @@ export class Boutique implements OnInit, OnDestroy {
     }
       this.cdRef.detectChanges();
   }
+    getStars(n: any) {
+    const value = Number(n);
+
+    if (!Number.isFinite(value) || value <= 0) {
+      return [];
+    }
+
+    // Optional: limit stars between 0 and 5
+    const stars = Math.min(Math.floor(value), 5);
+
+    return Array(stars).fill(0);
+  }
 }

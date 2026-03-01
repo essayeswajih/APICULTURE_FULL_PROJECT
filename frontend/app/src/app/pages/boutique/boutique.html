@@ -88,6 +88,14 @@
                           <p class="card-text text-danger" style="display: inline-block !important;">{{ product.price }} DT</p>
                         </span>
                       }
+                                  <div>
+              <span class="rating">
+                @for (star of getStars(product.rating); track $index) {
+                  ⭐
+                }
+              </span>
+              <span *ngIf="product.num_ratings">({{product.num_ratings}})</span>
+            </div>
               <button 
                 class="btn btn-warning w-100 text-light hover-dark-green"
                 (click)="addToCart(product)"
