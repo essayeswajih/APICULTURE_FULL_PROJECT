@@ -272,7 +272,6 @@ def caclulate_max_shipping_cost(items: List[OrderItemBase]) -> float:
 # =========================
 
 def get_stories(db: Session, skip: int = 0, limit: int = 500) -> List[Story]:
-    # Fix: order_by comes before offset/limit
     return db.query(Story).order_by(Story.periority).offset(skip).limit(limit).all()
 
 def get_story(db: Session, story_id: int) -> Story:
@@ -280,9 +279,9 @@ def get_story(db: Session, story_id: int) -> Story:
 
 def create_story(db: Session, story: StoryBase) -> Story:
     db_story = Story(
-        **story(),
-        created_at=story.created_at or datetime.utcnow(),
-        updated_at=story.updated_at or datetime.utcnow()
+        **story.dict(exclude={'created_at', 'updated_at'}),
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
     )
     db.add(db_story)
     db.commit()
