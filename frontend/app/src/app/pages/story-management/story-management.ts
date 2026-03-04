@@ -129,7 +129,8 @@ export class StoryManagement implements OnInit {
               opacity: 0,
               y: 20,
               duration: 0.5,
-              stagger: 0.1
+              stagger: 0.1,
+              force3D: false          // ← Add this line (or "force3D: 'auto'" sometimes helps too)
             });
           }
         }, 0);

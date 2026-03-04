@@ -44,11 +44,13 @@
     border-radius: 12px;
   }
 
-  .story-card {
-    border-radius: 18px;
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
+.story-card,
+.story-card * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;     // or geometricPrecision
+  backface-visibility: hidden;            // helps in some cases
+}
 
   .story-card:hover {
     transform: translateY(-6px);
