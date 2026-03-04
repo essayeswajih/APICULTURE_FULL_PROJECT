@@ -181,21 +181,30 @@ export class StoryManagement implements OnInit {
     }
   }
 
-  private extractVideoId(url: string, platform: string): string {
-    if (!url) return '';
-    try {
-      if (platform === 'youtube') {
-        const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
-        return match ? match[1] : '';
-      }
-      if (platform === 'tiktok' || platform === 'instagram') {
-        const parts = url.split('/');
-        return parts[parts.length - 2] || '';
-      }
-      return '';
-    } catch {
-      return '';
+private extractVideoId(url: string, platform: string): string {
+  if (!url) return '';
+
+  try {
+    if (platform === 'youtube') {
+      const match = url.match(/(?:v=|\/)([0-9A-Za-z_-]{11})/);
+      return match ? match[1] : '';
     }
+
+    if (platform === 'tiktok') {
+      // Match /embed/v2/VIDEO_ID
+      const match = url.match(/\/embed\/v2\/([0-9A-Za-z]+)/);
+      return match ? match[1] : '';
+    }
+
+    if (platform === 'instagram') {
+      const parts = url.split('/');
+      return parts[parts.length - 2] || '';
+    }
+
+    return '';
+  } catch {
+    return '';
   }
+}
 
 }
