@@ -291,7 +291,7 @@ def create_story(db: Session, story: StoryBase) -> Story:
 def update_story(db: Session, story_id: int, story: StoryBase) -> Story:
     db_story = db.query(Story).filter(Story.id == story_id).first()
     if db_story:
-        for key, value in story.dict(exclude_unset=True, exclude={'created_at', 'updated_at','id'}).items():
+        for key, value in story.dict(exclude_unset=True, exclude={'created_at', 'updated_at'}).items():
             setattr(db_story, key, value)
         db_story.updated_at = datetime.utcnow()  # always update timestamp
         db.commit()
