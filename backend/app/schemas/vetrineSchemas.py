@@ -1,4 +1,4 @@
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_validator
 from typing import List, Optional
 from datetime import datetime
 
@@ -153,7 +153,8 @@ class StoryBase(BaseModel):
     class Config:
         from_attributes = True
         # Convert empty string to None
-    @validator('created_at', 'updated_at', pre=True, always=True)
+    @field_validator('created_at', 'updated_at', mode='before')
+    @classmethod
     def parse_empty_datetime(cls, v):
         if v == '' or v is None:
             return None
