@@ -279,7 +279,11 @@ def get_story(db: Session, story_id: int) -> Story:
     return db.query(Story).filter(Story.id == story_id).first()
 
 def create_story(db: Session, story: StoryBase) -> Story:
-    db_story = Story(**story.dict())
+    db_story = Story(
+        **story(),
+        created_at=story.created_at or datetime.utcnow(),
+        updated_at=story.updated_at or datetime.utcnow()
+    )
     db.add(db_story)
     db.commit()
     db.refresh(db_story)
