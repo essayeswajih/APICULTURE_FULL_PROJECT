@@ -292,9 +292,9 @@ def create_story(db: Session, story: StoryBase) -> Story:
 def update_story(db: Session, story_id: int, story: StoryBase) -> Story:
     db_story = db.query(Story).filter(Story.id == story_id).first()
     if db_story:
-        # Use .dict() if story is a Pydantic model
-        for key, value in story.dict().items():
+        for key, value in story.dict(exclude_unset=True).items():
             setattr(db_story, key, value)
+        db_story.updated_at = datetime.utcnow()  # always update timestamp
         db.commit()
         db.refresh(db_story)
         return db_story
