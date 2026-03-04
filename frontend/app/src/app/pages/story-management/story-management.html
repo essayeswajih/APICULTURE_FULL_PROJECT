@@ -1,0 +1,139 @@
+<div class="container py-5 story-management">
+
+  <h2 class="page-title mb-4">🎬 Story Management</h2>
+
+  <!-- FORM CARD -->
+  <div class="card form-card shadow-lg border-0 mb-5">
+    <div class="card-body p-4">
+
+      <h4 class="section-title mb-4">
+        {{ editMode ? 'Edit Story' : 'Add New Story' }}
+      </h4>
+
+      <form (ngSubmit)="addStory()" class="row g-4">
+
+        <!-- Platform -->
+        <div class="col-md-6">
+          <label class="form-label">Platform</label>
+          <select class="form-select modern-input"
+                  [(ngModel)]="newStory.platform"
+                  name="platform"
+                  required>
+
+            <option value="" disabled selected>Select Platform</option>
+            <option *ngFor="let p of platformList"
+                    [value]="p.name"
+                    [disabled]="!p.enabled">
+              {{ p.label }}
+            </option>
+
+          </select>
+        </div>
+
+        <!-- Title -->
+        <div class="col-md-6">
+          <label class="form-label">Title</label>
+          <input type="text"
+                 class="form-control modern-input"
+                 [(ngModel)]="newStory.title"
+                 name="title"
+                 required>
+        </div>
+
+        <!-- VideoID -->
+        <div class="col-md-6">
+          <label class="form-label">Video ID</label>
+          <input type="text"
+                 class="form-control modern-input"
+                 [(ngModel)]="video_id"
+                 name="video_id"
+                 placeholder="Enter Video ID">
+        </div>
+
+        <!-- URL -->
+        <div class="col-md-6">
+          <label class="form-label">Story URL</label>
+          <input type="text"
+                 class="form-control modern-input"
+                 [(ngModel)]="newStory.url"
+                 name="url"
+                 required>
+        </div>
+
+        <!-- Thumbnail -->
+        <div class="col-md-6">
+          <label class="form-label">Thumbnail URL</label>
+          <input type="text"
+                 class="form-control modern-input"
+                 [(ngModel)]="newStory.thumbnail"
+                 name="thumbnail">
+        </div>
+
+        <!-- Priority -->
+        <div class="col-md-6">
+          <label class="form-label">Priority</label>
+          <input type="number"
+                 class="form-control modern-input"
+                 [(ngModel)]="newStory.periority"
+                 name="periority"
+                 required>
+        </div>
+
+        <!-- LIVE PREVIEW -->
+        <div class="col-12" *ngIf="embedUrl">
+          <label class="form-label">Preview</label>
+          <div class="ratio ratio-16x9 mt-2">
+            <iframe [src]="embedUrl" frameborder="0" allowfullscreen></iframe>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="col-12 d-flex gap-3 mt-3">
+          <button type="submit" class="btn btn-modern-primary">
+            {{ editMode ? 'Update' : 'Add' }} Story
+          </button>
+          <button type="button"
+                  *ngIf="editMode"
+                  (click)="resetForm()"
+                  class="btn btn-modern-secondary">
+            Cancel
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- STORIES GRID -->
+  <h4 class="section-title mb-4">Existing Stories</h4>
+
+  <div class="row g-4">
+    <div class="col-lg-4 col-md-6" *ngFor="let story of stories; trackBy: trackById">
+
+      <div class="card story-card border-0 shadow-sm h-100">
+
+        <div class="image-wrapper position-relative">
+          <img [src]="story.thumbnail || 'https://via.placeholder.com/400x500?text=Story'"
+               class="card-img-top"
+               loading="lazy">
+          <span class="badge bg-primary position-absolute top-0 end-0 m-2">
+            Priority {{ story.periority }}
+          </span>
+        </div>
+
+        <div class="card-body">
+          <h5 class="card-title fw-bold">{{ story.title }}</h5>
+          <p class="text-muted small mb-2">Platform: {{ story.platform }}</p>
+          <a [href]="story.url" target="_blank" class="story-link">View Story →</a>
+        </div>
+
+        <div class="card-footer bg-white border-0 d-flex justify-content-between">
+          <button class="btn btn-outline-primary" (click)="editStory(story)">Edit</button>
+          <button class="btn btn-danger" (click)="deleteStory(story.id)">Delete</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

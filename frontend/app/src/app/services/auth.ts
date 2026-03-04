@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -18,10 +19,11 @@ interface TokenResponse {
   providedIn: 'root'
 })
 export class AuthService {
+
   private apiUrl = environment.apiUrl+'/auth'; // Base URL from environment (e.g., http://localhost:8000)
   private tokenKey = 'access_token';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,@Inject(PLATFORM_ID) private platformId: Object) {}
 
   // Login method to authenticate user and get JWT token
   login(credentials: Credentials): Observable<TokenResponse> {
@@ -57,7 +59,10 @@ export class AuthService {
 
   // Get stored token
   getToken(): string | null {
+    if (isPlatformBrowser(this.platformId)) {
     return localStorage.getItem(this.tokenKey);
+    }
+    return null;
   }
 
   // Check if user is authenticated

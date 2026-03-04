@@ -7,11 +7,11 @@ from controller.Oauth2C import get_current_user
 from db.database import get_db
 from models.vetrineModels import Product, Order, OrderItem, CartItem, Category
 from models.Oauth2Models import User
-from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, OrderCreate, CartItemBase, OrderItemBase, OrderBase
+from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, OrderCreate, CartItemBase, OrderItemBase, OrderBase, StoryBase
 from crud.vetrineCrud import (
-    create_category, delete_category, delete_order, delete_product, get_categories, get_category_by_id,
+    create_category, create_story, delete_category, delete_order, delete_product, delete_story, get_categories, get_category_by_id,
     get_products, get_product_by_id, create_product, get_orders, create_order,
-    get_cart_items, add_to_cart, remove_from_cart, update_category, update_product, get_product_by_slug_db, caclulate_max_shipping_cost
+    get_cart_items, add_to_cart, get_stories, get_story, remove_from_cart, update_category, update_product, get_product_by_slug_db, caclulate_max_shipping_cost, update_story
 )
 from controller.sendMail import AdminEmail, send_email_via_gmail
 from fastapi import Request
@@ -290,3 +290,29 @@ def contact_form(request: Request, contact_form: contactRequest):
         raise HTTPException(status_code=500, detail="Failed to send contact message.")
     
     return {"message": "Successfully sent the message."}
+
+# Route to get all stories
+@router.get("/stories", response_model=List[StoryBase])
+def get_all_stories(skip: int = 0, limit: int = 1000, db: Session = Depends(get_db)):
+    return get_stories(db, skip=skip, limit=limit)
+
+# Route to get a specific story by ID
+@router.get("/stories/{story_id}", response_model=StoryBase)
+def get_story_by_id(story_id: int, db: Session = Depends(get_db)):
+    return get_story(db, story_id)
+
+# Route to create a new story
+@router.post("/stories", response_model=StoryBase, dependencies=[Depends(check_admin)])
+def create_new_story(story: StoryBase, db: Session = Depends(get_db)):
+    return create_story(db, story)
+
+# Route to update an existing story
+@router.put("/stories/{story_id}", response_model=StoryBase, dependencies=[Depends(check_admin)])
+def update_story_info(story_id: int, story: StoryBase, db: Session = Depends(get_db)):
+    return update_story(db, story_id, story)
+
+# Route to delete a story
+@router.delete("/stories/{story_id}", dependencies=[Depends(check_admin)])
+def delete_story_info(story_id: int, db: Session = Depends(get_db)):
+    delete_story(db, story_id)
+    return {"message": "Story deleted successfully."}

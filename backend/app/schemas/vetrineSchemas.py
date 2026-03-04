@@ -141,3 +141,14 @@ class OrederStatus(BaseModel):
     class Config:
         from_attributes = True
         
+class StoryBase(BaseModel):
+    id: Optional[int] = None
+    title: str
+    platform : str  # e.g., "Instagram", "Facebook", etc.
+    url : str
+    thumbnail : str
+    created_at :datetime
+    updated_at : datetime
+    periority : int
+    class Config:
+        from_attributes = True

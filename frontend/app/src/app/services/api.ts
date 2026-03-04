@@ -55,6 +55,17 @@ export interface Order {
   code: string; // Unique code for the order
 }
 
+export interface Story {
+  id: number;
+  platform: string;
+  url: string;
+  thumbnail: string;
+  title: string;
+  periority: number;
+  created_at: string;
+  updated_at: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -236,6 +247,38 @@ export class Api {
   getAllImages(): Observable<{ images: string[] }> {
     return this.http
       .get<{ images: string[] }>(`${this.apiUrl}/images`, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+
+  // Stories API
+  getStories(): Observable<Story[]> {
+    return this.http
+      .get<Story[]>(`${this.apiUrl}/stories`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getStoryById(id: number): Observable<Story> {
+    return this.http
+      .get<Story>(`${this.apiUrl}/stories/${id}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  addStory(story: Story): Observable<Story> {
+    return this.http
+      .post<Story>(`${this.apiUrl}/stories`, story, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+  updateStory(id: number, story: Story): Observable<Story> {
+    return this.http
+      .put<Story>(`${this.apiUrl}/stories/${id}`, story, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+  deleteStory(id: number): Observable<void> {
+    return this.http
+      .delete<void>(`${this.apiUrl}/stories/${id}`, { headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError));
   }
 }

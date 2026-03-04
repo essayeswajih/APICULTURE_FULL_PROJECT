@@ -1,8 +1,8 @@
 from sqlalchemy import asc, desc, func, or_
 from sqlalchemy.orm import Session
 from typing import List, Optional
-from models.vetrineModels import OrderStatus, Product, Order, OrderItem, CartItem, Category
-from schemas.vetrineSchemas import CategoryBase, ProductBase, OrderCreate, CartItemBase, OrderItemBase
+from models.vetrineModels import OrderStatus, Product, Order, OrderItem, CartItem, Category, Story
+from schemas.vetrineSchemas import CategoryBase, ProductBase, OrderCreate, CartItemBase, OrderItemBase, StoryBase
 from datetime import datetime
 from fastapi import HTTPException
 from random import randint
@@ -266,3 +266,35 @@ def remove_from_cart(db: Session, user_id: int, cart_item_id: int) -> None:
 
 def caclulate_max_shipping_cost(items: List[OrderItemBase]) -> float:
     return max(item.shipping_cost for item in items)
+
+# stroy crud
+def get_stories(db: Session, skip: int = 0, limit: int = 500) -> List[Story]:
+    return db.query(Story).offset(skip).limit(limit).order_by(Story.periority).all()
+
+def get_story(db: Session, story_id: int) -> Story:
+    return db.query(Story).filter(Story.id == story_id).first()
+
+def create_story(db: Session, story: StoryBase) -> Story:
+    db_story = Story(**story.dict())
+    db.add(db_story)
+    db.commit()
+    db.refresh(db_story)
+    return db_story
+
+def update_story(db: Session, story_id: int, story: StoryBase) -> Story:
+    db_story = db.query(Story).filter(Story.id == story_id).first()
+    if db_story:
+        for key, value in story.items():
+            setattr(db_story, key, value)
+        db.commit()
+        db.refresh(db_story)
+        return db_story
+    return None
+
+def delete_story(db: Session, story_id: int) -> None:
+    db_story = db.query(Story).filter(Story.id == story_id).first()
+    if db_story:
+        db.delete(db_story)
+        db.commit()
+    else:
+        raise HTTPException(status_code=404, detail="Story not found")

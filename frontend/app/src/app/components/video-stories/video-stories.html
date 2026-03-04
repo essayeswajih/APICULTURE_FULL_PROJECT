@@ -1,0 +1,159 @@
+<!-- ===================================================== -->
+<!-- Preview Row -->
+<!-- ===================================================== -->
+
+<div class="stories-preview-container">
+  <div class="swiper stories-preview-swiper" #previewSwiper>
+    <div class="swiper-wrapper">
+      <div
+        class="swiper-slide"
+        *ngFor="let story of stories; let i = index"
+      >
+        <div class="story-card" (click)="openStory(i)">
+          <div class="badge" [ngClass]="story.platform">
+            {{ story.platform }}
+          </div>
+
+          <img
+            [src]="story.thumbnail"
+            [alt]="story.title"
+            class="thumbnail"
+            loading="lazy"
+          />
+
+          <div class="play-overlay">▶</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview Navigation 
+    <button
+      class="preview-nav prev preview-prev"
+      aria-label="Précédent"
+      type="button"
+    >
+      ‹
+    </button>
+
+    <button
+      class="preview-nav next preview-next"
+      aria-label="Suivant"
+      type="button"
+    >
+      ›
+    </button>
+    -->
+  </div>
+</div>
+
+<!-- ===================================================== -->
+<!-- Full Screen Viewer -->
+<!-- ===================================================== -->
+
+<div
+  class="story-viewer"
+  *ngIf="currentIndex >= 0"
+  (click)="onTap($event)"
+>
+
+  <!-- Close Button -->
+  <button
+    class="close-btn"
+    (click)="closeStory(); $event.stopPropagation()"
+    aria-label="Fermer"
+    type="button"
+  >
+    ✕
+  </button>
+
+  <!-- Progress Bars -->
+  <div class="progress-container">
+    <div
+      class="progress-segment"
+      *ngFor="let s of stories; let i = index"
+      [class.completed]="i < currentIndex"
+      [class.active]="i === currentIndex"
+    >
+      <div
+        class="fill"
+        [style.width.%]="i === currentIndex ? progress : (i < currentIndex ? 100 : 0)"
+      ></div>
+    </div>
+  </div>
+
+  <!-- Viewer Swiper -->
+  <div class="viewer-swiper-container swiper" #viewerSwiper>
+    <div class="swiper-wrapper">
+      <div
+        class="swiper-slide"
+        *ngFor="let story of stories; let i = index"
+      >
+        <div class="content">
+
+          <ng-container [ngSwitch]="story.platform">
+
+            <!-- YouTube -->
+            <iframe
+              *ngSwitchCase="'youtube'"
+              [src]="story.url | safeUrl"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+              allowfullscreen
+            ></iframe>
+
+            <!-- TikTok -->
+            <iframe
+              *ngSwitchCase="'tiktok'"
+              [src]="story.url | safeUrl"
+              frameborder="0"
+              allowfullscreen
+            ></iframe>
+
+            <!-- Facebook Fallback -->
+            <div *ngSwitchCase="'facebook'" class="fallback">
+              <img
+                [src]="story.thumbnail"
+                [alt]="story.title"
+                loading="lazy"
+              />
+              <a
+                [href]="story.url"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Voir sur Facebook
+              </a>
+            </div>
+
+            <!-- Default -->
+            <div *ngSwitchDefault class="fallback">
+              <p>Format non supporté</p>
+            </div>
+
+          </ng-container>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Arrows -->
+  <button
+    class="nav prev"
+    (click)="prevStory(); $event.stopPropagation()"
+    [disabled]="currentIndex === 0"
+    type="button"
+  >
+    ‹
+  </button>
+
+  <button
+    class="nav next"
+    (click)="nextStory(); $event.stopPropagation()"
+    [disabled]="currentIndex === stories.length - 1"
+    type="button"
+  >
+    ›
+  </button>
+
+</div>

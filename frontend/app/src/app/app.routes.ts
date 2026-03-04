@@ -22,9 +22,10 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/panier/panier').then(m => m.Panier)
   },
   { path: 'dashboard', loadComponent: () => import('./pages/dashboard/dashboard').then(m => m.Dashboard), canActivate: [authGuard] },
-  { path: 'categories', component: CategoryManagement, canActivate: [authGuard] },
-  { path: 'products', component: ProductManagement, canActivate: [authGuard] },
-  { path: 'orders', component: OrderManagement, canActivate: [authGuard] },
+  { path: 'categories', loadComponent: () => import('./pages/category-management/category-management').then(m => m.CategoryManagement), canActivate: [authGuard] },
+  { path: 'products', loadComponent: () => import('./pages/product-management/product-management').then(m => m.ProductManagement), canActivate: [authGuard] },
+  { path: 'orders', loadComponent: () => import('./pages/order-management/order-management').then(m => m.OrderManagement), canActivate: [authGuard] },
+  { path: 'stories', loadComponent: () => import('./pages/story-management/story-management').then(m => m.StoryManagement), canActivate: [authGuard] },
   { path: 'product/:slug', component: SingleProduct,
     data: {
       prerender: {

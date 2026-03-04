@@ -100,3 +100,14 @@ class CartItem(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     product_id = Column(Integer, ForeignKey("products.id"))
     quantity = Column(Integer, nullable=False)
+
+class Story(Base):
+    __tablename__ = "stories"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, nullable=False)
+    platform = Column(String, nullable=False)  # e.g., "Instagram", "Facebook", etc.
+    url = Column(Text, nullable=False)
+    thumbnail = Column(Text, nullable=True)  # Optional image URL for the story
+    created_at = Column(DateTime, default=datetime.now)
+    updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
+    periority = Column(Integer, nullable=True)  # Optional field for story priority or order

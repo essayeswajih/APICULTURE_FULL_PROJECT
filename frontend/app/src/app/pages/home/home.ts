@@ -19,6 +19,8 @@ import { FeaturedProducts } from '../../featured-products/featured-products';
 import { PopularProducts } from '../../popular-products/popular-products';
 import { LatestProducts } from '../../latest-products/latest-products';
 import { CategoryCarousel } from '../../category-carousel/category-carousel';
+import { VideoStories } from '../../components/video-stories/video-stories';
+
 
 @Component({
   selector: 'app-home',
@@ -32,7 +34,8 @@ import { CategoryCarousel } from '../../category-carousel/category-carousel';
     PopularProducts,
     LatestProducts,
     CategoryCarousel,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    VideoStories
 ],
   templateUrl: './home.html',
   styleUrls: ['./home.scss'],
