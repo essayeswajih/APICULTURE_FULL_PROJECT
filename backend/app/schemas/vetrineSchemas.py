@@ -147,8 +147,8 @@ class StoryBase(BaseModel):
     platform : str  # e.g., "Instagram", "Facebook", etc.
     url : str
     thumbnail : str
-    created_at :datetime
-    updated_at : datetime
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
     periority : int
     class Config:
         from_attributes = True
