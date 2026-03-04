@@ -267,9 +267,13 @@ def remove_from_cart(db: Session, user_id: int, cart_item_id: int) -> None:
 def caclulate_max_shipping_cost(items: List[OrderItemBase]) -> float:
     return max(item.shipping_cost for item in items)
 
-# stroy crud
+# =========================
+# STORY CRUD
+# =========================
+
 def get_stories(db: Session, skip: int = 0, limit: int = 500) -> List[Story]:
-    return db.query(Story).offset(skip).limit(limit).order_by(Story.periority).all()
+    # Fix: order_by comes before offset/limit
+    return db.query(Story).order_by(Story.periority).offset(skip).limit(limit).all()
 
 def get_story(db: Session, story_id: int) -> Story:
     return db.query(Story).filter(Story.id == story_id).first()
@@ -284,7 +288,8 @@ def create_story(db: Session, story: StoryBase) -> Story:
 def update_story(db: Session, story_id: int, story: StoryBase) -> Story:
     db_story = db.query(Story).filter(Story.id == story_id).first()
     if db_story:
-        for key, value in story.items():
+        # Use .dict() if story is a Pydantic model
+        for key, value in story.dict().items():
             setattr(db_story, key, value)
         db.commit()
         db.refresh(db_story)
