@@ -44,7 +44,7 @@ export class VideoStories implements AfterViewInit, OnDestroy {
   currentIndex = -1;
   progress = 0;
 
-  private readonly STORY_DURATION_MS = 5500;
+  private readonly STORY_DURATION_MS = 30000000;
 
   private previewSwiper: Swiper | null = null;
   private viewerSwiper: Swiper | null = null;
