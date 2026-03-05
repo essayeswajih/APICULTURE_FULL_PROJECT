@@ -48,8 +48,8 @@
 .story-card * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;     // or geometricPrecision
-  backface-visibility: hidden;            // helps in some cases
+  text-rendering: optimizeLegibility;    
+  backface-visibility: hidden;      
 }
 
   .story-card:hover {
