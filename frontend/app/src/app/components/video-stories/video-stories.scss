@@ -5,7 +5,7 @@
 .stories-preview-container {
   border-radius: 20px;
   overflow: hidden;
-  background: black;
+  background: white;
   margin-bottom: 16px;
 }
 
@@ -33,7 +33,7 @@
   box-shadow: 0 3px 14px rgba(0,0,0,0.35);
   border: 1px solid rgba(255,255,255,0.06);
   transition: transform 0.24s ease, box-shadow 0.24s ease;
-  margin-right: 15px;
+  margin-right: 10px;
 
   &:hover {
     transform: scale(1.04);
@@ -47,6 +47,7 @@
   @media (min-width: 768px) {
     width: 150px;
     aspect-ratio: 9 / 16;
+    margin-right: 15px;
   }
 
   .thumbnail {
