@@ -43,7 +43,8 @@ class Product(Base):
         back_populates="products",
         overlaps="order_items,items"
     )
-
+    subcategory_id = Column(Integer, ForeignKey("subcategories.id"), index=True)
+    subcategory = relationship("SubCategory", back_populates="products")
 # Category Model
 class Category(Base):
     __tablename__ = "categories"
@@ -51,8 +52,19 @@ class Category(Base):
     name = Column(String, nullable=False, unique=True)
     description = Column(String)
     image_url = Column(Text, nullable=True)
-
+    subcategories = relationship("SubCategory", back_populates="category")
     products = relationship("Product", back_populates="category")
+
+class SubCategory(Base):
+    __tablename__ = "subcategories"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    description = Column(String)
+    image_url = Column(Text, nullable=True)
+    link = Column(String, nullable=True)
+    category_id = Column(Integer, ForeignKey("categories.id"))
+    category = relationship("Category", back_populates="subcategories")
+    products = relationship("Product", back_populates="subcategory")
 
 # OrderItem Model (Intermediary between Order and Product)
 class OrderItem(Base):

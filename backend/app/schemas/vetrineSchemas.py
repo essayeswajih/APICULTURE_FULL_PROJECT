@@ -11,6 +11,7 @@ class ProductBase(BaseModel):
     price: float
     stock_quantity: int
     category_id: int
+    subcategory_id: int
     discounted_price: Optional[float] = None
     image_url: Optional[str] = None  # Optional image URL for the product
     image2_url: Optional[str] = None
@@ -31,6 +32,21 @@ class ProductResponse(ProductBase):
 
     class Config:
         from_attributes = True
+class SubCategoryBase(BaseModel):
+    id: Optional[int] = None 
+    name: str
+    description: Optional[str] = None
+    image_url: Optional[str] = None
+    link: Optional[str] = None
+    category_id: int
+
+    class Config:
+        from_attributes = True
+
+class SubCategoryCreate(SubCategoryBase):
+    pass
+class SubCategoryUpdate(SubCategoryBase):
+    pass
 
 class CategoryBase(BaseModel):
     id: Optional[int] = None 

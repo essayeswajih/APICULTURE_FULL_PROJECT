@@ -1,7 +1,7 @@
 from sqlalchemy import asc, desc, func, or_
 from sqlalchemy.orm import Session
 from typing import List, Optional
-from models.vetrineModels import OrderStatus, Product, Order, OrderItem, CartItem, Category, Story
+from models.vetrineModels import OrderStatus, Product, Order, OrderItem, CartItem, Category, Story, SubCategory
 from schemas.vetrineSchemas import CategoryBase, ProductBase, OrderCreate, CartItemBase, OrderItemBase, StoryBase
 from datetime import datetime
 from fastapi import HTTPException
@@ -70,6 +70,7 @@ def create_product(db: Session, product: ProductBase) -> Product:
         price=product.price,
         stock_quantity=product.stock_quantity,
         category_id=product.category_id,  # Handle optional category_id
+        subcategory_id=product.subcategory_id,
         discounted_price=product.discounted_price,
         image_url=product.image_url,
         image2_url=product.image2_url,
@@ -97,6 +98,7 @@ def update_product(db: Session, product_id: int, product: ProductBase) -> Option
         db_product.price = product.price
         db_product.stock_quantity = product.stock_quantity
         db_product.category_id = product.category_id,
+        db_product.subcategory_id = product.subcategory_id,
         db_product.discounted_price = product.discounted_price
         db_product.image_url = product.image_url
         db_product.image2_url = product.image2_url
@@ -306,3 +308,42 @@ def delete_story(db: Session, story_id: int) -> None:
         db.commit()
     else:
         raise HTTPException(status_code=404, detail="Story not found")
+    
+# SubCategory CRUD operations
+def get_subcategories(db: Session, skip: int = 0, limit: int = 10) -> List[SubCategory]:
+    return db.query(SubCategory).offset(skip).limit(limit).all()   
+
+def get_subcategory_by_id(db: Session, subcategory_id: int) -> SubCategory:
+    return db.query(SubCategory).filter(SubCategory.id == subcategory_id).first()
+
+def create_subcategory(db: Session, subcategory: SubCategory) -> SubCategory:
+    db_subcategory = SubCategory(
+        name=subcategory.name,
+        description=subcategory.description,
+        link=subcategory.link,
+        category_id=subcategory.category_id
+    )
+    db.add(db_subcategory)
+    db.commit()
+    db.refresh(db_subcategory)
+    return db_subcategory
+
+def update_subcategory(db: Session, subcategory_id: int, subcategory: SubCategory) -> SubCategory:
+    db_subcategory = db.query(SubCategory).filter(SubCategory.id == subcategory_id).first()
+    if db_subcategory:
+        db_subcategory.name = subcategory.name
+        db_subcategory.description = subcategory.description
+        db_subcategory.link = subcategory.link
+        db_subcategory.category_id = subcategory.category_id
+        db.commit()
+        db.refresh(db_subcategory)
+        return db_subcategory
+    return None
+
+def delete_subcategory(db: Session, subcategory_id: int) -> None:
+    db_subcategory = db.query(SubCategory).filter(SubCategory.id == subcategory_id).first()
+    if db_subcategory:
+        db.delete(db_subcategory)
+        db.commit()
+    else:
+        raise HTTPException(status_code=404, detail="SubCategory not found")

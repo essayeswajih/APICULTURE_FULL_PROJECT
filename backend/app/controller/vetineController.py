@@ -7,11 +7,11 @@ from controller.Oauth2C import get_current_user
 from db.database import get_db
 from models.vetrineModels import Product, Order, OrderItem, CartItem, Category
 from models.Oauth2Models import User
-from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, OrderCreate, CartItemBase, OrderItemBase, OrderBase, StoryBase
+from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, OrderCreate, CartItemBase, OrderItemBase, OrderBase, StoryBase, SubCategoryBase
 from crud.vetrineCrud import (
-    create_category, create_story, delete_category, delete_order, delete_product, delete_story, get_categories, get_category_by_id,
+    create_category, create_story, create_subcategory, delete_category, delete_order, delete_product, delete_story, delete_subcategory, get_categories, get_category_by_id,
     get_products, get_product_by_id, create_product, get_orders, create_order,
-    get_cart_items, add_to_cart, get_stories, get_story, remove_from_cart, update_category, update_product, get_product_by_slug_db, caclulate_max_shipping_cost, update_story
+    get_cart_items, add_to_cart, get_stories, get_story, get_subcategories, remove_from_cart, update_category, update_product, get_product_by_slug_db, caclulate_max_shipping_cost, update_story, update_subcategory
 )
 from controller.sendMail import AdminEmail, send_email_via_gmail
 from fastapi import Request
@@ -316,3 +316,28 @@ def update_story_info(story_id: int, story: StoryBase, db: Session = Depends(get
 def delete_story_info(story_id: int, db: Session = Depends(get_db)):
     delete_story(db, story_id)
     return {"message": "Story deleted successfully."}
+
+# SubCategory Routes
+@router.get("/subcategories", response_model=List[SubCategoryBase])
+def get_all_subcategories(skip: int = 0, limit: int = 1000, db: Session = Depends(get_db)):
+    return get_subcategories(db, skip=skip, limit=limit)
+
+@router.get("/subcategories/{sub_category_id}", response_model=SubCategoryBase)
+def get_subcategory_by_id(sub_category_id: int, db: Session = Depends(get_db)):
+    return get_subcategories(db, skip=0, limit=1, sub_category_id=sub_category_id)[0]
+
+@router.post("/subcategories", response_model=SubCategoryBase, dependencies=[Depends(check_admin)])
+def create_new_subcategory(subcategory: SubCategoryBase, db: Session = Depends(get_db)):
+    return create_subcategory(db, subcategory)
+
+@router.delete("/subcategories/{sub_category_id}", dependencies=[Depends(check_admin)])
+def delete_subcategory_info(sub_category_id: int, db: Session = Depends(get_db)):
+    delete_subcategory(db, sub_category_id)
+    return {"message": "SubCategory deleted successfully."}
+
+@router.put("/subcategories/{sub_category_id}", response_model=SubCategoryBase, dependencies=[Depends(check_admin)])
+def update_subcategory_info(sub_category_id: int, subcategory: SubCategoryBase, db: Session = Depends(get_db)):
+    updated_subcategory = update_subcategory(db, sub_category_id, subcategory)
+    if updated_subcategory is None:
+        raise HTTPException(status_code=404, detail="SubCategory not found")
+    return updated_subcategory  

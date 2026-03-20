@@ -12,6 +12,15 @@ export interface Category {
   image_url?: string;
   link?: string;
 }
+export interface SubCategory {
+  id: number;
+  name: string;
+  description?: string;
+  image_url?: string;
+  link?: string;
+  category_id: number;
+}
+
 
 export interface Product {
   id: number;
