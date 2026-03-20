@@ -11,7 +11,7 @@ class ProductBase(BaseModel):
     price: float
     stock_quantity: int
     category_id: int
-    subcategory_id: int
+    subcategory_id: Optional[int] = None
     discounted_price: Optional[float] = None
     image_url: Optional[str] = None  # Optional image URL for the product
     image2_url: Optional[str] = None
