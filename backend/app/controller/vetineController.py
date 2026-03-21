@@ -369,7 +369,7 @@ def get_analytics(db: Session = Depends(get_db)):
     analytics_data.append(getUsers)
     analytics_data.append(getOrders)
     analytics_data.append(getSales)
-    return 
+    return analytics_data
 
 # Recent Orders
 @router.get("/analytics/recent-orders", response_model=List[OrderBase], dependencies=[Depends(check_admin)])
