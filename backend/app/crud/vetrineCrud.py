@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from models.vetrineModels import OrderStatus, Product, Order, OrderItem, CartItem, Category, Story, SubCategory
 from schemas.vetrineSchemas import CategoryBase, ProductBase, OrderCreate, CartItemBase, OrderItemBase, StoryBase
-from datetime import datetime
+from datetime import datetime, timedelta
 from fastapi import HTTPException
 from random import randint
 
@@ -347,3 +347,181 @@ def delete_subcategory(db: Session, subcategory_id: int) -> None:
         db.commit()
     else:
         raise HTTPException(status_code=404, detail="SubCategory not found")
+    
+
+def getViewsAnalytics():
+    # Here you would normally fetch data from your database or perform calculations
+    return {
+        "title": "Total Page Views",
+        "amount": "4,42,236",
+        "background": "bg-light-primary",
+        "border": "border-primary",
+        "icon": "rise",
+        "percentage": "59.3%",
+        "color": "text-primary",
+        "number": "35,000"
+    }
+from sqlalchemy.orm import Session
+from sqlalchemy import func
+from datetime import datetime
+
+def getUsersAnalytics(db: Session):
+    current_year = datetime.utcnow().year
+    last_year = current_year - 1
+
+    # Total unique users (from orders)
+    total_users = db.query(
+        func.count(func.distinct(Order.username))
+    ).scalar() or 0
+
+    # Users this year
+    users_this_year = db.query(
+        func.count(func.distinct(Order.username))
+    ).filter(
+        func.extract('year', Order.created_at) == current_year
+    ).scalar() or 0
+
+    # Users last year (for comparison)
+    users_last_year = db.query(
+        func.count(func.distinct(Order.username))
+    ).filter(
+        func.extract('year', Order.created_at) == last_year
+    ).scalar() or 0
+
+    # Calculate percentage change
+    if users_last_year > 0:
+        percentage_change = ((users_this_year - users_last_year) / users_last_year) * 100
+    else:
+        percentage_change = 100 if users_this_year > 0 else 0
+
+    # Decide trend (rise / fall)
+    icon = "rise" if percentage_change >= 0 else "fall"
+    color = "text-primary" if percentage_change >= 0 else "text-warning"
+
+    return {
+        "title": "Total Users",
+        "amount": f"{total_users:,}",  # formatted with commas
+        "background": "bg-light-primary",
+        "border": "border-primary",
+        "icon": icon,
+        "percentage": f"{abs(percentage_change):.1f}%",
+        "color": color,
+        "number": f"{users_this_year:,}"  # users this year
+    }
+
+def getOrdersAnalytics(db: Session):
+    current_year = datetime.utcnow().year
+    last_year = current_year - 1
+
+    # Total orders
+    total_orders = db.query(func.count(Order.id)).scalar() or 0
+
+    # Orders this year
+    orders_this_year = db.query(func.count(Order.id)).filter(
+        func.extract('year', Order.created_at) == current_year
+    ).scalar() or 0
+
+    # Orders last year
+    orders_last_year = db.query(func.count(Order.id)).filter(
+        func.extract('year', Order.created_at) == last_year
+    ).scalar() or 0
+
+    # Percentage change
+    if orders_last_year > 0:
+        percentage_change = ((orders_this_year - orders_last_year) / orders_last_year) * 100
+    else:
+        percentage_change = 100 if orders_this_year > 0 else 0
+
+    # Trend
+    icon = "rise" if percentage_change >= 0 else "fall"
+    color = "text-primary" if percentage_change >= 0 else "text-warning"
+    background = "bg-light-primary" if percentage_change >= 0 else "bg-light-warning"
+    border = "border-primary" if percentage_change >= 0 else "border-warning"
+
+    return {
+        "title": "Total Order",
+        "amount": f"{total_orders:,}",
+        "background": background,
+        "border": border,
+        "icon": icon,
+        "percentage": f"{abs(percentage_change):.1f}%",
+        "color": color,
+        "number": f"{orders_this_year:,}"
+    }
+def getSalesAnalytics(db: Session):
+    current_year = datetime.utcnow().year
+    last_year = current_year - 1
+
+    # Total sales (all time)
+    total_sales = db.query(
+        func.coalesce(func.sum(Order.total_amount), 0)
+    ).scalar() or 0
+
+    # Sales this year
+    sales_this_year = db.query(
+        func.coalesce(func.sum(Order.total_amount), 0)
+    ).filter(
+        func.extract('year', Order.created_at) == current_year
+    ).scalar() or 0
+
+    # Sales last year
+    sales_last_year = db.query(
+        func.coalesce(func.sum(Order.total_amount), 0)
+    ).filter(
+        func.extract('year', Order.created_at) == last_year
+    ).scalar() or 0
+
+    # Percentage change
+    if sales_last_year > 0:
+        percentage_change = ((sales_this_year - sales_last_year) / sales_last_year) * 100
+    else:
+        percentage_change = 100 if sales_this_year > 0 else 0
+
+    # Trend styling
+    is_positive = percentage_change >= 0
+
+    return {
+        "title": "Total Sales",
+        "amount": f"${total_sales:,.0f}",
+        "background": "bg-light-primary" if is_positive else "bg-light-warning",
+        "border": "border-primary" if is_positive else "border-warning",
+        "icon": "rise" if is_positive else "fall",
+        "percentage": f"{abs(percentage_change):.1f}%",
+        "color": "text-primary" if is_positive else "text-warning",
+        "number": f"${sales_this_year:,.0f}"
+    }
+
+def getWeeklyIncome(db: Session):
+    today = datetime.utcnow()
+
+    # بداية الأسبوع (Monday)
+    start_of_week = today - timedelta(days=today.weekday())
+    start_of_week = start_of_week.replace(hour=0, minute=0, second=0, microsecond=0)
+
+    end_of_week = start_of_week + timedelta(days=7)
+
+    # Get daily sales grouped by day
+    results = db.query(
+        func.extract('dow', Order.created_at).label('day'),
+        func.coalesce(func.sum(Order.total_amount), 0)
+    ).filter(
+        Order.created_at >= start_of_week,
+        Order.created_at < end_of_week
+    ).group_by('day').all()
+
+    # PostgreSQL: Sunday=0 → Saturday=6
+    # We convert to Monday → Sunday ترتيب
+    weekly_data = [0] * 7  # Mo → Su
+
+    for day, total in results:
+        day = int(day)
+        mapped_day = (day - 1) % 7  # تحويل الأحد → الأخير
+        weekly_data[mapped_day] = float(total)
+
+    # Total of week
+    total_week = sum(weekly_data)
+
+    return {
+        "series": weekly_data,
+        "total": total_week
+    }

@@ -11,7 +11,7 @@ from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, Orde
 from crud.vetrineCrud import (
     create_category, create_story, create_subcategory, delete_category, delete_order, delete_product, delete_story, delete_subcategory, get_categories, get_category_by_id,
     get_products, get_product_by_id, create_product, get_orders, create_order,
-    get_cart_items, add_to_cart, get_stories, get_story, get_subcategories, remove_from_cart, update_category, update_product, get_product_by_slug_db, caclulate_max_shipping_cost, update_story, update_subcategory
+    get_cart_items, add_to_cart, get_stories, get_story, get_subcategories, getOrdersAnalytics, getSalesAnalytics, getUsersAnalytics, getViewsAnalytics, getWeeklyIncome, remove_from_cart, update_category, update_product, get_product_by_slug_db, caclulate_max_shipping_cost, update_story, update_subcategory
 )
 from controller.sendMail import AdminEmail, send_email_via_gmail
 from fastapi import Request
@@ -341,3 +341,41 @@ def update_subcategory_info(sub_category_id: int, subcategory: SubCategoryBase, 
     if updated_subcategory is None:
         raise HTTPException(status_code=404, detail="SubCategory not found")
     return updated_subcategory  
+
+
+# Analytics Route
+
+# Schema (like TypeScript interface)
+class AnalyticEcommerceItem(BaseModel):
+    title: str
+    amount: str
+    background: str
+    border: str
+    icon: str
+    percentage: str
+    color: str
+    number: str
+
+
+# API Endpoint
+@router.get("/analytics", response_model=List[AnalyticEcommerceItem], dependencies=[Depends(check_admin)])
+def get_analytics(db: Session = Depends(get_db)):
+    analytics_data = []
+    getViews = getViewsAnalytics(db)
+    getUsers = getUsersAnalytics(db)
+    getOrders = getOrdersAnalytics(db)
+    getSales = getSalesAnalytics(db)
+    analytics_data.append(getViews)
+    analytics_data.append(getUsers)
+    analytics_data.append(getOrders)
+    analytics_data.append(getSales)
+    return 
+
+# Recent Orders
+@router.get("/analytics/recent-orders", response_model=List[OrderBase], dependencies=[Depends(check_admin)])
+def get_recent_orders(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+    return get_orders(db, skip=skip, limit=limit)
+
+@router.get("/analytics/weekly-income", response_model=dict, dependencies=[Depends(check_admin)])
+def weekly_income(db: Session = Depends(get_db)):
+    return getWeeklyIncome(db)
