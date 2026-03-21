@@ -361,7 +361,7 @@ class AnalyticEcommerceItem(BaseModel):
 @router.get("/analytics", response_model=List[AnalyticEcommerceItem], dependencies=[Depends(check_admin)])
 def get_analytics(db: Session = Depends(get_db)):
     analytics_data = []
-    getViews = getViewsAnalytics(db)
+    getViews = getViewsAnalytics()
     getUsers = getUsersAnalytics(db)
     getOrders = getOrdersAnalytics(db)
     getSales = getSalesAnalytics(db)
