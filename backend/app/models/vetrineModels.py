@@ -14,6 +14,9 @@ class OrderStatus(str, PyEnum):
     PROCESSING = "processing"
     SHIPPED = "shipped"
     DELIVERED = "delivered"
+    CANCELLED = "cancelled"
+    CHANGE_REQUESTED = "change_requested"
+    BACK = "back"
 
 # Product Model
 class Product(Base):

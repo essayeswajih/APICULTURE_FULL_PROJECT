@@ -1,4 +1,4 @@
-from sqlalchemy import asc, desc, func, or_
+from sqlalchemy import asc, desc, extract, func, or_
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from models.vetrineModels import OrderStatus, Product, Order, OrderItem, CartItem, Category, Story, SubCategory
@@ -525,3 +525,19 @@ def getWeeklyIncome(db: Session):
         "series": weekly_data,
         "total": total_week
     }
+def getMonthlyStatus(db: Session):
+    results = db.query(
+        extract('month', Order.created_at).label('month'),
+        Order.status,
+        func.count(Order.id)
+    ).group_by('month', Order.status).all()
+
+    # initialize structure
+    data = {
+        status.value: [0]*12 for status in OrderStatus
+    }
+
+    for month, status, count in results:
+        data[status.value][int(month)-1] = count
+
+    return data

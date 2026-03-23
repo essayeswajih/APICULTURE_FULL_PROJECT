@@ -11,7 +11,7 @@ from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, Orde
 from crud.vetrineCrud import (
     create_category, create_story, create_subcategory, delete_category, delete_order, delete_product, delete_story, delete_subcategory, get_categories, get_category_by_id,
     get_products, get_product_by_id, create_product, get_orders, create_order,
-    get_cart_items, add_to_cart, get_stories, get_story, get_subcategories, getOrdersAnalytics, getSalesAnalytics, getUsersAnalytics, getViewsAnalytics, getWeeklyIncome, remove_from_cart, update_category, update_product, get_product_by_slug_db, caclulate_max_shipping_cost, update_story, update_subcategory
+    get_cart_items, add_to_cart, get_stories, get_story, get_subcategories, getMonthlyStatus, getOrdersAnalytics, getSalesAnalytics, getUsersAnalytics, getViewsAnalytics, getWeeklyIncome, remove_from_cart, update_category, update_product, get_product_by_slug_db, caclulate_max_shipping_cost, update_story, update_subcategory
 )
 from controller.sendMail import AdminEmail, send_email_via_gmail
 from fastapi import Request
@@ -379,3 +379,7 @@ def get_recent_orders(skip: int = 0, limit: int = 10, db: Session = Depends(get_
 @router.get("/analytics/weekly-income", response_model=dict, dependencies=[Depends(check_admin)])
 def weekly_income(db: Session = Depends(get_db)):
     return getWeeklyIncome(db)
+
+@router.get("/analytics/monthly-status", response_model=dict, dependencies=[Depends(check_admin)])
+def get_monthly_status(db: Session = Depends(get_db)):
+    return getMonthlyStatus(db)
