@@ -577,7 +577,7 @@ def get_top_products_crud(period: str, db: Session):
         .filter(Order.status == OrderStatus.DELIVERED)
         .group_by(Product.id, Product.name)
         .order_by(func.sum(OrderItem.quantity).desc())
-        .limit(3)
+        .limit(10)
         .all()
     )
 
