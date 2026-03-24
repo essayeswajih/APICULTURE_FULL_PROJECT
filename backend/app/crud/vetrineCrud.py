@@ -542,7 +542,7 @@ def getMonthlyStatus(db: Session):
 
     return data
 
-def get_This_year_sales(db: Session):
+def get_This_year_sales_crud(db: Session):
     current_year = datetime.utcnow().year
     sales_this_year = db.query(
         func.coalesce(func.sum(Order.total_amount), 0)
@@ -552,7 +552,7 @@ def get_This_year_sales(db: Session):
 
     return sales_this_year
 
-def get_top_products(
+def get_top_products_crud(
     period: str,
     db: Session
 ):
