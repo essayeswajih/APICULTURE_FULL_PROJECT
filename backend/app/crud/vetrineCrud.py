@@ -574,7 +574,7 @@ def get_top_products_crud(period: str, db: Session):
         .join(OrderItem.order)         # ✅ clean relationship
         .filter(Order.created_at >= start_date)
         # 🔥 IMPORTANT (recommended)
-        .filter(Order.payed == "true")
+        .filter(Order.status == "Delivered")
         .group_by(Product.id, Product.name)
         .order_by(func.sum(OrderItem.quantity).desc())
         .limit(3)
