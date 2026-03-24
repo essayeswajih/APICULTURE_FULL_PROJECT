@@ -1,5 +1,5 @@
 import bleach
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, EmailStr
 from sqlalchemy.orm import Session
 from typing import List, Optional
@@ -9,7 +9,7 @@ from models.vetrineModels import Product, Order, OrderItem, CartItem, Category
 from models.Oauth2Models import User
 from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, OrderCreate, CartItemBase, OrderItemBase, OrderBase, StoryBase, SubCategoryBase
 from crud.vetrineCrud import (
-    create_category, create_story, create_subcategory, delete_category, delete_order, delete_product, delete_story, delete_subcategory, get_categories, get_category_by_id,
+    create_category, create_story, create_subcategory, delete_category, delete_order, delete_product, delete_story, delete_subcategory, get_This_year_sales, get_categories, get_category_by_id,
     get_products, get_product_by_id, create_product, get_orders, create_order,
     get_cart_items, add_to_cart, get_stories, get_story, get_subcategories, getMonthlyStatus, getOrdersAnalytics, getSalesAnalytics, getUsersAnalytics, getViewsAnalytics, getWeeklyIncome, remove_from_cart, update_category, update_product, get_product_by_slug_db, caclulate_max_shipping_cost, update_story, update_subcategory
 )
@@ -383,3 +383,14 @@ def weekly_income(db: Session = Depends(get_db)):
 @router.get("/analytics/monthly-status", response_model=dict, dependencies=[Depends(check_admin)])
 def get_monthly_status(db: Session = Depends(get_db)):
     return getMonthlyStatus(db)
+
+@router.get("/analytics/this-year-sales", response_model=dict, dependencies=[Depends(check_admin)])
+def get_this_year_sales(db: Session = Depends(get_db)):
+    return {"thisYearSales": get_This_year_sales()}
+
+@router.get("/analytics/top-products")
+def get_top_products(
+    period: str = Query("week", enum=["week", "month"]),
+    db: Session = Depends(get_db)
+):
+    return get_top_products(period=period, db=db)

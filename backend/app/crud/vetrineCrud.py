@@ -4,7 +4,7 @@ from typing import List, Optional
 from models.vetrineModels import OrderStatus, Product, Order, OrderItem, CartItem, Category, Story, SubCategory
 from schemas.vetrineSchemas import CategoryBase, ProductBase, OrderCreate, CartItemBase, OrderItemBase, StoryBase
 from datetime import datetime, timedelta
-from fastapi import HTTPException
+from fastapi import HTTPException, Query
 from random import randint
 
 from controller.sendMail import send_email_via_gmail
@@ -541,3 +541,49 @@ def getMonthlyStatus(db: Session):
         data[status.value][int(month)-1] = count
 
     return data
+
+def get_This_year_sales(db: Session):
+    current_year = datetime.utcnow().year
+    sales_this_year = db.query(
+        func.coalesce(func.sum(Order.total_amount), 0)
+    ).filter(
+        func.extract('year', Order.created_at) == current_year
+    ).scalar() or 0
+
+    return sales_this_year
+
+def get_top_products(
+    period: str,
+    db: Session
+):
+    now = datetime.now()
+
+    # 📅 Filter by period
+    if period == "week":
+        start_date = now - timedelta(days=7)
+    else:  # month
+        start_date = now - timedelta(days=30)
+
+    results = (
+        db.query(
+            Product.id,
+            Product.name,
+            func.sum(OrderItem.quantity).label("total_sold")
+        )
+        .join(OrderItem.product_id == Product.id)
+        .join(Order, OrderItem.order_id == Order.id)
+        .filter(Order.created_at >= start_date)
+        .group_by(Product.id)
+        .order_by(func.sum(OrderItem.quantity).desc())
+        .limit(3)
+        .all()
+    )
+
+    return [
+        {
+            "product_id": r.id,
+            "name": r.name,
+            "total_sold": int(r.total_sold or 0)
+        }
+        for r in results
+    ]
