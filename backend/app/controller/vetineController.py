@@ -9,7 +9,7 @@ from models.vetrineModels import Product, Order, OrderItem, CartItem, Category
 from models.Oauth2Models import User
 from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, OrderCreate, CartItemBase, OrderItemBase, OrderBase, StoryBase, SubCategoryBase
 from crud.vetrineCrud import (
-    create_category, create_story, create_subcategory, delete_category, delete_order, delete_product, delete_story, delete_subcategory, get_This_year_sales, get_This_year_sales_crud, get_categories, get_category_by_id,
+    create_category, create_story, create_subcategory, delete_category, delete_order, delete_product, delete_story, delete_subcategory, get_This_year_sales_crud, get_categories, get_category_by_id,
     get_products, get_product_by_id, create_product, get_orders, create_order,
     get_cart_items, add_to_cart, get_stories, get_story, get_subcategories, get_top_products_crud, getMonthlyStatus, getOrdersAnalytics, getSalesAnalytics, getUsersAnalytics, getViewsAnalytics, getWeeklyIncome, remove_from_cart, update_category, update_product, get_product_by_slug_db, caclulate_max_shipping_cost, update_story, update_subcategory
 )
