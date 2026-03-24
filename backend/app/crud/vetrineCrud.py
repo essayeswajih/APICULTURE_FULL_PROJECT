@@ -552,28 +552,30 @@ def get_This_year_sales_crud(db: Session):
 
     return sales_this_year
 
-def get_top_products_crud(
-    period: str,
-    db: Session
-):
-    now = datetime.now()
 
-    # 📅 Filter by period
+def get_top_products_crud(period: str, db: Session):
+    now = datetime.utcnow()
+
+    # 📅 Period filter
     if period == "week":
         start_date = now - timedelta(days=7)
-    else:  # month
+    elif period == "month":
         start_date = now - timedelta(days=30)
+    else:
+        raise ValueError("Invalid period")
 
     results = (
         db.query(
-            Product.id,
-            Product.name,
-            func.sum(OrderItem.quantity).label("total_sold")
+            Product.id.label("product_id"),
+            Product.name.label("name"),
+            func.coalesce(func.sum(OrderItem.quantity), 0).label("total_sold")
         )
-        .join(OrderItem.product_id == Product.id)
-        .join(Order, OrderItem.order_id == Order.id)
+        .join(Product.order_items)     # ✅ clean relationship
+        .join(OrderItem.order)         # ✅ clean relationship
         .filter(Order.created_at >= start_date)
-        .group_by(Product.id)
+        # 🔥 IMPORTANT (recommended)
+        .filter(Order.payed == "true")
+        .group_by(Product.id, Product.name)
         .order_by(func.sum(OrderItem.quantity).desc())
         .limit(3)
         .all()
@@ -581,9 +583,9 @@ def get_top_products_crud(
 
     return [
         {
-            "product_id": r.id,
+            "product_id": r.product_id,
             "name": r.name,
-            "total_sold": int(r.total_sold or 0)
+            "total_sold": int(r.total_sold)
         }
         for r in results
     ]
