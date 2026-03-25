@@ -149,7 +149,7 @@ export class StoryManagement implements OnInit {
 
     switch (this.newStory.platform) {
       case 'youtube':
-        url = `https://www.youtube.com/embed/${this.video_id}?autoplay=1`;
+        url = `https://www.youtube.com/embed/${this.video_id}?autoplay=0`;
         this.newStory.url = url; // Update URL for YouTube to ensure correct embedding
         this.cdRef.markForCheck();
         break;
