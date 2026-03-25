@@ -1,0 +1,43 @@
+<div
+  class="drawer-wrapper"
+  [class.visible]="visible"
+  (click)="onBackdropClick($event)"
+>
+  <!-- Backdrop -->
+  <div class="drawer-overlay"></div>
+
+  <!-- Drawer panel -->
+  <div class="drawer-panel" [style.width.px]="width" [style.max-width.%]="90">
+    <!-- Header -->
+    <div class="drawer-header">
+      <h3 class="drawer-title">{{ title }}</h3>
+      <button
+        class="close-btn"
+        (click)="onClose()"
+        aria-label="Close drawer"
+      >
+        ×
+      </button>
+    </div>
+
+    <!-- Content area (scrollable) -->
+    <div class="drawer-body">
+      <ng-content></ng-content>
+    </div>
+
+    <!-- Footer with actions -->
+    <div class="drawer-footer" *ngIf="showFooter">
+      <button nz-button (click)="onClose()">
+        {{ cancelText }}
+      </button>
+      <button
+        nz-button
+        nzType="primary"
+        (click)="onOk()"
+        [nzLoading]="okLoading"
+      >
+        {{ okText }}
+      </button>
+    </div>
+  </div>
+</div>

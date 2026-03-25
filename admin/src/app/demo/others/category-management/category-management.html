@@ -1,0 +1,84 @@
+<div class="container py-5">
+  <h2>Category Management</h2>
+
+  <!-- Add/Edit Form -->
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">{{ editMode ? 'Edit Category' : 'Add New Category' }}</h5>
+      <form (ngSubmit)="addCategory()">
+        <div class="mb-3">
+          <label class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="newCategory.name"
+            name="categoryName"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea
+            class="form-control"
+            [(ngModel)]="newCategory.description"
+            name="categoryDescription"
+            [ngModelOptions]="{standalone:true}"
+          ></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Image URL</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="newCategory.image_url"
+            name="categoryImageUrl"
+            [ngModelOptions]="{standalone:true}"
+          />
+        </div>
+
+        <button type="submit" class="btn" [ngClass]="editMode ? 'btn-warning' : 'btn-success'">
+          {{ editMode ? 'Update Category' : 'Add Category' }}
+        </button>
+        <button type="button" class="btn btn-secondary ms-2" (click)="resetForm()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <h3>Existing Categories</h3>
+  <div class="row">
+    <div
+      class="col-md-4"
+      *ngFor="let category of filteredCategories | slice:(pageIndex-1)*pageSize:pageIndex*pageSize"
+    >
+      <div class="card mb-3 category-card">
+        <div class="card-body">
+          <h5 class="card-title">{{ category.name }}</h5>
+          <p class="card-text">{{ category.description || 'No description' }}</p>
+          <button class="btn btn-outline-warning me-2" (click)="editCategory(category)">Edit</button>
+          <button class="btn btn-danger" (click)="deleteCategory(category.id)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <nav class="mt-3">
+    <ul class="pagination">
+      <li class="page-item" [class.disabled]="pageIndex === 1">
+        <a class="page-link" (click)="changePage(pageIndex - 1)">Previous</a>
+      </li>
+      <li
+        class="page-item"
+        *ngFor="let page of totalPages; let i = index"
+        [class.active]="pageIndex === i + 1"
+      >
+        <a class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="pageIndex >= total / pageSize">
+        <a class="page-link" (click)="changePage(pageIndex + 1)">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>

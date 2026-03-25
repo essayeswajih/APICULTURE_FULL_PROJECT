@@ -1,0 +1,89 @@
+.image-upload-section {
+  background-color: #f8f9fa;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+
+  h2 {
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.upload-progress {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #495057;
+}
+
+.preview-image {
+  margin-top: 1rem;
+  border: 2px solid #dee2e6;
+  border-radius: 8px;
+  padding: 5px;
+  background-color: #fff;
+}
+
+.gallery-section {
+  h3 {
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 1.5rem;
+  }
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.image-item img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+  border: 1px solid #dee2e6;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.btn-upload {
+  background-color: #007bff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+}
+
+.custom-file-input {
+  font-size: 1rem;
+}
+
+hr {
+  border: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #dee2e6, transparent);
+  margin: 2rem 0;
+}
+
+@media (max-width: 576px) {
+  .gallery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .image-item img {
+    height: 150px;
+  }
+}

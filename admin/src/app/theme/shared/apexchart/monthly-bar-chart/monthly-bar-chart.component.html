@@ -1,0 +1,35 @@
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h5 class="mb-0">Top 10 Products ({{ currentPeriod }})</h5>
+
+  <div class="d-flex gap-2 chart-income">
+    <div
+      class="chart-income month"
+      [class.active]="currentPeriod === 'month'"
+      (click)="toggleActive('month')"
+    >
+      Month
+    </div>
+
+    <div
+      class="chart-income week"
+      [class.active]="currentPeriod === 'week'"
+      (click)="toggleActive('week')"
+    >
+      Week
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <apx-chart
+      #chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [dataLabels]="chartOptions.dataLabels"
+      [xaxis]="chartOptions.xaxis"
+      [colors]="chartOptions.colors"
+      [grid]="chartOptions.grid"
+    ></apx-chart>
+  </div>
+</div>

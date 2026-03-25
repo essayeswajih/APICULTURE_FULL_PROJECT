@@ -1,0 +1,110 @@
+<div class="page-header d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h2>Product Management</h2>
+    <p class="subtitle">Manage store products</p>
+  </div>
+  <button nz-button nzType="primary" (click)="openDrawer()">
+    <span nz-icon nzType="plus"></span>
+    Add Product
+  </button>
+</div>
+
+<!-- Search -->
+<div class="mb-3">
+  <input
+    nz-input
+    placeholder="Search products by name..."
+    [(ngModel)]="searchTerm"
+    (ngModelChange)="searchProducts()"
+  />
+</div>
+
+<!-- Statistics -->
+<div class="stats-grid d-flex gap-3 mb-4">
+  <nz-card>
+    <nz-statistic nzTitle="Total Products" [nzValue]="products.length"></nz-statistic>
+  </nz-card>
+  <nz-card>
+    <nz-statistic nzTitle="Promotional Products" [nzValue]="promoProductsCount"></nz-statistic>
+  </nz-card>
+</div>
+
+<!-- Products Table -->
+<nz-card nzTitle="Products List">
+<!-- Replace your current <nz-table> with this -->
+
+  <nz-table
+    #productTable
+    [nzData]="filteredProducts"
+    [nzFrontPagination]="true"
+    [nzPageSize]="pageSize"
+    [nzPageIndex]="pageIndex"
+    [nzTotal]="total"
+    [nzShowPagination]="true"
+    [nzBordered]="false"
+    (nzPageIndexChange)="onPageIndexChange($event)"
+    (nzPageSizeChange)="onPageSizeChange($event)"
+  >
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Promo</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="table-row" *ngFor="let product of productTable.data">
+        <td>
+          <img
+            class="product-img"
+            [src]="product.image_url || 'https://via.placeholder.com/60'"
+            alt="Product"
+          />
+        </td>
+        <td>{{ product.name }}</td>
+        <td>
+          {{ product.price }} DT
+          <nz-tag
+            *ngIf="product.discounted_price && product.discounted_price < product.price"
+            nzColor="red"
+          >
+            {{ product.discounted_price }} DT
+          </nz-tag>
+        </td>
+        <td>{{ product.stock_quantity }}</td>
+        <td>
+          <nz-tag *ngIf="product.promo" nzColor="green">Promo</nz-tag>
+        </td>
+        <td>
+          <button nz-button nzSize="small" (click)="editProduct(product)">Edit</button>
+          <button nz-button nzDanger nzSize="small" (click)="deleteProduct(product.id)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</nz-card>
+
+<!-- Drawer for Add/Edit -->
+<app-product-drawer
+  [visible]="drawerVisible"
+  [title]="editMode ? 'Edit Product' : 'Add Product'"
+  [width]="560"
+  [okText]="editMode ? 'Update Product' : 'Add Product'"
+  [cancelText]="'Cancel'"
+  (visibleChange)="drawerVisible = $event"
+  (close)="closeDrawer()"
+  (ok)="handleSave(newProduct)"
+>
+  <app-product-form
+    [product]="newProduct"
+    [categories]="categories"
+    [editMode]="editMode"
+    (save)="handleSave($event)"
+    (cancel)="closeDrawer()"
+  ></app-product-form>
+</app-product-drawer>

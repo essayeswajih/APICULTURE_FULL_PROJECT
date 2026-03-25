@@ -1,0 +1,72 @@
+<div class="container py-5">
+  <div class="page-header">
+    <h2>Subcategory Management</h2>
+    <span class="subtitle">Manage all subcategories and assign them to parent categories</span>
+  </div>
+
+  <!-- Add/Edit Form -->
+  <div class="card mb-4 form-card">
+    <div class="card-body">
+      <h5 class="card-title">{{ editMode ? 'Edit Subcategory' : 'Add New Subcategory' }}</h5>
+      <form (ngSubmit)="addSubCategory()">
+        <div class="mb-3">
+          <label class="form-label">Subcategory Name</label>
+          <input type="text" class="form-control" [(ngModel)]="newSubCategory.name" name="name" required>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea class="form-control" [(ngModel)]="newSubCategory.description" name="description"></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Parent Category</label>
+          <select class="form-select" [(ngModel)]="newSubCategory.category_id" name="category_id" required>
+            <option value="" disabled>Select a category</option>
+            <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+          </select>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn" [ngClass]="editMode ? 'btn-warning' : 'btn-success'">
+            {{ editMode ? 'Update Subcategory' : 'Add Subcategory' }}
+          </button>
+          <button type="button" class="btn btn-secondary" *ngIf="editMode" (click)="resetForm()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Existing Subcategories -->
+  <h3 class="mb-3">Existing Subcategories</h3>
+  <div class="row">
+    <div
+      class="col-md-4"
+      *ngFor="let sub of subcategories | slice:(pageIndex-1)*pageSize:pageIndex*pageSize"
+    >
+      <div class="card mb-3 category-card">
+        <div class="card-body">
+          <h5 class="card-title">{{ sub.name }}<span style="color:gray; font-size:.7em;">{{' '+ getCategoryName(sub.category_id) }}</span></h5>
+          <p class="card-text">{{ sub.description || 'No description' }}</p>
+          <button class="btn btn-outline-warning me-2" (click)="editSubCategory(sub)">Edit</button>
+          <button class="btn btn-danger" (click)="deleteSubCategory(sub.id)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <nav class="mt-4" *ngIf="subcategories.length > pageSize">
+    <ul class="pagination">
+      <li class="page-item" [class.disabled]="pageIndex === 1">
+        <a class="page-link" (click)="changePage(pageIndex - 1)">Previous</a>
+      </li>
+      <li class="page-item" *ngFor="let page of totalPages; let i = index" [class.active]="pageIndex === i + 1">
+        <a class="page-link" (click)="changePage(i + 1)">{{ i + 1 }}</a>
+      </li>
+      <li class="page-item" [class.disabled]="pageIndex >= total / pageSize">
+        <a class="page-link" (click)="changePage(pageIndex + 1)">Next</a>
+      </li>
+    </ul>
+  </nav>
+</div>

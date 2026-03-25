@@ -1,0 +1,232 @@
+<form class="product-form" (ngSubmit)="onSubmit()">
+
+  <!-- NAME -->
+  <div class="form-group">
+    <label class="form-label required">Product Name</label>
+    <input
+      nz-input
+      [(ngModel)]="product.name"
+      name="name"
+      placeholder="Enter product name"
+      [ngModelOptions]="{standalone: true}"
+      [class.error]="submitted && !product.name"
+    />
+    <div class="error-message" *ngIf="submitted && !product.name">
+      Product name is required
+    </div>
+  </div>
+
+  <!-- DESCRIPTION -->
+  <div class="form-group">
+    <label class="form-label">Description</label>
+    <textarea
+      nz-input
+      [(ngModel)]="product.description"
+      name="description"
+      rows="4"
+      placeholder="Describe the product..."
+      [ngModelOptions]="{standalone: true}"
+    ></textarea>
+  </div>
+
+  <!-- PRICE -->
+  <div class="form-row">
+    <div class="form-group half">
+      <label class="form-label required">Price (DT)</label>
+      <input
+        nz-input
+        type="number"
+        min="0"
+        [(ngModel)]="product.price"
+        name="price"
+        [ngModelOptions]="{standalone: true}"
+        [class.error]="submitted && !product.price"
+      />
+      <div class="error-message" *ngIf="submitted && !product.price">
+        Price is required
+      </div>
+    </div>
+
+    <div class="form-group half">
+      <label class="form-label">Discounted Price (DT)</label>
+      <input
+        nz-input
+        type="number"
+        min="0"
+        [(ngModel)]="product.discounted_price"
+        name="discounted_price"
+        [ngModelOptions]="{standalone: true}"
+      />
+    </div>
+  </div>
+
+  <!-- STOCK + SHIPPING -->
+  <div class="form-row">
+    <div class="form-group half">
+      <label class="form-label required">Stock Quantity</label>
+      <input
+        nz-input
+        type="number"
+        min="0"
+        [(ngModel)]="product.stock_quantity"
+        name="stock_quantity"
+        [ngModelOptions]="{standalone: true}"
+        [class.error]="submitted && !product.stock_quantity"
+      />
+      <div class="error-message" *ngIf="submitted && !product.stock_quantity">
+        Stock quantity is required
+      </div>
+    </div>
+
+    <div class="form-group half">
+      <label class="form-label">Shipping Cost (DT)</label>
+      <input
+        nz-input
+        type="number"
+        min="0"
+        [(ngModel)]="product.shipping_cost"
+        name="shipping_cost"
+        [ngModelOptions]="{standalone: true}"
+      />
+    </div>
+  </div>
+
+  <!-- CATEGORY -->
+  <div class="form-group">
+    <label class="form-label required">Category</label>
+    <nz-select
+      [(ngModel)]="product.category_id"
+      name="category_id"
+      [ngModelOptions]="{standalone: true}"
+      nzPlaceHolder="Select a category"
+      [class.error]="submitted && !product.category_id"
+    >
+      <nz-option *ngFor="let cat of categories" [nzValue]="cat.id" [nzLabel]="cat.name"></nz-option>
+    </nz-select>
+    <div class="error-message" *ngIf="submitted && !product.category_id">
+      Please select a category
+    </div>
+  </div>
+
+  <!-- SUBCATEGORY -->
+  <div class="form-group">
+    <label class="form-label required" >Subcategory</label>
+    <nz-select
+      [(ngModel)]="product.subcategory_id"
+      name="subcategory_id"
+      [ngModelOptions]="{standalone: true}"
+      nzPlaceHolder="Select a subcategory"
+      [class.error]="submitted && !product.subcategory_id"
+    >
+      <nz-option *ngFor="let subcat of subcategories" [nzValue]="subcat.id" [nzLabel]="subcat.name"></nz-option>
+    </nz-select>
+    <div class="error-message" *ngIf="submitted && !product.subcategory_id">
+      Please select a subcategory
+    </div>
+  </div>
+  <!-- MAIN IMAGE -->
+  <div class="form-group">
+    <label class="form-label">Main Image URL</label>
+    <input
+      nz-input
+      [(ngModel)]="product.image_url"
+      name="image_url"
+      placeholder="https://..."
+      [ngModelOptions]="{standalone: true}"
+    />
+    <div class="image-preview" *ngIf="product.image_url">
+      <img [src]="product.image_url" alt="Product preview" />
+    </div>
+  </div>
+
+  <!-- EXTRA IMAGES -->
+  <div class="form-group">
+    <label class="form-label">Secondary Image URL</label>
+    <input
+      nz-input
+      [(ngModel)]="product.image2_url"
+      name="image2_url"
+      [ngModelOptions]="{standalone: true}"
+    />
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Tertiary Image URL</label>
+    <input
+      nz-input
+      [(ngModel)]="product.image3_url"
+      name="image3_url"
+      [ngModelOptions]="{standalone: true}"
+    />
+  </div>
+
+  <div class="form-group">
+    <label class="form-label">Quaternary Image URL</label>
+    <input
+      nz-input
+      [(ngModel)]="product.image4_url"
+      name="image4_url"
+      [ngModelOptions]="{standalone: true}"
+    />
+  </div>
+
+  <!-- PROMO -->
+  <div class="form-group">
+    <label class="form-label">Promo</label>
+    <nz-switch
+      [(ngModel)]="product.promo"
+      name="promo"
+      [ngModelOptions]="{standalone: true}"
+    ></nz-switch>
+  </div>
+
+  <!-- BUZZ TEXT -->
+  <div class="form-group">
+    <label class="form-label">Marketing Text</label>
+    <textarea
+      nz-input
+      [(ngModel)]="product.buzzent"
+      name="buzzent"
+      rows="3"
+      placeholder="🔥 Best seller..."
+      [ngModelOptions]="{standalone: true}"
+    ></textarea>
+  </div>
+
+  <!-- RATING -->
+  <div class="form-row">
+    <div class="form-group half">
+      <label class="form-label">Rating</label>
+      <input
+        nz-input
+        type="number"
+        min="0"
+        max="5"
+        step="0.1"
+        [(ngModel)]="product.rating"
+        name="rating"
+        [ngModelOptions]="{standalone: true}"
+      />
+    </div>
+
+    <div class="form-group half">
+      <label class="form-label">Number of Ratings</label>
+      <input
+        nz-input
+        type="number"
+        [(ngModel)]="product.num_ratings"
+        name="num_ratings"
+        [ngModelOptions]="{standalone: true}"
+      />
+    </div>
+  </div>
+
+  <!-- ACTIONS 
+  <div class="form-actions">
+    <button nz-button (click)="onCancel()">Cancel</button>
+    <button nz-button nzType="primary" htmlType="submit">
+      {{ editMode ? 'Update Product' : 'Add Product' }}
+    </button>
+  </div>
+-->
+</form>

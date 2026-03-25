@@ -1,0 +1,117 @@
+.story-management {
+  .page-title {
+    font-weight: 700;
+    color: #d97706;
+  }
+
+  .section-title {
+    font-weight: 600;
+    color: #15803d;
+  }
+
+  .form-card {
+    border-radius: 16px;
+  }
+
+  .modern-input {
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 10px 14px;
+    transition: all 0.3s ease;
+  }
+
+  .modern-input:focus {
+    border-color: #d97706;
+    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+  }
+
+  .btn-modern-primary {
+    background: linear-gradient(135deg, #d97706, #15803d);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 12px;
+    transition: 0.3s ease;
+  }
+
+  .btn-modern-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .btn-modern-secondary {
+    background: #e5e7eb;
+    border-radius: 12px;
+  }
+
+.story-card,
+.story-card * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;    
+  backface-visibility: hidden;      
+}
+
+  .story-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  }
+
+  .image-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-img-top {
+    height: 320px;
+    object-fit: cover;
+    transition: 0.4s ease;
+  }
+
+  .story-card:hover .card-img-top {
+    transform: scale(1.05);
+  }
+
+  .badge-priority {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #15803d;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+  }
+
+  .story-link {
+    color: #d97706;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .story-link:hover {
+    text-decoration: underline;
+  }
+
+  .btn-outline-modern {
+    border: 1px solid #d97706;
+    color: #d97706;
+    border-radius: 12px;
+  }
+
+  .btn-outline-modern:hover {
+    background: #d97706;
+    color: white;
+  }
+}
+.form-select.modern-input {
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 14px;
+  transition: all 0.3s ease;
+}
+
+.form-select.modern-input:focus {
+  border-color: #d97706;
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+}
