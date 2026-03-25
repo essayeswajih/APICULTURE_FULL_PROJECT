@@ -61,7 +61,15 @@ services:
       - ./uploads:/uploads
     networks:
       - apiculture-network
-
+  angular-admin-build:
+    build:
+      context: ./admin
+      dockerfile: Dockerfile
+    volumes:
+      - angular-admin:/app/dist
+      - ./uploads:/uploads
+    networks:
+      - apiculture-network
   nginx-proxy-manager:
     image: jc21/nginx-proxy-manager:latest
     environment:
@@ -76,6 +84,7 @@ services:
       - nginx-proxy-letsencrypt:/etc/letsencrypt
       - ./uploads:/uploads
       - angular-static:/app/dist/Apiculture
+      - angular-admin:/app/dist
     depends_on:
       - fastapi-app
       - angular-build
@@ -91,3 +100,4 @@ volumes:
   nginx-proxy-data:
   nginx-proxy-letsencrypt:
   angular-static:
+  angular-admin:
