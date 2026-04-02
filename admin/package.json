@@ -50,6 +50,7 @@
     "@eslint/eslintrc": "3.3.3",
     "@eslint/js": "9.39.1",
     "@types/node": "24.10.2",
+    "@types/xlsx": "^0.0.36",
     "@typescript-eslint/eslint-plugin": "8.49.0",
     "@typescript-eslint/parser": "8.49.0",
     "eslint": "9.39.1",
