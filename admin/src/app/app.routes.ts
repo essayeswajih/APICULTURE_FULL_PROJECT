@@ -62,7 +62,7 @@ export const routes: Routes = [
           import('./demo/others/story-management/story-management').then(c => c.StoryManagement)
       },
       {
-        path: 'settings',
+        path: 'xlsx-analysis',
         loadComponent: () =>
           import('./demo/others/csv/csv').then(c => c.CSV)
       }

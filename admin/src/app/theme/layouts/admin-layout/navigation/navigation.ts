@@ -145,10 +145,10 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'chrome'
       },
       {
-        id: 'settings',
-        title: 'Settings',
+        id: 'xlsx-analysis',
+        title: 'xlsx Analysis',
         type: 'item',
-        url: '/settings',
+        url: '/xlsx-analysis',
         classes: 'nav-item',
         icon: 'setting'
       },
