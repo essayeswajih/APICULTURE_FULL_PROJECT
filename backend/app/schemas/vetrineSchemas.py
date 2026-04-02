@@ -53,6 +53,7 @@ class CategoryBase(BaseModel):
     name: str
     description: Optional[str] = None
     image_url: Optional[str] = None
+    subcategories: list[SubCategoryBase] = []
 
     class Config:
         from_attributes = True
