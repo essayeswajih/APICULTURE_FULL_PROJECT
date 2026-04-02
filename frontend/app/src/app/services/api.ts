@@ -11,6 +11,7 @@ export interface Category {
   description?: string;
   image_url?: string;
   link?: string;
+  subcategories?: SubCategory[];
 }
 export interface SubCategory {
   id: number;

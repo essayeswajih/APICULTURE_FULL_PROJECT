@@ -1,0 +1,99 @@
+<div class="csv-container">
+
+  <!-- STEP 1 -->
+  <div *ngIf="step === 1" class="upload-box">
+    <h2>📂 Upload CSV / Excel</h2>
+    <input type="file" accept=".xls,.xlsx,.csv" (change)="onFileUpload($event)">
+    <p>Upload your e-commerce CSV or Excel to generate analytics</p>
+  </div>
+
+  <!-- STEP 2 -->
+  <div *ngIf="step === 2">
+
+    <!-- Header + Reset -->
+    <div class="header">
+      <h2>📊 CSV Analytics</h2>
+      <button (click)="reset()">Upload New File</button>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-grid">
+      <div class="card">💰 {{ totalRevenue }} DT</div>
+      <div class="card">📦 {{ totalOrders }} Orders</div>
+      <div class="card">🚚 {{ deliveredOrders }} Delivered</div>
+      <div class="card">📊 {{ avgOrderValue | number:'1.0-2' }} DT</div>
+    </div>
+
+    <!-- CHARTS 2x2 GRID -->
+    <div class="charts-grid">
+
+      <div class="card">
+        <h4>📈 Revenue by Date</h4>
+        <apx-chart
+          [series]="revenueChart.series"
+          [chart]="revenueChart.chart"
+          [xaxis]="revenueChart.xaxis"
+          [stroke]="revenueChart.stroke">
+        </apx-chart>
+      </div>
+
+      <div class="card">
+        <h4>🏆 Top Products</h4>
+        <apx-chart
+          [series]="productChart.series"
+          [chart]="productChart.chart"
+          [xaxis]="productChart.xaxis">
+        </apx-chart>
+      </div>
+
+      <div class="card">
+        <h4>🌍 Gouvernorat</h4>
+        <apx-chart
+          [series]="gouvernoratChart.series"
+          [chart]="gouvernoratChart.chart"
+          [labels]="gouvernoratChart.labels">
+        </apx-chart>
+      </div>
+
+      <div class="card">
+        <h4>🏢 Agence</h4>
+        <apx-chart
+          [series]="agenceChart.series"
+          [chart]="agenceChart.chart"
+          [labels]="agenceChart.labels">
+        </apx-chart>
+      </div>
+
+    </div>
+
+    <!-- Table -->
+    <div class="table-box">
+      <h4>Recent Orders</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Date</th>
+            <th>Client</th>
+            <th>City</th>
+            <th>Phone</th>
+            <th>Status</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of recentOrders">
+            <td>{{ order.id }}</td>
+            <td>{{ order.date }}</td>
+            <td>{{ order.client }}</td>
+            <td>{{ order.city }}</td>
+            <td>{{ order.phone }}</td>
+            <td><span class="badge {{ order.statusClass }}">{{ order.status }}</span></td>
+            <td>{{ order.total }} DT</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

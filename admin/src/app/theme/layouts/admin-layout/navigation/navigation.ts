@@ -144,6 +144,22 @@ export const NavigationItems: NavigationItem[] = [
         classes: 'nav-item',
         icon: 'chrome'
       },
+      {
+        id: 'settings',
+        title: 'Settings',
+        type: 'item',
+        url: '/settings',
+        classes: 'nav-item',
+        icon: 'setting'
+      },
+      {
+        id: 'csv',
+        title: 'CSV',
+        type: 'item',
+        url: '/csv',
+        classes: 'nav-item',
+        icon: 'file-csv'
+      }
     ]
   }
 ];

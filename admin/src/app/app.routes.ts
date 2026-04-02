@@ -64,7 +64,7 @@ export const routes: Routes = [
       {
         path: 'settings',
         loadComponent: () =>
-          import('./demo/others/sample-page/sample-page.component').then(c => c.SamplePageComponent)
+          import('./demo/others/csv/csv').then(c => c.CSV)
       }
     ]
   },

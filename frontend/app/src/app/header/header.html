@@ -64,9 +64,25 @@
             <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">Boutique</a>
             <ul class="dropdown-menu border-0 shadow p-3 rounded-0">
               <li *ngFor="let category of categories">
-                <a class="dropdown-item" [routerLink]="['/boutique']" [queryParams]="{category: category.name}">
+
+                <!-- CATEGORY (clickable like before) -->
+                <a class="dropdown-item fw-bold"
+                  [routerLink]="['/boutique']"
+                  [queryParams]="{category: category.name}">
                   {{ category.name }}
                 </a>
+
+                <!-- 🔥 SUBCATEGORIES -->
+                <ul class="list-unstyled ps-3" *ngIf="category.subcategories?.length">
+                  <li *ngFor="let sub of category.subcategories">
+                    <a class="dropdown-item text-muted"
+                      [routerLink]="['/boutique']"
+                      [queryParams]="{category: category.name, sub: sub.name}">
+                      - {{ sub.name }}
+                    </a>
+                  </li>
+                </ul>
+
               </li>
             </ul>
           </li>
@@ -140,10 +156,27 @@
           <div class="collapse mt-3" id="mobileBoutique">
             <ul class="list-unstyled ps-4">
               <li class="py-2" *ngFor="let category of categories">
-                <a [routerLink]="['/boutique']" [queryParams]="{category: category.name}"
-                   class="text-muted text-decoration-none d-block" data-bs-dismiss="offcanvas">
+
+                <!-- CATEGORY -->
+                <a [routerLink]="['/boutique']"
+                  [queryParams]="{category: category.name}"
+                  class="text-muted text-decoration-none d-block"
+                  data-bs-dismiss="offcanvas">
                   {{ category.name }}
                 </a>
+
+                <!-- 🔥 SUBCATEGORIES -->
+                <ul class="list-unstyled ps-3" *ngIf="category.subcategories?.length">
+                  <li *ngFor="let sub of category.subcategories">
+                    <a [routerLink]="['/boutique']"
+                      [queryParams]="{category: category.name, sub: sub.name}"
+                      class="text-muted text-decoration-none d-block"
+                      data-bs-dismiss="offcanvas">
+                      - {{ sub.name }}
+                    </a>
+                  </li>
+                </ul>
+
               </li>
             </ul>
           </div>
