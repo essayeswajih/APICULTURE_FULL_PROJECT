@@ -6,6 +6,7 @@ from schemas.vetrineSchemas import CategoryBase, ProductBase, OrderCreate, CartI
 from datetime import datetime, timedelta
 from fastapi import HTTPException, Query
 from random import randint
+from sqlalchemy.orm import selectinload
 
 from controller.sendMail import send_email_via_gmail
 
@@ -127,7 +128,13 @@ def delete_product(db: Session, product_id: int) -> None:
 
 # Get all categories
 def get_categories(db: Session, skip: int = 0, limit: int = 10) -> List[Category]:
-    return db.query(Category).offset(skip).limit(limit).all()
+    return (
+        db.query(Category)
+        .options(selectinload(Category.subcategories))
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
 
 # Get a category by ID
 def get_category_by_id(db: Session, category_id: int) -> Category:
