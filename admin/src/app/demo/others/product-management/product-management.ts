@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Api, Product, Category } from '../../../services/api';
+import { Api, Product, Category, SubCategory } from '../../../services/api';
 import gsap from 'gsap';
 
 /* NG ZORRO */
@@ -48,6 +48,7 @@ export class ProductManagement implements OnInit {
   filteredProducts: Product[] = [];
 
   categories: Category[] = [];
+  subcategories: SubCategory[] = [];
 
   drawerVisible = false;
   editMode = false;
@@ -89,6 +90,8 @@ export class ProductManagement implements OnInit {
     this.loadProducts();
     this.apiService.getCategories()
       .subscribe(categories => this.categories = categories);
+      this.apiService.getSubCategories()
+      .subscribe(subcategories => this.subcategories = subcategories);
   }
 
   loadProducts() {
