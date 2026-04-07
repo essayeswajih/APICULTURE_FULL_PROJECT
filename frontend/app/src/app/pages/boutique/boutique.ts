@@ -30,6 +30,7 @@ export class Boutique implements OnInit, OnDestroy {
   products: Product[] = [];
   categories: Category[] = [];
   selectedCategory: Category = { id: 0, name: 'Tous' };
+  selectedSubcategory: any = null;
   sortBy: string = 'popularite';
   isLoading: boolean = false;
   error: string | null = null;
@@ -56,11 +57,22 @@ export class Boutique implements OnInit, OnDestroy {
         this.isLoading = true;
         this.error = null;
         const categoryFromUrl = params['category']?.toLowerCase() || 'Tous';
+        const subcategoryIdFromUrl = params['subcategoryId'];
         this.sortBy = params['sortBy'] || 'popularite';
         this.searchQuery = params['search'] || '';
         if (this.categories.length) {
           this.selectedCategory = this.categories.find(cat => 
             cat.name.toLowerCase() === categoryFromUrl) || { id: 0, name: 'Tous' };
+          
+          // If subcategoryId is in URL, find and select it
+          if (subcategoryIdFromUrl) {
+            const subcatId = parseInt(subcategoryIdFromUrl);
+            const foundSubcategory = this.selectedCategory.subcategories?.find(sub => sub.id === subcatId);
+            if (foundSubcategory) {
+              this.selectedSubcategory = foundSubcategory;
+            }
+          }
+          
           this.loadProducts();
         }
         this.cdRef.markForCheck();
@@ -104,12 +116,60 @@ export class Boutique implements OnInit, OnDestroy {
       next: (categories) => {
         const tousCategory: Category = { id: 0, name: 'Tous' };
         this.categories = [tousCategory, ...categories.filter(cat => cat.name !== 'Tous')];
-        const categoryFromUrl = this.route.snapshot.queryParams['category']?.toLowerCase() || 'Tous';
-        this.selectedCategory = this.categories.find(cat => 
-          cat.name.toLowerCase() === categoryFromUrl) || { id: 0, name: 'Tous' };
-        this.isLoading = false;
-        this.loadProducts();
-        this.cdRef.markForCheck();
+        
+        // Load subcategories and assign to categories
+        this.apiService.getSubcategories().pipe(
+          takeUntil(this.destroy$)
+        ).subscribe({
+          next: (subcategories) => {
+            this.categories.forEach(cat => {
+              if (cat.id !== 0) {
+                cat.subcategories = subcategories.filter(sub => sub.category_id === cat.id);
+              }
+            });
+            
+            const categoryFromUrl = this.route.snapshot.queryParams['category']?.toLowerCase() || 'Tous';
+            const subcategoryIdFromUrl = this.route.snapshot.queryParams['subcategoryId'];
+            
+            this.selectedCategory = this.categories.find(cat => 
+              cat.name.toLowerCase() === categoryFromUrl) || { id: 0, name: 'Tous' };
+            
+            // If subcategoryId is in URL, find and select it
+            if (subcategoryIdFromUrl) {
+              const subcatId = parseInt(subcategoryIdFromUrl);
+              const foundSubcategory = this.selectedCategory.subcategories?.find(sub => sub.id === subcatId);
+              if (foundSubcategory) {
+                this.selectedSubcategory = foundSubcategory;
+              }
+            }
+            
+            this.isLoading = false;
+            this.loadProducts();
+            this.cdRef.markForCheck();
+          },
+          error: (error) => {
+            console.error('Error loading subcategories:', error);
+            // Continue without subcategories
+            const categoryFromUrl = this.route.snapshot.queryParams['category']?.toLowerCase() || 'Tous';
+            const subcategoryIdFromUrl = this.route.snapshot.queryParams['subcategoryId'];
+            
+            this.selectedCategory = this.categories.find(cat => 
+              cat.name.toLowerCase() === categoryFromUrl) || { id: 0, name: 'Tous' };
+            
+            // If subcategoryId is in URL, find and select it
+            if (subcategoryIdFromUrl) {
+              const subcatId = parseInt(subcategoryIdFromUrl);
+              const foundSubcategory = this.selectedCategory.subcategories?.find(sub => sub.id === subcatId);
+              if (foundSubcategory) {
+                this.selectedSubcategory = foundSubcategory;
+              }
+            }
+            
+            this.isLoading = false;
+            this.loadProducts();
+            this.cdRef.markForCheck();
+          }
+        });
       },
       error: (error) => {
         this.error = 'Failed to load categories';
@@ -126,7 +186,12 @@ export class Boutique implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     ).subscribe({
       next: (products) => {
-        this.products = products;
+        // Filter by subcategory if one is selected
+        if (this.selectedSubcategory) {
+          this.products = products.filter(p => p.subcategory_id === this.selectedSubcategory.id);
+        } else {
+          this.products = products;
+        }
         this.isLoading = false;
         if (isPlatformBrowser(this.platformId)) {
           // this.animateProducts();
@@ -151,9 +216,16 @@ export class Boutique implements OnInit, OnDestroy {
   selectCategory(category: Category): void {
     if (this.selectedCategory.id !== category.id) {
       this.selectedCategory = category;
+      this.selectedSubcategory = null; // Reset subcategory when category changes
       this.updateRoute();
       this.loadProducts();
     }
+  }
+
+  selectSubcategory(subcategory: any): void {
+    this.selectedSubcategory = this.selectedSubcategory?.id === subcategory.id ? null : subcategory;
+    this.updateRoute();
+    this.loadProducts();
   }
 
   private updateRoute(): void {
@@ -185,6 +257,10 @@ export class Boutique implements OnInit, OnDestroy {
 
   trackByProductId(index: number, product: Product): number {
     return product.id;
+  }
+
+  trackBySubcategoryId(index: number, subcategory: any): number {
+    return subcategory.id;
   }
 
   addToCart(product: Product): void {

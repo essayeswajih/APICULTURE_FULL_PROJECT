@@ -137,29 +137,14 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'video-camera'
       },
       {
-        id: 'sample-page',
-        title: 'Sample Page',
-        type: 'item',
-        url: '/sample-page',
-        classes: 'nav-item',
-        icon: 'chrome'
-      },
-      {
         id: 'xlsx-analysis',
         title: 'xlsx Analysis',
         type: 'item',
         url: '/xlsx-analysis',
-        classes: 'nav-item',
-        icon: 'setting'
+        classes: 'file-text',
+        icon: ''
       },
-      {
-        id: 'csv',
-        title: 'CSV',
-        type: 'item',
-        url: '/csv',
-        classes: 'nav-item',
-        icon: 'file-csv'
-      }
+
     ]
   }
 ];

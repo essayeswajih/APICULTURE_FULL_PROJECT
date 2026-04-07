@@ -92,7 +92,7 @@
   <li class="dropdown pc-h-item header-user-profile" ngbDropdown>
     <a href="javascript:" class="pc-head-link dropdown-toggle arrow-none me-0" ngbDropdownToggle>
       <img src="assets/images/user/avatar-2.jpg" alt="user-image" class="user-avatar me-2" />
-      <span class="f-w-600">John Doe</span>
+      <span class="f-w-600">{{ userName }}</span>
     </a>
     <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown" ngbDropdownMenu>
       <div class="dropdown-header">
@@ -101,8 +101,8 @@
             <img src="assets/images/user/avatar-2.jpg" alt="user-image" class="user-avatar wid-35" />
           </div>
           <div class="flex-grow-1 ms-3 text-start">
-            <h6 class="mb-0">JWT User</h6>
-            <span>UI/UX Designer</span>
+            <h6 class="mb-0">{{ userName }}</h6>
+            <span>Admin</span>
           </div>
           <a href="javascript:" class="bg-transparent"><i class="d-flex f-20" antIcon theme="outline" type="logout"></i></a>
         </div>

@@ -120,8 +120,8 @@ export class SingleProduct implements OnInit, AfterViewInit, OnDestroy {
     if (!this.product) return;
     this.api.getProducts('', '', '').subscribe(products => {
       this.similarProducts = products
-        .filter(p => p.category_id === this.product?.category_id && p.id !== this.product?.id)
-        .slice(0, 6); // Limit to 6 similar products
+        .filter(p => p.subcategory_id === this.product?.subcategory_id || p.category_id === this.product?.category_id  && p.id !== this.product?.id)
+        .slice(0, 30); // Limit to 30 similar products
       this.cdr.detectChanges();
     });
   }

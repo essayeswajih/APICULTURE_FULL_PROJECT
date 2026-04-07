@@ -52,6 +52,27 @@
       </select>
     </div>
 
+    <!-- SubCategories Section -->
+    @if (selectedCategory.id !== 0 && selectedCategory.subcategories?.length) {
+      <div class="d-flex flex-wrap gap-2 mb-4">
+        @for (subcategory of selectedCategory.subcategories; track trackBySubcategoryId($index, subcategory)) {
+          <button
+            class="btn btn-sm btncategory"
+            role="button"
+            [ngClass]="{
+              'btn-warning text-light': selectedSubcategory?.id === subcategory.id,
+              'btn-outline-warning': selectedSubcategory?.id !== subcategory.id
+            }"
+            (click)="selectSubcategory(subcategory)"
+            [attr.aria-pressed]="selectedSubcategory?.id === subcategory.id"
+            [attr.aria-label]="'Filter by subcategory ' + subcategory.name"
+          >
+            {{ subcategory.name }}
+          </button>
+        }
+      </div>
+    }
+
     <!-- Product Grid -->
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
       @for (product of products; track trackByProductId($index, product)) {

@@ -1,5 +1,15 @@
 .csv-container {
   padding: 20px;
+  position: relative;
+}
+
+.page-content {
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+
+.csv-container.is-loading .page-content {
+  filter: blur(4px);
+  opacity: 0.6;
 }
 
 .upload-box {
@@ -14,6 +24,98 @@
 .upload-box p {
   color: #777;
   margin-top: 10px;
+}
+
+.file-name {
+  margin-top: 10px;
+  color: #333;
+}
+
+.upload-actions {
+  margin-top: 12px;
+}
+
+.upload-actions button {
+  padding: 8px 14px;
+}
+
+.analyze-button {
+  background: #1f7aec;
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  box-shadow: 0 6px 16px rgba(31, 122, 236, 0.25);
+}
+
+.analyze-button:disabled {
+  background: #b8c9e6;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  color: #555;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid #ddd;
+  border-top-color: #666;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.page-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+}
+
+.overlay-card {
+  background: #fff;
+  padding: 28px 32px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  min-width: 240px;
+}
+
+.spinner-lg {
+  width: 56px;
+  height: 56px;
+  border: 5px solid #e3e8f0;
+  border-top-color: #1f7aec;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.9s linear infinite;
+}
+
+.overlay-title {
+  margin-top: 12px;
+  font-weight: 700;
+  color: #1f2a44;
+}
+
+.overlay-sub {
+  margin-top: 6px;
+  color: #4b5a74;
+}
+
+.error {
+  margin-top: 10px;
+  color: #b00020;
 }
 
 .header {
@@ -82,6 +184,10 @@
 .bg-danger { background: red; }
 .bg-warning { background: orange; }
 .bg-secondary { background: gray; }
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
 /* RESPONSIVE */
 @media (max-width: 768px) {

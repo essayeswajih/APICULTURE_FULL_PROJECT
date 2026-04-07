@@ -2,7 +2,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, OnInit, ChangeDetectorRef, HostListener, Inject, PLATFORM_ID, signal, OnDestroy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { Api } from '../services/api'; // Import the CategoryService
-import type { Category, Product } from '../services/api'; // Import the Category type
+import type { Category, Product, SubCategory } from '../services/api'; // Import the Category type
 import { CartItem } from '../pages/boutique/boutique';
 import { Cart } from '../services/cart';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +17,15 @@ import { TopBarCarousel } from "../components/top-bar-carousel/top-bar-carousel"
   standalone: true
 })
 export class Header implements OnInit {
+  // Open Boutique categories in mobile menu (only open, not toggle)
+  toggleCategoriesMenu() {
+    if (!this.showCategories) {
+      this.showCategories = true;
+      this.cdRef.detectChanges();
+    }
+  }
+
+  expandedCategoryIds = new Set<number>();
 
   isMobileMenuOpen = false;
   isDropdownOpen = false;
@@ -27,6 +36,7 @@ export class Header implements OnInit {
   selectedCategory: string = '';  // Default category value
   searchQuery: string = '';
   products: Product[] = []; // To hold filtered products based on search and category
+  showCategories = false; // For mobile Boutique menu toggle
 
   constructor(
     private categoryService: Api,
@@ -66,18 +76,63 @@ export class Header implements OnInit {
 
   loadCategories() {
     this.categoryService.getCategories().subscribe((categories) => {
-      this.categories = categories;
-      this.cdRef.detectChanges();
+      this.categoryService.getSubcategories().subscribe({
+        next: (subcategories: SubCategory[]) => {
+          const subcategoriesByCategory = new Map<number, SubCategory[]>();
+
+          subcategories.forEach((sub) => {
+            const list = subcategoriesByCategory.get(sub.category_id) || [];
+            list.push(sub);
+            subcategoriesByCategory.set(sub.category_id, list);
+          });
+
+          this.categories = categories.map((category) => ({
+            ...category,
+            subcategories: subcategoriesByCategory.get(category.id) || [],
+          }));
+          this.cdRef.detectChanges();
+        },
+        error: () => {
+          this.categories = categories;
+          this.cdRef.detectChanges();
+        },
+      });
     });
   }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
-    if (!this.isMobileMenuOpen) this.isDropdownOpen = false;
+    if (!this.isMobileMenuOpen) {
+      this.isDropdownOpen = false;
+      this.showCategories = false; // Always reset Boutique menu
+    }
   }
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  private normalizeCategoryName(name?: string) {
+    return (name || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  isEquipementApicultrice(category: Category) {
+    const normalized = this.normalizeCategoryName(category.name);
+    return normalized === 'equipement apicultrice' || normalized === 'equipement apicultrices';
+  }
+
+  toggleCategorySubcategories(categoryId: number) {
+    if (this.expandedCategoryIds.has(categoryId)) {
+      this.expandedCategoryIds.delete(categoryId);
+    } else {
+      this.expandedCategoryIds.add(categoryId);
+    }
+    this.cdRef.detectChanges();
   }
 
   goToHome() {

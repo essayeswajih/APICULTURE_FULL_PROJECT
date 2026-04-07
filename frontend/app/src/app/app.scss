@@ -15,3 +15,24 @@
   font-display: swap;
 }
 
+.menu-boutique,
+.menu-boutique__label {
+  font-weight: 700;
+}
+
+.subcategory-toggle {
+  min-width: 24px;
+  font-size: 18px;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.menu-subcategory-list {
+  display: none;
+}
+
+.menu-subcategory-list.is-open,
+.menu-subcategory-list.is-open {
+  display: block;
+}
+

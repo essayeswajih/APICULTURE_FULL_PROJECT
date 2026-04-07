@@ -356,11 +356,12 @@ def delete_subcategory(db: Session, subcategory_id: int) -> None:
         raise HTTPException(status_code=404, detail="SubCategory not found")
     
 
-def getViewsAnalytics():
+def getViewsAnalytics(db: Session):
     # Here you would normally fetch data from your database or perform calculations
+    products_counts = db.query(Product).count()
     return {
-        "title": "Total Page Views",
-        "amount": "4,42,236",
+        "title": "Total Products",
+        "amount": f"{products_counts:,}",
         "background": "bg-light-primary",
         "border": "border-primary",
         "icon": "rise",

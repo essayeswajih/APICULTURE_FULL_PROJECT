@@ -292,4 +292,9 @@ export class Api {
       .delete<void>(`${this.apiUrl}/stories/${id}`, { headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError));
   }
+    getSubcategories(): Observable<SubCategory[]> {
+    return this.http
+      .get<SubCategory[]>(`${this.apiUrl}/subcategories`)
+      .pipe(catchError(this.handleError));
+  }
 }

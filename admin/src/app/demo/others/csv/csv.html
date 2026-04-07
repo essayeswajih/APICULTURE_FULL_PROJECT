@@ -1,14 +1,25 @@
-<div class="csv-container">
+<div class="csv-container" [class.is-loading]="isUploading || isAnalyzing">
+  <div class="page-content">
 
-  <!-- STEP 1 -->
-  <div *ngIf="step === 1" class="upload-box">
-    <h2>📂 Upload CSV / Excel</h2>
-    <input type="file" accept=".xls,.xlsx,.csv" (change)="onFileUpload($event)">
-    <p>Upload your e-commerce CSV or Excel to generate analytics</p>
-  </div>
+    <!-- STEP 1 -->
+    <div *ngIf="step === 1" class="upload-box">
+      <h2>📂 Upload CSV / Excel</h2>
+      <input type="file" accept=".xls,.xlsx,.csv" (change)="onFileSelected($event)">
+      <p class="file-name" *ngIf="selectedFileName">Selectionne: {{ selectedFileName }}</p>
+      <div class="status" *ngIf="isUploading || isAnalyzing">
+        <span class="spinner" aria-hidden="true"></span>
+        <span *ngIf="isUploading">Chargement...</span>
+        <span *ngIf="isAnalyzing">Analyse...</span>
+      </div>
+      <p class="error" *ngIf="uploadError">{{ uploadError }}</p>
+      <div class="upload-actions">
+        <button class="analyze-button" (click)="analyze()" >Analyser</button>
+      </div>
+      <p>Upload your e-commerce CSV or Excel to generate analytics</p>
+    </div>
 
-  <!-- STEP 2 -->
-  <div *ngIf="step === 2">
+    <!-- STEP 2 -->
+    <div *ngIf="step === 2">
 
     <!-- Header + Reset -->
     <div class="header">
@@ -95,5 +106,16 @@
       </table>
     </div>
 
+    </div>
+
+  </div>
+
+  <div class="page-overlay" *ngIf="isUploading || isAnalyzing">
+    <div class="overlay-card">
+      <span class="spinner-lg" aria-hidden="true"></span>
+      <div class="overlay-title">Veuillez patienter</div>
+      <div class="overlay-sub" *ngIf="isUploading">Chargement du fichier en cours...</div>
+      <div class="overlay-sub" *ngIf="isAnalyzing">Analyse en cours...</div>
+    </div>
   </div>
 </div>

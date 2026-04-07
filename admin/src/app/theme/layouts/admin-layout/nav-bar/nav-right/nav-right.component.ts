@@ -1,9 +1,10 @@
 // angular import
-import { Component, output, inject, input } from '@angular/core';
+import { Component, OnInit, output, inject, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 // project import
 import { SharedModule } from 'src/app/theme/shared/shared.module';
+import { AuthService } from 'src/app/services/auth';
 
 // third party
 
@@ -35,8 +36,9 @@ import {
   templateUrl: './nav-right.component.html',
   styleUrls: ['./nav-right.component.scss']
 })
-export class NavRightComponent {
+export class NavRightComponent implements OnInit {
   private iconService = inject(IconService);
+  private authService = inject(AuthService);
 
   // public props
   styleSelectorToggle = input<boolean>();
@@ -44,6 +46,7 @@ export class NavRightComponent {
   windowWidth: number;
   screenFull: boolean = true;
   direction: string = 'ltr';
+  userName: string = 'User';
 
   // constructor
   constructor() {
@@ -70,6 +73,24 @@ export class NavRightComponent {
         WalletOutline
       ]
     );
+  }
+
+  ngOnInit(): void {
+    if (!this.authService.isAuthenticated()) {
+      return;
+    }
+
+    this.authService.getCurrentUser().subscribe({
+      next: (user) => {
+        const candidate = user?.username || user?.email;
+        if (candidate) {
+          this.userName = candidate;
+        }
+      },
+      error: () => {
+        // Keep default name when user lookup fails.
+      }
+    });
   }
 
   profile = [

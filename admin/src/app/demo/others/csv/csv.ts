@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import * as Papa from 'papaparse';
 import * as XLSX from 'xlsx';
 import { NgApexchartsModule, ApexOptions } from 'ng-apexcharts';
@@ -12,8 +12,14 @@ import { NgApexchartsModule, ApexOptions } from 'ng-apexcharts';
   styleUrl: './csv.scss',
 })
 export class CSV {
+  constructor(private cdr: ChangeDetectorRef) {}
   step = 1;
   rawData: any[] = [];
+  selectedFileName = '';
+  isUploading = false;
+  isAnalyzing = false;
+  uploadReady = false;
+  uploadError = '';
 
   // KPIs
   totalRevenue = 0;
@@ -30,10 +36,17 @@ export class CSV {
   gouvernoratChart!: Partial<ApexOptions>;
   agenceChart!: Partial<ApexOptions>;
 
-  // 📂 Upload CSV/XLSX
-  onFileUpload(event: any) {
-    const file = event.target.files[0];
+  // Upload CSV/XLSX and prepare for analysis
+  onFileSelected(event: any) {
+    const file = event.target.files?.[0];
     if (!file) return;
+
+    this.isUploading = false;
+    this.isAnalyzing = false;
+    this.uploadReady = false;
+    this.uploadError = '';
+    this.rawData = [];
+    this.selectedFileName = file.name;
 
     const fileName = file.name.toLowerCase();
 
@@ -42,9 +55,16 @@ export class CSV {
         header: true,
         skipEmptyLines: true,
         complete: (result: any) => {
-          this.rawData = result.data;
-          this.processData();
-          this.step = 2;
+          this.rawData = result.data || [];
+          this.isUploading = false;
+          this.uploadReady = this.rawData.length > 0;
+          if (!this.uploadReady) {
+            this.uploadError = 'No rows found in the file.';
+          }
+        },
+        error: () => {
+          this.isUploading = false;
+          this.uploadError = 'Failed to read CSV file.';
         }
       });
     } else if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
@@ -53,16 +73,38 @@ export class CSV {
         const data = new Uint8Array(e.target.result);
         const workbook = XLSX.read(data, { type: 'array' });
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        this.rawData = XLSX.utils.sheet_to_json(sheet);
+        this.rawData = XLSX.utils.sheet_to_json(sheet) as any[];
 
-        this.processData();
-        this.step = 2;
+        this.isUploading = false;
+        this.uploadReady = this.rawData.length > 0;
+        if (!this.uploadReady) {
+          this.uploadError = 'No rows found in the file.';
+        }
+      };
+      reader.onerror = () => {
+        this.isUploading = false;
+        this.uploadError = 'Failed to read Excel file.';
       };
       reader.readAsArrayBuffer(file);
     } else {
-      alert('❌ Unsupported file format. Use CSV or Excel.');
+      this.isUploading = false;
+      this.uploadError = 'Unsupported file format. Use CSV or Excel.';
     }
   }
+
+analyze() {
+  if (!this.rawData.length) return;
+
+  this.isAnalyzing = true;
+  this.uploadError = '';
+
+  setTimeout(() => {
+    this.processData();
+    this.step = 2;
+    this.isAnalyzing = false;
+    this.cdr.detectChanges();
+  }, 50);
+}
 
   // 🧠 Process Data + Build Charts
   processData() {
@@ -129,6 +171,7 @@ export class CSV {
         total: row['PRIX'] || 0
       };
     });
+    this.cdr.detectChanges();
   }
 
   // 📊 Build ApexCharts
@@ -218,5 +261,11 @@ export class CSV {
     this.totalOrders = 0;
     this.deliveredOrders = 0;
     this.avgOrderValue = 0;
+    this.selectedFileName = '';
+    this.isUploading = false;
+    this.isAnalyzing = false;
+    this.uploadReady = false;
+    this.uploadError = '';
+    this.cdr.detectChanges();
   }
 }

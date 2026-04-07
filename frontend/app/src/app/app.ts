@@ -5,7 +5,7 @@ import { Header } from "./header/header";
 import { Footer } from "./footer/footer";
 import { ToastrDemo } from "./toastr-demo/toastr-demo";
 import { CommonModule } from '@angular/common';
-import { Api, Category } from './services/api';
+import { Api, Category, SubCategory } from './services/api';
 
 @Component({
   selector: 'app-root',
@@ -16,50 +16,100 @@ import { Api, Category } from './services/api';
 export class App {
   protected title = 'Apiculture';
   categories: Category[] = [];
+  expandedMenuId: string | null = null;
+  expandedSubmenuLabel: string | null = null;
   constructor(private apiService: Api,private cdRef: ChangeDetectorRef,) {}
 
   ngOnInit() {
     this.loadCategories();
   }
-    private loadCategories(): void {
+
+  toggleMenu(menuId: string): void {
+    this.expandedMenuId = this.expandedMenuId === menuId ? null : menuId;
+  }
+  private loadCategories(): void {
     this.apiService.getCategories().subscribe({
       next: (categories) => {
-        this.categories = categories;
-        this.menuItems = [
-          {
-            label: 'Accueil',
-            icon: '#home',
-            route: ['/'],
-            active: true
-          },
-          {
-            label: 'Boutique',
-            icon: '#shop',
-            id: 'boutique',
-            submenu: categories.map(cat => ({
-              label: cat.name,
-              route: ['/boutique'],
-              queryParams: { category: cat.name }
-            }))
-          },
-          {
-            label: 'À Propos',
-            icon: '#info',
-            route: ['/a-propos']
-          },
-          {
-            label: 'Contact',
-            icon: '#envelope',
-            route: ['/contact']
-          }
-        ];
+        this.apiService.getSubcategories().subscribe({
+          next: (subcategories: SubCategory[]) => {
+            const subcategoriesByCategory = new Map<number, SubCategory[]>();
 
-        this.cdRef.detectChanges();
+            subcategories.forEach((sub) => {
+              const list = subcategoriesByCategory.get(sub.category_id) || [];
+              list.push(sub);
+              subcategoriesByCategory.set(sub.category_id, list);
+            });
+
+            this.categories = categories.map((category) => ({
+              ...category,
+              subcategories: subcategoriesByCategory.get(category.id) || [],
+            }));
+
+            this.buildMenuItems();
+          },
+          error: () => {
+            this.categories = categories;
+            this.buildMenuItems();
+          },
+        });
       },
       error: (err) => {
         console.error('Failed to load categories:', err);
       },
     });
+  }
+
+  private buildMenuItems(): void {
+    this.menuItems = [
+      {
+        label: 'Accueil',
+        icon: '#home',
+        route: ['/'],
+        active: true
+      },
+      {
+        label: 'Boutique',
+        icon: '#shop',
+        id: 'boutique',
+        submenu: this.categories.map(cat => ({
+          label: cat.name,
+          route: ['/boutique'],
+          queryParams: { category: cat.name },
+          subcategories: cat.subcategories || []
+        }))
+      },
+      {
+        label: 'À Propos',
+        icon: '#info',
+        route: ['/a-propos']
+      },
+      {
+        label: 'Contact',
+        icon: '#envelope',
+        route: ['/contact']
+      }
+    ];
+
+    this.cdRef.detectChanges();
+  }
+
+  toggleSubmenu(label: string): void {
+    this.expandedSubmenuLabel = this.expandedSubmenuLabel === label ? null : label;
+    this.cdRef.detectChanges();
+  }
+
+  private normalizeCategoryName(name?: string) {
+    return (name || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  isEquipementApicultriceLabel(label?: string) {
+    const normalized = this.normalizeCategoryName(label);
+    return normalized === 'equipement apicultrice' || normalized === 'equipement apicultrices';
   }
 menuItems = [
   {
@@ -75,7 +125,8 @@ menuItems = [
     submenu: this.categories.map(cat => ({
       label: cat.name,
       route: ['/boutique'],
-      queryParams: { category: cat.name }
+      queryParams: { category: cat.name },
+      subcategories: cat.subcategories || []
     }))
   },
   {
@@ -91,7 +142,7 @@ menuItems = [
 ];
   // Disable right click
   
-  @HostListener('document:contextmenu', ['$event'])
+ @HostListener('document:contextmenu', ['$event'])
   onRightClick(event: MouseEvent) {
     event.preventDefault();
   }
@@ -115,5 +166,4 @@ menuItems = [
       event.preventDefault();
     }//
   }
-  
-}
+} 

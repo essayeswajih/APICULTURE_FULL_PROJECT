@@ -16,7 +16,7 @@
   padding-bottom: 4px;
   transition: color 0.3s;
 
-  &::after {
+  &::before {
     content: "";
     position: absolute;
     left: 0;
@@ -27,8 +27,8 @@
     transition: width 0.3s ease;
   }
 
-  &:hover::after,
-  &.active-route::after { width: 100%; }
+  &:hover::before,
+  &.active-route::before { width: 100%; }
   &:hover,
   &.active-route { color: #000; }
 }
@@ -39,4 +39,88 @@ header.sticky-top {
 }
 #offcanvasNavbar {
   z-index: 1060 !important;
+}
+
+#offcanvasNavbar .mobile-boutique-button,
+#offcanvasNavbar .mobile-boutique-button__label {
+  font-weight: 700 !important;
+}
+
+/* Mobile Menu Category Hover */
+.category-hover-menu {
+  position: relative;
+  &:hover .categories-grid {
+    display: block !important;
+    animation: slideDown 0.3s ease;
+  }
+  .categories-grid {
+    transition: all 0.3s ease;
+    min-width: 150px;
+    max-width: 180px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    .category-item {
+      padding: 5px 6px;
+      border-bottom: 1px solid #ddd;
+      &:last-child {
+        border-bottom: none;
+      }
+      a {
+        font-size: 0.8rem;
+        display: block;
+        padding: 2px 0;
+        &:hover {
+          color: #ffc107 !important;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+}
+
+/* Desktop dropdown: show subcategories in a right-side panel on hover */
+.boutique-menu {
+  min-width: 300px;
+  overflow: visible;
+}
+
+.dropdown-category {
+  position: relative;
+}
+
+.dropdown-category > .dropdown-item {
+  padding: 0.6rem 1rem;
+}
+
+.dropdown-category .dropdown-subcategories {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 100%;
+  min-width: 260px;
+  margin-right: 0;
+  background: #fff;
+  border: 1px solid #eee;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  padding: 0.6rem 0.8rem;
+}
+
+.dropdown-category:hover .dropdown-subcategories,
+.dropdown-category .dropdown-subcategories:hover {
+  display: block;
+}
+
+/* Mobile offcanvas: show subcategories on hover */
+.category-item .subcategory-list {
+  display: none;
+}
+
+.category-item .subcategory-list.is-open {
+  display: block;
+}
+
+.category-toggle {
+  min-width: 24px;
+  font-size: 18px;
+  line-height: 1;
+  text-decoration: none;
 }

@@ -26,7 +26,8 @@ import {
   UserOutline,
   TagsOutline,
   PictureOutline,
-  VideoCameraOutline
+  VideoCameraOutline,
+  FileTextOutline
 } from '@ant-design/icons-angular/icons';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 
@@ -71,7 +72,8 @@ export class NavContentComponent implements OnInit {
         UserOutline,
         TagsOutline,
         PictureOutline,
-        VideoCameraOutline
+        VideoCameraOutline,
+        FileTextOutline
       ]
     );
     this.navigations = NavigationItems;
@@ -110,7 +112,8 @@ export class NavContentComponent implements OnInit {
   }
 
   navMob() {
-    if (this.windowWidth < 1025 && document.querySelector('app-navigation.coded-navbar').classList.contains('mob-open')) {
+    const navEl = document.querySelector('app-navigation.coded-navbar');
+    if (this.windowWidth < 1025 && navEl?.classList.contains('mob-open')) {
       this.NavCollapsedMob.emit();
     }
   }

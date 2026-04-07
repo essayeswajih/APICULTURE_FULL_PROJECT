@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Api, Product, Category, SubCategory } from '../../../services/api';
@@ -83,7 +83,8 @@ export class ProductManagement implements OnInit {
 
   constructor(
     private apiService: Api,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -102,21 +103,23 @@ export class ProductManagement implements OnInit {
       });
   }
 
-  private applyFilter() {
-    const term = this.searchTerm.toLowerCase().trim();
+private applyFilter() {
+  const term = this.searchTerm.toLowerCase().trim();
 
-    if (!term) {
-      this.filteredProducts = [...this.products];
-    } else {
-      this.filteredProducts = this.products.filter(p =>
-        p.name.toLowerCase().includes(term)
-      );
-    }
-
-    this.total = this.filteredProducts.length;
-    this.pageIndex = 1; // reset to first page after filter change
-    setTimeout(() => this.animateRows(), 50);
+  if (!term) {
+    this.filteredProducts = [...this.products];
+  } else {
+    this.filteredProducts = this.products.filter(p =>
+      p.name.toLowerCase().includes(term)
+    );
   }
+
+  this.total = this.filteredProducts.length;
+  this.pageIndex = 1;
+
+  this.cdr.detectChanges(); // ✅ force DOM update
+  //this.animateRows();       // ✅ now DOM is ready
+}
 
   searchProducts() {
     this.applyFilter();
@@ -139,7 +142,7 @@ export class ProductManagement implements OnInit {
       gsap.from(".table-row", {
         opacity: 0,
         y: 20,
-        duration: 0.6,
+        duration: 0.7,
         stagger: 0.05
       });
     }

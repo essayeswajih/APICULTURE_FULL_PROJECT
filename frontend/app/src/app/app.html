@@ -28,28 +28,52 @@
 
           <!-- Dropdown item (with submenu) -->
           <li class="nav-item border-dashed" *ngIf="item.submenu">
-            <button class="btn btn-toggle dropdown-toggle position-relative w-100 d-flex justify-content-between align-items-center text-dark p-2"
-                    data-bs-toggle="collapse" 
-                    [attr.data-bs-target]="'#' + item.id + '-collapse'"
-                    aria-expanded="false">
+                <button type="button"
+                  class="btn btn-toggle dropdown-toggle position-relative w-100 d-flex justify-content-between align-items-center text-dark p-2"
+                  [attr.aria-expanded]="expandedMenuId === item.id"
+                  [class.menu-boutique]="item.label === 'Boutique'"
+                  (click)="toggleMenu(item.id)">
               <div class="d-flex gap-3 align-items-center">
                 <svg width="24" height="24" viewBox="0 0 24 24">
                   <use [attr.xlink:href]="item.icon"></use>
                 </svg>
-                <span>{{ item.label }}</span>
+                <span [class.menu-boutique__label]="item.label === 'Boutique'">{{ item.label }}</span>
               </div>
-              <i class="fas fa-chevron-down ms-auto"></i>
             </button>
 
             <!-- Collapsible submenu -->
-            <div class="collapse" [id]="item.id + '-collapse'">
+            <div class="collapse" [class.show]="expandedMenuId === item.id">
               <ul class="btn-toggle-nav list-unstyled fw-normal ps-5 pb-1">
-                <li class="border-bottom py-2" *ngFor="let sub of item.submenu">
-                  <a [routerLink]="sub.route" 
-                    [queryParams]="sub.queryParams || {}"
-                    class="dropdown-item">
-                    {{ sub.label }}
-                  </a>
+                <li class="border-bottom py-2 submenu-item" *ngFor="let sub of item.submenu">
+                  <div class="d-flex align-items-center justify-content-between gap-2">
+                    <a [routerLink]="sub.route" 
+                      [queryParams]="sub.queryParams || {}"
+                      class="dropdown-item">
+                      {{ sub.label }}
+                    </a>
+                    <button
+                      *ngIf="isEquipementApicultriceLabel(sub.label)"
+                      type="button"
+                      class="btn btn-link p-0 text-dark subcategory-toggle"
+                      (click)="toggleSubmenu(sub.label); $event.preventDefault(); $event.stopPropagation()"
+                      [attr.aria-expanded]="expandedSubmenuLabel === sub.label"
+                      [attr.aria-label]="expandedSubmenuLabel === sub.label ? 'Fermer les sous-categories' : 'Ouvrir les sous-categories'">
+                      <span *ngIf="expandedSubmenuLabel !== sub.label" aria-hidden="true">+</span>
+                      <span *ngIf="expandedSubmenuLabel === sub.label" aria-hidden="true">-</span>
+                    </button>
+                  </div>
+                  <ul
+                    class="list-unstyled ps-3 small menu-subcategory-list"
+                    *ngIf="isEquipementApicultriceLabel(sub.label) && sub.subcategories?.length"
+                    [class.is-open]="expandedSubmenuLabel === sub.label">
+                    <li *ngFor="let subcat of sub.subcategories">
+                      <a [routerLink]="sub.route"
+                        [queryParams]="{ category: sub.label, subcategoryId: subcat.id }"
+                        class="dropdown-item text-muted">
+                        {{ subcat.name }}
+                      </a>
+                    </li>
+                  </ul>
                 </li>
               </ul>
             </div>

@@ -1,7 +1,7 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, Inject, Input, PLATFORM_ID } from '@angular/core';
 import { Api, Product } from '../services/api';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Cart } from '../services/cart';
 import { CartItem } from '../pages/boutique/boutique';
@@ -9,7 +9,8 @@ import { CartItem } from '../pages/boutique/boutique';
 @Component({
   selector: 'app-popular-products',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,
+    RouterLink],
   templateUrl: './popular-products.html',
   styleUrls: ['./popular-products.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
