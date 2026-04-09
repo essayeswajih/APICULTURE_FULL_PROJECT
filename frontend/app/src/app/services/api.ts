@@ -77,6 +77,13 @@ export interface Story {
   updated_at: string;
 }
 
+export interface PublicStats {
+  product_count: number;
+  happy_customers: number;
+  store_locations: number;
+}
+
+
 @Injectable({
   providedIn: 'root',
 })
@@ -297,4 +304,10 @@ export class Api {
       .get<SubCategory[]>(`${this.apiUrl}/subcategories`)
       .pipe(catchError(this.handleError));
   }
+    getPublicStats(): Observable<PublicStats> {
+    return this.http
+      .get<PublicStats>(`${this.apiUrl}/public-stats`)
+      .pipe(catchError(this.handleError));
+  }
+
 }

@@ -176,3 +176,8 @@ class StoryBase(BaseModel):
         if v == '' or v is None:
             return None
         return v
+    
+class PublicStats(BaseModel):
+    product_count: int
+    happy_customers: int
+    store_locations: int

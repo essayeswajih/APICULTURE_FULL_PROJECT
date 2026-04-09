@@ -77,7 +77,7 @@
                   <li *ngFor="let sub of category.subcategories">
                     <a class="dropdown-item text-muted"
                       [routerLink]="['/boutique']"
-                      [queryParams]="{category: category.name, subcategoryId: sub.id}">
+                      [queryParams]="{category: category.name, subcategoryName: sub.name}"> <!-- mohamed: use subcategoryName in URL -->
                       - {{ sub.name }}
                     </a>
                   </li>
@@ -148,11 +148,11 @@
     <div class="offcanvas-body pt-3 px-3">
       <ul class="list-unstyled">
         <!-- Accueil -->
-        <li class="mb-3">
+        <li class="mb-2"> <!-- mohamed: reduced spacing between mobile menu items -->
           <a routerLink="/" class="text-dark text-decoration-none fw-bold" data-bs-dismiss="offcanvas">Accueil</a>
         </li>
         <!-- Boutique with Categories & Subcategories (single button, click to toggle) -->
-        <li class="mb-3">
+        <li class="mb-2"> <!-- mohamed: reduced spacing between mobile menu items -->
           <div class="category-hover-menu">
             <button type="button" class="btn btn-link text-dark text-decoration-none d-flex justify-content-between align-items-center w-100 p-0 mobile-boutique-button" (click)="toggleCategoriesMenu()" [attr.aria-expanded]="showCategories">
               <span class="mobile-boutique-button__label">Boutique</span>
@@ -184,9 +184,10 @@
                   class="list-unstyled ps-3 small subcategory-list"
                   *ngIf="isEquipementApicultrice(category) && category.subcategories?.length"
                   [class.is-open]="expandedCategoryIds.has(category.id)">
+                  <!-- mohamed: use subcategoryName in URL -->
                   <li *ngFor="let sub of category.subcategories">
                     <a [routerLink]="['/boutique']"
-                      [queryParams]="{category: category.name, subcategoryId: sub.id}"
+                      [queryParams]="{category: category.name, subcategoryName: sub.name}" 
                       class="text-muted text-decoration-none"
                       data-bs-dismiss="offcanvas">
                       {{ sub.name }}

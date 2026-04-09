@@ -38,6 +38,15 @@ export class Boutique implements OnInit, OnDestroy {
   
   private destroy$ = new Subject<void>();
 
+  // mohamed: normalize names for subcategory URL matching
+  private normalizeName(name: string): string {
+    return (name || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim();
+  }
+
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
     private route: ActivatedRoute,
@@ -58,14 +67,23 @@ export class Boutique implements OnInit, OnDestroy {
         this.error = null;
         const categoryFromUrl = params['category']?.toLowerCase() || 'Tous';
         const subcategoryIdFromUrl = params['subcategoryId'];
+        const subcategoryNameFromUrl = params['subcategoryName']; // mohamed: read subcategory by name
         this.sortBy = params['sortBy'] || 'popularite';
         this.searchQuery = params['search'] || '';
         if (this.categories.length) {
           this.selectedCategory = this.categories.find(cat => 
             cat.name.toLowerCase() === categoryFromUrl) || { id: 0, name: 'Tous' };
           
-          // If subcategoryId is in URL, find and select it
-          if (subcategoryIdFromUrl) {
+          // mohamed: prefer subcategoryName from URL (fallback to subcategoryId)
+          if (subcategoryNameFromUrl) {
+            const targetName = this.normalizeName(subcategoryNameFromUrl);
+            const foundSubcategory = this.selectedCategory.subcategories?.find(sub =>
+              this.normalizeName(sub.name) === targetName
+            );
+            if (foundSubcategory) {
+              this.selectedSubcategory = foundSubcategory;
+            }
+          } else if (subcategoryIdFromUrl) {
             const subcatId = parseInt(subcategoryIdFromUrl);
             const foundSubcategory = this.selectedCategory.subcategories?.find(sub => sub.id === subcatId);
             if (foundSubcategory) {
@@ -130,12 +148,21 @@ export class Boutique implements OnInit, OnDestroy {
             
             const categoryFromUrl = this.route.snapshot.queryParams['category']?.toLowerCase() || 'Tous';
             const subcategoryIdFromUrl = this.route.snapshot.queryParams['subcategoryId'];
+            const subcategoryNameFromUrl = this.route.snapshot.queryParams['subcategoryName']; // mohamed: read subcategory by name
             
             this.selectedCategory = this.categories.find(cat => 
               cat.name.toLowerCase() === categoryFromUrl) || { id: 0, name: 'Tous' };
             
-            // If subcategoryId is in URL, find and select it
-            if (subcategoryIdFromUrl) {
+            // mohamed: prefer subcategoryName from URL (fallback to subcategoryId)
+            if (subcategoryNameFromUrl) {
+              const targetName = this.normalizeName(subcategoryNameFromUrl);
+              const foundSubcategory = this.selectedCategory.subcategories?.find(sub =>
+                this.normalizeName(sub.name) === targetName
+              );
+              if (foundSubcategory) {
+                this.selectedSubcategory = foundSubcategory;
+              }
+            } else if (subcategoryIdFromUrl) {
               const subcatId = parseInt(subcategoryIdFromUrl);
               const foundSubcategory = this.selectedCategory.subcategories?.find(sub => sub.id === subcatId);
               if (foundSubcategory) {
@@ -152,12 +179,21 @@ export class Boutique implements OnInit, OnDestroy {
             // Continue without subcategories
             const categoryFromUrl = this.route.snapshot.queryParams['category']?.toLowerCase() || 'Tous';
             const subcategoryIdFromUrl = this.route.snapshot.queryParams['subcategoryId'];
+            const subcategoryNameFromUrl = this.route.snapshot.queryParams['subcategoryName']; // mohamed: read subcategory by name
             
             this.selectedCategory = this.categories.find(cat => 
               cat.name.toLowerCase() === categoryFromUrl) || { id: 0, name: 'Tous' };
             
-            // If subcategoryId is in URL, find and select it
-            if (subcategoryIdFromUrl) {
+            // mohamed: prefer subcategoryName from URL (fallback to subcategoryId)
+            if (subcategoryNameFromUrl) {
+              const targetName = this.normalizeName(subcategoryNameFromUrl);
+              const foundSubcategory = this.selectedCategory.subcategories?.find(sub =>
+                this.normalizeName(sub.name) === targetName
+              );
+              if (foundSubcategory) {
+                this.selectedSubcategory = foundSubcategory;
+              }
+            } else if (subcategoryIdFromUrl) {
               const subcatId = parseInt(subcategoryIdFromUrl);
               const foundSubcategory = this.selectedCategory.subcategories?.find(sub => sub.id === subcatId);
               if (foundSubcategory) {
@@ -233,6 +269,7 @@ export class Boutique implements OnInit, OnDestroy {
       relativeTo: this.route,
       queryParams: { 
         category: this.selectedCategory.name !== 'Tous' ? this.selectedCategory.name : null,
+        subcategoryName: this.selectedSubcategory?.name || null, // mohamed: keep subcategory name in URL
         sortBy: this.sortBy !== 'popularite' ? this.sortBy : null 
       },
       queryParamsHandling: 'merge'

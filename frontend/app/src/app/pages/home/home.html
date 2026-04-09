@@ -81,21 +81,22 @@
               <a href="#reduction-newsletter" class="btn btn-dark text-uppercase fs-6 rounded-pill px-4 py-3 mt-3" style="z-index: 99;">Join Now</a>
             </div>
             <div class="row my-5">
+              <!-- mohamed: dynamic stats from backend -->
               <div class="col">
                 <div class="row text-dark">
-                  <div class="col-auto"><p class="fs-1 fw-bold lh-sm mb-0">14k+</p></div>
+                  <div class="col-auto"><p class="fs-1 fw-bold lh-sm mb-0">{{ formatCount(publicStats.productCount) }}</p></div>
                   <div class="col"><p class="text-uppercase lh-sm mb-0">Product Varieties</p></div>
                 </div>
               </div>
               <div class="col">
                 <div class="row text-dark">
-                  <div class="col-auto"><p class="fs-1 fw-bold lh-sm mb-0">50k+</p></div>
+                  <div class="col-auto"><p class="fs-1 fw-bold lh-sm mb-0">{{ formatCount(publicStats.happyCustomers) }}</p></div>
                   <div class="col"><p class="text-uppercase lh-sm mb-0">Happy Customers</p></div>
                 </div>
               </div>
               <div class="col">
                 <div class="row text-dark">
-                  <div class="col-auto"><p class="fs-1 fw-bold lh-sm mb-0">10+</p></div>
+                  <div class="col-auto"><p class="fs-1 fw-bold lh-sm mb-0">{{ formatCount(publicStats.storeLocations) }}</p></div>
                   <div class="col"><p class="text-uppercase lh-sm mb-0">Store Locations</p></div>
                 </div>
               </div>

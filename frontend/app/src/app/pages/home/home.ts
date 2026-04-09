@@ -51,6 +51,12 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   isLoading = true;
   email = '';
   subForm: FormGroup;
+  // mohamed: dynamic homepage counters (products, customers, locations).
+  publicStats = {
+    productCount: 0,
+    happyCustomers: 0,
+    storeLocations: 0,
+  };
 
 
   // Preloader control
@@ -78,6 +84,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     this.checkIfDesktop();
     this.loadProducts();
     this.loadCategories();
+    this.loadPublicStats();
   }
 
   ngAfterViewInit(): void {
@@ -175,6 +182,31 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         this.checkAllDataLoaded(); // Always unblock
       },
     });
+  }
+
+  // mohamed: fetch homepage counters from backend.
+  private loadPublicStats(): void {
+    this.apiService.getPublicStats().subscribe({
+      next: (stats) => {
+        this.publicStats = {
+          productCount: stats.product_count,
+          happyCustomers: stats.happy_customers,
+          storeLocations: stats.store_locations,
+        };
+        this.cdRef.detectChanges();
+      },
+      error: (err) => {
+        console.error('Failed to load public stats:', err);
+      },
+    });
+  }
+
+  // mohamed: keep the stats display readable (e.g., 14000 -> 14k+).
+  formatCount(value: number): string {
+    if (value >= 1000) {
+      return `${Math.floor(value / 1000)}k+`;
+    }
+    return `${value}+`;
   }
 
   private chunkArray(array: Product[], size: number): Product[][] {

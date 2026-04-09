@@ -41,9 +41,24 @@ header.sticky-top {
   z-index: 1060 !important;
 }
 
-#offcanvasNavbar .mobile-boutique-button,
-#offcanvasNavbar .mobile-boutique-button__label {
-  font-weight: 700 !important;
+/* mohamed: reduce left/right padding in mobile menu (arrows) */
+#offcanvasNavbar .offcanvas-body {
+  padding-left: 9px;
+  padding-right: 5px;
+}
+
+/* mohamed: reduce mobile menu vertical spacing (lines highlighted by arrows) */
+/* mohamed: further reduce vertical spacing */
+#offcanvasNavbar .offcanvas-body ul.list-unstyled > li {
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
+/* mohamed: tighten label height so rows are shorter */
+/* mohamed: make rows shorter */
+#offcanvasNavbar .offcanvas-body a,
+#offcanvasNavbar .offcanvas-body button {
+  line-height: 1;
 }
 
 /* Mobile Menu Category Hover */
@@ -77,7 +92,7 @@ header.sticky-top {
   }
 }
 
-/* Desktop dropdown: show subcategories in a right-side panel on hover */
+/* mohamed: desktop Boutique subcategories appear on the right side */
 .boutique-menu {
   min-width: 300px;
   overflow: visible;
@@ -95,9 +110,8 @@ header.sticky-top {
   display: none;
   position: absolute;
   top: 0;
-  right: 100%;
+  right: 100%; /* mohamed: show subcategories on the left */
   min-width: 260px;
-  margin-right: 0;
   background: #fff;
   border: 1px solid #eee;
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
@@ -107,20 +121,4 @@ header.sticky-top {
 .dropdown-category:hover .dropdown-subcategories,
 .dropdown-category .dropdown-subcategories:hover {
   display: block;
-}
-
-/* Mobile offcanvas: show subcategories on hover */
-.category-item .subcategory-list {
-  display: none;
-}
-
-.category-item .subcategory-list.is-open {
-  display: block;
-}
-
-.category-toggle {
-  min-width: 24px;
-  font-size: 18px;
-  line-height: 1;
-  text-decoration: none;
 }
