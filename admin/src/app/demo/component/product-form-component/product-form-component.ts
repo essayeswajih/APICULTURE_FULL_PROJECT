@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -23,7 +23,7 @@ import { Product, Category, SubCategory } from '../../../services/api';  // ← 
   templateUrl: './product-form-component.html',
   styleUrls: ['./product-form-component.scss']
 })
-export class ProductFormComponent {
+export class ProductFormComponent implements OnChanges {
 
   @Input() product: Product = {
     id: 0,
@@ -49,10 +49,35 @@ export class ProductFormComponent {
   @Input() subcategories: SubCategory[] = [];
   @Input() editMode: boolean = false;
 
+  // mohamed: show only subcategories of selected category.
+  filteredSubcategories: SubCategory[] = [];
+
   @Output() save = new EventEmitter<Product>();
   @Output() cancel = new EventEmitter<void>();
 
   submitted = false;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['product'] || changes['subcategories']) {
+      this.updateFilteredSubcategories();
+    }
+  }
+
+  // mohamed: update subcategory options by category selection.
+  onCategoryChange(categoryId: number): void {
+    // mohamed: coerce to number because nz-select can emit string values.
+    this.product.category_id = Number(categoryId);
+    this.product.subcategory_id = 0;
+    this.updateFilteredSubcategories();
+  }
+
+  private updateFilteredSubcategories(): void {
+    // mohamed: normalize category id to match numeric subcategory.category_id.
+    const categoryId = Number(this.product.category_id);
+    this.filteredSubcategories = categoryId
+      ? this.subcategories.filter(sub => Number(sub.category_id) === categoryId)
+      : [];
+  }
 
   onSubmit() {
     this.submitted = true;

@@ -98,6 +98,7 @@
       [(ngModel)]="product.category_id"
       name="category_id"
       [ngModelOptions]="{standalone: true}"
+      (ngModelChange)="onCategoryChange($event)"
       nzPlaceHolder="Select a category"
       [class.error]="submitted && !product.category_id"
     >
@@ -116,9 +117,10 @@
       name="subcategory_id"
       [ngModelOptions]="{standalone: true}"
       nzPlaceHolder="Select a subcategory"
+      [nzDisabled]="!product.category_id"
       [class.error]="submitted && !product.subcategory_id"
     >
-      <nz-option *ngFor="let subcat of subcategories" [nzValue]="subcat.id" [nzLabel]="subcat.name"></nz-option>
+      <nz-option *ngFor="let subcat of filteredSubcategories" [nzValue]="subcat.id" [nzLabel]="subcat.name"></nz-option>
     </nz-select>
     <div class="error-message" *ngIf="submitted && !product.subcategory_id">
       Please select a subcategory
