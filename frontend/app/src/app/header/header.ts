@@ -19,10 +19,10 @@ import { TopBarCarousel } from "../components/top-bar-carousel/top-bar-carousel"
 export class Header implements OnInit {
   // Open Boutique categories in mobile menu (only open, not toggle)
   toggleCategoriesMenu() {
-    if (!this.showCategories) {
-      this.showCategories = true;
-      this.cdRef.detectChanges();
-    }
+    this.showCategories = !this.showCategories;
+    this.cdRef.markForCheck(); // Mark for check to update the view immediately
+    this.cdRef.detectChanges(); // Ensure changes are detected after toggling
+    console.log('Boutique categories menu toggled. Now showCategories:', this.showCategories);
   }
 
   expandedCategoryIds = new Set<number>();
@@ -106,10 +106,12 @@ export class Header implements OnInit {
       this.isDropdownOpen = false;
       this.showCategories = false; // Always reset Boutique menu
     }
+    this.cdRef.detectChanges();
   }
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
+    this.cdRef.detectChanges();
   }
 
   private normalizeCategoryName(name?: string) {

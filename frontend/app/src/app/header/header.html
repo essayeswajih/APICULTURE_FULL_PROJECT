@@ -139,64 +139,78 @@
     </div>
   </div>
 
-  <!-- MOBILE OFFCANVAS – Compact version -->
+  <!-- hassouna: compact mobile offcanvas menu -->
   <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" data-bs-backdrop="true" data-bs-scroll="true">
     <div class="offcanvas-header border-bottom">
       <h5 class="offcanvas-title fw-bold text-uppercase">Menu</h5>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body pt-3 px-3">
-      <ul class="list-unstyled">
-        <!-- Accueil -->
-        <li class="mb-2"> <!-- mohamed: reduced spacing between mobile menu items -->
-          <a routerLink="/" class="text-dark text-decoration-none fw-bold" data-bs-dismiss="offcanvas">Accueil</a>
+      <ul class="list-unstyled mobile-menu-list mb-0">
+        <li class="mobile-menu-item">
+          <a routerLink="/" class="mobile-menu-link" data-bs-dismiss="offcanvas">Accueil</a>
         </li>
-        <!-- Boutique with Categories & Subcategories (single button, click to toggle) -->
-        <li class="mb-2"> <!-- mohamed: reduced spacing between mobile menu items -->
-          <div class="category-hover-menu">
-            <button type="button" class="btn btn-link text-dark text-decoration-none d-flex justify-content-between align-items-center w-100 p-0 mobile-boutique-button" (click)="toggleCategoriesMenu()" [attr.aria-expanded]="showCategories">
-              <span class="mobile-boutique-button__label">Boutique</span>
-              <svg width="20" height="20" style="margin-left:8px;vertical-align:middle;">
-                <ng-container *ngIf="!showCategories">
-                  <polyline points="5,8 10,13 15,8" fill="none" stroke="#222" stroke-width="2"/>
-                </ng-container>
-                <ng-container *ngIf="showCategories">
-                  <polyline points="5,12 10,7 15,12" fill="none" stroke="#222" stroke-width="2"/>
-                </ng-container>
-              </svg>
-            </button>
-            <div class="categories-grid mt-2 p-2 border rounded bg-light" [ngStyle]="{display: showCategories ? 'block' : 'none'}" style="max-height: 400px; overflow-y: auto;">
-              <div *ngFor="let category of categories" class="category-item mb-2">
-                <div class="d-flex align-items-center justify-content-between mb-1 category-row">
-                  <div class="fw-bold text-dark category-name">{{ category.name }}</div>
-                  <button
-                    *ngIf="isEquipementApicultrice(category)"
-                    type="button"
-                    class="btn btn-link p-0 text-dark category-toggle"
-                    (click)="toggleCategorySubcategories(category.id)"
-                    [attr.aria-expanded]="expandedCategoryIds.has(category.id)"
-                    [attr.aria-label]="expandedCategoryIds.has(category.id) ? 'Fermer les sous-categories' : 'Ouvrir les sous-categories'">
-                    <span *ngIf="!expandedCategoryIds.has(category.id)" aria-hidden="true">+</span>
-                    <span *ngIf="expandedCategoryIds.has(category.id)" aria-hidden="true">-</span>
-                  </button>
-                </div>
-                <ul
-                  class="list-unstyled ps-3 small subcategory-list"
-                  *ngIf="isEquipementApicultrice(category) && category.subcategories?.length"
-                  [class.is-open]="expandedCategoryIds.has(category.id)">
-                  <!-- mohamed: use subcategoryName in URL -->
-                  <li *ngFor="let sub of category.subcategories">
-                    <a [routerLink]="['/boutique']"
-                      [queryParams]="{category: category.name, subcategoryName: sub.name}" 
-                      class="text-muted text-decoration-none"
-                      data-bs-dismiss="offcanvas">
-                      {{ sub.name }}
-                    </a>
-                  </li>
-                </ul>
+        <li class="mobile-menu-item">
+          <!-- hassouna: boutique toggle opens category/subcategory tree in mobile menu -->
+          <button
+            type="button"
+            class="mobile-menu-toggle"
+            (click)="toggleCategoriesMenu()"
+            [attr.aria-expanded]="showCategories"
+            aria-label="Afficher les categories Boutique">
+            <span class="mobile-menu-link">Boutique</span>
+            <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+              @if (showCategories) {
+                <polyline points="4,13 10,7 16,13" fill="none" stroke="currentColor" stroke-width="2"/>
+              }@else {
+                <polyline points="4,7 10,13 16,7" fill="none" stroke="currentColor" stroke-width="2"/>
+              }
+            </svg>
+          </button>
+
+          <div class="mobile-categories-panel" *ngIf="showCategories">
+            <div *ngFor="let category of categories" class="mobile-category-block">
+              <div class="mobile-category-row">
+                <a
+                  [routerLink]="['/boutique']"
+                  [queryParams]="{category: category.name}"
+                  class="mobile-category-link"
+                  data-bs-dismiss="offcanvas">
+                  {{ category.name }}
+                </a>
+                <button
+                  *ngIf="category.subcategories?.length"
+                  type="button"
+                  class="mobile-subcategory-toggle"
+                  (click)="toggleCategorySubcategories(category.id)"
+                  [attr.aria-expanded]="expandedCategoryIds.has(category.id)"
+                  [attr.aria-label]="expandedCategoryIds.has(category.id) ? 'Fermer les sous-categories' : 'Ouvrir les sous-categories'">
+                  <span *ngIf="!expandedCategoryIds.has(category.id)" aria-hidden="true">+</span>
+                  <span *ngIf="expandedCategoryIds.has(category.id)" aria-hidden="true">-</span>
+                </button>
               </div>
+
+              <ul
+                class="list-unstyled mobile-subcategory-list"
+                *ngIf="category.subcategories?.length && expandedCategoryIds.has(category.id)">
+                <li *ngFor="let sub of category.subcategories">
+                  <a
+                    [routerLink]="['/boutique']"
+                    [queryParams]="{category: category.name, subcategoryName: sub.name}"
+                    class="mobile-subcategory-link"
+                    data-bs-dismiss="offcanvas">
+                    {{ sub.name }}
+                  </a>
+                </li>
+              </ul>
             </div>
           </div>
+        </li>
+        <li class="mobile-menu-item">
+          <a routerLink="/a-propos" class="mobile-menu-link" data-bs-dismiss="offcanvas">À Propos</a>
+        </li>
+        <li class="mobile-menu-item">
+          <a routerLink="/contact" class="mobile-menu-link" data-bs-dismiss="offcanvas">Contact</a>
         </li>
       </ul>
     </div>

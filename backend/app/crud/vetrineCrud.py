@@ -490,13 +490,13 @@ def getSalesAnalytics(db: Session):
 
     return {
         "title": "Total Sales",
-        "amount": f"${total_sales:,.0f}",
+        "amount": f"{total_sales:,.0f} DT",
         "background": "bg-light-primary" if is_positive else "bg-light-warning",
         "border": "border-primary" if is_positive else "border-warning",
         "icon": "rise" if is_positive else "fall",
         "percentage": f"{abs(percentage_change):.1f}%",
         "color": "text-primary" if is_positive else "text-warning",
-        "number": f"${sales_this_year:,.0f}"
+        "number": f"{sales_this_year:,.0f} DT"
     }
 
 def getWeeklyIncome(db: Session):

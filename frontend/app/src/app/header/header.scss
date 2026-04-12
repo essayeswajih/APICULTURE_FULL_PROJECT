@@ -8,10 +8,11 @@
   .d-xxl-none { display: none !important; }
 }
 
+
 /* Active underline (your style – unchanged) */
 .nav-link {
   position: relative;
-  font-weight: 600;
+  font-weight: 350;
   color: #555;
   padding-bottom: 4px;
   transition: color 0.3s;
@@ -40,8 +41,16 @@ header.sticky-top {
 #offcanvasNavbar {
   z-index: 1060 !important;
 }
+/* hassouna: make mobile sidebar narrower than default bootstrap offcanvas */
+@media (max-width: 991.98px) {
+  #offcanvasNavbar {
+    --bs-offcanvas-width: min(72vw, 280px) !important;
+    width: min(72vw, 280px) !important;
+    max-width: min(72vw, 280px) !important;
+  }
+}
 
-/* mohamed: reduce left/right padding in mobile menu (arrows) */
+/* hassouna: tighten mobile menu horizontal spacing */
 #offcanvasNavbar .offcanvas-body {
   padding-left: 9px;
   padding-right: 5px;
@@ -59,6 +68,91 @@ header.sticky-top {
 #offcanvasNavbar .offcanvas-body a,
 #offcanvasNavbar .offcanvas-body button {
   line-height: 1;
+}
+
+#offcanvasNavbar .mobile-menu-list {
+  margin: 0;
+  padding: 0;
+}
+
+/* hassouna: primary mobile rows (Accueil, Boutique, etc.) */
+#offcanvasNavbar .mobile-menu-item {
+  border-bottom: 1px solid #d5d5d5;
+}
+
+#offcanvasNavbar .mobile-menu-link {
+  display: block;
+  padding: 12px 2px;
+  color: #1f1f1f;
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-decoration: none;
+  line-height: 1.2;
+}
+
+#offcanvasNavbar .mobile-menu-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: #1f1f1f;
+}
+
+#offcanvasNavbar .mobile-menu-toggle:focus,
+#offcanvasNavbar .mobile-menu-toggle:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+#offcanvasNavbar .mobile-categories-panel {
+  padding: 8px 0 6px;
+}
+
+/* hassouna: nested category + subcategory presentation under Boutique */
+#offcanvasNavbar .mobile-category-block + .mobile-category-block {
+  margin-top: 8px;
+}
+
+#offcanvasNavbar .mobile-category-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+#offcanvasNavbar .mobile-category-link {
+  color: #222;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.96rem;
+  line-height: 1.3;
+}
+
+#offcanvasNavbar .mobile-subcategory-toggle {
+  border: 0;
+  background: transparent;
+  color: #222;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1;
+  padding: 0 2px;
+}
+
+#offcanvasNavbar .mobile-subcategory-list {
+  padding-left: 12px;
+  margin-top: 6px;
+}
+
+#offcanvasNavbar .mobile-subcategory-link {
+  display: block;
+  color: #4d4d4d;
+  text-decoration: none;
+  font-size: 0.88rem;
+  padding: 2px 0;
 }
 
 /* Mobile Menu Category Hover */
@@ -85,7 +179,7 @@ header.sticky-top {
         padding: 2px 0;
         &:hover {
           color: #ffc107 !important;
-          font-weight: 500;
+          font-weight: 300;
         }
       }
     }
@@ -94,7 +188,7 @@ header.sticky-top {
 
 /* mohamed: desktop Boutique subcategories appear on the right side */
 .boutique-menu {
-  min-width: 270px;
+  min-width: 300px;
   overflow: visible;
 }
 

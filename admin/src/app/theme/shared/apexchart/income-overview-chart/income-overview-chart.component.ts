@@ -14,7 +14,7 @@ export class IncomeOverviewChartComponent implements OnInit {
 
   chart = viewChild.required<ChartComponent>('chart');
   chartOptions!: Partial<ApexOptions>;
-  totalIncome: string = '$0';
+  totalIncome: string = '0 DT';
 
   constructor(private Api: Api) {}
 
@@ -77,7 +77,7 @@ export class IncomeOverviewChartComponent implements OnInit {
         ];
 
         // update total
-        this.totalIncome = `$${Number(res.total).toLocaleString()}`;
+        this.totalIncome = `${Number(res.total).toLocaleString()} DT`;
       },
       error: (err) => {
         console.error('Error loading weekly income', err);

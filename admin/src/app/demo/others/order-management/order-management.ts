@@ -50,14 +50,6 @@ export class OrderManagement implements OnInit {
       // Trigger change detection after loading orders
       this.cdRef.detectChanges();
 
-      if (isPlatformBrowser(this.platformId)) {
-        setTimeout(() => {
-          const cards = document.querySelectorAll('.card');
-          if (cards.length > 0) {
-            gsap.from(cards, { opacity: 0, y: 20, duration: 0.5, stagger: 0.2 });
-          }
-        }, 0);
-      }
     });
   }
 }
