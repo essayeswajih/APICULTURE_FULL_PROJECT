@@ -8,11 +8,12 @@ import { environment } from 'src/environments/environment.prod';
 // third party
 import { NgApexchartsModule, ChartComponent, ApexOptions } from 'ng-apexcharts';
 import { Api } from 'src/app/services/api';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-sales-report-chart',
   standalone: true,
-  imports: [NgApexchartsModule,RouterModule],
+  imports: [NgApexchartsModule,RouterModule,CommonModule],
   templateUrl: './sales-report-chart.component.html',
   styleUrl: './sales-report-chart.component.scss'
 })

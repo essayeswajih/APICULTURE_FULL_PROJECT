@@ -87,6 +87,7 @@ export const NavigationItems: NavigationItem[] = [
         url: '/product-management',
         icon: 'box-plot'
       },
+      /*
       {
         id: 'customers',
         title: 'Customers',
@@ -95,6 +96,7 @@ export const NavigationItems: NavigationItem[] = [
         url: '/customer-management',
         icon: 'user'
       },
+      */
       {
         id: 'categories',
         title: 'Categories',

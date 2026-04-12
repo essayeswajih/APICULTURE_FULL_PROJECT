@@ -29,7 +29,7 @@
 
     <!-- KPIs -->
     <div class="kpi-grid">
-      <div class="card">💰 {{ totalRevenue }} DT</div>
+      <div class="card">💰 {{ totalRevenue | number:'1.0-2'}} DT</div>
       <div class="card">📦 {{ totalOrders }} Orders</div>
       <div class="card">🚚 {{ deliveredOrders }} Delivered</div>
       <div class="card">📊 {{ avgOrderValue | number:'1.0-2' }} DT</div>
