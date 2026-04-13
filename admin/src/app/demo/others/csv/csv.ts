@@ -105,7 +105,14 @@ analyze() {
     this.cdr.detectChanges();
   }, 50);
 }
+  excelDateToJSDate(serial: number): string {
+    const utc_days  = Math.floor(serial - 25569);
+    const utc_value = utc_days * 86400;                                        
+    const date_info = new Date(utc_value * 1000);
 
+    return date_info.toLocaleString(); // or format it yourself
+  }
+  
   // 🧠 Process Data + Build Charts
   processData() {
     let total = 0;
@@ -118,30 +125,89 @@ analyze() {
 
     this.rawData.forEach((row: any) => {
       // Parse values with fallbacks
-      const price = parseFloat(row['PRIX']) || 0;
-      const status = (row['Etat'] || row['DERN. ANOMALIE'] || '').toString().toLowerCase();
-      const date = row['DATE'] || row['DATE ENLEV.'] || row['DATE LIV/RET'] || 'N/A';
+      const price = parseFloat((row['PRIX'] || '0').toString().replace(',', '.')) /1000 || 0;
+      const status = (row['Etat'] || row['ETAT'] || row['DERN. ANOMALIE'] || '').toString().toLowerCase();
+      let date = row['DATE'] || row['DATE ENLEV.'] || row['DATE LIV'] || row['DATE PICK'] ||'N/A';
+      if (typeof date === 'number') {
+        date = this.excelDateToJSDate(date);
+      } else if (date) {
+        date = date;
+      }
       
       // Product: Use DESIGNATION first, then PRODUIT as fallback
-      let product = row['DESIGNATION'] || row['PRODUIT'] || 'Unknown Product';
-      if (typeof product === 'string') {
-        product = product.trim();
+let products = row['DESIGNATION'] || row['PRODUIT'] || '';
+
+      if (typeof products === 'string' && products.trim().length > 0) {
+        let text = products.toLowerCase().trim();
+
+        // Booster Bee fix
+        text = text.replace(/booster bee(\d+)/gi, 'booster bee x$1');
+        text = text.replace(/(\d+)booster bee/gi, '$1 booster bee');
+
+        // Normalize separators
+        text = text.replace(/,|\s+et\s+|\s+&\s+|\s*;\s*/g, '+');
+        text = text.replace(/\(\s*x?\s*(\d+)\s*\)/gi, ' x$1 ');
+
+        const items = text.split('+').map(i => i.trim()).filter(Boolean);
+
+        items.forEach(item => {
+          let qty = 1;
+          let name = item;
+
+          // Quantity extraction
+          const qtyPatterns = [
+            /^(\d+)\s*x?\s+(.+)$/i,
+            /^(.+?)\s+x(\d+)$/i,
+            /^(.+?)\s+\(x?\s*(\d+)\s*\)$/i,
+            /^(.+?)\s+(\d+)\s*$/i
+          ];
+
+          for (const pattern of qtyPatterns) {
+            const match = item.match(pattern);
+            if (match) {
+              qty = parseInt(match[1] || match[2], 10);
+              name = (match[1] ? match[2] : match[1]) || item;
+              break;
+            }
+          }
+
+          // === BETTER CLEANING (Fixed for d'entrée) ===
+          name = name
+            .replace(/\d+\s*dt/gi, '')           // remove prices
+            .replace(/\(.*?\)/g, '') 
+            .replace(/\s+/g, ' ')                // normalize spaces
+            .trim();
+
+          // Decode HTML entities
+          name = name.replace(/&#39;/g, "'")
+                     .replace(/&quot;/g, '"')
+                     .replace(/&amp;/g, '&');
+
+          if (name.length > 2) {
+            // Strong normalization for common products
+            let finalName = name;
+
+            if (name.includes('booster bee')) finalName = 'booster bee';
+            else if (name.includes('porte d')) finalName = 'porte d\'entrée';
+            else if (name.includes('grille')) finalName = 'grille à reine';
+            else if (name.includes('combinaison')) finalName = 'combinaison';
+            else if (name.includes('lève cadre') || name.includes('leve cadre')) finalName = 'lève-cadre';
+            else if (name.includes('enfumoir')) finalName = 'enfumoir';
+
+            productSales[finalName] = (productSales[finalName] || 0) + qty;
+          }
+        });
       }
 
-      const gov = row['GOUVERNORAT'] || 'N/A';
+      const gov = row['GOUVERNORAT'] || row['VILLE'] || 'N/A';
       const agence = row['AGENCE'] || 'N/A';
 
-      // Quantity: use 'qt' if exists, otherwise count 1 per row
-      const qty = parseInt(row['qt'] || row['QT'] || '1', 10) || 1;
 
       total += price;
       if (status.includes('livr')) delivered++;
 
       // Revenue by Date
       revenueByDate[date] = (revenueByDate[date] || 0) + price;
-
-      // Product Sales (Top Products)
-      productSales[product] = (productSales[product] || 0) + qty;
 
       // Gouvernorat & Agence
       gouvernoratCount[gov] = (gouvernoratCount[gov] || 0) + 1;
@@ -157,18 +223,23 @@ analyze() {
     // Build Charts
     this.buildCharts(revenueByDate, productSales, gouvernoratCount, agenceCount);
 
-    // Prepare Recent Orders (limit to 20 for performance)
-    this.recentOrders = this.rawData.slice(0, 20).map((row: any, i: number) => {
+    this.recentOrders = this.rawData.slice(0, this.rawData.length -1).map((row: any, i: number) => {
       const phoneMatch = row['CLIENT']?.toString().match(/\d+/) || [''];
+      let rawDate = row['DATE'] || row['DATE ENLEV.'] || row['DATE LIV'] || row['DATE PICK'] ||'N/A';
+      if (typeof rawDate === 'number') {
+        rawDate = this.excelDateToJSDate(rawDate);
+      } else if (rawDate) {
+        rawDate = rawDate;
+      }
       return {
         id: i + 1,
-        date: row['DATE'] || row['DATE ENLEV.'] || '',
+        date: rawDate,
         client: row['CLIENT'] || '',
         city: row['VILLE'] || '',
         phone: phoneMatch[0],
-        status: row['Etat'] || row['DERN. ANOMALIE'] || 'N/A',
-        statusClass: this.getStatusClass(row['Etat'] || row['DERN. ANOMALIE']),
-        total: row['PRIX'] || 0
+        status: row['Etat'] || row['ETAT'] || row['DERN. ANOMALIE'] || 'N/A',
+        statusClass: this.getStatusClass(row['Etat'] || row['ETAT'] || row['DERN. ANOMALIE']),
+        total: parseFloat((row['PRIX'] || '0').toString().replace(',', '.')) /1000 || 0
       };
     });
     this.cdr.detectChanges();
@@ -197,7 +268,7 @@ analyze() {
     // 🏆 Top 5 Products (Bar Chart) - FIXED
     const topProducts = Object.entries(products)
       .sort((a, b) => b[1] - a[1])
-      .slice(0, 5);
+      .slice(3, 20);
 
     this.productChart = {
       chart: { 
@@ -210,9 +281,11 @@ analyze() {
         data: topProducts.map(([, qty]) => qty) 
       }],
       xaxis: { 
-        categories: topProducts.map(([name]) => 
-          name.length > 28 ? name.substring(0, 25) + '...' : name
-        ),
+        categories: topProducts.map(([name]) => {
+          let clean = name.replace(/&#39;/g, "'")
+                          .replace(/&quot;/g, '"').replace("'", "'")
+          return clean.length > 25 ? clean.substring(0, 22) + '...' : clean;
+        }),
         labels: { 
           rotate: -45, 
           style: { fontSize: '11px' } 
