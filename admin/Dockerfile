@@ -5,18 +5,19 @@ FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Copy package files
+# 1. Install dependencies first (CACHE LAYER)
 COPY package*.json ./
-RUN npm install --legacy-peer-deps
+RUN npm ci --legacy-peer-deps
 
-# Install Angular CLI
-RUN npm install -g @angular/cli
-
-# Copy project files
+# 2. Copy only after dependencies (important for cache)
 COPY . .
 
-# Build Angular app
-RUN ng build --configuration production
+# 3. Increase Node memory (VERY IMPORTANT for Angular builds)
+ENV NODE_OPTIONS=--max-old-space-size=4096
+
+# 4. Build (no global Angular CLI needed)
+RUN npm run build -- --configuration production
+
 
 # ===========================
 # Stage 2: Serve with Nginx
@@ -25,8 +26,7 @@ FROM nginx:alpine
 
 RUN rm -rf /usr/share/nginx/html/*
 
-# ✅ FIXED PATH
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/dist/ /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
