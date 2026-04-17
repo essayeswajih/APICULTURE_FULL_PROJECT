@@ -28,9 +28,9 @@ RUN rm -rf /usr/share/nginx/html/*
 
 # ✅ FIX: copy the actual Angular build output folder
 # Replace <project-name> with your angular.json "outputPath"
-COPY --from=build /app/dist/<project-name> /usr/share/nginx/html
-
+COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 
 EXPOSE 80
 
