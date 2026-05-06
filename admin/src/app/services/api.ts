@@ -39,7 +39,7 @@ export interface Product {
   num_ratings?: number;       // Number of ratings for the product
   slug?: string;              // Optional slug for the product
   shipping_cost?: number;     // Optional field for shipping cost
-  subcategory_id?: number;    // Optional field for subcategory ID
+  subcategory_id?: number | null;    // Optional field for subcategory ID
 }
 
 

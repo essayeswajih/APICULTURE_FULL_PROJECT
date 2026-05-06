@@ -111,20 +111,18 @@
 
   <!-- SUBCATEGORY -->
   <div class="form-group">
-    <label class="form-label required" >Subcategory</label>
+    <label class="form-label">Subcategory</label>
     <nz-select
       [(ngModel)]="product.subcategory_id"
       name="subcategory_id"
       [ngModelOptions]="{standalone: true}"
-      nzPlaceHolder="Select a subcategory"
+      nzPlaceHolder="No subcategory"
       [nzDisabled]="!product.category_id"
-      [class.error]="submitted && !product.subcategory_id"
+      nzAllowClear
     >
+      <nz-option [nzValue]="null" nzLabel="No subcategory"></nz-option>
       <nz-option *ngFor="let subcat of filteredSubcategories" [nzValue]="subcat.id" [nzLabel]="subcat.name"></nz-option>
     </nz-select>
-    <div class="error-message" *ngIf="submitted && !product.subcategory_id">
-      Please select a subcategory
-    </div>
   </div>
   <!-- MAIN IMAGE -->
   <div class="form-group">

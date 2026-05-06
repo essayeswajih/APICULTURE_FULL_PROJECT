@@ -78,7 +78,8 @@ export class ProductManagement implements OnInit {
     buzzent: '',
     rating: 5,
     num_ratings: 0,
-    shipping_cost: 9
+    shipping_cost: 9,
+    subcategory_id: null
   };
 
   constructor(
@@ -210,7 +211,8 @@ private applyFilter() {
       buzzent: '',
       rating: 5,
       num_ratings: 0,
-      shipping_cost: 9
+      shipping_cost: 9,
+      subcategory_id: null
     };
     this.editMode = false;
     this.editProductId = null;
@@ -220,15 +222,20 @@ private applyFilter() {
     return this.products.filter(p => p.promo).length;
   }
   handleSave(updated: Product) {
+  const productToSave: Product = {
+    ...updated,
+    subcategory_id: updated.subcategory_id ? Number(updated.subcategory_id) : null
+  };
+
   if (this.editMode && this.editProductId) {
-    this.apiService.updateProduct(this.editProductId, updated).subscribe({
+    this.apiService.updateProduct(this.editProductId, productToSave).subscribe({
       next: () => {
         this.loadProducts();
         this.closeDrawer();
       }
     });
   } else {
-    this.apiService.addProduct(updated).subscribe({
+    this.apiService.addProduct(productToSave).subscribe({
       next: () => {
         this.loadProducts();
         this.closeDrawer();

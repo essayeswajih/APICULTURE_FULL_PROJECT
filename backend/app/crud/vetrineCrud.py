@@ -71,7 +71,7 @@ def create_product(db: Session, product: ProductBase) -> Product:
         price=product.price,
         stock_quantity=product.stock_quantity,
         category_id=product.category_id,  # Handle optional category_id
-        subcategory_id=product.subcategory_id,
+        subcategory_id=product.subcategory_id or None,
         discounted_price=product.discounted_price,
         image_url=product.image_url,
         image2_url=product.image2_url,
@@ -98,8 +98,8 @@ def update_product(db: Session, product_id: int, product: ProductBase) -> Option
         db_product.description = product.description
         db_product.price = product.price
         db_product.stock_quantity = product.stock_quantity
-        db_product.category_id = product.category_id,
-        db_product.subcategory_id = product.subcategory_id,
+        db_product.category_id = product.category_id
+        db_product.subcategory_id = product.subcategory_id or None
         db_product.discounted_price = product.discounted_price
         db_product.image_url = product.image_url
         db_product.image2_url = product.image2_url

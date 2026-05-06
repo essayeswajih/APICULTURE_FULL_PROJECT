@@ -42,7 +42,7 @@ export class ProductFormComponent implements OnChanges {
     rating: 5,               // New field for average rating
     num_ratings: 10,           // New field for number of ratings
     shipping_cost: 9.0,        // New field for shipping cost
-    subcategory_id: 0,        // New field for subcategory ID
+    subcategory_id: null,        // Optional subcategory ID
   };
 
   @Input() categories: Category[] = [];
@@ -67,7 +67,7 @@ export class ProductFormComponent implements OnChanges {
   onCategoryChange(categoryId: number): void {
     // mohamed: coerce to number because nz-select can emit string values.
     this.product.category_id = Number(categoryId);
-    this.product.subcategory_id = 0;
+    this.product.subcategory_id = null;
     this.updateFilteredSubcategories();
   }
 
@@ -87,7 +87,10 @@ export class ProductFormComponent implements OnChanges {
       return;
     }
 
-    this.save.emit(this.product);
+    this.save.emit({
+      ...this.product,
+      subcategory_id: this.product.subcategory_id ? Number(this.product.subcategory_id) : null
+    });
   }
 
   onCancel() {
