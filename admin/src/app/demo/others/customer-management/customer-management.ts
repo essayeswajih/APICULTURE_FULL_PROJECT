@@ -9,6 +9,7 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzStatisticModule } from 'ng-zorro-antd/statistic';
 import { NzTableModule } from 'ng-zorro-antd/table';
@@ -28,6 +29,9 @@ interface CustomerSummary {
   firstOrderDate: string;
 }
 
+type CustomerSortField = 'lastOrderDate' | 'totalPaid' | 'orderCount';
+type CustomerSortDirection = 'ascend' | 'descend';
+
 @Component({
   selector: 'app-customer-management',
   standalone: true,
@@ -40,6 +44,7 @@ interface CustomerSummary {
     NzIconModule,
     NzInputModule,
     NzModalModule,
+    NzSelectModule,
     NzSpinModule,
     NzStatisticModule,
     NzTableModule,
@@ -55,6 +60,10 @@ export class CustomerManagement implements OnInit {
   filteredCustomers: CustomerSummary[] = [];
 
   searchTerm = '';
+  nameFilter = '';
+  emailFilter = '';
+  sortField: CustomerSortField = 'lastOrderDate';
+  sortDirection: CustomerSortDirection = 'descend';
   loading = false;
   errorMessage = '';
 
@@ -99,7 +108,7 @@ export class CustomerManagement implements OnInit {
       next: (orders) => {
         this.orders = orders || [];
         this.customers = this.groupOrdersByCustomer(this.orders);
-        this.applyFilter();
+        this.applyFiltersAndSort();
         this.loading = false;
         this.cdr.detectChanges();
       },
@@ -112,12 +121,16 @@ export class CustomerManagement implements OnInit {
   }
 
   applyFilter(): void {
-    const term = this.searchTerm.trim().toLowerCase();
+    this.applyFiltersAndSort();
+  }
 
-    if (!term) {
-      this.filteredCustomers = [...this.customers];
-    } else {
-      this.filteredCustomers = this.customers.filter((customer) => {
+  applyFiltersAndSort(resetPage = true): void {
+    const term = this.searchTerm.trim().toLowerCase();
+    const name = this.nameFilter.trim().toLowerCase();
+    const email = this.emailFilter.trim().toLowerCase();
+
+    const customers = this.customers.filter((customer) => {
+      const matchesSearch = !term || (() => {
         const text = [
           customer.displayName,
           customer.email,
@@ -127,11 +140,47 @@ export class CustomerManagement implements OnInit {
         ].join(' ').toLowerCase();
 
         return text.includes(term);
-      });
+      })();
+      const matchesName = !name || customer.displayName.toLowerCase().includes(name);
+      const matchesEmail = !email || customer.email.toLowerCase().includes(email);
+
+      return matchesSearch && matchesName && matchesEmail;
+    });
+
+    this.filteredCustomers = this.sortCustomers(customers);
+
+    if (resetPage) {
+      this.pageIndex = 1;
+    }
+  }
+
+  updateSort(field: CustomerSortField, direction: CustomerSortDirection): void {
+    this.sortField = field;
+    this.sortDirection = direction;
+    this.applyFiltersAndSort();
+  }
+
+  updateColumnSort(field: CustomerSortField, direction: string | null): void {
+    if (direction !== 'ascend' && direction !== 'descend') {
+      return;
     }
 
-    this.pageIndex = 1;
+    this.updateSort(field, direction);
   }
+
+  clearFilters(): void {
+    this.searchTerm = '';
+    this.nameFilter = '';
+    this.emailFilter = '';
+    this.applyFiltersAndSort();
+  }
+
+  sortByOrders = (a: CustomerSummary, b: CustomerSummary): number => a.orderCount - b.orderCount;
+
+  sortByTotalPaid = (a: CustomerSummary, b: CustomerSummary): number => a.totalPaid - b.totalPaid;
+
+  sortByLastOrder = (a: CustomerSummary, b: CustomerSummary): number =>
+    new Date(a.lastOrderDate).getTime() - new Date(b.lastOrderDate).getTime();
 
   openHistory(customer: CustomerSummary): void {
     this.selectedCustomer = customer;
@@ -253,5 +302,31 @@ export class CustomerManagement implements OnInit {
     }
 
     return `order:${order.id}`;
+  }
+
+  private sortCustomers(customers: CustomerSummary[]): CustomerSummary[] {
+    const direction = this.sortDirection === 'ascend' ? 1 : -1;
+
+    return [...customers].sort((a, b) => {
+      let comparison = 0;
+
+      if (this.sortField === 'lastOrderDate') {
+        comparison = new Date(a.lastOrderDate).getTime() - new Date(b.lastOrderDate).getTime();
+      }
+
+      if (this.sortField === 'totalPaid') {
+        comparison = a.totalPaid - b.totalPaid;
+      }
+
+      if (this.sortField === 'orderCount') {
+        comparison = a.orderCount - b.orderCount;
+      }
+
+      if (comparison === 0) {
+        comparison = a.displayName.localeCompare(b.displayName);
+      }
+
+      return comparison * direction;
+    });
   }
 }

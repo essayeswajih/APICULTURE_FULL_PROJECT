@@ -31,13 +31,49 @@
         <h3>Customer List</h3>
         <p>{{ filteredCustomers.length }} customers found</p>
       </div>
+    </div>
+
+    <div class="customer-controls">
       <input
         nz-input
         class="search-input"
-        placeholder="Search name, email, phone, location..."
+        placeholder="Search all customer fields..."
         [(ngModel)]="searchTerm"
-        (ngModelChange)="applyFilter()"
+        (ngModelChange)="applyFiltersAndSort()"
       />
+      <input
+        nz-input
+        placeholder="Filter by customer name"
+        [(ngModel)]="nameFilter"
+        (ngModelChange)="applyFiltersAndSort()"
+      />
+      <input
+        nz-input
+        placeholder="Filter by email"
+        [(ngModel)]="emailFilter"
+        (ngModelChange)="applyFiltersAndSort()"
+      />
+      <nz-select
+        class="sort-select"
+        [(ngModel)]="sortField"
+        (ngModelChange)="updateSort($event, sortDirection)"
+        nzPlaceHolder="Sort by"
+      >
+        <nz-option nzValue="lastOrderDate" nzLabel="Last order"></nz-option>
+        <nz-option nzValue="totalPaid" nzLabel="Total paid"></nz-option>
+        <nz-option nzValue="orderCount" nzLabel="Orders"></nz-option>
+      </nz-select>
+      <nz-select
+        class="direction-select"
+        [(ngModel)]="sortDirection"
+        (ngModelChange)="updateSort(sortField, $event)"
+      >
+        <nz-option nzValue="descend" nzLabel="High to low"></nz-option>
+        <nz-option nzValue="ascend" nzLabel="Low to high"></nz-option>
+      </nz-select>
+      <button nz-button nzType="default" (click)="clearFilters()">
+        Clear
+      </button>
     </div>
 
     @if (errorMessage) {
@@ -61,9 +97,27 @@
             <tr>
               <th>Customer</th>
               <th>Contact</th>
-              <th>Orders</th>
-              <th>Total Paid</th>
-              <th>Last Order</th>
+              <th
+                [nzSortFn]="sortByOrders"
+                [nzSortOrder]="sortField === 'orderCount' ? sortDirection : null"
+                (nzSortOrderChange)="updateColumnSort('orderCount', $event)"
+              >
+                Orders
+              </th>
+              <th
+                [nzSortFn]="sortByTotalPaid"
+                [nzSortOrder]="sortField === 'totalPaid' ? sortDirection : null"
+                (nzSortOrderChange)="updateColumnSort('totalPaid', $event)"
+              >
+                Total Paid
+              </th>
+              <th
+                [nzSortFn]="sortByLastOrder"
+                [nzSortOrder]="sortField === 'lastOrderDate' ? sortDirection : null"
+                (nzSortOrderChange)="updateColumnSort('lastOrderDate', $event)"
+              >
+                Last Order
+              </th>
               <th class="actions-column">History</th>
             </tr>
           </thead>
