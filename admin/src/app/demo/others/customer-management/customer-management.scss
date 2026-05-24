@@ -213,11 +213,17 @@ td small {
   gap: 20px;
 }
 
+.vip-card-stack {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  max-width: 540px;
+}
+
 .vip-card-preview {
   position: relative;
   overflow: hidden;
   width: 100%;
-  max-width: 540px;
   aspect-ratio: 1.586 / 1;
   min-height: 0;
   padding: 24px;
@@ -264,7 +270,8 @@ td small {
 .vip-card-topline,
 .vip-card-main,
 .vip-card-details,
-.vip-code-panel {
+.vip-code-panel,
+.vip-face-footer {
   position: relative;
   z-index: 1;
 }
@@ -377,6 +384,50 @@ td small {
   color: #111827;
 }
 
+.vip-face-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+
+  span {
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 11px;
+  }
+
+  strong {
+    color: #f6c343;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+  }
+}
+
+.vip-card-back {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 1.586 / 1;
+  color: #111827;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 52%, #fff7dc 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+
+  &.locked {
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  }
+}
+
+.vip-card-strip {
+  height: 54px;
+  margin-top: 24px;
+  background: #111827;
+}
+
+.vip-back-content {
+  padding: 18px 22px 20px;
+}
+
 .vip-code-panel {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
@@ -388,7 +439,7 @@ td small {
   border-radius: 0;
 
   strong {
-    color: #f6c343;
+    color: #111827;
     font-size: 19px;
     letter-spacing: 0.1em;
     text-align: right;
@@ -398,7 +449,7 @@ td small {
 .barcode {
   display: flex;
   align-items: stretch;
-  height: 48px;
+  height: 62px;
   padding: 8px;
   background: #ffffff;
   border: 1px solid #e5e7eb;
@@ -420,7 +471,7 @@ td small {
 
 .barcode-code {
   margin-top: 6px;
-  color: rgba(255, 255, 255, 0.76);
+  color: #374151;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-align: center;
@@ -429,14 +480,29 @@ td small {
 .vip-card-watermark {
   display: grid;
   place-items: center;
-  min-height: 54px;
-  color: rgba(255, 255, 255, 0.72);
-  background: rgba(15, 23, 42, 0.38);
-  border: 1px dashed rgba(255, 255, 255, 0.34);
+  min-height: 76px;
+  color: #64748b;
+  background: rgba(248, 250, 252, 0.92);
+  border: 1px dashed #cbd5e1;
   border-radius: 8px;
   font-size: 12px;
   font-weight: 800;
   letter-spacing: 0.1em;
+}
+
+.vip-back-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 12px;
+  color: #64748b;
+  font-size: 11px;
+
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 .vip-panel {

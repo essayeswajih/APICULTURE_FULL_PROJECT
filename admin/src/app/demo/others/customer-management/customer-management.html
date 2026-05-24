@@ -255,62 +255,79 @@
   <ng-container *nzModalContent>
     @if (selectedVipCustomer) {
       <div class="vip-modal-grid">
-        <section class="vip-card-preview" [class.locked]="!selectedVipCard?.approved">
-          <div class="vip-card-topline">
-            <span>Apiculture Galai</span>
-            <strong>VIP</strong>
-          </div>
+        <div class="vip-card-stack">
+          <section class="vip-card-preview" [class.locked]="!selectedVipCard?.approved">
+            <div class="vip-card-topline">
+              <span>Apiculture Galai</span>
+              <strong>VIP</strong>
+            </div>
 
-          <div class="vip-card-main">
-            <div class="vip-mark">
-              {{ selectedVipCustomer.displayName.charAt(0) | uppercase }}
+            <div class="vip-card-main">
+              <div class="vip-mark">
+                {{ selectedVipCustomer.displayName.charAt(0) | uppercase }}
+              </div>
+              <div>
+                <span>Member</span>
+                <h3>{{ selectedVipCustomer.displayName }}</h3>
+                <p>{{ selectedVipCustomer.email || 'No email saved' }}</p>
+              </div>
             </div>
-            <div>
-              <span>Member</span>
-              <h3>{{ selectedVipCustomer.displayName }}</h3>
-              <p>{{ selectedVipCustomer.email || 'No email saved' }}</p>
-            </div>
-          </div>
 
-          <div class="vip-card-details">
-            <div>
-              <span>Phone</span>
-              <strong>{{ selectedVipCustomer.telephone || 'No phone' }}</strong>
+            <div class="vip-card-details">
+              <div>
+                <span>Phone</span>
+                <strong>{{ selectedVipCustomer.telephone || 'No phone' }}</strong>
+              </div>
+              <div>
+                <span>Total orders</span>
+                <strong>{{ selectedVipCustomer.totalPaid | number:'1.2-2' }} DT</strong>
+              </div>
+              <div>
+                <span>Orders</span>
+                <strong>{{ selectedVipCustomer.orderCount }}</strong>
+              </div>
+              <div>
+                <span>Issued</span>
+                <strong>{{ selectedVipCard?.issuedAt ? (selectedVipCard?.issuedAt | date:'mediumDate') : 'Pending approval' }}</strong>
+              </div>
             </div>
-            <div>
-              <span>Total orders</span>
-              <strong>{{ selectedVipCustomer.totalPaid | number:'1.2-2' }} DT</strong>
-            </div>
-            <div>
-              <span>Orders</span>
-              <strong>{{ selectedVipCustomer.orderCount }}</strong>
-            </div>
-            <div>
-              <span>Issued</span>
-              <strong>{{ selectedVipCard?.issuedAt ? (selectedVipCard?.issuedAt | date:'mediumDate') : 'Pending approval' }}</strong>
-            </div>
-          </div>
 
-          <div class="vip-code-panel">
-            <span>VIP code</span>
-            <strong>{{ selectedVipCard?.code || 'Generated after admin approval' }}</strong>
-          </div>
+            <div class="vip-face-footer">
+              <span>Member since {{ selectedVipCustomer.firstOrderDate | date:'yyyy' }}</span>
+              <strong>{{ selectedVipCard?.approved ? 'ACTIVE' : 'PENDING' }}</strong>
+            </div>
+          </section>
 
-          @if (selectedVipCard?.approved) {
-            <div class="barcode" aria-label="VIP card barcode">
-              @for (segment of getBarcodeSegments(selectedVipCard?.code); track $index) {
-                <span
-                  [class.bar]="segment.bar"
-                  [class.space]="!segment.bar"
-                  [style.width.px]="segment.width"
-                ></span>
+          <section class="vip-card-back" [class.locked]="!selectedVipCard?.approved">
+            <div class="vip-card-strip"></div>
+            <div class="vip-back-content">
+              <div class="vip-code-panel">
+                <span>VIP code</span>
+                <strong>{{ selectedVipCard?.code || 'Generated after admin approval' }}</strong>
+              </div>
+
+              @if (selectedVipCard?.approved) {
+                <div class="barcode" aria-label="VIP card barcode">
+                  @for (segment of getBarcodeSegments(selectedVipCard?.code); track $index) {
+                    <span
+                      [class.bar]="segment.bar"
+                      [class.space]="!segment.bar"
+                      [style.width.px]="segment.width"
+                    ></span>
+                  }
+                </div>
+                <div class="barcode-code">{{ selectedVipCard?.code }}</div>
+              } @else {
+                <div class="vip-card-watermark">WAITING ADMIN PERMISSION</div>
               }
+
+              <div class="vip-back-meta">
+                <span>{{ selectedVipCustomer.email || 'No email saved' }}</span>
+                <span>{{ selectedVipCustomer.telephone || 'No phone saved' }}</span>
+              </div>
             </div>
-            <div class="barcode-code">{{ selectedVipCard?.code }}</div>
-          } @else {
-            <div class="vip-card-watermark">WAITING ADMIN PERMISSION</div>
-          }
-        </section>
+          </section>
+        </div>
 
         <aside class="vip-panel">
           <div class="vip-status" [class.approved]="selectedVipCard?.approved" [class.eligible]="isVipEligible(selectedVipCustomer)">
