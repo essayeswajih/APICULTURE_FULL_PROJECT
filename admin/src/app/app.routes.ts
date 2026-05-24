@@ -34,7 +34,7 @@ export const routes: Routes = [
       {
         path: 'customer-management',
         loadComponent: () =>
-          import('./demo/others/sample-page/sample-page.component').then(c => c.SamplePageComponent)
+          import('./demo/others/customer-management/customer-management').then(c => c.CustomerManagement)
       },
       {
         path: 'user-management',

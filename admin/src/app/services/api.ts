@@ -61,6 +61,7 @@ export interface Order {
   telephone: string;
   location: string;
   payment_method: string;
+  payed?: string;
   code: string; // Unique code for the order
 }
 

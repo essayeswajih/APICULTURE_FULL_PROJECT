@@ -1,0 +1,249 @@
+<div class="customers-page">
+  <div class="page-header">
+    <div>
+      <h2>Customers</h2>
+      <p class="subtitle">Users who ordered from your website, grouped by email or phone number.</p>
+    </div>
+    <button nz-button nzType="default" (click)="loadCustomers()" [disabled]="loading">
+      <span nz-icon nzType="reload"></span>
+      Refresh
+    </button>
+  </div>
+
+  <div class="stats-grid">
+    <nz-card>
+      <nz-statistic nzTitle="Total Customers" [nzValue]="customers.length"></nz-statistic>
+    </nz-card>
+    <nz-card>
+      <nz-statistic nzTitle="Total Revenue" [nzValue]="ordersRevenue" nzSuffix="DT"></nz-statistic>
+    </nz-card>
+    <nz-card>
+      <nz-statistic nzTitle="Orders" [nzValue]="orders.length"></nz-statistic>
+    </nz-card>
+    <nz-card>
+      <nz-statistic nzTitle="Average Per Customer" [nzValue]="averageCustomerValue" nzSuffix="DT"></nz-statistic>
+    </nz-card>
+  </div>
+
+  <nz-card>
+    <div class="table-toolbar">
+      <div>
+        <h3>Customer List</h3>
+        <p>{{ filteredCustomers.length }} customers found</p>
+      </div>
+      <input
+        nz-input
+        class="search-input"
+        placeholder="Search name, email, phone, location..."
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="applyFilter()"
+      />
+    </div>
+
+    @if (errorMessage) {
+      <div class="error-state">{{ errorMessage }}</div>
+    }
+
+    <nz-spin [nzSpinning]="loading">
+      @if (!loading && filteredCustomers.length === 0) {
+        <nz-empty nzNotFoundContent="No customers found"></nz-empty>
+      } @else {
+        <nz-table
+          #customerTable
+          [nzData]="filteredCustomers"
+          [nzPageIndex]="pageIndex"
+          [nzPageSize]="pageSize"
+          [nzShowPagination]="true"
+          [nzScroll]="{ x: '920px' }"
+          (nzPageIndexChange)="pageIndex = $event"
+        >
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Contact</th>
+              <th>Orders</th>
+              <th>Total Paid</th>
+              <th>Last Order</th>
+              <th class="actions-column">History</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let customer of customerTable.data; trackBy: trackCustomer">
+              <td>
+                <div class="customer-cell">
+                  <div class="avatar">{{ customer.displayName.charAt(0) | uppercase }}</div>
+                  <div>
+                    <strong>{{ customer.displayName }}</strong>
+                    <span>{{ customer.location || 'No address saved' }}</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="contact-stack">
+                  <span>{{ customer.email || 'No email' }}</span>
+                  <small>{{ customer.telephone || 'No phone' }}</small>
+                </div>
+              </td>
+              <td>
+                <nz-tag nzColor="blue">{{ customer.orderCount }} orders</nz-tag>
+              </td>
+              <td>
+                <strong>{{ customer.totalPaid | number:'1.2-2' }} DT</strong>
+              </td>
+              <td>{{ customer.lastOrderDate | date:'mediumDate' }}</td>
+              <td class="actions-column">
+                <button
+                  nz-button
+                  nzType="default"
+                  nzShape="circle"
+                  nz-tooltip
+                  nzTooltipTitle="View order history"
+                  (click)="openHistory(customer)"
+                >
+                  <span nz-icon nzType="history"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </nz-table>
+      }
+    </nz-spin>
+  </nz-card>
+</div>
+
+<nz-modal
+  [(nzVisible)]="historyVisible"
+  [nzTitle]="historyTitle"
+  [nzFooter]="null"
+  [nzWidth]="920"
+  (nzOnCancel)="closeHistory()"
+>
+  <ng-container *nzModalContent>
+    @if (selectedCustomer) {
+      <div class="history-summary">
+        <div>
+          <span>Total Paid</span>
+          <strong>{{ selectedCustomer.totalPaid | number:'1.2-2' }} DT</strong>
+        </div>
+        <div>
+          <span>Orders</span>
+          <strong>{{ selectedCustomer.orderCount }}</strong>
+        </div>
+        <div>
+          <span>Average Order</span>
+          <strong>{{ getAverageOrderValue(selectedCustomer) | number:'1.2-2' }} DT</strong>
+        </div>
+        <div>
+          <span>First Order</span>
+          <strong>{{ selectedCustomer.firstOrderDate | date:'mediumDate' }}</strong>
+        </div>
+      </div>
+
+      <nz-table
+        #historyTable
+        [nzData]="selectedCustomer.orders"
+        [nzPageSize]="6"
+        [nzScroll]="{ x: '760px' }"
+      >
+        <thead>
+          <tr>
+            <th>Order</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of historyTable.data; trackBy: trackOrder">
+            <td>
+              <strong>#{{ order.code }}</strong>
+              <small>{{ order.payment_method }}</small>
+            </td>
+            <td>{{ order.created_at | date:'short' }}</td>
+            <td>
+              <nz-tag [nzColor]="getStatusColor(order.status)">{{ order.status | titlecase }}</nz-tag>
+            </td>
+            <td>{{ order.items.length }}</td>
+            <td>{{ order.total_amount | number:'1.2-2' }} DT</td>
+            <td>
+              <button nz-button nzSize="small" nzType="primary" (click)="openOrderDetail(order)">
+                View
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    }
+  </ng-container>
+</nz-modal>
+
+<nz-modal
+  [(nzVisible)]="detailVisible"
+  [nzTitle]="orderDetailTitle"
+  [nzFooter]="null"
+  [nzWidth]="780"
+  (nzOnCancel)="closeOrderDetail()"
+>
+  <ng-container *nzModalContent>
+    @if (selectedOrder) {
+      <div class="detail-grid">
+        <div>
+          <span>Customer</span>
+          <strong>{{ selectedOrder.username }}</strong>
+        </div>
+        <div>
+          <span>Status</span>
+          <nz-tag [nzColor]="getStatusColor(selectedOrder.status)">{{ selectedOrder.status | titlecase }}</nz-tag>
+        </div>
+        <div>
+          <span>Email</span>
+          <strong>{{ selectedOrder.email }}</strong>
+        </div>
+        <div>
+          <span>Phone</span>
+          <strong>{{ selectedOrder.telephone }}</strong>
+        </div>
+        <div class="wide">
+          <span>Address</span>
+          <strong>{{ selectedOrder.location }}</strong>
+        </div>
+        <div>
+          <span>Payment</span>
+          <strong>{{ selectedOrder.payment_method }}</strong>
+        </div>
+        <div>
+          <span>Date</span>
+          <strong>{{ selectedOrder.created_at | date:'medium' }}</strong>
+        </div>
+      </div>
+
+      <div class="items-panel">
+        <h4>Order Items</h4>
+        <div class="item-row" *ngFor="let item of selectedOrder.items; trackBy: trackItem">
+          <div>
+            <strong>{{ item.name || ('Product #' + item.product_id) }}</strong>
+            <span>Quantity: {{ item.quantity }} x {{ item.price | number:'1.2-2' }} DT</span>
+          </div>
+          <strong>{{ item.quantity * item.price | number:'1.2-2' }} DT</strong>
+        </div>
+      </div>
+
+      <div class="totals-panel">
+        <div>
+          <span>Subtotal</span>
+          <strong>{{ getItemsSubtotal(selectedOrder) | number:'1.2-2' }} DT</strong>
+        </div>
+        <div>
+          <span>Shipping</span>
+          <strong>{{ calculateShippingCost(selectedOrder) | number:'1.2-2' }} DT</strong>
+        </div>
+        <div class="grand-total">
+          <span>Total Paid</span>
+          <strong>{{ selectedOrder.total_amount | number:'1.2-2' }} DT</strong>
+        </div>
+      </div>
+    }
+  </ng-container>
+</nz-modal>
