@@ -165,7 +165,7 @@
                     nzTooltipTitle="VIP card"
                     (click)="openVipCard(customer)"
                   >
-                    <span nz-icon nzType="idcard"></span>
+                    <span nz-icon nzType="credit-card"></span>
                   </button>
                 </div>
               </td>
@@ -368,6 +368,18 @@
             <span nz-icon nzType="safety-certificate"></span>
             {{ selectedVipCard?.approved ? 'VIP card approved' : 'Grant VIP card' }}
           </button>
+
+          @if (selectedVipCard?.approved) {
+            <button
+              nz-button
+              nzDanger
+              class="vip-approve-button"
+              (click)="revokeVipCard()"
+            >
+              <span nz-icon nzType="stop"></span>
+              Revoke VIP card
+            </button>
+          }
         </aside>
       </div>
     }

@@ -1,8 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Api, Order } from '../../../services/api';
 
+import { IconService } from '@ant-design/icons-angular';
+import {
+  CreditCardOutline,
+  HistoryOutline,
+  ReloadOutline,
+  SafetyCertificateOutline,
+  StopOutline
+} from '@ant-design/icons-angular/icons';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
@@ -110,6 +118,8 @@ const CODE_39_PATTERNS: Record<string, string> = {
   styleUrls: ['./customer-management.scss']
 })
 export class CustomerManagement implements OnInit {
+  private iconService = inject(IconService);
+
   orders: Order[] = [];
   customers: CustomerSummary[] = [];
   filteredCustomers: CustomerSummary[] = [];
@@ -138,7 +148,17 @@ export class CustomerManagement implements OnInit {
   constructor(
     private apiService: Api,
     private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    this.iconService.addIcon(
+      ...[
+        CreditCardOutline,
+        HistoryOutline,
+        ReloadOutline,
+        SafetyCertificateOutline,
+        StopOutline
+      ]
+    );
+  }
 
   get ordersRevenue(): number {
     return this.orders.reduce((sum, order) => sum + Number(order.total_amount || 0), 0);
@@ -292,6 +312,17 @@ export class CustomerManagement implements OnInit {
     this.vipCards[this.selectedVipCustomer.key] = card;
     this.saveVipCards();
     this.updateCustomerVipCard(this.selectedVipCustomer.key, card);
+  }
+
+  revokeVipCard(): void {
+    if (!this.selectedVipCustomer?.vipCard) {
+      return;
+    }
+
+    const customerKey = this.selectedVipCustomer.key;
+    delete this.vipCards[customerKey];
+    this.saveVipCards();
+    this.updateCustomerVipCard(customerKey);
   }
 
   trackCustomer(_: number, customer: CustomerSummary): string {
@@ -484,7 +515,7 @@ export class CustomerManagement implements OnInit {
     localStorage.setItem(this.vipStorageKey, JSON.stringify(this.vipCards));
   }
 
-  private updateCustomerVipCard(key: string, card: VipCard): void {
+  private updateCustomerVipCard(key: string, card?: VipCard): void {
     const applyCard = (customer: CustomerSummary): CustomerSummary =>
       customer.key === key ? { ...customer, vipCard: card } : customer;
 

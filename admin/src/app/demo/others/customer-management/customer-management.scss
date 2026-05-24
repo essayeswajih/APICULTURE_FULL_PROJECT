@@ -208,29 +208,57 @@ td small {
 
 .vip-modal-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
-  gap: 18px;
+  grid-template-columns: minmax(0, 540px) minmax(260px, 1fr);
+  align-items: start;
+  gap: 20px;
 }
 
 .vip-card-preview {
   position: relative;
   overflow: hidden;
-  min-height: 430px;
-  padding: 26px;
-  color: #172033;
+  width: 100%;
+  max-width: 540px;
+  aspect-ratio: 1.586 / 1;
+  min-height: 0;
+  padding: 24px;
+  color: #111827;
   background:
-    linear-gradient(135deg, rgba(255, 194, 41, 0.36), rgba(255, 255, 255, 0) 42%),
-    linear-gradient(150deg, #ffffff 0%, #fff8e5 52%, #f4fbf0 100%);
-  border: 1px solid #e6c369;
-  border-radius: 12px;
-  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12);
+    radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.5), transparent 24%),
+    linear-gradient(135deg, #1f2937 0%, #111827 42%, #0f5132 100%);
+  border: 1px solid rgba(246, 195, 67, 0.55);
+  border-radius: 18px;
+  box-shadow: 0 24px 55px rgba(15, 23, 42, 0.22);
 
   &.locked {
-    border-color: #d9dee8;
+    border-color: #cbd5e1;
     background:
-      linear-gradient(135deg, rgba(226, 232, 240, 0.72), rgba(255, 255, 255, 0) 42%),
-      linear-gradient(150deg, #ffffff 0%, #f8fafc 100%);
+      radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.5), transparent 24%),
+      linear-gradient(135deg, #475569 0%, #334155 52%, #1f2937 100%);
   }
+}
+
+.vip-card-preview::before {
+  position: absolute;
+  right: -70px;
+  bottom: -110px;
+  width: 260px;
+  height: 260px;
+  content: '';
+  border: 1px solid rgba(246, 195, 67, 0.28);
+  border-radius: 50%;
+}
+
+.vip-card-preview::after {
+  position: absolute;
+  top: 78px;
+  right: 28px;
+  width: 52px;
+  height: 38px;
+  content: '';
+  background: linear-gradient(135deg, #d6a927, #ffe08a);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px rgba(17, 24, 39, 0.16);
 }
 
 .vip-card-topline,
@@ -245,10 +273,10 @@ td small {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 42px;
+  margin-bottom: 26px;
 
   span {
-    color: #6b7280;
+    color: rgba(255, 255, 255, 0.72);
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -269,37 +297,38 @@ td small {
 .vip-card-main {
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 28px;
+  gap: 14px;
+  margin-bottom: 18px;
 
   span {
-    color: #6b7280;
+    color: rgba(255, 255, 255, 0.64);
     font-size: 12px;
     text-transform: uppercase;
   }
 
   h3 {
     margin: 4px 0;
-    font-size: 26px;
+    color: #ffffff;
+    font-size: 24px;
     font-weight: 800;
   }
 
   p {
     margin: 0;
-    color: #4b5563;
+    color: rgba(255, 255, 255, 0.72);
   }
 }
 
 .vip-mark {
   display: grid;
   place-items: center;
-  width: 64px;
-  height: 64px;
+  width: 58px;
+  height: 58px;
   color: #14532d;
   background: #f6c343;
   border: 1px solid rgba(20, 83, 45, 0.18);
   border-radius: 12px;
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 800;
 }
 
@@ -311,17 +340,17 @@ td small {
 
 .vip-card-details {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-bottom: 18px;
+  gap: 8px;
+  margin-bottom: 12px;
 
   > div {
-    padding: 12px;
-    background: rgba(255, 255, 255, 0.68);
-    border: 1px solid rgba(148, 163, 184, 0.26);
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 8px;
   }
 }
 
-.vip-card-details span,
 .vip-code-panel span,
 .vip-info-list span,
 .vip-status span,
@@ -332,29 +361,45 @@ td small {
   font-size: 12px;
 }
 
-.vip-card-details strong,
+.vip-card-details span {
+  display: block;
+  margin-bottom: 2px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 11px;
+}
+
+.vip-card-details strong {
+  color: #ffffff;
+  font-size: 12px;
+}
+
 .vip-info-list strong {
   color: #111827;
 }
 
 .vip-code-panel {
-  margin-bottom: 16px;
-  padding: 14px;
-  background: rgba(17, 24, 39, 0.92);
-  border-radius: 8px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
 
   strong {
-    color: #ffffff;
-    font-size: 20px;
-    letter-spacing: 0.08em;
+    color: #f6c343;
+    font-size: 19px;
+    letter-spacing: 0.1em;
+    text-align: right;
   }
 }
 
 .barcode {
   display: flex;
   align-items: stretch;
-  height: 70px;
-  padding: 10px;
+  height: 48px;
+  padding: 8px;
   background: #ffffff;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
@@ -374,8 +419,8 @@ td small {
 }
 
 .barcode-code {
-  margin-top: 8px;
-  color: #374151;
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.76);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-align: center;
@@ -384,10 +429,10 @@ td small {
 .vip-card-watermark {
   display: grid;
   place-items: center;
-  min-height: 88px;
-  color: #64748b;
-  background: rgba(248, 250, 252, 0.82);
-  border: 1px dashed #cbd5e1;
+  min-height: 54px;
+  color: rgba(255, 255, 255, 0.72);
+  background: rgba(15, 23, 42, 0.38);
+  border: 1px dashed rgba(255, 255, 255, 0.34);
   border-radius: 8px;
   font-size: 12px;
   font-weight: 800;
@@ -470,8 +515,7 @@ td small {
   }
 
   .stats-grid,
-  .history-summary,
-  .vip-modal-grid {
+  .history-summary {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
