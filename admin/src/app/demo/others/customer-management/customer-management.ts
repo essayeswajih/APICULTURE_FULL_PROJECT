@@ -27,10 +27,65 @@ interface CustomerSummary {
   totalPaid: number;
   lastOrderDate: string;
   firstOrderDate: string;
+  vipCard?: VipCard;
+}
+
+interface VipCard {
+  code: string;
+  approved: boolean;
+  issuedAt: string;
+}
+
+interface BarcodeSegment {
+  bar: boolean;
+  width: number;
 }
 
 type CustomerSortField = 'lastOrderDate' | 'totalPaid' | 'orderCount';
 type CustomerSortDirection = 'ascend' | 'descend';
+
+const CODE_39_PATTERNS: Record<string, string> = {
+  '0': 'nnnwwnwnn',
+  '1': 'wnnwnnnnw',
+  '2': 'nnwwnnnnw',
+  '3': 'wnwwnnnnn',
+  '4': 'nnnwwnnnw',
+  '5': 'wnnwwnnnn',
+  '6': 'nnwwwnnnn',
+  '7': 'nnnwnnwnw',
+  '8': 'wnnwnnwnn',
+  '9': 'nnwwnnwnn',
+  A: 'wnnnnwnnw',
+  B: 'nnwnnwnnw',
+  C: 'wnwnnwnnn',
+  D: 'nnnnwwnnw',
+  E: 'wnnnwwnnn',
+  F: 'nnwnwwnnn',
+  G: 'nnnnnwwnw',
+  H: 'wnnnnwwnn',
+  I: 'nnwnnwwnn',
+  J: 'nnnnwwwnn',
+  K: 'wnnnnnnww',
+  L: 'nnwnnnnww',
+  M: 'wnwnnnnwn',
+  N: 'nnnnwnnww',
+  O: 'wnnnwnnwn',
+  P: 'nnwnwnnwn',
+  Q: 'nnnnnnwww',
+  R: 'wnnnnnwwn',
+  S: 'nnwnnnwwn',
+  T: 'nnnnwnwwn',
+  U: 'wwnnnnnnw',
+  V: 'nwwnnnnnw',
+  W: 'wwwnnnnnn',
+  X: 'nwnnwnnnw',
+  Y: 'wwnnwnnnn',
+  Z: 'nwwnwnnnn',
+  '-': 'nwnnnnwnw',
+  '.': 'wwnnnnwnn',
+  ' ': 'nwwnnnwnn',
+  '*': 'nwnnwnwnn'
+};
 
 @Component({
   selector: 'app-customer-management',
@@ -69,11 +124,16 @@ export class CustomerManagement implements OnInit {
 
   selectedCustomer: CustomerSummary | null = null;
   selectedOrder: Order | null = null;
+  selectedVipCustomer: CustomerSummary | null = null;
   historyVisible = false;
   detailVisible = false;
+  vipVisible = false;
 
   pageIndex = 1;
   pageSize = 10;
+  readonly vipThreshold = 1000;
+  private readonly vipStorageKey = 'apiculture-vip-cards-v1';
+  private vipCards: Record<string, VipCard> = {};
 
   constructor(
     private apiService: Api,
@@ -96,7 +156,16 @@ export class CustomerManagement implements OnInit {
     return this.selectedOrder ? `Order #${this.selectedOrder.code}` : 'Order details';
   }
 
+  get vipTitle(): string {
+    return this.selectedVipCustomer ? `${this.selectedVipCustomer.displayName} VIP card` : 'VIP card';
+  }
+
+  get selectedVipCard(): VipCard | undefined {
+    return this.selectedVipCustomer?.vipCard;
+  }
+
   ngOnInit(): void {
+    this.loadVipCards();
     this.loadCustomers();
   }
 
@@ -200,6 +269,31 @@ export class CustomerManagement implements OnInit {
     this.detailVisible = false;
   }
 
+  openVipCard(customer: CustomerSummary): void {
+    this.selectedVipCustomer = customer;
+    this.vipVisible = true;
+  }
+
+  closeVipCard(): void {
+    this.vipVisible = false;
+  }
+
+  approveVipCard(): void {
+    if (!this.selectedVipCustomer || !this.isVipEligible(this.selectedVipCustomer)) {
+      return;
+    }
+
+    const card: VipCard = {
+      code: this.selectedVipCustomer.vipCard?.code || this.generateVipCode(this.selectedVipCustomer),
+      approved: true,
+      issuedAt: this.selectedVipCustomer.vipCard?.issuedAt || new Date().toISOString()
+    };
+
+    this.vipCards[this.selectedVipCustomer.key] = card;
+    this.saveVipCards();
+    this.updateCustomerVipCard(this.selectedVipCustomer.key, card);
+  }
+
   trackCustomer(_: number, customer: CustomerSummary): string {
     return customer.key;
   }
@@ -234,6 +328,52 @@ export class CustomerManagement implements OnInit {
     }
 
     return customer.totalPaid / customer.orderCount;
+  }
+
+  isVipEligible(customer: CustomerSummary | null): boolean {
+    return Boolean(customer && customer.totalPaid > this.vipThreshold);
+  }
+
+  getVipProgress(customer: CustomerSummary | null): number {
+    if (!customer) {
+      return 0;
+    }
+
+    return Math.min(100, Math.round((customer.totalPaid / this.vipThreshold) * 100));
+  }
+
+  getVipMissingAmount(customer: CustomerSummary | null): number {
+    if (!customer || this.isVipEligible(customer)) {
+      return 0;
+    }
+
+    return this.vipThreshold - customer.totalPaid;
+  }
+
+  getBarcodeSegments(code: string | undefined): BarcodeSegment[] {
+    if (!code) {
+      return [];
+    }
+
+    const normalizedCode = `*${code.toUpperCase().replace(/[^A-Z0-9-. ]/g, '')}*`;
+    const segments: BarcodeSegment[] = [];
+
+    normalizedCode.split('').forEach((character, characterIndex) => {
+      const pattern = CODE_39_PATTERNS[character] || CODE_39_PATTERNS['0'];
+
+      pattern.split('').forEach((widthKey, index) => {
+        segments.push({
+          bar: index % 2 === 0,
+          width: widthKey === 'w' ? 3 : 1
+        });
+      });
+
+      if (characterIndex < normalizedCode.length - 1) {
+        segments.push({ bar: false, width: 1 });
+      }
+    });
+
+    return segments;
   }
 
   getStatusColor(status: string | undefined): string {
@@ -286,7 +426,8 @@ export class CustomerManagement implements OnInit {
       orderCount: sortedOrders.length,
       totalPaid: sortedOrders.reduce((sum, order) => sum + Number(order.total_amount || 0), 0),
       lastOrderDate: latestOrder?.created_at || '',
-      firstOrderDate: oldestOrder?.created_at || ''
+      firstOrderDate: oldestOrder?.created_at || '',
+      vipCard: this.vipCards[key]
     };
   }
 
@@ -328,5 +469,57 @@ export class CustomerManagement implements OnInit {
 
       return comparison * direction;
     });
+  }
+
+  private loadVipCards(): void {
+    try {
+      const savedCards = localStorage.getItem(this.vipStorageKey);
+      this.vipCards = savedCards ? JSON.parse(savedCards) : {};
+    } catch {
+      this.vipCards = {};
+    }
+  }
+
+  private saveVipCards(): void {
+    localStorage.setItem(this.vipStorageKey, JSON.stringify(this.vipCards));
+  }
+
+  private updateCustomerVipCard(key: string, card: VipCard): void {
+    const applyCard = (customer: CustomerSummary): CustomerSummary =>
+      customer.key === key ? { ...customer, vipCard: card } : customer;
+
+    this.customers = this.customers.map(applyCard);
+    this.filteredCustomers = this.filteredCustomers.map(applyCard);
+    this.selectedVipCustomer = this.selectedVipCustomer ? applyCard(this.selectedVipCustomer) : null;
+  }
+
+  private generateVipCode(customer: CustomerSummary): string {
+    const usedCodes = new Set(Object.values(this.vipCards).map((card) => card.code));
+    const baseCode = `VIP-${this.hashText(`${customer.key}|${customer.firstOrderDate}`).toString(36).toUpperCase().padStart(8, '0').slice(0, 8)}`;
+
+    if (!usedCodes.has(baseCode)) {
+      return baseCode;
+    }
+
+    let suffix = 2;
+    let code = `${baseCode}-${suffix}`;
+
+    while (usedCodes.has(code)) {
+      suffix += 1;
+      code = `${baseCode}-${suffix}`;
+    }
+
+    return code;
+  }
+
+  private hashText(value: string): number {
+    let hash = 2166136261;
+
+    for (let index = 0; index < value.length; index += 1) {
+      hash ^= value.charCodeAt(index);
+      hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
+    }
+
+    return hash >>> 0;
   }
 }

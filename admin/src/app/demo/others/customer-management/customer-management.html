@@ -146,16 +146,28 @@
               </td>
               <td>{{ customer.lastOrderDate | date:'mediumDate' }}</td>
               <td class="actions-column">
-                <button
-                  nz-button
-                  nzType="default"
-                  nzShape="circle"
-                  nz-tooltip
-                  nzTooltipTitle="View order history"
-                  (click)="openHistory(customer)"
-                >
-                  <span nz-icon nzType="history"></span>
-                </button>
+                <div class="action-buttons">
+                  <button
+                    nz-button
+                    nzType="default"
+                    nzShape="circle"
+                    nz-tooltip
+                    nzTooltipTitle="View order history"
+                    (click)="openHistory(customer)"
+                  >
+                    <span nz-icon nzType="history"></span>
+                  </button>
+                  <button
+                    nz-button
+                    [nzType]="customer.vipCard?.approved ? 'primary' : 'default'"
+                    nzShape="circle"
+                    nz-tooltip
+                    nzTooltipTitle="VIP card"
+                    (click)="openVipCard(customer)"
+                  >
+                    <span nz-icon nzType="idcard"></span>
+                  </button>
+                </div>
               </td>
             </tr>
           </tbody>
@@ -229,6 +241,135 @@
           </tr>
         </tbody>
       </nz-table>
+    }
+  </ng-container>
+</nz-modal>
+
+<nz-modal
+  [(nzVisible)]="vipVisible"
+  [nzTitle]="vipTitle"
+  [nzFooter]="null"
+  [nzWidth]="860"
+  (nzOnCancel)="closeVipCard()"
+>
+  <ng-container *nzModalContent>
+    @if (selectedVipCustomer) {
+      <div class="vip-modal-grid">
+        <section class="vip-card-preview" [class.locked]="!selectedVipCard?.approved">
+          <div class="vip-card-topline">
+            <span>Apiculture Galai</span>
+            <strong>VIP</strong>
+          </div>
+
+          <div class="vip-card-main">
+            <div class="vip-mark">
+              {{ selectedVipCustomer.displayName.charAt(0) | uppercase }}
+            </div>
+            <div>
+              <span>Member</span>
+              <h3>{{ selectedVipCustomer.displayName }}</h3>
+              <p>{{ selectedVipCustomer.email || 'No email saved' }}</p>
+            </div>
+          </div>
+
+          <div class="vip-card-details">
+            <div>
+              <span>Phone</span>
+              <strong>{{ selectedVipCustomer.telephone || 'No phone' }}</strong>
+            </div>
+            <div>
+              <span>Total orders</span>
+              <strong>{{ selectedVipCustomer.totalPaid | number:'1.2-2' }} DT</strong>
+            </div>
+            <div>
+              <span>Orders</span>
+              <strong>{{ selectedVipCustomer.orderCount }}</strong>
+            </div>
+            <div>
+              <span>Issued</span>
+              <strong>{{ selectedVipCard?.issuedAt ? (selectedVipCard?.issuedAt | date:'mediumDate') : 'Pending approval' }}</strong>
+            </div>
+          </div>
+
+          <div class="vip-code-panel">
+            <span>VIP code</span>
+            <strong>{{ selectedVipCard?.code || 'Generated after admin approval' }}</strong>
+          </div>
+
+          @if (selectedVipCard?.approved) {
+            <div class="barcode" aria-label="VIP card barcode">
+              @for (segment of getBarcodeSegments(selectedVipCard?.code); track $index) {
+                <span
+                  [class.bar]="segment.bar"
+                  [class.space]="!segment.bar"
+                  [style.width.px]="segment.width"
+                ></span>
+              }
+            </div>
+            <div class="barcode-code">{{ selectedVipCard?.code }}</div>
+          } @else {
+            <div class="vip-card-watermark">WAITING ADMIN PERMISSION</div>
+          }
+        </section>
+
+        <aside class="vip-panel">
+          <div class="vip-status" [class.approved]="selectedVipCard?.approved" [class.eligible]="isVipEligible(selectedVipCustomer)">
+            <span>Status</span>
+            @if (selectedVipCard?.approved) {
+              <strong>VIP card active</strong>
+            } @else if (isVipEligible(selectedVipCustomer)) {
+              <strong>Eligible for approval</strong>
+            } @else {
+              <strong>Not eligible yet</strong>
+            }
+          </div>
+
+          <div class="vip-rule">
+            <div class="vip-rule-header">
+              <span>Eligibility</span>
+              <strong>{{ getVipProgress(selectedVipCustomer) }}%</strong>
+            </div>
+            <div class="vip-progress">
+              <span [style.width.%]="getVipProgress(selectedVipCustomer)"></span>
+            </div>
+            @if (isVipEligible(selectedVipCustomer)) {
+              <p>Customer has passed the {{ vipThreshold | number:'1.0-0' }} DT requirement.</p>
+            } @else {
+              <p>{{ getVipMissingAmount(selectedVipCustomer) | number:'1.2-2' }} DT remaining before this customer can receive a VIP card.</p>
+            }
+          </div>
+
+          <div class="vip-info-list">
+            <div>
+              <span>Name</span>
+              <strong>{{ selectedVipCustomer.displayName }}</strong>
+            </div>
+            <div>
+              <span>Email</span>
+              <strong>{{ selectedVipCustomer.email || 'No email' }}</strong>
+            </div>
+            <div>
+              <span>Address</span>
+              <strong>{{ selectedVipCustomer.location || 'No address saved' }}</strong>
+            </div>
+            <div>
+              <span>Last order</span>
+              <strong>{{ selectedVipCustomer.lastOrderDate | date:'mediumDate' }}</strong>
+            </div>
+          </div>
+
+          <button
+            nz-button
+            nzType="primary"
+            class="vip-approve-button"
+            [disabled]="!isVipEligible(selectedVipCustomer) || selectedVipCard?.approved"
+            (click)="approveVipCard()"
+          >
+            <span nz-icon nzType="safety-certificate"></span>
+            {{ selectedVipCard?.approved ? 'VIP card approved' : 'Grant VIP card' }}
+          </button>
+        </aside>
+      </div>
     }
   </ng-container>
 </nz-modal>
