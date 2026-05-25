@@ -16,13 +16,12 @@ jobs:
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ubuntu
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          password: ${{ secrets.DEPLOY_SSH_KEY }}
           port: 49152
-          timeout: 30s
-          command_timeout: 20m
           script_stop: true
           script: |
             cd ~/workspace/APICULTURE_FULL_PROJECT
+            git pull --ff-only
             git fetch origin main
             git reset --hard origin/main
             docker compose down --remove-orphans
