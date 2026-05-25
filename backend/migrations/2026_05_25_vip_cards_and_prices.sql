@@ -4,6 +4,10 @@ ALTER TABLE products
 ALTER TABLE orders
     ADD COLUMN IF NOT EXISTS vip_code VARCHAR;
 
+ALTER TYPE orderstatus ADD VALUE IF NOT EXISTS 'CANCELLED';
+ALTER TYPE orderstatus ADD VALUE IF NOT EXISTS 'CHANGE_REQUESTED';
+ALTER TYPE orderstatus ADD VALUE IF NOT EXISTS 'BACK';
+
 CREATE TABLE IF NOT EXISTS vip_cards (
     id SERIAL PRIMARY KEY,
     customer_key VARCHAR NOT NULL UNIQUE,
@@ -18,5 +22,5 @@ CREATE TABLE IF NOT EXISTS vip_cards (
 );
 
 CREATE INDEX IF NOT EXISTS ix_vip_cards_id ON vip_cards (id);
-CREATE INDEX IF NOT EXISTS ix_vip_cards_code ON vip_cards (code);
-CREATE INDEX IF NOT EXISTS ix_vip_cards_customer_key ON vip_cards (customer_key);
+CREATE UNIQUE INDEX IF NOT EXISTS ix_vip_cards_code ON vip_cards (code);
+CREATE UNIQUE INDEX IF NOT EXISTS ix_vip_cards_customer_key ON vip_cards (customer_key);

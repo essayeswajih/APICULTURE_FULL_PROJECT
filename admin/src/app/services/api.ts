@@ -49,6 +49,9 @@ export enum OrderStatus {
   PROCESSING = 'processing',
   SHIPPED = 'shipped',
   DELIVERED = 'delivered',
+  CANCELLED = 'cancelled',
+  CHANGE_REQUESTED = 'change_requested',
+  BACK = 'back',
 }
 
 export interface Order {

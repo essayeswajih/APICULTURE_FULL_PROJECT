@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from controller.Oauth2C import get_current_user
 from db.database import get_db
-from models.vetrineModels import Product, Order, OrderItem, CartItem, Category
+from models.vetrineModels import Product, Order, OrderItem, CartItem, Category, OrderStatus
 from models.Oauth2Models import User
 from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, OrderCreate, CartItemBase, OrderItemBase, OrderBase, PublicStats, StoryBase, SubCategoryBase, VipCardApprove, VipCardBase, VipCardValidation, CartPricingRequest, CartPricingResponse
 from crud.vetrineCrud import (
@@ -19,6 +19,17 @@ from fastapi import Request
 from config.limiter_config import limiter
 
 router = APIRouter()
+
+
+def parse_order_status(status: str) -> OrderStatus:
+    normalized = status.strip()
+    try:
+        return OrderStatus(normalized.lower())
+    except ValueError:
+        try:
+            return OrderStatus[normalized.upper()]
+        except KeyError:
+            raise HTTPException(status_code=400, detail="Invalid order status.")
 
 # Role Check - Admin Access
 def check_admin(current_user: User = Depends(get_current_user)):
@@ -155,7 +166,7 @@ def update_order_status(
     if not db_order:
         raise HTTPException(status_code=404, detail="Order not found")
 
-    db_order.status = order_update.status
+    db_order.status = parse_order_status(order_update.status)
     db.commit()
     db.refresh(db_order)
     return db_order
@@ -172,7 +183,7 @@ def update_order_info(
     db_order = db.query(Order).filter(Order.id == order_id).first()
     if not db_order:
         raise HTTPException(status_code=404, detail="Order not found")
-    db_order.status = order_update.status
+    db_order.status = parse_order_status(order_update.status)
     db.commit()
     db.refresh(db_order)
     return db_order
