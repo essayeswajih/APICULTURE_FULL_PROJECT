@@ -75,6 +75,8 @@ class OrderItemBase(BaseModel):
     product_id: int
     quantity: int
     price: float
+    public_price: Optional[float] = None
+    vip_applied: Optional[bool] = False
     name: Optional[str] = None 
     shipping_cost: Optional[float] = 9.0
 

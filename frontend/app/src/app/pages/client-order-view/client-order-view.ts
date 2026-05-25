@@ -37,6 +37,14 @@ export class ClientOrderView implements OnInit {
     }
     return Math.max(...items.map(item => item.shipping_cost || 9));
   }
+
+  hasVipPrice(item: { price: number; public_price?: number | null; vip_applied?: boolean }): boolean {
+    return Boolean(item.vip_applied && item.public_price && item.public_price > item.price);
+  }
+
+  getItemLineTotal(item: { price: number; quantity: number }): number {
+    return item.price * item.quantity;
+  }
   private loadOrder(orderCode: string) {
     this.apiService.getOrderByCode(orderCode).subscribe({
       next: (order) => {

@@ -200,10 +200,10 @@ export class Panier implements OnInit {
           : 'Code VIP valide, mais aucun article du panier ne possède un meilleur prix VIP.';
         this.cdr.detectChanges();
       },
-      error: () => {
+      error: (err) => {
         this.vipLoading = false;
         this.vipStatus = 'error';
-        this.vipMessage = 'Impossible de vérifier ce code VIP pour le moment.';
+        this.vipMessage = err?.message || 'Impossible de verifier ce code VIP pour le moment.';
         this.cdr.detectChanges();
       }
     });

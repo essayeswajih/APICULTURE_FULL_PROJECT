@@ -78,6 +78,8 @@ class OrderItem(Base):
     product_id = Column(Integer, ForeignKey("products.id"))
     quantity = Column(Integer, nullable=False)
     price = Column(Float, nullable=False)  # Store the price at the time of purchase
+    public_price = Column(Float, nullable=True)
+    vip_applied = Column(Boolean, default=False, nullable=False)
     name = Column(String, nullable=True)  # Optional field for product name
     order = relationship("Order", back_populates="items", overlaps="orders")
     product = relationship("Product", back_populates="order_items", overlaps="orders")

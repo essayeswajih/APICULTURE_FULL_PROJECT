@@ -22,9 +22,24 @@
               <h6 class="items-title mt-4">Articles</h6>
               <ul class="list-group item-list mb-3">
                 @for (item of order.items; track item.product_id) {
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>{{ item.name }} (x{{ item.quantity }})</span>
-                    <span>{{ item.price | number:'1.2-2' }} DT</span>
+                  <li class="list-group-item">
+                    <div class="item-main">
+                      <span>{{ item.name }} (x{{ item.quantity }})</span>
+                      @if (hasVipPrice(item)) {
+                        <span class="vip-prices">
+                          <span class="old-price">{{ item.public_price | number:'1.2-2' }} DT</span>
+                          <span class="vip-price">{{ item.price | number:'1.2-2' }} DT</span>
+                          <span class="vip-badge">VIP</span>
+                        </span>
+                      } @else {
+                        <span class="regular-price">{{ item.price | number:'1.2-2' }} DT</span>
+                      }
+                    </div>
+                    @if (item.quantity > 1) {
+                      <div class="item-total">
+                        Total article : {{ getItemLineTotal(item) | number:'1.2-2' }} DT
+                      </div>
+                    }
                   </li>
                 }
               </ul>

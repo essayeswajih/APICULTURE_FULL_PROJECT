@@ -58,7 +58,7 @@ export interface Order {
   total_amount: number;
   status: OrderStatus;
   created_at: string;
-  items: { product_id: number; quantity: number; price: number,name:string,shipping_cost: number }[];
+  items: { product_id: number; quantity: number; price: number; public_price?: number | null; vip_applied?: boolean; name:string; shipping_cost: number }[];
   username: string;
   email: string;
   telephone: string;

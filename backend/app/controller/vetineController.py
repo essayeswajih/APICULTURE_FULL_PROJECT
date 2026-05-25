@@ -191,10 +191,6 @@ def add_item_to_cart(
     if not product:
         raise HTTPException(status_code=404, detail="Product not found")
     
-    # Ensure there's enough stock
-    if product.stock_quantity < cart_item.quantity:
-        raise HTTPException(status_code=400, detail="Not enough stock for this product.")
-    
     return add_to_cart(db, user_id=current_user.id, cart_item=cart_item)
 
 # Route to remove item from the cart

@@ -81,14 +81,56 @@
       border-bottom: none;
     }
 
-    span {
-      &:first-child {
+    .item-main {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+
+      > span:first-child {
         color: #1f2937;
         font-weight: 500;
       }
-      &:last-child {
-        color: #15803d; /* Green for price */
-      }
+    }
+
+    .regular-price,
+    .vip-price {
+      color: #15803d;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .vip-prices {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      text-align: right;
+    }
+
+    .old-price {
+      color: #9ca3af;
+      text-decoration: line-through;
+      white-space: nowrap;
+    }
+
+    .vip-badge {
+      background: #f59e0b;
+      color: #ffffff;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      line-height: 1;
+      padding: 0.25rem 0.35rem;
+    }
+
+    .item-total {
+      color: #6b7280;
+      font-size: 0.85rem;
+      margin-top: 0.35rem;
+      text-align: right;
     }
   }
 }
@@ -192,6 +234,16 @@
 
   .item-list .list-group-item {
     font-size: 0.95rem;
+  }
+
+  .item-list .list-group-item .item-main {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .item-list .list-group-item .item-total {
+    text-align: left;
   }
 }
 

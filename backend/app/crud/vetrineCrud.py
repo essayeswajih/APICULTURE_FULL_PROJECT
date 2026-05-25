@@ -4,6 +4,7 @@ from typing import List, Optional
 from models.vetrineModels import OrderStatus, Product, Order, OrderItem, CartItem, Category, Story, SubCategory, VipCard
 from schemas.vetrineSchemas import CategoryBase, ProductBase, OrderCreate, CartItemBase, OrderItemBase, StoryBase, VipCardApprove
 from datetime import datetime, timedelta
+import hashlib
 from fastapi import HTTPException, Query
 from random import randint
 from sqlalchemy.orm import selectinload
@@ -205,8 +206,6 @@ def calculate_cart_pricing(db: Session, items: List[OrderItemBase], vip_code: Op
             raise HTTPException(status_code=404, detail=f"Product with ID {item.product_id} not found.")
         if item.quantity <= 0:
             raise HTTPException(status_code=400, detail=f"Quantity for product {product.name} must be positive.")
-        if product.stock_quantity < item.quantity:
-            raise HTTPException(status_code=400, detail=f"Not enough stock for product {product.name}.")
 
         regular_price = float(product.price)
         public_price = get_public_product_price(product)
@@ -275,6 +274,8 @@ def create_order(db: Session, order_create: OrderCreate) -> Order:
             product_id=item.product_id,
             quantity=item.quantity,
             price=priced_item["final_price"],
+            public_price=priced_item["public_price"],
+            vip_applied=priced_item["vip_applied"],
             name=product.name if product else None,
             shipping_cost=priced_item["shipping_cost"]
         )
@@ -314,8 +315,8 @@ def get_customer_total_paid(db: Session, customer_key: str) -> float:
     return 0.0
 
 def generate_vip_code(db: Session, customer_key: str, issued_at: datetime) -> str:
-    seed = abs(hash(f"{customer_key}|{issued_at.isoformat()}"))
-    base_code = f"VIP-{seed:x}".upper().ljust(12, "0")[:12]
+    seed = hashlib.sha256(f"{customer_key}|{issued_at.isoformat()}".encode("utf-8")).hexdigest()
+    base_code = f"VIP-{seed[:8]}".upper()
     code = base_code
     suffix = 2
     while db.query(VipCard).filter(VipCard.code == code).first():
@@ -339,7 +340,7 @@ def approve_vip_card(db: Session, data: VipCardApprove) -> VipCard:
         if not existing.issued_at:
             existing.issued_at = now
         if not existing.code:
-            existing.code = generate_vip_code(db, data.customer_key, now)
+            existing.code = generate_vip_code(db, data.customer_key, existing.issued_at)
         db.commit()
         db.refresh(existing)
         return existing
@@ -381,17 +382,13 @@ def delete_order(db: Session, order_id: int) -> None:
 def get_cart_items(db: Session, user_id: int) -> List[CartItem]:
     return db.query(CartItem).filter(CartItem.user_id == user_id).all()
 
-def add_to_cart(db: Session, cart_item: CartItemBase) -> CartItem:
+def add_to_cart(db: Session, user_id: int, cart_item: CartItemBase) -> CartItem:
     # Check if product exists
     product = db.query(Product).filter(Product.id == cart_item.product_id).first()
     if not product:
         raise HTTPException(status_code=404, detail="Product not found.")
     
-    # Check if product stock is sufficient
-    if cart_item.quantity > product.stock_quantity:
-        raise HTTPException(status_code=400, detail="Insufficient stock.")
-    
-    db_cart_item = CartItem( product_id=cart_item.product_id, quantity=cart_item.quantity)
+    db_cart_item = CartItem(user_id=user_id, product_id=cart_item.product_id, quantity=cart_item.quantity)
     db.add(db_cart_item)
     db.commit()
     db.refresh(db_cart_item)
