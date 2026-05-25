@@ -7,7 +7,6 @@ from slowapi.util import get_remote_address
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.errors import RateLimitExceeded
 from db.database import Base, engine, get_db
-from db.schema_migrations import apply_schema_migrations
 from controller.Oauth2C import router as Oauth2CRouter
 from controller.vetineController import router as VetrineRouter
 from controller.imagesUpload import router as ImagesUploadRouter
@@ -17,7 +16,6 @@ from config.limiter_config import limiter
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)
-apply_schema_migrations(engine)
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
@@ -55,7 +53,6 @@ app.mount("/uploads", StaticFiles(directory="/uploads"), name="uploads")
 def startup_event():
     #Base.metadata.drop_all(bind=engine)  # Drop all tables on startup (for development)
     Base.metadata.create_all(bind=engine)
-    apply_schema_migrations(engine)
 
 @app.get("/")
 @limiter.limit("5/minute")

@@ -25,10 +25,7 @@ CREATE TYPE public.orderstatus AS ENUM (
     'PENDING',
     'PROCESSING',
     'SHIPPED',
-    'DELIVERED',
-    'CANCELLED',
-    'CHANGE_REQUESTED',
-    'BACK'
+    'DELIVERED'
 );
 
 
@@ -165,8 +162,7 @@ CREATE TABLE public.orders (
     location character varying NOT NULL,
     payment_method character varying NOT NULL,
     payed character varying,
-    code character varying NOT NULL,
-    vip_code character varying
+    code character varying NOT NULL
 );
 
 
@@ -1092,193 +1088,193 @@ COPY public.order_items (id, order_id, product_id, quantity, price, name, shippi
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: apiculturefromtn
 --
 
-COPY public.orders (id, total_amount, status, created_at, username, email, telephone, location, payment_method, payed, code, vip_code) FROM stdin;
-9	951.6700000000001	PENDING	2025-08-04 10:39:21.93975	Amir	abdelbassetgalai3@gmail.com	55716454	Bembla 	cod	check	57820-44375-56024-21667	\N
-10	59.17	PENDING	2025-09-06 06:46:08.768134	Test	abdelbassetgalai3@gmail.com	55716454	Bembla	cod	check	17856-65289-58017-28627	\N
-12	55.6	PENDING	2025-10-14 09:28:41.903344	Abdelbasset Galai	abdelbassetgalai3@gmail.com	55716454	monastir	cod	check	32326-33849-57446-29988	\N
-13	304.31	PENDING	2025-10-17 16:16:36.419523	Mohamed amine boukhalet	amine.boukhalet@gmail.com	53445555	Malek centre - centre urbain nord	cod	check	39664-99924-23180-41116	\N
-15	650.6	PENDING	2025-10-24 14:53:21.173088	Abdelbasset Galai	abdelbassetgalai3@gmail.com	55716454	MONAS	cod	check	40086-86320-30701-57892	\N
-16	304.31	PENDING	2025-10-24 14:55:15.678252	AMIRAA TEST 	jomaaamira9@gmail.com	54673163	bkalta 	cod	check	12660-30122-49485-72478	\N
-19	31	PENDING	2025-10-27 07:57:55.34195	Abdelbasset Galai	abdelbassetgalai3@gmail.com	55716454	monastir	cod	check	73045-66954-68916-45086	\N
-20	648.22	PENDING	2025-11-10 07:57:30.284389	Abdelbasset Galai	abdelbassetgalai3@gmail.com	55716454	Bembla	cod	check	42593-98093-11271-51226	\N
-21	1112.32	PENDING	2025-11-16 22:08:19.556595	galai abdelbasset	abdelbassetgalai3@gmail.com	55716454	monastir 	cod	check	16615-95268-66916-99677	\N
-23	10.618	PENDING	2025-12-01 13:13:26.629803	Abdelbasset Galai	abdelbassetgalai3@gmail.com	55716454	Bembla	cod	check	98613-31338-96604-99801	\N
-30	43	PENDING	2026-01-14 12:09:21.350649	Moez riahi	riahimoez@gmail.com	99089162	Medjez el beb	cod	check	31279-97324-40382-94144	\N
-31	519	PENDING	2026-01-15 12:31:39.605821	Bilel Saad	bilelsaad0888@gmail.com	28858401	Tozeur	cod	check	73602-81597-26973-75207	\N
-33	138	PENDING	2026-01-20 20:22:43.162212	Oueriemmi naoufel 	oueriemmi.naoufel@gmail.com	29181619	Bureau emploi de zarzis 	cod	check	72590-13941-78620-15745	\N
-34	117	PENDING	2026-01-23 09:32:03.295788	Arroum heni	Heniarroum71@gmail.com	50962583	Lethleth-korba	cod	check	69796-56083-88840-14068	\N
-35	338	PENDING	2026-01-23 13:19:42.199898	الطاعر واجه	tahar_ouaja@yahoo.fr	58359588	قابس الجنوبية-قابس	cod	check	45589-29706-32834-72870	\N
-50	113	PENDING	2026-02-12 16:05:35.600185	Beldi achraf	achrefbeldi1@gmail.com	97627956	Bousalem 	cod	check	20136-30479-28706-96424	\N
-55	308	PENDING	2026-02-15 22:50:04.308415	Baligh Mohamed	baligh.mohamed@gmail.com	23611017	7110 nebeur ,el Kef	cod	check	79799-43960-91400-38156	\N
-52	179	PENDING	2026-02-14 20:15:29.48939	Haykel sahli	hkl.sahli@hotmail.fr	20205820	Beni khalled	cod	check	39648-69330-80028-37841	\N
-46	238	DELIVERED	2026-02-09 19:50:35.192727	Gouider MSALLEM	msallem.g@gmail.com	25452028	Carthage, Tunis 	cod	check	82678-48480-84732-41884	\N
-45	148	DELIVERED	2026-02-09 13:05:28.061773	Riahi moez	riahimoez@gmail.com	99089162	Medjez el beb	cod	check	39994-20658-15413-35431	\N
-38	433	DELIVERED	2026-02-02 12:43:30.951655	Amel assoudi 	assoudi.amel27@gmail.com	26469404	Café montana rue 14 janvier Kasserine 	cod	check	62761-17742-97638-14378	\N
-37	252	DELIVERED	2026-01-28 19:44:10.392145	Mohamed Ayari	ayarimouhamed38@gmail.com	94904762	Cité Brikel Battan Manouba	cod	check	34591-31291-64282-82787	\N
-36	198	DELIVERED	2026-01-26 10:06:39.64198	محمد بنحسن	mouhamedbenhassen5@gmail.com	27812993	Tbag Korba 8070	cod	check	92844-62109-93903-13884	\N
-32	83	DELIVERED	2026-01-20 20:12:13.34269	Naoufel	oueriemmi.naoufel@gmail.com	29181619	Bureau emploi de zarzis 	cod	check	11384-75357-36121-24763	\N
-26	83	DELIVERED	2026-01-05 19:51:41.370441	Anis BEN MEFTEH 	anis.benmefteh1978@gmail.com	96914908	Tunis	cod	check	77043-34290-80099-42793	\N
-25	68	DELIVERED	2025-12-25 14:46:49.098586	STE UNIVERSAL LIGHTING	NABILAYARI77@GMAIL.COM	56714571	8099 ZAOUIET JDIDI	cod	check	64444-12224-95010-41262	\N
-53	142	PENDING	2026-02-15 13:16:13.970505	أحمد بنرمضان	ahmed@limamcompta.com	20446289	الجم عمارة جليوس	cod	check	65093-54176-63522-52927	\N
-54	234	PENDING	2026-02-15 13:41:34.005791	Bouraoui mohamed	optimeubles.tn@gmail.com	51002211	Sidi daoud la marsa	cod	check	50068-51305-34277-19854	\N
-56	266	PENDING	2026-02-17 09:53:09.925128	Bentalebrami	bentalebrami44@gmail.com	54562988	Elhaouria 	cod	check	33000-72849-35512-47896	\N
-57	258	PENDING	2026-02-18 09:48:34.017429	Rhaim Mohamed Salah	rhaimmed@gmail.com	94607700	الدهماني الكاف	cod	check	78661-19680-55596-78784	\N
-58	64	PENDING	2026-02-18 20:11:04.550072	Chikhaoui ali	chikhaouia46@gmail.com	22569706	Monastir massjed aissa	cod	check	15149-34544-96278-58593	\N
-59	536	PENDING	2026-02-22 14:36:04.424623	Alaa Eddine H'ram	hramalaa65@gmail.com	28524693	Rouhia-siliana 	cod	check	91781-41523-51716-46579	\N
-60	201	PENDING	2026-02-23 18:53:32.502069	houcem jaballah	houcemfinance@gmail.com	22099025	Kairouan	cod	check	92792-32929-88526-89338	\N
-61	178.5	PENDING	2026-02-24 00:36:09.073012	Hrichi Ali	hrichiali23@gmail.com	29901270	Skhira sfax	cod	check	76233-76681-85715-51296	\N
-62	218	PENDING	2026-02-24 01:06:59.070533	Ferdaous benyounes	ferdaouesbenyounes@gmail.com	25977636	Mourouj 6 ben arous	cod	check	79962-37765-58419-65074	\N
-63	178	PENDING	2026-02-24 11:44:17.823535	Gharsallah Mohamed	gharsallahmohamed@yahoo.fr	23304030	El mourouj 1 carrefour medicale labo	cod	check	38367-79150-58454-23544	\N
-64	118	PENDING	2026-02-24 22:34:13.883375	mediadh khedhri	mediadh.khedhri29@gmail.com	29763633	ariana	cod	check	31739-99182-43123-16286	\N
-65	68	PENDING	2026-02-27 18:58:03.344494	Rached Said	rachedsaid58@gmail.com	97643747	Darbelouaer enfidha sousse	cod	check	57819-12462-42959-24978	\N
-66	148	PENDING	2026-02-28 14:24:57.430767	Jamel Rhimi	jamelrhimi66@gmail.com	58865476	Kabbarya Tunisie 	cod	check	48031-38646-85543-35215	\N
-67	99	PENDING	2026-02-28 16:34:51.535852	Hamza Zheni	hamzazheni55@gmail.com	54536866	Cité chebbi tebourba manouba 	cod	check	41319-19394-62749-97597	\N
-68	119	PENDING	2026-02-28 21:45:11.541889	Yassin hadj amor 	yassi.jaidi@gmail.com	20786933	Douar hadj amor saouaf zaghouan 	cod	check	20169-63821-12578-63619	\N
-70	59	PENDING	2026-03-01 00:55:34.916453	Miled raddaoui 	rdmiled@gmail.com	29841193	Ksar gfsa	cod	check	72107-53853-48929-40621	\N
-71	455.5	PENDING	2026-03-02 06:22:50.462156	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	98591-97665-58086-63991	\N
-72	54	PENDING	2026-03-02 19:59:24.939236	Imed Ayeb	ayebimed060@gmail.com	52253798	Rue 20 mars Sidi alouane mahdia 	cod	check	78592-62050-36171-16185	\N
-73	99	PENDING	2026-03-02 23:55:00.099786	Mahdi ben ali	mahdibenali2013@gmail.com	21005580	Chebba مغازة الخير حومة السوسي	cod	check	18450-99807-48349-98006	\N
-69	39	DELIVERED	2026-03-01 00:48:20.923347	Miled Raddaoui	rdmiled@gmail.com	29841193	Ksar gfsa	cod	check	69706-22011-80694-36348	\N
-74	147	DELIVERED	2026-03-03 01:43:51.4571	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	79781-45588-52056-63845	\N
-104	94	DELIVERED	2026-03-20 22:43:44.133296	Mortadha rabaaoui 	mortadha403@gmail.com	25071975	Al-Miknassi	cod	check	56356-41732-10875-15268	\N
-111	101	DELIVERED	2026-03-24 09:02:06.7256	Feriel Weslati	feriel.weslati00@icloud.com	24699173	Denden manouba 	cod	check	78600-19396-27364-18822	\N
-109	54	DELIVERED	2026-03-23 11:08:48.750293	Sami chabene	salut.ben.2005@gmail.com	98201988	Boumhel el bassatine	cod	check	63733-58965-21986-25724	\N
-108	147.5	DELIVERED	2026-03-23 06:55:02.203677	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	53013-64208-99189-47492	\N
-107	248	DELIVERED	2026-03-22 14:32:05.961319	Taieb Louhichi	taieblouhichi.yt@gmail.com	52522201	Grombalia 	cod	check	61182-99128-95607-82614	\N
-106	85.5	DELIVERED	2026-03-21 18:32:32.200036	Bessem ben amor	bessemamor123@gmail.com	20970588	Mahdia boumerdes kerker	cod	check	19610-46787-66387-35237	\N
-101	267	DELIVERED	2026-03-18 14:11:28.91336	Mohamed zied Naghmouchi	naghmouchizied@gmail.com	56752004	Jendouba	cod	check	25941-84774-94570-35249	\N
-102	125	DELIVERED	2026-03-19 22:21:31.571233	فوزي العابد	faouzi20107@gmail.com	29348433	حي الانس سليانة 	cod	check	70582-52281-41385-25228	\N
-100	571.5	DELIVERED	2026-03-18 13:58:38.345467	Nihel Ben sedrine	nihelbensedrine@gmail.com	55377502	La marsa 	cod	check	60710-17515-70997-12767	\N
-99	78	DELIVERED	2026-03-18 09:56:05.613945	Fathallah	fathallaharafet6@gmail.com	27731186	Zaouite El magaiez haouaria 	cod	check	97535-53466-59949-23102	\N
-98	145.2	DELIVERED	2026-03-17 21:45:48.688483	ahmed Allani	ahmedmiiii007@gmail.com	54856431	Kairouan	cod	check	47111-97790-88704-94132	\N
-97	77	DELIVERED	2026-03-16 20:23:27.413792	Chayma abidi	chaymaabidi406@gmail.com	96806170	Tunis, El fattah, sidi hassine 	cod	check	78710-18246-20789-47711	\N
-120	118	DELIVERED	2026-03-25 20:14:31.085562	Abidelli nabil 	abidellinabil@gmail.com	97519336	GAÂFOUR, Siliana 	cod	check	46624-12830-89222-57402	\N
-121	314	DELIVERED	2026-03-26 07:41:18.874708	sabeh anis	alloaniscia@gmail.com	97961554	Citée El Ons. Le Kef. Tunisie 	cod	check	38901-69556-32205-63295	\N
-119	450	DELIVERED	2026-03-25 18:40:14.980016	Jarray Abdelbasset	infojarray@gmail.com	93324407	Jouaouda sidi Abdallah belhaj, chbika, kairouan 	cod	check	91552-53516-36185-84338	\N
-118	78	DELIVERED	2026-03-25 17:17:39.334235	مهدي الكسراوي	mahdikasraoui123@gmail.com	92571224	عين بوسعدية برڨو سليانة	cod	check	68569-47255-37230-74711	\N
-117	166	DELIVERED	2026-03-25 14:03:08.809768	Zied amaimia	ziedamaimia20@gmail.com	93004930	Sidi aich gafsa	cod	check	31729-62458-57227-18598	\N
-116	206	DELIVERED	2026-03-25 13:21:37.033341	makrem	makremzouavi@gmail.com	29525796	siliana 	cod	check	23386-94811-37908-17445	\N
-115	61	DELIVERED	2026-03-25 11:21:37.168702	Samir Ben hmouda	samirbenahmed66@gmail.com	28525031	Agareb	cod	check	94608-39501-44814-43328	\N
-114	59.5	DELIVERED	2026-03-24 23:43:56.377944	zarai maher	zaraimaher21@gmail.com	50313481	sidi bouzid -souk jdid - rmilya	cod	check	32627-43998-64789-30476	\N
-113	153.5	DELIVERED	2026-03-24 21:36:15.231961	Kaies Grami	gramikaies2@gmail.com	22145045	Bouarada 	cod	check	17162-60690-50790-78947	\N
-112	790	DELIVERED	2026-03-24 18:47:14.290791	حاتم بن محمد	hatemhichri2022@gmail.com	28867648	55 wed kharoub bouficha sousse	cod	check	16995-66984-39458-59691	\N
-96	75	DELIVERED	2026-03-16 11:49:13.836326	Feriel Weslati	feriel.weslati00@icloud.com	24699173	Rue Taha houssine denden manouba 	cod	check	83317-29071-19887-96227	\N
-95	39	DELIVERED	2026-03-15 15:27:18.595028	Khaled BELAID 	khaledbelaid262@gmail.com	97133205	Avenue l'olivier kalaa kebira	cod	check	83232-30386-18072-89546	\N
-94	416	DELIVERED	2026-03-13 22:43:20.460547	Mouhamed Ayari	ayarimouhamed38@gmail.com	94904762	Cité Brik El Battan Manouba	cod	check	11976-39466-34437-13247	\N
-93	29	DELIVERED	2026-03-13 07:34:50.172784	Askri Borni	askribo@outlook.com	27623935	Route de l'aeroport 8112 ain sobah  Tabarka	cod	check	19669-86439-23169-59648	\N
-91	118	DELIVERED	2026-03-11 19:05:47.082104	Yassine Ferchichi 	yassineferchichi99@gmail.com	54546493	Mateur bizerte	cod	check	61229-16650-57634-10675	\N
-92	177	DELIVERED	2026-03-11 19:56:34.440305	Ahmed Allani	ahmedmiiii007@gmail.com	54856431	Kairouan pres mosquée el gofran	cod	check	68458-91995-31554-39330	\N
-123	59	PENDING	2026-03-27 21:11:09.292832	Nour	nourgayess.1989@gmail.com	50816248	El Mourouj	cod	check	29616-73815-95665-28646	\N
-89	29	DELIVERED	2026-03-10 11:45:02.228253	Tebourbi Hamadi	hamadi.tebourbi.2005@gmail.com	54442390	La manouba : Al battan rue zouitina : ferme haj khlass	cod	check	82772-50674-10213-95052	\N
-88	41	DELIVERED	2026-03-10 08:57:52.116683	Mohamed belhaj	mohamedhawaria10@gmail.com	29136097	Tebourba	cod	check	38132-39733-39725-98548	\N
-87	195.5	DELIVERED	2026-03-10 00:16:20.265613	Maher sassi	mahercapitaine@gmail.comcapitaine	55000180	Kssibet sousse 	cod	check	22085-89599-34209-85899	\N
-86	177	DELIVERED	2026-03-09 18:24:31.460976	Tamim bensmida	bensmidatamim@gmail.com	54542667	Ariana la sokra rue matar	cod	check	87188-24556-88847-29810	\N
-85	528	DELIVERED	2026-03-09 08:41:38.641359	zmerli khaled	elbaha.vet@planet.tn	26730730	Sidi-Thabet ; Ariana	cod	check	81614-25806-13214-30509	\N
-84	49	DELIVERED	2026-03-08 10:06:32.756427	Abdelaziz 	a.lakhoua@gmail.com	20505555	Sidi Bou Said - impasse Hassen Zmerli 	cod	check	28744-43163-69172-51867	\N
-83	60	DELIVERED	2026-03-07 16:16:27.154703	محمد بن جدو	benjeddoumouhamed37@gmail.com	92895097	Béja touboursouk dougga 	cod	check	46300-51749-68580-91410	\N
-82	953	DELIVERED	2026-03-07 13:34:19.689395	Aymen Bachrouch	salvafor.valestra@gmail.com	58948977	Tunis 	cod	check	60102-59336-42133-26085	\N
-81	109	DELIVERED	2026-03-06 18:03:20.999945	Mohamed ali boshkati	yassine.kaab@gmail.com	24224935	Saheb el jebel el hawaria Nabeul 	cod	check	71041-63054-26768-33262	\N
-124	30	DELIVERED	2026-03-28 06:45:58.366493	Chiheb bn laden 	chihebkf0@gmail.com	52014802	Bir lahfay sidi bouzid 	cod	check	33240-35795-95979-90677	\N
-80	134.6	DELIVERED	2026-03-05 11:52:04.377116	Mehdi B A	mahdibenali2013@gmail.com	21005580	Chebba مغازة الخير حومة السوسي	cod	check	64840-99481-72473-90997	\N
-75	236	DELIVERED	2026-03-03 09:23:16.541419	Mahdi ben ali	mahdibenali2013@gmail.com	21005580	Chebba مغازة الخير  عڨيب  حومة السوسي	cod	check	50080-26881-74302-24290	\N
-77	44	DELIVERED	2026-03-04 10:29:51.314105	Houcin zouari	houcinzojari@gmail.com	22911940	Mdhilla gafsa	cod	check	28099-57873-99959-43396	\N
-76	29	DELIVERED	2026-03-03 22:10:19.920022	Hamdi tha	taha.hamdi001@gmail.com	29787858	Borj el amri 	cod	check	85596-16844-81189-53648	\N
-79	54	DELIVERED	2026-03-05 09:48:27.144728	Malek ghraibi	malekghraibi67@gmail.com	23575244	Béja centre vile	cod	check	49003-89830-47569-94095	\N
-78	44	DELIVERED	2026-03-04 23:15:35.259147	Saidi Assem	assemsaidi08@gmail.com	27704398	Sidi smail béja	cod	check	82123-32174-54044-58422	\N
-90	44	DELIVERED	2026-03-10 19:02:49.960512	فوزي العباسي	faouziabbassi78@gmail.com	53089797	شعبةالحوت سجنان بنزرت 	cod	check	42054-81132-76444-30293	\N
-127	121.5	DELIVERED	2026-03-29 22:08:48.132673	Oussama ajmi	Oussamaajmi.2000@gmail.com	21538852	Souassi,mahdia 	cod	check	47004-30798-94250-34842	\N
-126	291.5	DELIVERED	2026-03-29 19:30:13.559368	Charfeddine Jaouadi	charfijay4444@gmail.com	29403087	2 rue mustapha khrayef megrine ben arous	cod	check	41917-11309-86923-67040	\N
-125	29	DELIVERED	2026-03-28 18:02:29.656871	Aymen Amri	Aymen_atn@hotmail.fr	20836024	Rue sidi zid l'aouina Tunis	cod	check	73098-35863-80582-77127	\N
-135	54	DELIVERED	2026-04-01 15:37:30.617574	Hassen Toumi	mdevcht@gmail.com	98109049	Debosville - Tunisie	cod	check	40299-67004-96612-16269	\N
-146	209	DELIVERED	2026-04-07 12:12:12.218573	Yahyaoui Abdellatif	abdellatifyahyaoui@yahoo.fr	98212011	Barrage mallegue nebeur ElKef	cod	check	86545-18446-73810-82307	\N
-136	89	DELIVERED	2026-04-01 22:58:06.358065	احمد بالحاج صالح	ahmedbhs1991@gmail.com	95928511	حمام الاغزاز	cod	check	64521-40076-32323-74265	\N
-134	57.5	DELIVERED	2026-03-31 22:03:48.3859	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	50304-74264-14742-10072	\N
-133	159.5	DELIVERED	2026-03-31 21:14:08.192903	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	68117-48342-12594-36503	\N
-132	109	DELIVERED	2026-03-31 19:46:26.916983	Nabil Sellami	sellaminabil502@gmail.com	25716498	Thibar	cod	check	46868-54982-15923-14226	\N
-131	228	DELIVERED	2026-03-31 18:04:50.136907	Anas Akrimi	akrimianass@gmail.com	20286153	Mornaguia tunis	cod	check	69493-75128-50639-59534	\N
-130	228	DELIVERED	2026-03-31 16:51:40.956785	Najiba abdrabah	najibaabdrabah5@gmail.com	44415569	Béja, téboursouk	cod	check	62567-31863-83578-45470	\N
-128	359	DELIVERED	2026-03-31 08:46:47.805159	محمد بن سعيد	mdsmido@yahoo.com	29471147	كروسية .سيدي الهاني .سوسة	cod	check	47101-57300-59403-44730	\N
-51	330	PROCESSING	2026-02-13 07:57:31.988942	nourdine mathl	clientreserveunpressearivage@gmail.com	99442724	verfier avec client	cod	check	95682-66641-19160-67399	\N
-145	195	DELIVERED	2026-04-06 23:50:50.006704	Abdelmajid Djebali	abdelbali212@gmail.com	27688598	Ain Mrad Teboursouk, Beja 9040 ( a coté de Mosque Ain Mrad	cod	check	77877-42031-98177-20547	\N
-142	520	DELIVERED	2026-04-05 15:21:56.833707	Bouza Houssem	bouzahoussem@hotmail.com	90497915	Hamem sousse	cod	check	22188-24317-83279-62709	\N
-143	73	DELIVERED	2026-04-06 10:01:42.540388	Oussama ajmi	Oussamaajmi.2000@gmail.com	21538852	Souassi,mahdia 	cod	check	80198-32878-89332-27209	\N
-141	255	DELIVERED	2026-04-04 19:51:10.742104	Abdallah bouallagui	abidalkeita10@gmail.com	92912823	Sidi bouzid centre ville 	cod	check	77914-26901-57499-69861	\N
-140	161.5	DELIVERED	2026-04-04 14:59:12.233472	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	59644-48764-82410-26757	\N
-137	89	DELIVERED	2026-04-03 11:50:32.206575	Hichri Hafedh	hafedhhichri7@gmail.com	22423223	Bni Mechkel boujrida korba Nabeul 	cod	check	94130-23686-75378-31715	\N
-129	126.5	DELIVERED	2026-03-31 13:51:59.289915	Hrichi Ali	ali.hrichi23@gmail.com	29901270	Skhira sfax	cod	check	85343-89054-85090-81721	\N
-144	475	DELIVERED	2026-04-06 16:04:52.02781	جهاد جماعي	jihedjmai2002@gmail.com	51622134	jirba houmet soug bazim	cod	check	49390-29919-63446-33259	\N
-147	302.5	DELIVERED	2026-04-07 16:54:03.331908	Zekri Maher	maherzekri@hotmail.com	98500411	Route de mahdia km10 rue makbarat yaich  après mosquée  sfax 	cod	check	28911-75143-11554-66346	\N
-139	241	DELIVERED	2026-04-04 12:44:28.619412	Nader Belhadj salah	naderbhsb5@gmail.com	50752753	Hammam el ghzez	cod	check	86403-95827-34936-57364	\N
-138	170	DELIVERED	2026-04-03 15:41:29.747725	sami zaibi	samizaibi@gmail.com	99204595	Nefza Béja 	cod	check	33950-28927-33169-88091	\N
-148	209	DELIVERED	2026-04-08 06:14:49.166312	Haithem	haithamkhlif84@gmail.com	92735920	sfax route mharza km1	cod	check	20033-90322-63589-32065	\N
-158	218	DELIVERED	2026-04-12 14:02:55.956447	Nour	nourgayess.1989@gmail.com	50816248	El Mourouj	cod	check	69059-78189-40988-46972	\N
-157	241	DELIVERED	2026-04-11 20:56:35.522081	Mabrouk Khalil	kmabrouk827@gmail.com	27111461	Nfidha 	cod	check	24607-72942-36644-36184	\N
-159	116	DELIVERED	2026-04-12 15:21:18.888318	Guesmi marouen	guesmimarouen9@gmail.com	58044476	Centre Farah Lake , lac2 . Tunis 	cod	check	21855-43866-51405-55189	\N
-156	255.5	DELIVERED	2026-04-11 13:58:15.549246	صابر الشاهد	mansourjamali@gmail.com	21922679	بوكريم الهوارية نابل 	cod	check	23607-58534-78370-12315	\N
-155	204	DELIVERED	2026-04-11 11:04:43.893425	Fatma maztouri	tictakprint@gmail.com	53722722	Jerba	cod	check	29115-94044-43732-71429	\N
-154	305	DELIVERED	2026-04-10 22:41:15.191217	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	63787-81988-42069-72616	\N
-153	59	DELIVERED	2026-04-10 22:31:58.626163	khalifa boughanmi	boughanmi.khalifa@live.fr	98285423	Cité zitouna Tajerouine le kef	cod	check	99101-19955-94591-55343	\N
-152	338.5	DELIVERED	2026-04-10 13:46:01.313592	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	99567-46494-16812-19646	\N
-151	44	DELIVERED	2026-04-10 10:18:26.024362	Hafedh Abbassi	Abbassi.hafedh@ins.tn	25660870	Hajeb Laâyoune 	cod	check	86429-84280-85966-81565	\N
-150	74	DELIVERED	2026-04-09 22:36:15.870608	Elyes Ezzine	ilyesezzine05@gmail.com	28483360	Bizerte	cod	check	73487-39993-13448-90802	\N
-149	215	DELIVERED	2026-04-09 21:03:34.105045	سامي بلعيد 	Belaidsami45@gmail.com	98983750	القلعة الكبرى ولاية سوسة 	cod	check	24105-36201-93335-31626	\N
-169	245	DELIVERED	2026-04-17 22:12:44.720007	Ounallah	karimtechnicien@hotmail.com	20335927	Beni KHL led rue jeuness	cod	check	71813-60154-38375-31129	\N
-167	84	DELIVERED	2026-04-15 14:53:23.73714	Feres darouich	feres.darouich@supcom.ucar.tn	93542215	Rue bni hassen-jemmel-monastir	cod	check	13499-25053-71988-77103	\N
-166	486	DELIVERED	2026-04-15 12:48:35.444815	Bani jalel	banijalel31@gmail.com	55204548	Korba	cod	check	79454-30297-60596-50751	\N
-165	54	DELIVERED	2026-04-15 11:27:04.666215	Kamel Krichen	kamel.krichenihec@gmail.com	25858504	Route l'afrane km 4,5 sfax	cod	check	71231-66760-25833-36872	\N
-164	29	DELIVERED	2026-04-15 07:10:14.062896	خميس الترايكي	kamustraiki@gmail.com	50751597	سليانة	cod	check	43943-99440-76443-86515	\N
-163	107.8	DELIVERED	2026-04-14 16:27:43.09603	Chennaoui hedya	chennaoui.hedia.cm@gmail.com	20516910	Ben arous Mhamedia cité nassim rue antakia 	cod	check	57535-21339-11781-74574	\N
-162	215	DELIVERED	2026-04-14 13:31:26.450623	Ben Jeddou Mouhamed	benjeddoumouhamed37@gmail.com	92895097	Teboursouk dougga 	cod	check	78125-61523-61959-63978	\N
-161	45	DELIVERED	2026-04-14 00:26:06.791992	Charfeddine Jaouadi	charfijay4444@gmail.com	29403087	2 rue mostfa khrayef Megrine ben Arous 	cod	check	96614-11136-82635-60168	\N
-160	118	DELIVERED	2026-04-13 22:52:47.301272	Mechergui dhia	mecherguidhia026@gmail.com	26289055	Sejnen 	cod	check	55040-57422-53426-95529	\N
-168	69	DELIVERED	2026-04-17 17:30:35.855558	Galai Abdelbasset	abdelbassetgalai3@gmail.com	55716454	Bembla	cod	check	45073-87427-18295-78313	\N
-172	136	DELIVERED	2026-04-18 21:56:44.569787	Gares Mohamed 	garesmohmmedi@gmail.com	98981843	M'saken 	cod	check	70256-67633-91087-91394	\N
-177	270	DELIVERED	2026-04-20 08:45:32.675298	Jalel Hizi	hizijalel383@gmail.com	99609383	Bouderyes-foussana-kasserine	cod	check	85596-24444-66300-53806	\N
-179	115	DELIVERED	2026-04-20 13:46:29.917131	ahmed Allani	ahmedmiiii007@gmail.com	54856431	Kairouan	cod	check	97086-34413-94643-40530	\N
-173	161	DELIVERED	2026-04-19 08:11:31.738649	Gares Mohamed 	garesmohammedi@gmail.com	98981843	154,rue rokeb M'saken 	cod	check	59953-78234-83087-23215	\N
-175	284	DELIVERED	2026-04-19 14:20:44.324277	Slim Grombalia	grombalia2023@gmail.com	21920920	Km 40 turki grombalia 	cod	check	85707-71996-85414-28974	\N
-176	218	DELIVERED	2026-04-19 21:11:41.848182	Nadia khaldi	ynflystone@gmail.com	53220728	Bizerte corniche	cod	check	95274-21042-37126-92296	\N
-178	218	DELIVERED	2026-04-20 09:49:20.166238	nefzi karima	saidanefzi661@gmail.com	53687752	5 rue ibn abi dhief den den municipalite den den 	cod	check	71564-60556-29691-38930	\N
-180	131.2	DELIVERED	2026-04-22 09:52:05.901727	ملاك خذراني	malekhadrani@gmail.com	93668114	Mahassen nebeur kef 7110	cod	check	86926-92863-94668-54505	\N
-182	251.5	DELIVERED	2026-04-22 19:26:35.017433	Boughanmi Houssem	housso1212@gmail.com	98823971	Kef centre ville 	cod	check	81216-22030-84777-72929	\N
-183	344.5	DELIVERED	2026-04-23 05:51:15.543535	Nizar douiri	d.nizat@hotmail.fr	22801808	Tunis-lac 1	cod	check	49569-14921-69223-93762	\N
-195	70.5	DELIVERED	2026-05-05 12:30:03.228421	Sami Nacer	samy.osch@gmail.com	97859128	Rue taher hadded chenini-gabes 6041	cod	check	48953-81056-12206-58208	\N
-194	260	DELIVERED	2026-05-05 07:20:43.414806	Bilel	bilelhamdaoui1920@gmail.com	51464645	Tunis lac3 a côté de l'ambassade suisse 	cod	check	18004-76482-75347-99548	\N
-170	245	DELIVERED	2026-04-17 22:22:12.721002	Ounallah	karimtechnicien@hotmail.com	20335927	Beni khled rue jeuness	cod	check	72998-53925-48495-49849	\N
-171	245	DELIVERED	2026-04-17 23:50:38.061985	karim	karimtechnicien@hotmail.com	20335927	Beni khled rue jeuness	cod	check	56157-35316-10553-41432	\N
-174	218	DELIVERED	2026-04-19 13:04:59.342341	messaoudi mokrane	messaoudi.mokrane1988@gmail.com	50203970	akbou wilaya bejaia algerie	cod	check	62743-98063-96042-86138	\N
-181	131.4	DELIVERED	2026-04-22 18:56:36.942057	Ayman Allouch	aymanallouch@gmail.com	25102098	Sfax sidi mansour klm 10 el mansoura residence baya  	cod	check	18188-80124-43349-71961	\N
-184	248	DELIVERED	2026-04-27 20:48:48.469004	Nabil Guetat	nabil.guetat@gmail.com	97269438	Route Mahdia km 2,5 Sfax	cod	check	59757-46430-98838-30540	\N
-185	46	DELIVERED	2026-04-28 00:15:49.482105	Mechergui dhia	mecherguidhia026@gmail.com	26289055	Sejnen 	cod	check	79115-79185-85333-29702	\N
-186	24	DELIVERED	2026-04-29 10:04:51.04043	samar abidi	samar.labidi92@gmail.com	94183416	Tunis	cod	check	23599-85393-81209-18810	\N
-187	92	DELIVERED	2026-04-29 12:40:10.238528	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	76961-39394-15393-71565	\N
-188	320	DELIVERED	2026-04-30 05:00:20.354113	Ben mohamed	omarmed6@gmail.com	27608563	Gabes 	cod	check	81520-94347-94433-87869	\N
-189	400	DELIVERED	2026-04-30 19:22:45.309655	Chamssdine 	chamssdinelabidi@gmail.com	98176934	Carrefour Marsa 	cod	check	38166-89225-91793-28700	\N
-199	450	DELIVERED	2026-05-08 11:03:44.91899	Med ammar Bellalah	mammarbellalah@gmail.com	93304633	Dar chabben el fehri , nabeul 	cod	check	37632-96203-45008-51809	\N
-201	59	DELIVERED	2026-05-09 16:31:22.725036	achref benkacem	ashrefbenkassem@gmail.com	58744236	zaghoaun, zriba hammam	cod	check	27029-68049-27028-88536	\N
-200	215	DELIVERED	2026-05-08 14:07:30.139063	Alaa dridi	aladaind@gmail.com	24047352	Tunis montplaisir	cod	check	82936-96750-27424-98372	\N
-208	450	PENDING	2026-05-15 12:56:48.908788	temim	cherni_temim@yahoo.fr	93666988	tunis	cod	check	78531-73475-22729-87906	\N
-209	114.5	PENDING	2026-05-15 13:18:15.172822	ben taieb hatem	bthattem@hotmail.fr	53255757	medjez el bab	cod	check	57790-73405-59563-74426	\N
-197	104	DELIVERED	2026-05-06 13:19:39.485235	Nour Gayess	nourgayess.1989@gmail.com	50816248	Mourouj 1	cod	check	78461-60993-89392-70133	\N
-196	397.3	DELIVERED	2026-05-05 16:40:22.295071	chokri ferchichi	chokri.ferchichi.carthage@gmail.com	94518215	Grand tunis	cod	check	44468-94993-41158-99541	\N
-193	59	DELIVERED	2026-05-03 16:18:16.160619	Nour	nourgayess.1989@gmail.com	50816248	El Mourouj	cod	check	54256-45302-71199-82006	\N
-192	103	DELIVERED	2026-05-03 15:09:15.748354	marouen belakhel	marouen.belakhel@gmail.com	53218398	Borj cedria 	cod	check	95921-93251-17466-49304	\N
-202	215	DELIVERED	2026-05-09 19:10:11.032109	Bachir jlassi	zouhayra1120@icloud.com	97161814	Rahma menzelbouzelfa nebeul	cod	check	65619-71861-68017-72871	\N
-191	57	DELIVERED	2026-05-01 20:25:32.088155	Samia fathalli 	fathallisamia@yahoo.fr	94294949	Tunis Lafayette 	cod	check	78729-96539-72253-79838	\N
-190	450	DELIVERED	2026-05-01 13:38:37.233236	Ben chikh abdelaziz	bchikhazouz@gmail.com	29306506	Sfax ville	cod	check	27620-85095-14513-26856	\N
-198	24	DELIVERED	2026-05-07 17:57:29.412648	Houcine Elhammedi	houcine.ha@gmail.com	97747081	Zaghouan 	cod	check	80178-78750-96802-85319	\N
-203	34	DELIVERED	2026-05-09 20:33:57.025344	Hasni	hvtc83@gmail.com	98636864	Jendouba centre ville	cod	check	75137-17675-85777-92879	\N
-204	910	DELIVERED	2026-05-11 23:16:35.182322	mohamed salah gargouri	gargouri2001@gmail.com	21617726	26. av de l ere nouvelle . el nasr 2, 1000 - tunis	cod	check	60331-74438-86433-95418	\N
-205	156	DELIVERED	2026-05-12 09:05:49.670892	ahmed Allani	ahmedmiiii007@gmail.com	54856431	Kairouan	cod	check	80061-62775-29716-47131	\N
-206	532	DELIVERED	2026-05-12 19:00:50.286181	HAMDI ADEL	ebf.adel@gmail.com	95084338	FOUCHANA Ben arous cité elhidhab	cod	check	40467-26277-24007-41896	\N
-207	59	DELIVERED	2026-05-12 21:56:31.646984	galai	apiculturegalai@gmail.com	55716454	bembla	cod	check	86275-96974-87073-14001	\N
-210	219	PENDING	2026-05-15 17:42:47.815591	Ridha ghorbali 	ridhaghorbali88@gmail.com	97367780	Siliana	cod	check	44457-75609-50669-54673	\N
-211	69	PENDING	2026-05-17 19:33:35.457702	amine zidi	amin.zidi07@gmail.com	99783281	الحويض (اوتيك بنزرت)	cod	check	70085-27757-64878-96627	\N
-212	275.5	PENDING	2026-05-19 19:45:28.819627	Alaa Ben saad	mcwalid136@gmail.com	48069629	بوعشير/ حمام الزريبة/ زغوان	cod	check	91650-24464-17109-98062	\N
-213	117	PENDING	2026-05-21 08:04:54.425385	Ahmed Mhiri	mhiri@sac-marquage.com	29787427	Route de tunis Km 5, sakiet ezzit , sfax	cod	check	52371-14424-92974-46121	\N
-214	117	PENDING	2026-05-21 09:12:14.855133	Jawhar Belaiba	jawharbelaiba1@gmail.com	22796779	La chebba	cod	check	29796-25997-88252-72892	\N
-215	299.6	PENDING	2026-05-22 13:02:20.900988	Hamadi MEJRI	hamadi.mejri1@gmail.com	24012780	Bizerte	cod	check	10055-46264-21403-53709	\N
-216	54	PENDING	2026-05-24 16:10:15.291667	Saidani Helmi	helmisaidani97@gmail.com	29051064	Bousalem	cod	check	59717-94388-69499-11789	\N
+COPY public.orders (id, total_amount, status, created_at, username, email, telephone, location, payment_method, payed, code) FROM stdin;
+9	951.6700000000001	PENDING	2025-08-04 10:39:21.93975	Amir	abdelbassetgalai3@gmail.com	55716454	Bembla 	cod	check	57820-44375-56024-21667
+10	59.17	PENDING	2025-09-06 06:46:08.768134	Test	abdelbassetgalai3@gmail.com	55716454	Bembla	cod	check	17856-65289-58017-28627
+12	55.6	PENDING	2025-10-14 09:28:41.903344	Abdelbasset Galai	abdelbassetgalai3@gmail.com	55716454	monastir	cod	check	32326-33849-57446-29988
+13	304.31	PENDING	2025-10-17 16:16:36.419523	Mohamed amine boukhalet	amine.boukhalet@gmail.com	53445555	Malek centre - centre urbain nord	cod	check	39664-99924-23180-41116
+15	650.6	PENDING	2025-10-24 14:53:21.173088	Abdelbasset Galai	abdelbassetgalai3@gmail.com	55716454	MONAS	cod	check	40086-86320-30701-57892
+16	304.31	PENDING	2025-10-24 14:55:15.678252	AMIRAA TEST 	jomaaamira9@gmail.com	54673163	bkalta 	cod	check	12660-30122-49485-72478
+19	31	PENDING	2025-10-27 07:57:55.34195	Abdelbasset Galai	abdelbassetgalai3@gmail.com	55716454	monastir	cod	check	73045-66954-68916-45086
+20	648.22	PENDING	2025-11-10 07:57:30.284389	Abdelbasset Galai	abdelbassetgalai3@gmail.com	55716454	Bembla	cod	check	42593-98093-11271-51226
+21	1112.32	PENDING	2025-11-16 22:08:19.556595	galai abdelbasset	abdelbassetgalai3@gmail.com	55716454	monastir 	cod	check	16615-95268-66916-99677
+23	10.618	PENDING	2025-12-01 13:13:26.629803	Abdelbasset Galai	abdelbassetgalai3@gmail.com	55716454	Bembla	cod	check	98613-31338-96604-99801
+30	43	PENDING	2026-01-14 12:09:21.350649	Moez riahi	riahimoez@gmail.com	99089162	Medjez el beb	cod	check	31279-97324-40382-94144
+31	519	PENDING	2026-01-15 12:31:39.605821	Bilel Saad	bilelsaad0888@gmail.com	28858401	Tozeur	cod	check	73602-81597-26973-75207
+33	138	PENDING	2026-01-20 20:22:43.162212	Oueriemmi naoufel 	oueriemmi.naoufel@gmail.com	29181619	Bureau emploi de zarzis 	cod	check	72590-13941-78620-15745
+34	117	PENDING	2026-01-23 09:32:03.295788	Arroum heni	Heniarroum71@gmail.com	50962583	Lethleth-korba	cod	check	69796-56083-88840-14068
+35	338	PENDING	2026-01-23 13:19:42.199898	الطاعر واجه	tahar_ouaja@yahoo.fr	58359588	قابس الجنوبية-قابس	cod	check	45589-29706-32834-72870
+50	113	PENDING	2026-02-12 16:05:35.600185	Beldi achraf	achrefbeldi1@gmail.com	97627956	Bousalem 	cod	check	20136-30479-28706-96424
+55	308	PENDING	2026-02-15 22:50:04.308415	Baligh Mohamed	baligh.mohamed@gmail.com	23611017	7110 nebeur ,el Kef	cod	check	79799-43960-91400-38156
+52	179	PENDING	2026-02-14 20:15:29.48939	Haykel sahli	hkl.sahli@hotmail.fr	20205820	Beni khalled	cod	check	39648-69330-80028-37841
+46	238	DELIVERED	2026-02-09 19:50:35.192727	Gouider MSALLEM	msallem.g@gmail.com	25452028	Carthage, Tunis 	cod	check	82678-48480-84732-41884
+45	148	DELIVERED	2026-02-09 13:05:28.061773	Riahi moez	riahimoez@gmail.com	99089162	Medjez el beb	cod	check	39994-20658-15413-35431
+38	433	DELIVERED	2026-02-02 12:43:30.951655	Amel assoudi 	assoudi.amel27@gmail.com	26469404	Café montana rue 14 janvier Kasserine 	cod	check	62761-17742-97638-14378
+37	252	DELIVERED	2026-01-28 19:44:10.392145	Mohamed Ayari	ayarimouhamed38@gmail.com	94904762	Cité Brikel Battan Manouba	cod	check	34591-31291-64282-82787
+36	198	DELIVERED	2026-01-26 10:06:39.64198	محمد بنحسن	mouhamedbenhassen5@gmail.com	27812993	Tbag Korba 8070	cod	check	92844-62109-93903-13884
+32	83	DELIVERED	2026-01-20 20:12:13.34269	Naoufel	oueriemmi.naoufel@gmail.com	29181619	Bureau emploi de zarzis 	cod	check	11384-75357-36121-24763
+26	83	DELIVERED	2026-01-05 19:51:41.370441	Anis BEN MEFTEH 	anis.benmefteh1978@gmail.com	96914908	Tunis	cod	check	77043-34290-80099-42793
+25	68	DELIVERED	2025-12-25 14:46:49.098586	STE UNIVERSAL LIGHTING	NABILAYARI77@GMAIL.COM	56714571	8099 ZAOUIET JDIDI	cod	check	64444-12224-95010-41262
+53	142	PENDING	2026-02-15 13:16:13.970505	أحمد بنرمضان	ahmed@limamcompta.com	20446289	الجم عمارة جليوس	cod	check	65093-54176-63522-52927
+54	234	PENDING	2026-02-15 13:41:34.005791	Bouraoui mohamed	optimeubles.tn@gmail.com	51002211	Sidi daoud la marsa	cod	check	50068-51305-34277-19854
+56	266	PENDING	2026-02-17 09:53:09.925128	Bentalebrami	bentalebrami44@gmail.com	54562988	Elhaouria 	cod	check	33000-72849-35512-47896
+57	258	PENDING	2026-02-18 09:48:34.017429	Rhaim Mohamed Salah	rhaimmed@gmail.com	94607700	الدهماني الكاف	cod	check	78661-19680-55596-78784
+58	64	PENDING	2026-02-18 20:11:04.550072	Chikhaoui ali	chikhaouia46@gmail.com	22569706	Monastir massjed aissa	cod	check	15149-34544-96278-58593
+59	536	PENDING	2026-02-22 14:36:04.424623	Alaa Eddine H'ram	hramalaa65@gmail.com	28524693	Rouhia-siliana 	cod	check	91781-41523-51716-46579
+60	201	PENDING	2026-02-23 18:53:32.502069	houcem jaballah	houcemfinance@gmail.com	22099025	Kairouan	cod	check	92792-32929-88526-89338
+61	178.5	PENDING	2026-02-24 00:36:09.073012	Hrichi Ali	hrichiali23@gmail.com	29901270	Skhira sfax	cod	check	76233-76681-85715-51296
+62	218	PENDING	2026-02-24 01:06:59.070533	Ferdaous benyounes	ferdaouesbenyounes@gmail.com	25977636	Mourouj 6 ben arous	cod	check	79962-37765-58419-65074
+63	178	PENDING	2026-02-24 11:44:17.823535	Gharsallah Mohamed	gharsallahmohamed@yahoo.fr	23304030	El mourouj 1 carrefour medicale labo	cod	check	38367-79150-58454-23544
+64	118	PENDING	2026-02-24 22:34:13.883375	mediadh khedhri	mediadh.khedhri29@gmail.com	29763633	ariana	cod	check	31739-99182-43123-16286
+65	68	PENDING	2026-02-27 18:58:03.344494	Rached Said	rachedsaid58@gmail.com	97643747	Darbelouaer enfidha sousse	cod	check	57819-12462-42959-24978
+66	148	PENDING	2026-02-28 14:24:57.430767	Jamel Rhimi	jamelrhimi66@gmail.com	58865476	Kabbarya Tunisie 	cod	check	48031-38646-85543-35215
+67	99	PENDING	2026-02-28 16:34:51.535852	Hamza Zheni	hamzazheni55@gmail.com	54536866	Cité chebbi tebourba manouba 	cod	check	41319-19394-62749-97597
+68	119	PENDING	2026-02-28 21:45:11.541889	Yassin hadj amor 	yassi.jaidi@gmail.com	20786933	Douar hadj amor saouaf zaghouan 	cod	check	20169-63821-12578-63619
+70	59	PENDING	2026-03-01 00:55:34.916453	Miled raddaoui 	rdmiled@gmail.com	29841193	Ksar gfsa	cod	check	72107-53853-48929-40621
+71	455.5	PENDING	2026-03-02 06:22:50.462156	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	98591-97665-58086-63991
+72	54	PENDING	2026-03-02 19:59:24.939236	Imed Ayeb	ayebimed060@gmail.com	52253798	Rue 20 mars Sidi alouane mahdia 	cod	check	78592-62050-36171-16185
+73	99	PENDING	2026-03-02 23:55:00.099786	Mahdi ben ali	mahdibenali2013@gmail.com	21005580	Chebba مغازة الخير حومة السوسي	cod	check	18450-99807-48349-98006
+69	39	DELIVERED	2026-03-01 00:48:20.923347	Miled Raddaoui	rdmiled@gmail.com	29841193	Ksar gfsa	cod	check	69706-22011-80694-36348
+74	147	DELIVERED	2026-03-03 01:43:51.4571	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	79781-45588-52056-63845
+104	94	DELIVERED	2026-03-20 22:43:44.133296	Mortadha rabaaoui 	mortadha403@gmail.com	25071975	Al-Miknassi	cod	check	56356-41732-10875-15268
+111	101	DELIVERED	2026-03-24 09:02:06.7256	Feriel Weslati	feriel.weslati00@icloud.com	24699173	Denden manouba 	cod	check	78600-19396-27364-18822
+109	54	DELIVERED	2026-03-23 11:08:48.750293	Sami chabene	salut.ben.2005@gmail.com	98201988	Boumhel el bassatine	cod	check	63733-58965-21986-25724
+108	147.5	DELIVERED	2026-03-23 06:55:02.203677	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	53013-64208-99189-47492
+107	248	DELIVERED	2026-03-22 14:32:05.961319	Taieb Louhichi	taieblouhichi.yt@gmail.com	52522201	Grombalia 	cod	check	61182-99128-95607-82614
+106	85.5	DELIVERED	2026-03-21 18:32:32.200036	Bessem ben amor	bessemamor123@gmail.com	20970588	Mahdia boumerdes kerker	cod	check	19610-46787-66387-35237
+101	267	DELIVERED	2026-03-18 14:11:28.91336	Mohamed zied Naghmouchi	naghmouchizied@gmail.com	56752004	Jendouba	cod	check	25941-84774-94570-35249
+102	125	DELIVERED	2026-03-19 22:21:31.571233	فوزي العابد	faouzi20107@gmail.com	29348433	حي الانس سليانة 	cod	check	70582-52281-41385-25228
+100	571.5	DELIVERED	2026-03-18 13:58:38.345467	Nihel Ben sedrine	nihelbensedrine@gmail.com	55377502	La marsa 	cod	check	60710-17515-70997-12767
+99	78	DELIVERED	2026-03-18 09:56:05.613945	Fathallah	fathallaharafet6@gmail.com	27731186	Zaouite El magaiez haouaria 	cod	check	97535-53466-59949-23102
+98	145.2	DELIVERED	2026-03-17 21:45:48.688483	ahmed Allani	ahmedmiiii007@gmail.com	54856431	Kairouan	cod	check	47111-97790-88704-94132
+97	77	DELIVERED	2026-03-16 20:23:27.413792	Chayma abidi	chaymaabidi406@gmail.com	96806170	Tunis, El fattah, sidi hassine 	cod	check	78710-18246-20789-47711
+120	118	DELIVERED	2026-03-25 20:14:31.085562	Abidelli nabil 	abidellinabil@gmail.com	97519336	GAÂFOUR, Siliana 	cod	check	46624-12830-89222-57402
+121	314	DELIVERED	2026-03-26 07:41:18.874708	sabeh anis	alloaniscia@gmail.com	97961554	Citée El Ons. Le Kef. Tunisie 	cod	check	38901-69556-32205-63295
+119	450	DELIVERED	2026-03-25 18:40:14.980016	Jarray Abdelbasset	infojarray@gmail.com	93324407	Jouaouda sidi Abdallah belhaj, chbika, kairouan 	cod	check	91552-53516-36185-84338
+118	78	DELIVERED	2026-03-25 17:17:39.334235	مهدي الكسراوي	mahdikasraoui123@gmail.com	92571224	عين بوسعدية برڨو سليانة	cod	check	68569-47255-37230-74711
+117	166	DELIVERED	2026-03-25 14:03:08.809768	Zied amaimia	ziedamaimia20@gmail.com	93004930	Sidi aich gafsa	cod	check	31729-62458-57227-18598
+116	206	DELIVERED	2026-03-25 13:21:37.033341	makrem	makremzouavi@gmail.com	29525796	siliana 	cod	check	23386-94811-37908-17445
+115	61	DELIVERED	2026-03-25 11:21:37.168702	Samir Ben hmouda	samirbenahmed66@gmail.com	28525031	Agareb	cod	check	94608-39501-44814-43328
+114	59.5	DELIVERED	2026-03-24 23:43:56.377944	zarai maher	zaraimaher21@gmail.com	50313481	sidi bouzid -souk jdid - rmilya	cod	check	32627-43998-64789-30476
+113	153.5	DELIVERED	2026-03-24 21:36:15.231961	Kaies Grami	gramikaies2@gmail.com	22145045	Bouarada 	cod	check	17162-60690-50790-78947
+112	790	DELIVERED	2026-03-24 18:47:14.290791	حاتم بن محمد	hatemhichri2022@gmail.com	28867648	55 wed kharoub bouficha sousse	cod	check	16995-66984-39458-59691
+96	75	DELIVERED	2026-03-16 11:49:13.836326	Feriel Weslati	feriel.weslati00@icloud.com	24699173	Rue Taha houssine denden manouba 	cod	check	83317-29071-19887-96227
+95	39	DELIVERED	2026-03-15 15:27:18.595028	Khaled BELAID 	khaledbelaid262@gmail.com	97133205	Avenue l'olivier kalaa kebira	cod	check	83232-30386-18072-89546
+94	416	DELIVERED	2026-03-13 22:43:20.460547	Mouhamed Ayari	ayarimouhamed38@gmail.com	94904762	Cité Brik El Battan Manouba	cod	check	11976-39466-34437-13247
+93	29	DELIVERED	2026-03-13 07:34:50.172784	Askri Borni	askribo@outlook.com	27623935	Route de l'aeroport 8112 ain sobah  Tabarka	cod	check	19669-86439-23169-59648
+91	118	DELIVERED	2026-03-11 19:05:47.082104	Yassine Ferchichi 	yassineferchichi99@gmail.com	54546493	Mateur bizerte	cod	check	61229-16650-57634-10675
+92	177	DELIVERED	2026-03-11 19:56:34.440305	Ahmed Allani	ahmedmiiii007@gmail.com	54856431	Kairouan pres mosquée el gofran	cod	check	68458-91995-31554-39330
+123	59	PENDING	2026-03-27 21:11:09.292832	Nour	nourgayess.1989@gmail.com	50816248	El Mourouj	cod	check	29616-73815-95665-28646
+89	29	DELIVERED	2026-03-10 11:45:02.228253	Tebourbi Hamadi	hamadi.tebourbi.2005@gmail.com	54442390	La manouba : Al battan rue zouitina : ferme haj khlass	cod	check	82772-50674-10213-95052
+88	41	DELIVERED	2026-03-10 08:57:52.116683	Mohamed belhaj	mohamedhawaria10@gmail.com	29136097	Tebourba	cod	check	38132-39733-39725-98548
+87	195.5	DELIVERED	2026-03-10 00:16:20.265613	Maher sassi	mahercapitaine@gmail.comcapitaine	55000180	Kssibet sousse 	cod	check	22085-89599-34209-85899
+86	177	DELIVERED	2026-03-09 18:24:31.460976	Tamim bensmida	bensmidatamim@gmail.com	54542667	Ariana la sokra rue matar	cod	check	87188-24556-88847-29810
+85	528	DELIVERED	2026-03-09 08:41:38.641359	zmerli khaled	elbaha.vet@planet.tn	26730730	Sidi-Thabet ; Ariana	cod	check	81614-25806-13214-30509
+84	49	DELIVERED	2026-03-08 10:06:32.756427	Abdelaziz 	a.lakhoua@gmail.com	20505555	Sidi Bou Said - impasse Hassen Zmerli 	cod	check	28744-43163-69172-51867
+83	60	DELIVERED	2026-03-07 16:16:27.154703	محمد بن جدو	benjeddoumouhamed37@gmail.com	92895097	Béja touboursouk dougga 	cod	check	46300-51749-68580-91410
+82	953	DELIVERED	2026-03-07 13:34:19.689395	Aymen Bachrouch	salvafor.valestra@gmail.com	58948977	Tunis 	cod	check	60102-59336-42133-26085
+81	109	DELIVERED	2026-03-06 18:03:20.999945	Mohamed ali boshkati	yassine.kaab@gmail.com	24224935	Saheb el jebel el hawaria Nabeul 	cod	check	71041-63054-26768-33262
+124	30	DELIVERED	2026-03-28 06:45:58.366493	Chiheb bn laden 	chihebkf0@gmail.com	52014802	Bir lahfay sidi bouzid 	cod	check	33240-35795-95979-90677
+80	134.6	DELIVERED	2026-03-05 11:52:04.377116	Mehdi B A	mahdibenali2013@gmail.com	21005580	Chebba مغازة الخير حومة السوسي	cod	check	64840-99481-72473-90997
+75	236	DELIVERED	2026-03-03 09:23:16.541419	Mahdi ben ali	mahdibenali2013@gmail.com	21005580	Chebba مغازة الخير  عڨيب  حومة السوسي	cod	check	50080-26881-74302-24290
+77	44	DELIVERED	2026-03-04 10:29:51.314105	Houcin zouari	houcinzojari@gmail.com	22911940	Mdhilla gafsa	cod	check	28099-57873-99959-43396
+76	29	DELIVERED	2026-03-03 22:10:19.920022	Hamdi tha	taha.hamdi001@gmail.com	29787858	Borj el amri 	cod	check	85596-16844-81189-53648
+79	54	DELIVERED	2026-03-05 09:48:27.144728	Malek ghraibi	malekghraibi67@gmail.com	23575244	Béja centre vile	cod	check	49003-89830-47569-94095
+78	44	DELIVERED	2026-03-04 23:15:35.259147	Saidi Assem	assemsaidi08@gmail.com	27704398	Sidi smail béja	cod	check	82123-32174-54044-58422
+90	44	DELIVERED	2026-03-10 19:02:49.960512	فوزي العباسي	faouziabbassi78@gmail.com	53089797	شعبةالحوت سجنان بنزرت 	cod	check	42054-81132-76444-30293
+127	121.5	DELIVERED	2026-03-29 22:08:48.132673	Oussama ajmi	Oussamaajmi.2000@gmail.com	21538852	Souassi,mahdia 	cod	check	47004-30798-94250-34842
+126	291.5	DELIVERED	2026-03-29 19:30:13.559368	Charfeddine Jaouadi	charfijay4444@gmail.com	29403087	2 rue mustapha khrayef megrine ben arous	cod	check	41917-11309-86923-67040
+125	29	DELIVERED	2026-03-28 18:02:29.656871	Aymen Amri	Aymen_atn@hotmail.fr	20836024	Rue sidi zid l'aouina Tunis	cod	check	73098-35863-80582-77127
+135	54	DELIVERED	2026-04-01 15:37:30.617574	Hassen Toumi	mdevcht@gmail.com	98109049	Debosville - Tunisie	cod	check	40299-67004-96612-16269
+146	209	DELIVERED	2026-04-07 12:12:12.218573	Yahyaoui Abdellatif	abdellatifyahyaoui@yahoo.fr	98212011	Barrage mallegue nebeur ElKef	cod	check	86545-18446-73810-82307
+136	89	DELIVERED	2026-04-01 22:58:06.358065	احمد بالحاج صالح	ahmedbhs1991@gmail.com	95928511	حمام الاغزاز	cod	check	64521-40076-32323-74265
+134	57.5	DELIVERED	2026-03-31 22:03:48.3859	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	50304-74264-14742-10072
+133	159.5	DELIVERED	2026-03-31 21:14:08.192903	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	68117-48342-12594-36503
+132	109	DELIVERED	2026-03-31 19:46:26.916983	Nabil Sellami	sellaminabil502@gmail.com	25716498	Thibar	cod	check	46868-54982-15923-14226
+131	228	DELIVERED	2026-03-31 18:04:50.136907	Anas Akrimi	akrimianass@gmail.com	20286153	Mornaguia tunis	cod	check	69493-75128-50639-59534
+130	228	DELIVERED	2026-03-31 16:51:40.956785	Najiba abdrabah	najibaabdrabah5@gmail.com	44415569	Béja, téboursouk	cod	check	62567-31863-83578-45470
+128	359	DELIVERED	2026-03-31 08:46:47.805159	محمد بن سعيد	mdsmido@yahoo.com	29471147	كروسية .سيدي الهاني .سوسة	cod	check	47101-57300-59403-44730
+51	330	PROCESSING	2026-02-13 07:57:31.988942	nourdine mathl	clientreserveunpressearivage@gmail.com	99442724	verfier avec client	cod	check	95682-66641-19160-67399
+145	195	DELIVERED	2026-04-06 23:50:50.006704	Abdelmajid Djebali	abdelbali212@gmail.com	27688598	Ain Mrad Teboursouk, Beja 9040 ( a coté de Mosque Ain Mrad	cod	check	77877-42031-98177-20547
+142	520	DELIVERED	2026-04-05 15:21:56.833707	Bouza Houssem	bouzahoussem@hotmail.com	90497915	Hamem sousse	cod	check	22188-24317-83279-62709
+143	73	DELIVERED	2026-04-06 10:01:42.540388	Oussama ajmi	Oussamaajmi.2000@gmail.com	21538852	Souassi,mahdia 	cod	check	80198-32878-89332-27209
+141	255	DELIVERED	2026-04-04 19:51:10.742104	Abdallah bouallagui	abidalkeita10@gmail.com	92912823	Sidi bouzid centre ville 	cod	check	77914-26901-57499-69861
+140	161.5	DELIVERED	2026-04-04 14:59:12.233472	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	59644-48764-82410-26757
+137	89	DELIVERED	2026-04-03 11:50:32.206575	Hichri Hafedh	hafedhhichri7@gmail.com	22423223	Bni Mechkel boujrida korba Nabeul 	cod	check	94130-23686-75378-31715
+129	126.5	DELIVERED	2026-03-31 13:51:59.289915	Hrichi Ali	ali.hrichi23@gmail.com	29901270	Skhira sfax	cod	check	85343-89054-85090-81721
+144	475	DELIVERED	2026-04-06 16:04:52.02781	جهاد جماعي	jihedjmai2002@gmail.com	51622134	jirba houmet soug bazim	cod	check	49390-29919-63446-33259
+147	302.5	DELIVERED	2026-04-07 16:54:03.331908	Zekri Maher	maherzekri@hotmail.com	98500411	Route de mahdia km10 rue makbarat yaich  après mosquée  sfax 	cod	check	28911-75143-11554-66346
+139	241	DELIVERED	2026-04-04 12:44:28.619412	Nader Belhadj salah	naderbhsb5@gmail.com	50752753	Hammam el ghzez	cod	check	86403-95827-34936-57364
+138	170	DELIVERED	2026-04-03 15:41:29.747725	sami zaibi	samizaibi@gmail.com	99204595	Nefza Béja 	cod	check	33950-28927-33169-88091
+148	209	DELIVERED	2026-04-08 06:14:49.166312	Haithem	haithamkhlif84@gmail.com	92735920	sfax route mharza km1	cod	check	20033-90322-63589-32065
+158	218	DELIVERED	2026-04-12 14:02:55.956447	Nour	nourgayess.1989@gmail.com	50816248	El Mourouj	cod	check	69059-78189-40988-46972
+157	241	DELIVERED	2026-04-11 20:56:35.522081	Mabrouk Khalil	kmabrouk827@gmail.com	27111461	Nfidha 	cod	check	24607-72942-36644-36184
+159	116	DELIVERED	2026-04-12 15:21:18.888318	Guesmi marouen	guesmimarouen9@gmail.com	58044476	Centre Farah Lake , lac2 . Tunis 	cod	check	21855-43866-51405-55189
+156	255.5	DELIVERED	2026-04-11 13:58:15.549246	صابر الشاهد	mansourjamali@gmail.com	21922679	بوكريم الهوارية نابل 	cod	check	23607-58534-78370-12315
+155	204	DELIVERED	2026-04-11 11:04:43.893425	Fatma maztouri	tictakprint@gmail.com	53722722	Jerba	cod	check	29115-94044-43732-71429
+154	305	DELIVERED	2026-04-10 22:41:15.191217	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	63787-81988-42069-72616
+153	59	DELIVERED	2026-04-10 22:31:58.626163	khalifa boughanmi	boughanmi.khalifa@live.fr	98285423	Cité zitouna Tajerouine le kef	cod	check	99101-19955-94591-55343
+152	338.5	DELIVERED	2026-04-10 13:46:01.313592	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	99567-46494-16812-19646
+151	44	DELIVERED	2026-04-10 10:18:26.024362	Hafedh Abbassi	Abbassi.hafedh@ins.tn	25660870	Hajeb Laâyoune 	cod	check	86429-84280-85966-81565
+150	74	DELIVERED	2026-04-09 22:36:15.870608	Elyes Ezzine	ilyesezzine05@gmail.com	28483360	Bizerte	cod	check	73487-39993-13448-90802
+149	215	DELIVERED	2026-04-09 21:03:34.105045	سامي بلعيد 	Belaidsami45@gmail.com	98983750	القلعة الكبرى ولاية سوسة 	cod	check	24105-36201-93335-31626
+169	245	DELIVERED	2026-04-17 22:12:44.720007	Ounallah	karimtechnicien@hotmail.com	20335927	Beni KHL led rue jeuness	cod	check	71813-60154-38375-31129
+167	84	DELIVERED	2026-04-15 14:53:23.73714	Feres darouich	feres.darouich@supcom.ucar.tn	93542215	Rue bni hassen-jemmel-monastir	cod	check	13499-25053-71988-77103
+166	486	DELIVERED	2026-04-15 12:48:35.444815	Bani jalel	banijalel31@gmail.com	55204548	Korba	cod	check	79454-30297-60596-50751
+165	54	DELIVERED	2026-04-15 11:27:04.666215	Kamel Krichen	kamel.krichenihec@gmail.com	25858504	Route l'afrane km 4,5 sfax	cod	check	71231-66760-25833-36872
+164	29	DELIVERED	2026-04-15 07:10:14.062896	خميس الترايكي	kamustraiki@gmail.com	50751597	سليانة	cod	check	43943-99440-76443-86515
+163	107.8	DELIVERED	2026-04-14 16:27:43.09603	Chennaoui hedya	chennaoui.hedia.cm@gmail.com	20516910	Ben arous Mhamedia cité nassim rue antakia 	cod	check	57535-21339-11781-74574
+162	215	DELIVERED	2026-04-14 13:31:26.450623	Ben Jeddou Mouhamed	benjeddoumouhamed37@gmail.com	92895097	Teboursouk dougga 	cod	check	78125-61523-61959-63978
+161	45	DELIVERED	2026-04-14 00:26:06.791992	Charfeddine Jaouadi	charfijay4444@gmail.com	29403087	2 rue mostfa khrayef Megrine ben Arous 	cod	check	96614-11136-82635-60168
+160	118	DELIVERED	2026-04-13 22:52:47.301272	Mechergui dhia	mecherguidhia026@gmail.com	26289055	Sejnen 	cod	check	55040-57422-53426-95529
+168	69	DELIVERED	2026-04-17 17:30:35.855558	Galai Abdelbasset	abdelbassetgalai3@gmail.com	55716454	Bembla	cod	check	45073-87427-18295-78313
+172	136	DELIVERED	2026-04-18 21:56:44.569787	Gares Mohamed 	garesmohmmedi@gmail.com	98981843	M'saken 	cod	check	70256-67633-91087-91394
+177	270	DELIVERED	2026-04-20 08:45:32.675298	Jalel Hizi	hizijalel383@gmail.com	99609383	Bouderyes-foussana-kasserine	cod	check	85596-24444-66300-53806
+179	115	DELIVERED	2026-04-20 13:46:29.917131	ahmed Allani	ahmedmiiii007@gmail.com	54856431	Kairouan	cod	check	97086-34413-94643-40530
+173	161	DELIVERED	2026-04-19 08:11:31.738649	Gares Mohamed 	garesmohammedi@gmail.com	98981843	154,rue rokeb M'saken 	cod	check	59953-78234-83087-23215
+175	284	DELIVERED	2026-04-19 14:20:44.324277	Slim Grombalia	grombalia2023@gmail.com	21920920	Km 40 turki grombalia 	cod	check	85707-71996-85414-28974
+176	218	DELIVERED	2026-04-19 21:11:41.848182	Nadia khaldi	ynflystone@gmail.com	53220728	Bizerte corniche	cod	check	95274-21042-37126-92296
+178	218	DELIVERED	2026-04-20 09:49:20.166238	nefzi karima	saidanefzi661@gmail.com	53687752	5 rue ibn abi dhief den den municipalite den den 	cod	check	71564-60556-29691-38930
+180	131.2	DELIVERED	2026-04-22 09:52:05.901727	ملاك خذراني	malekhadrani@gmail.com	93668114	Mahassen nebeur kef 7110	cod	check	86926-92863-94668-54505
+182	251.5	DELIVERED	2026-04-22 19:26:35.017433	Boughanmi Houssem	housso1212@gmail.com	98823971	Kef centre ville 	cod	check	81216-22030-84777-72929
+183	344.5	DELIVERED	2026-04-23 05:51:15.543535	Nizar douiri	d.nizat@hotmail.fr	22801808	Tunis-lac 1	cod	check	49569-14921-69223-93762
+195	70.5	DELIVERED	2026-05-05 12:30:03.228421	Sami Nacer	samy.osch@gmail.com	97859128	Rue taher hadded chenini-gabes 6041	cod	check	48953-81056-12206-58208
+194	260	DELIVERED	2026-05-05 07:20:43.414806	Bilel	bilelhamdaoui1920@gmail.com	51464645	Tunis lac3 a côté de l'ambassade suisse 	cod	check	18004-76482-75347-99548
+170	245	DELIVERED	2026-04-17 22:22:12.721002	Ounallah	karimtechnicien@hotmail.com	20335927	Beni khled rue jeuness	cod	check	72998-53925-48495-49849
+171	245	DELIVERED	2026-04-17 23:50:38.061985	karim	karimtechnicien@hotmail.com	20335927	Beni khled rue jeuness	cod	check	56157-35316-10553-41432
+174	218	DELIVERED	2026-04-19 13:04:59.342341	messaoudi mokrane	messaoudi.mokrane1988@gmail.com	50203970	akbou wilaya bejaia algerie	cod	check	62743-98063-96042-86138
+181	131.4	DELIVERED	2026-04-22 18:56:36.942057	Ayman Allouch	aymanallouch@gmail.com	25102098	Sfax sidi mansour klm 10 el mansoura residence baya  	cod	check	18188-80124-43349-71961
+184	248	DELIVERED	2026-04-27 20:48:48.469004	Nabil Guetat	nabil.guetat@gmail.com	97269438	Route Mahdia km 2,5 Sfax	cod	check	59757-46430-98838-30540
+185	46	DELIVERED	2026-04-28 00:15:49.482105	Mechergui dhia	mecherguidhia026@gmail.com	26289055	Sejnen 	cod	check	79115-79185-85333-29702
+186	24	DELIVERED	2026-04-29 10:04:51.04043	samar abidi	samar.labidi92@gmail.com	94183416	Tunis	cod	check	23599-85393-81209-18810
+187	92	DELIVERED	2026-04-29 12:40:10.238528	nefla aladin	neflaaladin@gmail.com	97061147	Souassi	cod	check	76961-39394-15393-71565
+188	320	DELIVERED	2026-04-30 05:00:20.354113	Ben mohamed	omarmed6@gmail.com	27608563	Gabes 	cod	check	81520-94347-94433-87869
+189	400	DELIVERED	2026-04-30 19:22:45.309655	Chamssdine 	chamssdinelabidi@gmail.com	98176934	Carrefour Marsa 	cod	check	38166-89225-91793-28700
+199	450	DELIVERED	2026-05-08 11:03:44.91899	Med ammar Bellalah	mammarbellalah@gmail.com	93304633	Dar chabben el fehri , nabeul 	cod	check	37632-96203-45008-51809
+201	59	DELIVERED	2026-05-09 16:31:22.725036	achref benkacem	ashrefbenkassem@gmail.com	58744236	zaghoaun, zriba hammam	cod	check	27029-68049-27028-88536
+200	215	DELIVERED	2026-05-08 14:07:30.139063	Alaa dridi	aladaind@gmail.com	24047352	Tunis montplaisir	cod	check	82936-96750-27424-98372
+208	450	PENDING	2026-05-15 12:56:48.908788	temim	cherni_temim@yahoo.fr	93666988	tunis	cod	check	78531-73475-22729-87906
+209	114.5	PENDING	2026-05-15 13:18:15.172822	ben taieb hatem	bthattem@hotmail.fr	53255757	medjez el bab	cod	check	57790-73405-59563-74426
+197	104	DELIVERED	2026-05-06 13:19:39.485235	Nour Gayess	nourgayess.1989@gmail.com	50816248	Mourouj 1	cod	check	78461-60993-89392-70133
+196	397.3	DELIVERED	2026-05-05 16:40:22.295071	chokri ferchichi	chokri.ferchichi.carthage@gmail.com	94518215	Grand tunis	cod	check	44468-94993-41158-99541
+193	59	DELIVERED	2026-05-03 16:18:16.160619	Nour	nourgayess.1989@gmail.com	50816248	El Mourouj	cod	check	54256-45302-71199-82006
+192	103	DELIVERED	2026-05-03 15:09:15.748354	marouen belakhel	marouen.belakhel@gmail.com	53218398	Borj cedria 	cod	check	95921-93251-17466-49304
+202	215	DELIVERED	2026-05-09 19:10:11.032109	Bachir jlassi	zouhayra1120@icloud.com	97161814	Rahma menzelbouzelfa nebeul	cod	check	65619-71861-68017-72871
+191	57	DELIVERED	2026-05-01 20:25:32.088155	Samia fathalli 	fathallisamia@yahoo.fr	94294949	Tunis Lafayette 	cod	check	78729-96539-72253-79838
+190	450	DELIVERED	2026-05-01 13:38:37.233236	Ben chikh abdelaziz	bchikhazouz@gmail.com	29306506	Sfax ville	cod	check	27620-85095-14513-26856
+198	24	DELIVERED	2026-05-07 17:57:29.412648	Houcine Elhammedi	houcine.ha@gmail.com	97747081	Zaghouan 	cod	check	80178-78750-96802-85319
+203	34	DELIVERED	2026-05-09 20:33:57.025344	Hasni	hvtc83@gmail.com	98636864	Jendouba centre ville	cod	check	75137-17675-85777-92879
+204	910	DELIVERED	2026-05-11 23:16:35.182322	mohamed salah gargouri	gargouri2001@gmail.com	21617726	26. av de l ere nouvelle . el nasr 2, 1000 - tunis	cod	check	60331-74438-86433-95418
+205	156	DELIVERED	2026-05-12 09:05:49.670892	ahmed Allani	ahmedmiiii007@gmail.com	54856431	Kairouan	cod	check	80061-62775-29716-47131
+206	532	DELIVERED	2026-05-12 19:00:50.286181	HAMDI ADEL	ebf.adel@gmail.com	95084338	FOUCHANA Ben arous cité elhidhab	cod	check	40467-26277-24007-41896
+207	59	DELIVERED	2026-05-12 21:56:31.646984	galai	apiculturegalai@gmail.com	55716454	bembla	cod	check	86275-96974-87073-14001
+210	219	PENDING	2026-05-15 17:42:47.815591	Ridha ghorbali 	ridhaghorbali88@gmail.com	97367780	Siliana	cod	check	44457-75609-50669-54673
+211	69	PENDING	2026-05-17 19:33:35.457702	amine zidi	amin.zidi07@gmail.com	99783281	الحويض (اوتيك بنزرت)	cod	check	70085-27757-64878-96627
+212	275.5	PENDING	2026-05-19 19:45:28.819627	Alaa Ben saad	mcwalid136@gmail.com	48069629	بوعشير/ حمام الزريبة/ زغوان	cod	check	91650-24464-17109-98062
+213	117	PENDING	2026-05-21 08:04:54.425385	Ahmed Mhiri	mhiri@sac-marquage.com	29787427	Route de tunis Km 5, sakiet ezzit , sfax	cod	check	52371-14424-92974-46121
+214	117	PENDING	2026-05-21 09:12:14.855133	Jawhar Belaiba	jawharbelaiba1@gmail.com	22796779	La chebba	cod	check	29796-25997-88252-72892
+215	299.6	PENDING	2026-05-22 13:02:20.900988	Hamadi MEJRI	hamadi.mejri1@gmail.com	24012780	Bizerte	cod	check	10055-46264-21403-53709
+216	54	PENDING	2026-05-24 16:10:15.291667	Saidani Helmi	helmisaidani97@gmail.com	29051064	Bousalem	cod	check	59717-94388-69499-11789
 \.
 
 
