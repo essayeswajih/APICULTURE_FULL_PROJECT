@@ -79,8 +79,8 @@ class OrderItem(Base):
     quantity = Column(Integer, nullable=False)
     price = Column(Float, nullable=False)  # Store the price at the time of purchase
     name = Column(String, nullable=True)  # Optional field for product name
-    order = relationship("Order", back_populates="items")
-    product = relationship("Product", back_populates="order_items")
+    order = relationship("Order", back_populates="items", overlaps="orders")
+    product = relationship("Product", back_populates="order_items", overlaps="orders")
     shipping_cost = Column(Float, nullable=True)  # Optional field for shipping cost of this item
 
 # Order Model
@@ -106,7 +106,7 @@ class Order(Base):
         "Product",
         secondary="order_items",
         back_populates="orders",
-        overlaps="items,order"
+        overlaps="items,order,order_items,product"
     )
 
 
