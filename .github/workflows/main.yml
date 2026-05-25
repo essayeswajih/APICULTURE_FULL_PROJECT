@@ -16,8 +16,10 @@ jobs:
         with:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ubuntu
-          password: ${{ secrets.DEPLOY_SSH_KEY }}
-          port: 49152
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.DEPLOY_PORT }}
+          timeout: 30s
+          command_timeout: 20m
           script_stop: true
           script: |
             cd ~/workspace/APICULTURE_FULL_PROJECT
