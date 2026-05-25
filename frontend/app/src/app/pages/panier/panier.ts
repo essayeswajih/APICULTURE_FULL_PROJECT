@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } 
 import { RouterLink, Router } from '@angular/router';
 import { Meta, Title } from '@angular/platform-browser';
 import { gsap } from 'gsap';
-import { Api, Order, OrderStatus } from '../../services/api';
+import { Api, CartPricingItem, CartPricingResponse, Order, OrderStatus } from '../../services/api';
 import { ToastrService } from 'ngx-toastr';
 import { Cart } from '../../services/cart';
 
@@ -25,6 +25,12 @@ interface CartItem {
 })
 export class Panier implements OnInit {
   cartItems: CartItem[] = [];
+  vipCodeInput = '';
+  appliedVipCode: string | null = null;
+  vipPricing: CartPricingResponse | null = null;
+  vipLoading = false;
+  vipMessage = '';
+  vipStatus: 'idle' | 'success' | 'error' | 'info' = 'idle';
 
   paymentMethod: string = 'cod'; // Default to 'online'
   checkoutForm: FormGroup;
@@ -68,6 +74,7 @@ export class Panier implements OnInit {
         this.saveCartToLocalStorage();
       }
     }
+    this.refreshCartPricing();
 
     // GSAP animations
     if (isPlatformBrowser(this.platformId)) {
@@ -105,6 +112,7 @@ export class Panier implements OnInit {
         cartItem.id === item.id ? { ...cartItem, quantity } : cartItem
       );
       this.saveCartToLocalStorage(); // Save updated cart to localStorage
+      this.refreshCartPricing();
       this.cdr.detectChanges(); // Explicitly trigger change detection
     }
   }
@@ -112,6 +120,7 @@ export class Panier implements OnInit {
   removeItem(itemId: number): void {
     this.cartItems = this.cartItems.filter(item => item.id !== itemId);
     this.saveCartToLocalStorage(); // Save updated cart to localStorage
+    this.refreshCartPricing();
     this.toastService.success('Product removed from cart', 'Success', {
             timeOut: 2000,
             positionClass: 'toast-bottom-right',
@@ -123,6 +132,9 @@ export class Panier implements OnInit {
   }
 
   getSubtotal(): number {
+    if (this.vipPricing) {
+      return this.vipPricing.subtotal;
+    }
     const subtotal = this.cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     return subtotal;
   }
@@ -137,16 +149,120 @@ export class Panier implements OnInit {
     return total;
   }
   getTotalWithoutTax(): number {
+    if (this.vipPricing) {
+      return this.vipPricing.total;
+    }
     //TVA non incluse
     const total = this.getSubtotal() + (this.getSubtotal() < 250 ? this.getShippingCost() : 0);
     return total;
   }
 
   getShippingCost(): number {
+    if (this.vipPricing) {
+      return this.vipPricing.shipping;
+    }
     return this.cartItems.reduce(
       (max, { shipping_cost }) => Math.max(max, shipping_cost ?? 9.0),
       0
     );
+  }
+
+  applyVipCode(): void {
+    const code = this.vipCodeInput.trim();
+    if (!code) {
+      this.vipStatus = 'error';
+      this.vipMessage = 'Veuillez saisir un code VIP.';
+      return;
+    }
+
+    this.vipLoading = true;
+    this.api.validateVipCart({
+      vip_code: code,
+      items: this.cartItems.map(item => ({ product_id: item.id, quantity: item.quantity }))
+    }).subscribe({
+      next: (pricing) => {
+        this.vipLoading = false;
+        if (!pricing.valid_vip) {
+          this.appliedVipCode = null;
+          this.vipPricing = pricing;
+          this.vipStatus = 'error';
+          this.vipMessage = 'Code VIP invalide ou inactif.';
+          this.cdr.detectChanges();
+          return;
+        }
+
+        this.appliedVipCode = pricing.vip_code || code;
+        this.vipCodeInput = this.appliedVipCode;
+        this.vipPricing = pricing;
+        this.vipStatus = pricing.has_vip_savings ? 'success' : 'info';
+        this.vipMessage = pricing.has_vip_savings
+          ? 'Code VIP appliqué avec succès.'
+          : 'Code VIP valide, mais aucun article du panier ne possède un meilleur prix VIP.';
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        this.vipLoading = false;
+        this.vipStatus = 'error';
+        this.vipMessage = 'Impossible de vérifier ce code VIP pour le moment.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  removeVipCode(): void {
+    this.appliedVipCode = null;
+    this.vipCodeInput = '';
+    this.vipStatus = 'idle';
+    this.vipMessage = '';
+    this.refreshCartPricing();
+  }
+
+  getPricedItem(item: CartItem): CartPricingItem | undefined {
+    return this.vipPricing?.items.find(pricedItem => pricedItem.product_id === item.id);
+  }
+
+  getItemUnitPrice(item: CartItem): number {
+    return this.getPricedItem(item)?.final_price ?? item.price;
+  }
+
+  getItemPublicPrice(item: CartItem): number {
+    return this.getPricedItem(item)?.public_price ?? item.price;
+  }
+
+  hasVipPriceApplied(item: CartItem): boolean {
+    return Boolean(this.getPricedItem(item)?.vip_applied);
+  }
+
+  private refreshCartPricing(): void {
+    if (!this.cartItems.length) {
+      this.vipPricing = null;
+      this.appliedVipCode = null;
+      this.vipMessage = '';
+      this.vipStatus = 'idle';
+      return;
+    }
+
+    this.api.validateVipCart({
+      vip_code: this.appliedVipCode,
+      items: this.cartItems.map(item => ({ product_id: item.id, quantity: item.quantity }))
+    }).subscribe({
+      next: (pricing) => {
+        this.vipPricing = pricing;
+        if (this.appliedVipCode && !pricing.valid_vip) {
+          this.appliedVipCode = null;
+          this.vipStatus = 'error';
+          this.vipMessage = 'Votre code VIP n’est plus valide.';
+        }
+        this.cdr.detectChanges();
+      },
+      error: () => {
+        if (this.appliedVipCode) {
+          this.vipStatus = 'error';
+          this.vipMessage = 'Impossible de recalculer les prix VIP.';
+        }
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   openCheckoutModal(): void {
@@ -194,7 +310,7 @@ export class Panier implements OnInit {
       items: this.cartItems.map(item => ({
         product_id: item.id,
         quantity: item.quantity,
-        price: item.price,
+        price: this.getItemUnitPrice(item),
         name: item.name ,
         shipping_cost: item.shipping_cost || 9.0
       })),
@@ -205,7 +321,8 @@ export class Panier implements OnInit {
       location: this.checkoutForm.value.deliveryLocation,
       payment_method: this.paymentMethod,
       created_at: new Date().toISOString(),
-      code: ''
+      code: '',
+      vip_code: this.appliedVipCode
     };
 
     this.api.createOrder(orderData).subscribe({

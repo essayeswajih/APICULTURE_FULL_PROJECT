@@ -13,6 +13,7 @@ class ProductBase(BaseModel):
     category_id: int
     subcategory_id: Optional[int] = None
     discounted_price: Optional[float] = None
+    vip_price: Optional[float] = None
     image_url: Optional[str] = None  # Optional image URL for the product
     image2_url: Optional[str] = None
     image3_url: Optional[str] = None
@@ -29,6 +30,7 @@ class ProductBase(BaseModel):
 class ProductResponse(ProductBase):
     id: int
     discounted_price: Optional[float] = None
+    vip_price: Optional[float] = None
 
     class Config:
         from_attributes = True
@@ -91,6 +93,7 @@ class OrderBase(BaseModel):
     payment_method: str
     payed : str
     code: str
+    vip_code: Optional[str] = None
     items: List[OrderItemBase]
     class Config:
         from_attributes = True  # This tells Pydantic to treat the SQLAlchemy models as dict-like
@@ -111,6 +114,7 @@ class OrderCreate(BaseModel):
     telephone: str
     location: str
     payment_method: str
+    vip_code: Optional[str] = None
     
     class Config:
         from_attributes = True
@@ -128,6 +132,7 @@ class OrderResponse(BaseModel):
     payment_method: str
     payed : str
     code: str
+    vip_code: Optional[str] = None
     items: List[OrderItemBase]
 
     class Config:
@@ -181,3 +186,59 @@ class PublicStats(BaseModel):
     product_count: int
     happy_customers: int
     store_locations: int
+
+class VipCardBase(BaseModel):
+    id: Optional[int] = None
+    customer_key: str
+    customer_name: str
+    email: Optional[str] = None
+    telephone: Optional[str] = None
+    code: str
+    approved: bool
+    issued_at: datetime
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
+class VipCardApprove(BaseModel):
+    customer_key: str
+    customer_name: str
+    email: Optional[str] = None
+    telephone: Optional[str] = None
+
+class VipCardValidation(BaseModel):
+    valid: bool
+    message: str
+    card: Optional[VipCardBase] = None
+
+class CartPricingInputItem(BaseModel):
+    product_id: int
+    quantity: int
+
+class CartPricingRequest(BaseModel):
+    vip_code: Optional[str] = None
+    items: List[CartPricingInputItem]
+
+class CartPricingItem(BaseModel):
+    product_id: int
+    name: str
+    quantity: int
+    regular_price: float
+    public_price: float
+    vip_price: Optional[float] = None
+    final_price: float
+    vip_applied: bool
+    shipping_cost: float
+    line_total: float
+
+class CartPricingResponse(BaseModel):
+    valid_vip: bool
+    vip_code: Optional[str] = None
+    message: str
+    has_vip_savings: bool
+    subtotal: float
+    shipping: float
+    total: float
+    items: List[CartPricingItem]

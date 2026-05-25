@@ -118,7 +118,7 @@
               >
                 Last Order
               </th>
-              <th class="actions-column">History</th>
+              <th class="actions-column">History / VIP</th>
             </tr>
           </thead>
           <tbody>
@@ -155,7 +155,7 @@
                     nzTooltipTitle="View order history"
                     (click)="openHistory(customer)"
                   >
-                    <span nz-icon nzType="history"></span>
+                    <i class="ti ti-history action-icon" aria-hidden="true"></i>
                   </button>
                   <button
                     nz-button
@@ -165,7 +165,7 @@
                     nzTooltipTitle="VIP card"
                     (click)="openVipCard(customer)"
                   >
-                    <span nz-icon nzType="credit-card"></span>
+                    <i class="ti ti-credit-card action-icon" aria-hidden="true"></i>
                   </button>
                 </div>
               </td>
@@ -288,7 +288,7 @@
               </div>
               <div>
                 <span>Issued</span>
-                <strong>{{ selectedVipCard?.issuedAt ? (selectedVipCard?.issuedAt | date:'mediumDate') : 'Pending approval' }}</strong>
+                <strong>{{ selectedVipCard?.issued_at ? (selectedVipCard?.issued_at | date:'mediumDate') : 'Pending approval' }}</strong>
               </div>
             </div>
 
@@ -380,6 +380,7 @@
             nzType="primary"
             class="vip-approve-button"
             [disabled]="!isVipEligible(selectedVipCustomer) || selectedVipCard?.approved"
+            [nzLoading]="vipActionLoading"
             (click)="approveVipCard()"
           >
             <span nz-icon nzType="safety-certificate"></span>
@@ -391,6 +392,7 @@
               nz-button
               nzDanger
               class="vip-approve-button"
+              [nzLoading]="vipActionLoading"
               (click)="revokeVipCard()"
             >
               <span nz-icon nzType="stop"></span>

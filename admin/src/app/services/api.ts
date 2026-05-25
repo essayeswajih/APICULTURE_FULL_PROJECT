@@ -29,6 +29,7 @@ export interface Product {
   stock_quantity: number;
   category_id: number;
   discounted_price?: number;  // Optional discounted price
+  vip_price?: number | null;   // Optional VIP-only price
   image_url?: string;         // Optional image URL for the product
   image2_url?: string; // Optional second image URL
   image3_url?: string; // Optional third image URL
@@ -63,6 +64,27 @@ export interface Order {
   payment_method: string;
   payed?: string;
   code: string; // Unique code for the order
+  vip_code?: string | null;
+}
+
+export interface VipCard {
+  id?: number;
+  customer_key: string;
+  customer_name: string;
+  email?: string | null;
+  telephone?: string | null;
+  code: string;
+  approved: boolean;
+  issued_at: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface VipCardApprove {
+  customer_key: string;
+  customer_name: string;
+  email?: string | null;
+  telephone?: string | null;
 }
 
 export interface Story {
@@ -216,6 +238,24 @@ export class Api {
   deleteOrder(id: number): Observable<void> {
     return this.http
       .delete<void>(`${this.apiUrl}/orders/${id}`, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+  getVipCards(): Observable<VipCard[]> {
+    return this.http
+      .get<VipCard[]>(`${this.apiUrl}/vip-cards`, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+  approveVipCard(card: VipCardApprove): Observable<VipCard> {
+    return this.http
+      .post<VipCard>(`${this.apiUrl}/vip-cards/approve`, card, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+  revokeVipCard(code: string): Observable<void> {
+    return this.http
+      .delete<void>(`${this.apiUrl}/vip-cards/${encodeURIComponent(code)}`, { headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError));
   }
   getUser(): Observable<any> {

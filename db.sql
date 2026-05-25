@@ -160,7 +160,8 @@ CREATE TABLE public.orders (
     location character varying NOT NULL,
     payment_method character varying NOT NULL,
     payed character varying,
-    code character varying NOT NULL
+    code character varying NOT NULL,
+    vip_code character varying
 );
 
 
@@ -205,13 +206,56 @@ CREATE TABLE public.products (
     image3_url text,
     image4_url text,
     promo boolean,
-    buzzent text
+    buzzent text,
+    vip_price double precision
 );
 
 
 ALTER TABLE public.products OWNER TO apiculturefromtn;
 
 --
+-- Name: vip_cards; Type: TABLE; Schema: public; Owner: apiculturefromtn
+--
+
+CREATE TABLE public.vip_cards (
+    id integer NOT NULL,
+    customer_key character varying NOT NULL,
+    customer_name character varying NOT NULL,
+    email character varying,
+    telephone character varying,
+    code character varying NOT NULL,
+    approved boolean NOT NULL,
+    issued_at timestamp without time zone NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.vip_cards OWNER TO apiculturefromtn;
+
+--
+-- Name: vip_cards_id_seq; Type: SEQUENCE; Schema: public; Owner: apiculturefromtn
+--
+
+CREATE SEQUENCE public.vip_cards_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.vip_cards_id_seq OWNER TO apiculturefromtn;
+
+--
+-- Name: vip_cards_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: apiculturefromtn
+--
+
+ALTER SEQUENCE public.vip_cards_id_seq OWNED BY public.vip_cards.id;
+
+
+-- 
 -- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: apiculturefromtn
 --
 
@@ -302,6 +346,13 @@ ALTER TABLE ONLY public.orders ALTER COLUMN id SET DEFAULT nextval('public.order
 --
 
 ALTER TABLE ONLY public.products ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq'::regclass);
+
+
+--
+-- Name: vip_cards id; Type: DEFAULT; Schema: public; Owner: apiculturefromtn
+--
+
+ALTER TABLE ONLY public.vip_cards ALTER COLUMN id SET DEFAULT nextval('public.vip_cards_id_seq'::regclass);
 
 
 --
@@ -472,6 +523,13 @@ SELECT pg_catalog.setval('public.products_id_seq', 51, true);
 
 
 --
+-- Name: vip_cards_id_seq; Type: SEQUENCE SET; Schema: public; Owner: apiculturefromtn
+--
+
+SELECT pg_catalog.setval('public.vip_cards_id_seq', 1, false);
+
+
+--
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: apiculturefromtn
 --
 
@@ -524,6 +582,30 @@ ALTER TABLE ONLY public.orders
 
 ALTER TABLE ONLY public.products
     ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: vip_cards vip_cards_code_key; Type: CONSTRAINT; Schema: public; Owner: apiculturefromtn
+--
+
+ALTER TABLE ONLY public.vip_cards
+    ADD CONSTRAINT vip_cards_code_key UNIQUE (code);
+
+
+--
+-- Name: vip_cards vip_cards_customer_key_key; Type: CONSTRAINT; Schema: public; Owner: apiculturefromtn
+--
+
+ALTER TABLE ONLY public.vip_cards
+    ADD CONSTRAINT vip_cards_customer_key_key UNIQUE (customer_key);
+
+
+--
+-- Name: vip_cards vip_cards_pkey; Type: CONSTRAINT; Schema: public; Owner: apiculturefromtn
+--
+
+ALTER TABLE ONLY public.vip_cards
+    ADD CONSTRAINT vip_cards_pkey PRIMARY KEY (id);
 
 
 --
@@ -584,6 +666,27 @@ CREATE UNIQUE INDEX ix_users_username ON public.users USING btree (username);
 
 
 --
+-- Name: ix_vip_cards_code; Type: INDEX; Schema: public; Owner: apiculturefromtn
+--
+
+CREATE INDEX ix_vip_cards_code ON public.vip_cards USING btree (code);
+
+
+--
+-- Name: ix_vip_cards_customer_key; Type: INDEX; Schema: public; Owner: apiculturefromtn
+--
+
+CREATE INDEX ix_vip_cards_customer_key ON public.vip_cards USING btree (customer_key);
+
+
+--
+-- Name: ix_vip_cards_id; Type: INDEX; Schema: public; Owner: apiculturefromtn
+--
+
+CREATE INDEX ix_vip_cards_id ON public.vip_cards USING btree (id);
+
+
+--
 -- Name: cart_items cart_items_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: apiculturefromtn
 --
 
@@ -626,5 +729,3 @@ ALTER TABLE ONLY public.products
 --
 -- PostgreSQL database dump complete
 --
-
-

@@ -1,14 +1,16 @@
 from sqlalchemy import asc, desc, extract, func, or_
 from sqlalchemy.orm import Session
 from typing import List, Optional
-from models.vetrineModels import OrderStatus, Product, Order, OrderItem, CartItem, Category, Story, SubCategory
-from schemas.vetrineSchemas import CategoryBase, ProductBase, OrderCreate, CartItemBase, OrderItemBase, StoryBase
+from models.vetrineModels import OrderStatus, Product, Order, OrderItem, CartItem, Category, Story, SubCategory, VipCard
+from schemas.vetrineSchemas import CategoryBase, ProductBase, OrderCreate, CartItemBase, OrderItemBase, StoryBase, VipCardApprove
 from datetime import datetime, timedelta
 from fastapi import HTTPException, Query
 from random import randint
 from sqlalchemy.orm import selectinload
 
 from controller.sendMail import send_email_via_gmail
+
+VIP_THRESHOLD = 1000
 
 # CRUD operations for Product
 def get_products(
@@ -73,6 +75,7 @@ def create_product(db: Session, product: ProductBase) -> Product:
         category_id=product.category_id,  # Handle optional category_id
         subcategory_id=product.subcategory_id or None,
         discounted_price=product.discounted_price,
+        vip_price=product.vip_price,
         image_url=product.image_url,
         image2_url=product.image2_url,
         image3_url=product.image3_url,
@@ -101,6 +104,7 @@ def update_product(db: Session, product_id: int, product: ProductBase) -> Option
         db_product.category_id = product.category_id
         db_product.subcategory_id = product.subcategory_id or None
         db_product.discounted_price = product.discounted_price
+        db_product.vip_price = product.vip_price
         db_product.image_url = product.image_url
         db_product.image2_url = product.image2_url
         db_product.image3_url = product.image3_url
@@ -173,21 +177,81 @@ def get_orders(db: Session, skip: int = 0, limit: int = 10) -> List[Order]:
         raise HTTPException(status_code=400, detail="Invalid pagination parameters.")
     return db.query(Order).order_by(Order.created_at.desc()).offset(skip).limit(limit).all()
 
-def create_order(db: Session, order_create: OrderCreate, total_amount: float) -> Order:
-    # Validate items list
-    if not order_create.items:
-        raise HTTPException(status_code=400, detail="Order must contain at least one item.")
+def get_public_product_price(product: Product) -> float:
+    if product.discounted_price and product.discounted_price > 0 and product.discounted_price < product.price:
+        return float(product.discounted_price)
+    return float(product.price)
 
-    # Validate products and stock before creating the order
-    for item in order_create.items:
+def validate_vip_card(db: Session, vip_code: Optional[str]) -> Optional[VipCard]:
+    if not vip_code:
+        return None
+    return (
+        db.query(VipCard)
+        .filter(func.upper(VipCard.code) == vip_code.strip().upper(), VipCard.approved == True)
+        .first()
+    )
+
+def calculate_cart_pricing(db: Session, items: List[OrderItemBase], vip_code: Optional[str] = None) -> dict:
+    if not items:
+        raise HTTPException(status_code=400, detail="Cart must contain at least one item.")
+
+    vip_card = validate_vip_card(db, vip_code)
+    pricing_items = []
+    subtotal = 0.0
+
+    for item in items:
         product = db.query(Product).filter(Product.id == item.product_id).first()
         if not product:
             raise HTTPException(status_code=404, detail=f"Product with ID {item.product_id} not found.")
         if item.quantity <= 0:
             raise HTTPException(status_code=400, detail=f"Quantity for product {product.name} must be positive.")
+        if product.stock_quantity < item.quantity:
+            raise HTTPException(status_code=400, detail=f"Not enough stock for product {product.name}.")
+
+        regular_price = float(product.price)
+        public_price = get_public_product_price(product)
+        vip_price = float(product.vip_price) if product.vip_price and product.vip_price > 0 else None
+        vip_applied = bool(vip_card and vip_price is not None and vip_price < public_price)
+        final_price = vip_price if vip_applied else public_price
+        shipping_cost = float(product.shipping_cost if product.shipping_cost is not None else 9.0)
+        line_total = final_price * item.quantity
+        subtotal += line_total
+
+        pricing_items.append({
+            "product_id": product.id,
+            "name": product.name,
+            "quantity": item.quantity,
+            "regular_price": regular_price,
+            "public_price": public_price,
+            "vip_price": vip_price,
+            "final_price": final_price,
+            "vip_applied": vip_applied,
+            "shipping_cost": shipping_cost,
+            "line_total": line_total
+        })
+
+    shipping = 0.0 if subtotal >= 250 else max(item["shipping_cost"] for item in pricing_items)
+    return {
+        "valid_vip": bool(vip_card),
+        "vip_code": vip_card.code if vip_card else None,
+        "message": "VIP code applied." if vip_card else ("Invalid VIP code." if vip_code else "No VIP code applied."),
+        "has_vip_savings": any(item["vip_applied"] for item in pricing_items),
+        "subtotal": subtotal,
+        "shipping": shipping,
+        "total": subtotal + shipping,
+        "items": pricing_items
+    }
+
+def create_order(db: Session, order_create: OrderCreate) -> Order:
+    # Validate items list
+    if not order_create.items:
+        raise HTTPException(status_code=400, detail="Order must contain at least one item.")
+
+    pricing = calculate_cart_pricing(db, order_create.items, order_create.vip_code)
+    pricing_by_product = {item["product_id"]: item for item in pricing["items"]}
     # Create the order
     order = Order(
-        total_amount=total_amount,
+        total_amount=pricing["total"],
         status=OrderStatus.PENDING,  # Use enum value directly
         created_at=datetime.utcnow(),
         username=order_create.username,
@@ -196,7 +260,8 @@ def create_order(db: Session, order_create: OrderCreate, total_amount: float) ->
         location=order_create.location,
         payment_method=order_create.payment_method,
         payed= "check",  # Default to false, can be updated later
-        code = str(randint(10000, 99999))  + "-" + str(randint(10000, 99999)) + "-" + str(randint(10000, 99999)) + "-" + str(randint(10000, 99999))  # Generate a random code for the order
+        code = str(randint(10000, 99999))  + "-" + str(randint(10000, 99999)) + "-" + str(randint(10000, 99999)) + "-" + str(randint(10000, 99999)),  # Generate a random code for the order
+        vip_code=pricing["vip_code"]
     )
     db.add(order)
     db.flush()  # Get order.id without committing yet
@@ -204,13 +269,14 @@ def create_order(db: Session, order_create: OrderCreate, total_amount: float) ->
     # Create order items and update stock
     for item in order_create.items:
         product = db.query(Product).filter(Product.id == item.product_id).first()
+        priced_item = pricing_by_product[item.product_id]
         order_item = OrderItem(
             order_id=order.id,
             product_id=item.product_id,
             quantity=item.quantity,
-            price=item.price,
+            price=priced_item["final_price"],
             name=product.name if product else None,
-            shipping_cost=item.shipping_cost if item.shipping_cost is not None else 9.0
+            shipping_cost=priced_item["shipping_cost"]
         )
         db.add(order_item)
         product.stock_quantity -= item.quantity  # Update stock
@@ -234,6 +300,72 @@ def create_order(db: Session, order_create: OrderCreate, total_amount: float) ->
         )
     )
     return order
+
+def get_vip_cards(db: Session) -> List[VipCard]:
+    return db.query(VipCard).order_by(VipCard.created_at.desc()).all()
+
+def get_customer_total_paid(db: Session, customer_key: str) -> float:
+    if customer_key.startswith("email:"):
+        email = customer_key.replace("email:", "", 1).strip().lower()
+        return float(db.query(func.coalesce(func.sum(Order.total_amount), 0)).filter(func.lower(Order.email) == email).scalar() or 0)
+    if customer_key.startswith("phone:"):
+        phone = customer_key.replace("phone:", "", 1).strip()
+        return float(db.query(func.coalesce(func.sum(Order.total_amount), 0)).filter(Order.telephone == phone).scalar() or 0)
+    return 0.0
+
+def generate_vip_code(db: Session, customer_key: str, issued_at: datetime) -> str:
+    seed = abs(hash(f"{customer_key}|{issued_at.isoformat()}"))
+    base_code = f"VIP-{seed:x}".upper().ljust(12, "0")[:12]
+    code = base_code
+    suffix = 2
+    while db.query(VipCard).filter(VipCard.code == code).first():
+        code = f"{base_code}-{suffix}"
+        suffix += 1
+    return code
+
+def approve_vip_card(db: Session, data: VipCardApprove) -> VipCard:
+    total_paid = get_customer_total_paid(db, data.customer_key)
+    if total_paid <= VIP_THRESHOLD:
+        raise HTTPException(status_code=400, detail=f"Customer must spend more than {VIP_THRESHOLD} DT to receive a VIP card.")
+
+    existing = db.query(VipCard).filter(VipCard.customer_key == data.customer_key).first()
+    now = datetime.utcnow()
+    if existing:
+        existing.customer_name = data.customer_name
+        existing.email = data.email
+        existing.telephone = data.telephone
+        existing.approved = True
+        existing.updated_at = now
+        if not existing.issued_at:
+            existing.issued_at = now
+        if not existing.code:
+            existing.code = generate_vip_code(db, data.customer_key, now)
+        db.commit()
+        db.refresh(existing)
+        return existing
+
+    card = VipCard(
+        customer_key=data.customer_key,
+        customer_name=data.customer_name,
+        email=data.email,
+        telephone=data.telephone,
+        code=generate_vip_code(db, data.customer_key, now),
+        approved=True,
+        issued_at=now,
+        created_at=now,
+        updated_at=now
+    )
+    db.add(card)
+    db.commit()
+    db.refresh(card)
+    return card
+
+def revoke_vip_card(db: Session, code: str) -> None:
+    card = db.query(VipCard).filter(func.upper(VipCard.code) == code.strip().upper()).first()
+    if not card:
+        raise HTTPException(status_code=404, detail="VIP card not found.")
+    db.delete(card)
+    db.commit()
 
 def delete_order(db: Session, order_id: int) -> None:
     order = db.query(Order).filter(Order.id == order_id).first()

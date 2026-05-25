@@ -7,11 +7,12 @@ from controller.Oauth2C import get_current_user
 from db.database import get_db
 from models.vetrineModels import Product, Order, OrderItem, CartItem, Category
 from models.Oauth2Models import User
-from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, OrderCreate, CartItemBase, OrderItemBase, OrderBase, PublicStats, StoryBase, SubCategoryBase
+from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, OrderCreate, CartItemBase, OrderItemBase, OrderBase, PublicStats, StoryBase, SubCategoryBase, VipCardApprove, VipCardBase, VipCardValidation, CartPricingRequest, CartPricingResponse
 from crud.vetrineCrud import (
     create_category, create_story, create_subcategory, delete_category, delete_order, delete_product, delete_story, delete_subcategory, get_This_year_sales_crud, get_categories, get_category_by_id,
     get_products, get_product_by_id, create_product, get_orders, create_order,
-    get_cart_items, add_to_cart, get_public_stats, get_stories, get_story, get_subcategories, get_top_products_crud, getMonthlyStatus, getOrdersAnalytics, getSalesAnalytics, getUsersAnalytics, getViewsAnalytics, getWeeklyIncome, remove_from_cart, update_category, update_product, get_product_by_slug_db, caclulate_max_shipping_cost, update_story, update_subcategory
+    get_cart_items, add_to_cart, get_public_stats, get_stories, get_story, get_subcategories, get_top_products_crud, getMonthlyStatus, getOrdersAnalytics, getSalesAnalytics, getUsersAnalytics, getViewsAnalytics, getWeeklyIncome, remove_from_cart, update_category, update_product, get_product_by_slug_db, update_story, update_subcategory,
+    approve_vip_card, calculate_cart_pricing, get_vip_cards, revoke_vip_card, validate_vip_card
 )
 from controller.sendMail import AdminEmail, send_email_via_gmail
 from fastapi import Request
@@ -138,15 +139,7 @@ def create_new_order(
     if any(item.quantity <= 0 for item in order_create.items):
         raise HTTPException(status_code=400, detail="Quantity must be a positive number.")
     
-    total = sum(item.price * item.quantity for item in order_create.items)
-
-    shipping_cost = 0
-    if total < 250:
-        shipping_cost = caclulate_max_shipping_cost(items=order_create.items)
-    # Calculate total amount
-    total_amount = total + shipping_cost
-    
-    return create_order(db,order_create=order_create, total_amount=total_amount)
+    return create_order(db, order_create=order_create)
 
 # delte order
 @router.delete("/orders/{order_id}", response_model=dict)
@@ -225,6 +218,30 @@ def get_order_by_code(
     if not db_order:
         raise HTTPException(status_code=404, detail="Order not found")
     return db_order
+
+@router.get("/vip-cards", response_model=List[VipCardBase], dependencies=[Depends(check_admin)])
+def get_all_vip_cards(db: Session = Depends(get_db)):
+    return get_vip_cards(db)
+
+@router.post("/vip-cards/approve", response_model=VipCardBase, dependencies=[Depends(check_admin)])
+def approve_customer_vip_card(vip_card: VipCardApprove, db: Session = Depends(get_db)):
+    return approve_vip_card(db, vip_card)
+
+@router.delete("/vip-cards/{code}", response_model=dict, dependencies=[Depends(check_admin)])
+def delete_vip_card(code: str, db: Session = Depends(get_db)):
+    revoke_vip_card(db, code)
+    return {"message": "VIP card revoked successfully."}
+
+@router.get("/vip-cards/validate/{code}", response_model=VipCardValidation)
+def validate_vip_code(code: str, db: Session = Depends(get_db)):
+    card = validate_vip_card(db, code)
+    if not card:
+        return {"valid": False, "message": "Invalid or inactive VIP code.", "card": None}
+    return {"valid": True, "message": "VIP code is active.", "card": card}
+
+@router.post("/vip-cards/validate-cart", response_model=CartPricingResponse)
+def validate_vip_cart(cart: CartPricingRequest, db: Session = Depends(get_db)):
+    return calculate_cart_pricing(db, cart.items, cart.vip_code)
 # subscribe to newsletter sending emil and return 201
 class Newsletter(BaseModel):
     email: str
