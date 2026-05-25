@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Api, Order } from '../../../services/api';
+import { Api, Order, VipCard } from '../../../services/api';
 
 import { IconService } from '@ant-design/icons-angular';
 import {
@@ -36,12 +36,6 @@ interface CustomerSummary {
   lastOrderDate: string;
   firstOrderDate: string;
   vipCard?: VipCard;
-}
-
-interface VipCard {
-  code: string;
-  approved: boolean;
-  issuedAt: string;
 }
 
 interface BarcodeSegment {
@@ -138,11 +132,11 @@ export class CustomerManagement implements OnInit {
   historyVisible = false;
   detailVisible = false;
   vipVisible = false;
+  vipActionLoading = false;
 
   pageIndex = 1;
   pageSize = 10;
   readonly vipThreshold = 1000;
-  private readonly vipStorageKey = 'apiculture-vip-cards-v1';
   private vipCards: Record<string, VipCard> = {};
 
   constructor(
@@ -185,7 +179,6 @@ export class CustomerManagement implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadVipCards();
     this.loadCustomers();
   }
 
@@ -193,6 +186,22 @@ export class CustomerManagement implements OnInit {
     this.loading = true;
     this.errorMessage = '';
 
+    this.apiService.getVipCards().subscribe({
+      next: (cards) => {
+        this.vipCards = (cards || []).reduce<Record<string, VipCard>>((acc, card) => {
+          acc[card.customer_key] = card;
+          return acc;
+        }, {});
+        this.loadOrdersForCustomers();
+      },
+      error: () => {
+        this.vipCards = {};
+        this.loadOrdersForCustomers();
+      }
+    });
+  }
+
+  private loadOrdersForCustomers(): void {
     this.apiService.getOrders().subscribe({
       next: (orders) => {
         this.orders = orders || [];
@@ -303,15 +312,25 @@ export class CustomerManagement implements OnInit {
       return;
     }
 
-    const card: VipCard = {
-      code: this.selectedVipCustomer.vipCard?.code || this.generateVipCode(this.selectedVipCustomer),
-      approved: true,
-      issuedAt: this.selectedVipCustomer.vipCard?.issuedAt || new Date().toISOString()
-    };
-
-    this.vipCards[this.selectedVipCustomer.key] = card;
-    this.saveVipCards();
-    this.updateCustomerVipCard(this.selectedVipCustomer.key, card);
+    this.vipActionLoading = true;
+    this.apiService.approveVipCard({
+      customer_key: this.selectedVipCustomer.key,
+      customer_name: this.selectedVipCustomer.displayName,
+      email: this.selectedVipCustomer.email || null,
+      telephone: this.selectedVipCustomer.telephone || null
+    }).subscribe({
+      next: (card) => {
+        this.vipCards[this.selectedVipCustomer!.key] = card;
+        this.updateCustomerVipCard(this.selectedVipCustomer!.key, card);
+        this.vipActionLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        this.errorMessage = error?.message || 'Unable to approve VIP card.';
+        this.vipActionLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   revokeVipCard(): void {
@@ -320,9 +339,21 @@ export class CustomerManagement implements OnInit {
     }
 
     const customerKey = this.selectedVipCustomer.key;
-    delete this.vipCards[customerKey];
-    this.saveVipCards();
-    this.updateCustomerVipCard(customerKey);
+    const code = this.selectedVipCustomer.vipCard.code;
+    this.vipActionLoading = true;
+    this.apiService.revokeVipCard(code).subscribe({
+      next: () => {
+        delete this.vipCards[customerKey];
+        this.updateCustomerVipCard(customerKey);
+        this.vipActionLoading = false;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        this.errorMessage = error?.message || 'Unable to revoke VIP card.';
+        this.vipActionLoading = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   trackCustomer(_: number, customer: CustomerSummary): string {
@@ -502,19 +533,6 @@ export class CustomerManagement implements OnInit {
     });
   }
 
-  private loadVipCards(): void {
-    try {
-      const savedCards = localStorage.getItem(this.vipStorageKey);
-      this.vipCards = savedCards ? JSON.parse(savedCards) : {};
-    } catch {
-      this.vipCards = {};
-    }
-  }
-
-  private saveVipCards(): void {
-    localStorage.setItem(this.vipStorageKey, JSON.stringify(this.vipCards));
-  }
-
   private updateCustomerVipCard(key: string, card?: VipCard): void {
     const applyCard = (customer: CustomerSummary): CustomerSummary =>
       customer.key === key ? { ...customer, vipCard: card } : customer;
@@ -524,33 +542,4 @@ export class CustomerManagement implements OnInit {
     this.selectedVipCustomer = this.selectedVipCustomer ? applyCard(this.selectedVipCustomer) : null;
   }
 
-  private generateVipCode(customer: CustomerSummary): string {
-    const usedCodes = new Set(Object.values(this.vipCards).map((card) => card.code));
-    const baseCode = `VIP-${this.hashText(`${customer.key}|${customer.firstOrderDate}`).toString(36).toUpperCase().padStart(8, '0').slice(0, 8)}`;
-
-    if (!usedCodes.has(baseCode)) {
-      return baseCode;
-    }
-
-    let suffix = 2;
-    let code = `${baseCode}-${suffix}`;
-
-    while (usedCodes.has(code)) {
-      suffix += 1;
-      code = `${baseCode}-${suffix}`;
-    }
-
-    return code;
-  }
-
-  private hashText(value: string): number {
-    let hash = 2166136261;
-
-    for (let index = 0; index < value.length; index += 1) {
-      hash ^= value.charCodeAt(index);
-      hash += (hash << 1) + (hash << 4) + (hash << 7) + (hash << 8) + (hash << 24);
-    }
-
-    return hash >>> 0;
-  }
 }

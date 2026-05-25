@@ -50,8 +50,18 @@
                             [ngModelOptions]="{standalone: true}"
                           >
                         </td>
-                        <td class="align-middle">{{ item.price | number:'1.2-2' }} DNT</td>
-                        <td class="align-middle">{{ (item.price * item.quantity) | number:'1.2-2' }} DNT</td>
+                        <td class="align-middle">
+                          @if (hasVipPriceApplied(item)) {
+                            <div class="price-stack">
+                              <span class="old-price">{{ getItemPublicPrice(item) | number:'1.2-2' }} DNT</span>
+                              <strong class="vip-price">{{ getItemUnitPrice(item) | number:'1.2-2' }} DNT</strong>
+                              <span class="vip-mini-badge">VIP</span>
+                            </div>
+                          } @else {
+                            {{ getItemUnitPrice(item) | number:'1.2-2' }} DNT
+                          }
+                        </td>
+                        <td class="align-middle">{{ (getItemUnitPrice(item) * item.quantity) | number:'1.2-2' }} DNT</td>
                         <td class="align-middle">
                           <button
                             class="btn btn-outline-danger btn-sm"
@@ -79,6 +89,46 @@
         <div class="card shadow-sm rounded">
           <div class="card-body">
             <h2 class="h3 text-success mb-4">Résumé du Panier</h2>
+            <div class="vip-code-panel mb-4">
+              <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+                <div>
+                  <strong>Carte VIP</strong>
+                  <p class="mb-0">Appliquez votre code pour activer les prix VIP disponibles.</p>
+                </div>
+                @if (appliedVipCode) {
+                  <span class="vip-applied-badge">{{ appliedVipCode }}</span>
+                }
+              </div>
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Code VIP"
+                  [(ngModel)]="vipCodeInput"
+                  [disabled]="vipLoading || cartItems.length === 0"
+                  [ngModelOptions]="{standalone: true}"
+                  aria-label="Code VIP"
+                >
+                @if (appliedVipCode) {
+                  <button class="btn btn-outline-success" type="button" (click)="removeVipCode()" [disabled]="vipLoading">
+                    Retirer
+                  </button>
+                } @else {
+                  <button class="btn btn-success" type="button" (click)="applyVipCode()" [disabled]="vipLoading || cartItems.length === 0">
+                    {{ vipLoading ? 'Vérification...' : 'Appliquer' }}
+                  </button>
+                }
+              </div>
+              @if (vipMessage) {
+                <div class="vip-message" [ngClass]="{
+                  'success': vipStatus === 'success',
+                  'error': vipStatus === 'error',
+                  'info': vipStatus === 'info'
+                }">
+                  {{ vipMessage }}
+                </div>
+              }
+            </div>
             <ul class="text-dark list-unstyled">
               <li class="mb-2"><strong>Sous-total :</strong> {{ getSubtotal() | number:'1.2-2' }} DNT</li>
               <!--<li class="mb-2"><strong>Taxe (19%) :</strong> {{ getTax() | number:'1.2-2' }} DNT</li>-->

@@ -31,6 +31,7 @@ export interface Product {
   stock_quantity: number;
   category_id: number;
   discounted_price?: number;  // Optional discounted price
+  vip_price?: number | null;   // Optional VIP-only price
   image_url?: string;         // Optional image URL for the product
   image2_url?: string; // Optional second image URL
   image3_url?: string; // Optional third image URL
@@ -64,6 +65,36 @@ export interface Order {
   location: string;
   payment_method: string;
   code: string; // Unique code for the order
+  vip_code?: string | null;
+}
+
+export interface CartPricingRequest {
+  vip_code?: string | null;
+  items: { product_id: number; quantity: number }[];
+}
+
+export interface CartPricingItem {
+  product_id: number;
+  name: string;
+  quantity: number;
+  regular_price: number;
+  public_price: number;
+  vip_price?: number | null;
+  final_price: number;
+  vip_applied: boolean;
+  shipping_cost: number;
+  line_total: number;
+}
+
+export interface CartPricingResponse {
+  valid_vip: boolean;
+  vip_code?: string | null;
+  message: string;
+  has_vip_savings: boolean;
+  subtotal: number;
+  shipping: number;
+  total: number;
+  items: CartPricingItem[];
 }
 
 export interface Story {
@@ -217,6 +248,12 @@ export class Api {
   createOrder(order: Order): Observable<Order> {
     return this.http
       .post<Order>(`${this.apiUrl}/orders`, order)
+      .pipe(catchError(this.handleError));
+  }
+
+  validateVipCart(payload: CartPricingRequest): Observable<CartPricingResponse> {
+    return this.http
+      .post<CartPricingResponse>(`${this.apiUrl}/vip-cards/validate-cart`, payload)
       .pipe(catchError(this.handleError));
   }
 

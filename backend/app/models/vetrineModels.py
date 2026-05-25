@@ -28,6 +28,7 @@ class Product(Base):
     stock_quantity = Column(Integer, nullable=False)
     category_id = Column(Integer, ForeignKey("categories.id"))
     discounted_price = Column(Float, nullable=True)
+    vip_price = Column(Float, nullable=True)
     image_url = Column(Text, nullable=True)  # Optional image URL for the product
     image2_url = Column(Text, nullable=True)
     image3_url = Column(Text, nullable=True)
@@ -98,6 +99,7 @@ class Order(Base):
     payment_method = Column(String, nullable=False)
     payed = Column(String, default="false")
     code = Column(String, nullable=False)
+    vip_code = Column(String, nullable=True)
 
     items = relationship("OrderItem", back_populates="order")
     products = relationship(
@@ -115,6 +117,19 @@ class CartItem(Base):
     user_id = Column(Integer, ForeignKey("users.id"))
     product_id = Column(Integer, ForeignKey("products.id"))
     quantity = Column(Integer, nullable=False)
+
+class VipCard(Base):
+    __tablename__ = "vip_cards"
+    id = Column(Integer, primary_key=True, index=True)
+    customer_key = Column(String, nullable=False, unique=True, index=True)
+    customer_name = Column(String, nullable=False)
+    email = Column(String, nullable=True)
+    telephone = Column(String, nullable=True)
+    code = Column(String, nullable=False, unique=True, index=True)
+    approved = Column(Boolean, default=True, nullable=False)
+    issued_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
 class Story(Base):
     __tablename__ = "stories"

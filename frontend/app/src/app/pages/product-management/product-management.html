@@ -31,6 +31,10 @@
           <input type="number" class="form-control" id="discounted_price" name="discounted_price" [(ngModel)]="newProduct.discounted_price" [ngModelOptions]="{standalone: true}">
         </div>
         <div class="mb-3">
+          <label for="vip_price" class="form-label">VIP Price (Optional)</label>
+          <input type="number" min="0" class="form-control" id="vip_price" name="vip_price" [(ngModel)]="newProduct.vip_price" [ngModelOptions]="{standalone: true}">
+        </div>
+        <div class="mb-3">
           <label for="image_url" class="form-label">Main Image URL</label>
           <input type="text" class="form-control" id="image_url" name="image_url" [(ngModel)]="newProduct.image_url" [ngModelOptions]="{standalone: true}">
         </div>
@@ -87,6 +91,7 @@
           <p class="card-text">Stock: {{ product.stock_quantity }}</p>
           <p class="card-text">Category: {{ product.category_id }}</p>
           <p class="card-text">Discounted: {{ product.discounted_price || 'N/A' }}DT</p>
+          <p class="card-text">VIP Price: {{ product.vip_price || 'N/A' }}DT</p>
           <p class="card-text" *ngIf="product.promo">Promo: Yes</p>
           @if( product.rating && product.rating > 0 ){
             <p class="card-text">Rating: {{ product.rating }}</p>

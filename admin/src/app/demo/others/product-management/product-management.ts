@@ -70,6 +70,7 @@ export class ProductManagement implements OnInit {
     stock_quantity: 0,
     category_id: 0,
     discounted_price: 0,
+    vip_price: null,
     image_url: '',
     image2_url: '',
     image3_url: '',
@@ -203,6 +204,7 @@ private applyFilter() {
       stock_quantity: 0,
       category_id: 0,
       discounted_price: 0,
+      vip_price: null,
       image_url: '',
       image2_url: '',
       image3_url: '',
@@ -224,6 +226,7 @@ private applyFilter() {
   handleSave(updated: Product) {
   const productToSave: Product = {
     ...updated,
+    vip_price: updated.vip_price && updated.vip_price > 0 ? Number(updated.vip_price) : null,
     subcategory_id: updated.subcategory_id ? Number(updated.subcategory_id) : null
   };
 

@@ -58,6 +58,18 @@
         [ngModelOptions]="{standalone: true}"
       />
     </div>
+
+    <div class="form-group half">
+      <label class="form-label">VIP Price (DT)</label>
+      <input
+        nz-input
+        type="number"
+        min="0"
+        [(ngModel)]="product.vip_price"
+        name="vip_price"
+        [ngModelOptions]="{standalone: true}"
+      />
+    </div>
   </div>
 
   <!-- STOCK + SHIPPING -->

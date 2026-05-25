@@ -50,6 +50,7 @@
         <th>Image</th>
         <th>Name</th>
         <th>Price</th>
+        <th>VIP Price</th>
         <th>Stock</th>
         <th>Promo</th>
         <th>Actions</th>
@@ -73,6 +74,12 @@
           >
             {{ product.discounted_price }} DT
           </nz-tag>
+        </td>
+        <td>
+          <nz-tag *ngIf="product.vip_price && product.vip_price > 0" nzColor="gold">
+            {{ product.vip_price }} DT
+          </nz-tag>
+          <span *ngIf="!product.vip_price || product.vip_price <= 0" class="text-muted">N/A</span>
         </td>
         <td>{{ product.stock_quantity }}</td>
         <td>

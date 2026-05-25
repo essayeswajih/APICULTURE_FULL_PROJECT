@@ -115,6 +115,19 @@
   gap: 8px;
 }
 
+.action-buttons button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-icon {
+  display: inline-flex;
+  color: currentColor;
+  font-size: 18px;
+  line-height: 1;
+}
+
 .history-summary,
 .detail-grid {
   display: grid;

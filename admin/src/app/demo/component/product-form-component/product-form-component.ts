@@ -33,6 +33,7 @@ export class ProductFormComponent implements OnChanges {
     stock_quantity: 0,
     category_id: 0,
     discounted_price: 0,  // New field for discounted price
+    vip_price: null,
     image_url: 'https://api.apiculturegalai.tn/uploads/',           // New field for image URL
     image2_url: '',          // New field for secondary image URL
     image3_url: '',          // New field for tertiary image URL
@@ -89,6 +90,7 @@ export class ProductFormComponent implements OnChanges {
 
     this.save.emit({
       ...this.product,
+      vip_price: this.product.vip_price && this.product.vip_price > 0 ? Number(this.product.vip_price) : null,
       subcategory_id: this.product.subcategory_id ? Number(this.product.subcategory_id) : null
     });
   }
