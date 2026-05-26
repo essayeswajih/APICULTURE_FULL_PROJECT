@@ -11,6 +11,7 @@ import {
 import { Router, RouterModule } from '@angular/router';
 import { Api, Category, Product } from '../../services/api';
 import { HttpClientModule } from '@angular/common/http';
+import { forkJoin } from 'rxjs';
 import { CartItem } from '../boutique/boutique';
 import { ToastrService } from 'ngx-toastr';
 import { Cart } from '../../services/cart';
@@ -45,7 +46,6 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   featuredProducts: Product[] = [];
   popularProducts: Product[] = [];
   latestProducts: Product[] = [];
-  productChunks: Product[][] = [];
   categories: Category[] = [];
   isDesktop = false;
   isLoading = true;
@@ -142,20 +142,16 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private loadProducts(): void {
-    this.apiService.getProducts('', '', '').subscribe({
-      next: (products) => {
-        this.products = products;
-
-        const isMobile = isPlatformBrowser(this.platformId) && window.innerWidth <= 767;
-        const chunkSize = isMobile ? 1 : 4;
-        this.productChunks = this.chunkArray(products, chunkSize);
-
-        const chunk = Math.ceil(products.length / 3);
-
-        this.popularProducts = products.slice(0, chunk);
-        this.latestProducts = products.slice(chunk, chunk * 2);
-        this.featuredProducts = products.slice(chunk * 2, products.length);
-
+    forkJoin({
+      featuredProducts: this.apiService.getFeaturedProducts(),
+      popularProducts: this.apiService.getPopularProducts(),
+      latestProducts: this.apiService.getLatestProducts(),
+    }).subscribe({
+      next: ({ featuredProducts, popularProducts, latestProducts }) => {
+        this.featuredProducts = featuredProducts;
+        this.popularProducts = popularProducts;
+        this.latestProducts = latestProducts;
+        this.products = latestProducts;
         this.productsLoaded = true;
         this.checkAllDataLoaded();
         this.cdRef.detectChanges();
@@ -207,14 +203,6 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
       return `${Math.floor(value / 1000)}k+`;
     }
     return `${value}+`;
-  }
-
-  private chunkArray(array: Product[], size: number): Product[][] {
-    const chunks: Product[][] = [];
-    for (let i = 0; i < array.length; i += size) {
-      chunks.push(array.slice(i, i + size));
-    }
-    return chunks;
   }
 
   addToCart(product: Product): void {

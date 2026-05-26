@@ -198,6 +198,24 @@ export class Api {
       .pipe(catchError(this.handleError));  // Handle errors
   }
 
+  getFeaturedProducts(): Observable<Product[]> {
+    return this.http
+      .get<Product[]>(`${this.apiUrl}/products/featured`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getPopularProducts(): Observable<Product[]> {
+    return this.http
+      .get<Product[]>(`${this.apiUrl}/products/popular`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getLatestProducts(): Observable<Product[]> {
+    return this.http
+      .get<Product[]>(`${this.apiUrl}/products/latest`)
+      .pipe(catchError(this.handleError));
+  }
+
   getProductById(id: number): Observable<Product> {
     return this.http
       .get<Product>(`${this.apiUrl}/products/${id}`)

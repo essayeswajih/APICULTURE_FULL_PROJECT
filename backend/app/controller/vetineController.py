@@ -11,7 +11,7 @@ from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, Orde
 from crud.vetrineCrud import (
     create_category, create_story, create_subcategory, delete_category, delete_order, delete_product, delete_story, delete_subcategory, get_This_year_sales_crud, get_categories, get_category_by_id,
     get_products, get_product_by_id, create_product, get_orders, create_order,
-    get_cart_items, add_to_cart, get_public_stats, get_stories, get_story, get_subcategories, get_top_products_crud, getMonthlyStatus, getOrdersAnalytics, getSalesAnalytics, getUsersAnalytics, getViewsAnalytics, getWeeklyIncome, remove_from_cart, update_category, update_product, get_product_by_slug_db, update_story, update_subcategory,
+    get_cart_items, add_to_cart, get_featured_products, get_latest_products, get_popular_products, get_public_stats, get_stories, get_story, get_subcategories, get_top_products_crud, getMonthlyStatus, getOrdersAnalytics, getSalesAnalytics, getUsersAnalytics, getViewsAnalytics, getWeeklyIncome, remove_from_cart, update_category, update_product, get_product_by_slug_db, update_story, update_subcategory,
     approve_vip_card, calculate_cart_pricing, get_vip_cards, revoke_vip_card, validate_vip_card
 )
 from controller.sendMail import AdminEmail, send_email_via_gmail
@@ -47,6 +47,18 @@ def get_all_products(
         sortBy=sortBy,
         searchFor=search
     )
+
+@router.get("/products/featured", response_model=List[ProductBase])
+def get_homepage_featured_products(db: Session = Depends(get_db)):
+    return get_featured_products(db)
+
+@router.get("/products/popular", response_model=List[ProductBase])
+def get_homepage_popular_products(db: Session = Depends(get_db)):
+    return get_popular_products(db)
+
+@router.get("/products/latest", response_model=List[ProductBase])
+def get_homepage_latest_products(db: Session = Depends(get_db)):
+    return get_latest_products(db)
 
 # Route to get a single product by ID
 @router.get("/products/{product_id}", response_model=ProductBase)

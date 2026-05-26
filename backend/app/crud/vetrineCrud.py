@@ -61,6 +61,45 @@ def get_products(
     #raise HTTPException(status_code=400, detail=str(query.statement.compile(compile_kwargs={"literal_binds": True}))) 
     return query.all()
 
+def get_featured_products(db: Session) -> List[Product]:
+    return (
+        db.query(Product)
+        .order_by(
+            desc(Product.promo),
+            desc(func.coalesce(Product.rating, 0)),
+            desc(func.coalesce(Product.num_ratings, 0)),
+            desc(Product.id),
+        )
+        .all()
+    )
+
+def get_popular_products(db: Session) -> List[Product]:
+    sold_products = (
+        db.query(
+            OrderItem.product_id.label("product_id"),
+            func.coalesce(func.sum(OrderItem.quantity), 0).label("total_sold"),
+        )
+        .join(Order, OrderItem.order_id == Order.id)
+        .filter(Order.status == OrderStatus.DELIVERED)
+        .group_by(OrderItem.product_id)
+        .subquery()
+    )
+
+    return (
+        db.query(Product)
+        .outerjoin(sold_products, Product.id == sold_products.c.product_id)
+        .order_by(
+            desc(func.coalesce(sold_products.c.total_sold, 0)),
+            desc(func.coalesce(Product.rating, 0)),
+            desc(func.coalesce(Product.num_ratings, 0)),
+            desc(Product.id),
+        )
+        .all()
+    )
+
+def get_latest_products(db: Session) -> List[Product]:
+    return db.query(Product).order_by(desc(Product.id)).all()
+
 def get_product_by_id(db: Session, product_id: int) -> Optional[Product]:
     return db.query(Product).filter(Product.id == product_id).first()
 
