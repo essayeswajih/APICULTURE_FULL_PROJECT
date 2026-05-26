@@ -1,4 +1,4 @@
-from sqlalchemy import asc, desc, extract, func, or_
+from sqlalchemy import String, asc, cast, desc, extract, func, or_
 from sqlalchemy.orm import Session
 from typing import List, Optional
 from models.vetrineModels import OrderStatus, Product, Order, OrderItem, CartItem, Category, Story, SubCategory, VipCard
@@ -740,7 +740,9 @@ def get_top_products_crud(period: str, db: Session):
     else:
         raise ValueError("Invalid period")
 
-    results = (
+    active_order_filter = ~cast(Order.status, String).in_(["CANCELLED", "BACK", "cancelled", "back"])
+
+    top_products_query = (
         db.query(
             OrderItem.product_id.label("product_id"),
             func.coalesce(Product.name, func.max(OrderItem.name)).label("name"),
@@ -748,14 +750,26 @@ def get_top_products_crud(period: str, db: Session):
         )
         .join(Order, OrderItem.order_id == Order.id)
         .outerjoin(Product, OrderItem.product_id == Product.id)
-        .filter(Order.created_at >= start_date)
-        .filter(Order.status.notin_([OrderStatus.CANCELLED, OrderStatus.BACK]))
+        .filter(active_order_filter)
         .filter(OrderItem.quantity > 0)
         .group_by(OrderItem.product_id, Product.name)
+    )
+
+    results = (
+        top_products_query
+        .filter(Order.created_at >= start_date)
         .order_by(desc(func.sum(OrderItem.quantity)))
         .limit(10)
         .all()
     )
+
+    if not results:
+        results = (
+            top_products_query
+            .order_by(desc(func.sum(OrderItem.quantity)))
+            .limit(10)
+            .all()
+        )
 
     return [
         {
