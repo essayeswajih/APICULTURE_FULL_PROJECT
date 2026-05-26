@@ -25,6 +25,7 @@ export class MonthlyBarChartComponent implements OnInit {
   ngOnInit() {
     this.initChart();
     this.loadTopProducts('week');
+    this.cdr.detectChanges();
   }
 
   // Initialize chart config
@@ -56,6 +57,7 @@ export class MonthlyBarChartComponent implements OnInit {
         }
       }
     };
+    this.cdr.detectChanges();
   }
 
   // Load top products from backend
