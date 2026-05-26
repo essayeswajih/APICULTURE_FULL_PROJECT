@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, viewChild } from '@angular/core';
 import { NgApexchartsModule, ChartComponent, ApexOptions } from 'ng-apexcharts';
 import { Api } from 'src/app/services/api';
 
@@ -6,7 +6,8 @@ import { Api } from 'src/app/services/api';
   selector: 'app-monthly-bar-chart',
   imports: [NgApexchartsModule],
   templateUrl: './monthly-bar-chart.component.html',
-  styleUrl: './monthly-bar-chart.component.scss'
+  styleUrl: './monthly-bar-chart.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MonthlyBarChartComponent implements OnInit {
   chart = viewChild.required<ChartComponent>('chart');

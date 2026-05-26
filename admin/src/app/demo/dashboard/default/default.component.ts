@@ -46,7 +46,7 @@ export class DefaultComponent {
     this.api.getAnalytics().subscribe((data) => {
       this.AnalyticEcommerce = data;
     });
-    this.api.getRecentOrders(12).subscribe((data) => {
+    this.api.getRecentOrders(10).subscribe((data) => {
       this.recentOrder = data;
     });
     this.api.getRecentOrders(3).subscribe((data) => {
