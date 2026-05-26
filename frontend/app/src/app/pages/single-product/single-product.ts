@@ -25,6 +25,7 @@ export class SingleProduct implements OnInit, AfterViewInit, OnDestroy {
   selectedImage: string = '';
   isLoading: boolean = true;
   categories: Category[] = [];
+  categoryProductCounts: Record<number, number> = {};
   similarProducts: Product[] = [];
 
   @ViewChild('zoomContainer') zoomContainer!: ElementRef<HTMLDivElement>;
@@ -90,6 +91,8 @@ export class SingleProduct implements OnInit, AfterViewInit, OnDestroy {
       this.cdr.detectChanges();
     });
 
+    this.loadCategoryProductCounts();
+
     // GSAP animations (only browser)
     if (isPlatformBrowser(this.platformId)) {
       gsap.from('.product-section', { opacity: 0, y: 50, duration: 1, ease: 'power3.out', delay: 0.2 });
@@ -123,6 +126,22 @@ export class SingleProduct implements OnInit, AfterViewInit, OnDestroy {
         .filter(p => p.subcategory_id === this.product?.subcategory_id || p.category_id === this.product?.category_id  && p.id !== this.product?.id)
         .slice(0, 30); // Limit to 30 similar products
       this.cdr.detectChanges();
+    });
+  }
+
+  private loadCategoryProductCounts(): void {
+    this.api.getProducts('', '', '').subscribe({
+      next: (products) => {
+        this.categoryProductCounts = products.reduce<Record<number, number>>((counts, product) => {
+          const categoryId = Number(product.category_id);
+          counts[categoryId] = (counts[categoryId] || 0) + 1;
+          return counts;
+        }, {});
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Failed to load category product counts:', err);
+      }
     });
   }
 

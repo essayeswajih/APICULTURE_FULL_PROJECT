@@ -19,7 +19,7 @@
             @for(cat of categories; track cat.id) {
               <li class="mb-2">
                 <a [routerLink]="['/boutique']" [queryParams]="{category: cat.name}" class="text-dark">{{ cat.name }}</a>
-                <span class="text-muted" style="padding-left: 3px;">({{ 5 }})</span>
+                <span class="text-muted" style="padding-left: 3px;">({{ categoryProductCounts[cat.id] || 0 }})</span>
               </li>
             }
             <!-- Exemple statique – remplace par la boucle *ngFor ci-dessus 
