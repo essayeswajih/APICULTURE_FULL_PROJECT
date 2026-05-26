@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, viewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, viewChild } from '@angular/core';
 import { NgApexchartsModule, ChartComponent, ApexOptions } from 'ng-apexcharts';
 import { Api } from 'src/app/services/api';
 
@@ -9,12 +9,13 @@ import { Api } from 'src/app/services/api';
   styleUrl: './monthly-bar-chart.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MonthlyBarChartComponent implements OnInit {
+export class MonthlyBarChartComponent implements OnInit, AfterViewInit {
   chart = viewChild.required<ChartComponent>('chart');
   chartOptions!: Partial<ApexOptions>;
 
   currentPeriod: 'week' | 'month' = 'week';
   isLoading = false;
+  private isChartReady = false;
   private topProductsCache: Partial<Record<'week' | 'month', any[]>> = {};
 
   constructor(
@@ -24,8 +25,11 @@ export class MonthlyBarChartComponent implements OnInit {
 
   ngOnInit() {
     this.initChart();
-    this.loadTopProducts('week');
-    this.cdr.detectChanges();
+  }
+
+  ngAfterViewInit() {
+    this.isChartReady = true;
+    setTimeout(() => this.loadTopProducts(this.currentPeriod));
   }
 
   // Initialize chart config
@@ -57,7 +61,6 @@ export class MonthlyBarChartComponent implements OnInit {
         }
       }
     };
-    this.cdr.detectChanges();
   }
 
   // Load top products from backend
@@ -65,23 +68,23 @@ export class MonthlyBarChartComponent implements OnInit {
     const cachedProducts = this.topProductsCache[period];
     if (cachedProducts) {
       this.updateChart(cachedProducts);
-      this.cdr.detectChanges();
+      this.refreshChart();
       return;
     }
 
     this.isLoading = true;
-    this.cdr.detectChanges();
+    this.cdr.markForCheck();
     this.api.getTopProducts(period).subscribe({
       next: (response: any[]) => {
         this.topProductsCache[period] = response;
         this.updateChart(response);
         this.isLoading = false;
-        this.cdr.detectChanges();
+        this.refreshChart();
       },
       error: (error) => {
         console.error('Error fetching top products:', error);
         this.isLoading = false;
-        this.cdr.detectChanges();
+        this.cdr.markForCheck();
       }
     });
   }
@@ -104,11 +107,26 @@ export class MonthlyBarChartComponent implements OnInit {
     };
   }
 
+  private refreshChart() {
+    this.cdr.detectChanges();
+
+    if (!this.isChartReady) {
+      return;
+    }
+
+    setTimeout(() => {
+      const chart = this.chart();
+      chart.updateOptions({ xaxis: this.chartOptions.xaxis }, false, true);
+      chart.updateSeries(this.chartOptions.series as any, true);
+      this.cdr.markForCheck();
+    });
+  }
+
   // Toggle week/month
   toggleActive(value: 'week' | 'month') {
     if (this.currentPeriod !== value) {
       this.currentPeriod = value;
-      this.cdr.detectChanges();
+      this.cdr.markForCheck();
       this.loadTopProducts(value);
     }
   }
