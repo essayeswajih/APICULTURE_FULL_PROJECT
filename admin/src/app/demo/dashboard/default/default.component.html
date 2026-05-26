@@ -81,7 +81,7 @@
     <h5 class="mb-3">Order History</h5>
     <div class="card">
       <div class="list-group list-group-flush">
-        @for (order of recentOrder; track order.id) {
+        @for (order of orderHistory; track order.id) {
           <a
             [href]="'https://apiculturegalai.tn/client-order-view?ordercode=' + order.code"
             class="list-group-item list-group-item-action px-3"
@@ -103,7 +103,7 @@
             </div>
           </a>
         }
-        @if (!recentOrder.length) {
+        @if (!orderHistory.length) {
           <div class="list-group-item px-3 text-muted">No recent orders yet.</div>
         }
       </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, viewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, viewChild } from '@angular/core';
 import { NgApexchartsModule, ChartComponent, ApexOptions } from 'ng-apexcharts';
 import { Api } from 'src/app/services/api';
 
@@ -16,7 +16,10 @@ export class MonthlyBarChartComponent implements OnInit {
   isLoading = false;
   private topProductsCache: Partial<Record<'week' | 'month', any[]>> = {};
 
-  constructor(private api: Api) {}
+  constructor(
+    private api: Api,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.initChart();
@@ -59,19 +62,23 @@ export class MonthlyBarChartComponent implements OnInit {
     const cachedProducts = this.topProductsCache[period];
     if (cachedProducts) {
       this.updateChart(cachedProducts);
+      this.cdr.detectChanges();
       return;
     }
 
     this.isLoading = true;
+    this.cdr.detectChanges();
     this.api.getTopProducts(period).subscribe({
       next: (response: any[]) => {
         this.topProductsCache[period] = response;
         this.updateChart(response);
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error('Error fetching top products:', error);
         this.isLoading = false;
+        this.cdr.detectChanges();
       }
     });
   }
@@ -98,6 +105,7 @@ export class MonthlyBarChartComponent implements OnInit {
   toggleActive(value: 'week' | 'month') {
     if (this.currentPeriod !== value) {
       this.currentPeriod = value;
+      this.cdr.detectChanges();
       this.loadTopProducts(value);
     }
   }

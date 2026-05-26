@@ -153,9 +153,10 @@
                     nzShape="circle"
                     nz-tooltip
                     nzTooltipTitle="View order history"
+                    aria-label="View order history"
                     (click)="openHistory(customer)"
                   >
-                    <i class="ti ti-history action-icon" aria-hidden="true"></i>
+                    <span nz-icon nzType="history" nzTheme="outline" class="action-icon" aria-hidden="true"></span>
                   </button>
                   <button
                     nz-button
@@ -163,9 +164,10 @@
                     nzShape="circle"
                     nz-tooltip
                     nzTooltipTitle="VIP card"
+                    aria-label="VIP card"
                     (click)="openVipCard(customer)"
                   >
-                    <i class="ti ti-credit-card action-icon" aria-hidden="true"></i>
+                    <span nz-icon nzType="credit-card" nzTheme="outline" class="action-icon" aria-hidden="true"></span>
                   </button>
                 </div>
               </td>
