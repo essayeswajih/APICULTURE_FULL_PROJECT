@@ -87,3 +87,47 @@ h2 {
   width: 100%;
   height: auto;
 }
+
+.product-list-table {
+  border: 1px solid #f1d39a;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.product-list-table table {
+  margin-bottom: 0;
+  min-width: 1120px;
+}
+
+.product-list-table th {
+  background: #fff8e1;
+  color: #333;
+  white-space: nowrap;
+}
+
+.sort-header {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.sort-header:hover {
+  color: #d97706;
+}
+
+.product-list-image {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #f1d39a;
+}
+
+.product-name-cell {
+  min-width: 240px;
+  max-width: 360px;
+}

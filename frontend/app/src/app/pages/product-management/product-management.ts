@@ -13,6 +13,8 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 export class ProductManagement implements OnInit {
   products: Product[] = [];
   categories: Category[] = [];
+  sortColumn: keyof Product | 'category_name' = 'id';
+  sortDirection: 'asc' | 'desc' = 'desc';
   newProduct: Product = {
     id: 0,
     name: '',
@@ -107,6 +109,60 @@ export class ProductManagement implements OnInit {
 
   trackById(index: number, product: Product): number {
     return product.id;
+  }
+
+  get sortedProducts(): Product[] {
+    return [...this.products].sort((a, b) => this.compareProducts(a, b));
+  }
+
+  sortByColumn(column: keyof Product | 'category_name'): void {
+    if (this.sortColumn === column) {
+      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      this.sortColumn = column;
+      this.sortDirection = 'asc';
+    }
+  }
+
+  getSortIcon(column: keyof Product | 'category_name'): string {
+    if (this.sortColumn !== column) {
+      return '↕';
+    }
+    return this.sortDirection === 'asc' ? '↑' : '↓';
+  }
+
+  getCategoryName(categoryId: number): string {
+    return this.categories.find(category => Number(category.id) === Number(categoryId))?.name || String(categoryId);
+  }
+
+  private compareProducts(a: Product, b: Product): number {
+    const first = this.getSortValue(a, this.sortColumn);
+    const second = this.getSortValue(b, this.sortColumn);
+    const direction = this.sortDirection === 'asc' ? 1 : -1;
+
+    if (typeof first === 'number' && typeof second === 'number') {
+      return (first - second) * direction;
+    }
+
+    return String(first).localeCompare(String(second), undefined, {
+      numeric: true,
+      sensitivity: 'base'
+    }) * direction;
+  }
+
+  private getSortValue(product: Product, column: keyof Product | 'category_name'): string | number {
+    if (column === 'category_name') {
+      return this.getCategoryName(product.category_id);
+    }
+
+    const value = product[column];
+    if (typeof value === 'boolean') {
+      return value ? 1 : 0;
+    }
+    if (typeof value === 'number') {
+      return value;
+    }
+    return value ?? '';
   }
 
   private loadProducts() {

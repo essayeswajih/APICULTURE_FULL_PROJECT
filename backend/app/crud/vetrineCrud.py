@@ -742,17 +742,16 @@ def get_top_products_crud(period: str, db: Session):
 
     results = (
         db.query(
-            Product.id.label("product_id"),
-            Product.name.label("name"),
-            func.coalesce(func.sum(OrderItem.quantity), 0).label("total_sold")
+            OrderItem.product_id.label("product_id"),
+            func.coalesce(Product.name, func.max(OrderItem.name)).label("name"),
+            func.sum(OrderItem.quantity).label("total_sold")
         )
-        .join(Product.order_items)     # ✅ clean relationship
-        .join(OrderItem.order)         # ✅ clean relationship
+        .join(Order, OrderItem.order_id == Order.id)
+        .outerjoin(Product, OrderItem.product_id == Product.id)
         .filter(Order.created_at >= start_date)
-        # 🔥 IMPORTANT (recommended)
         .filter(Order.status == OrderStatus.DELIVERED)
-        .group_by(Product.id, Product.name)
-        .order_by(func.sum(OrderItem.quantity).desc())
+        .group_by(OrderItem.product_id, Product.name)
+        .order_by(desc(func.sum(OrderItem.quantity)))
         .limit(10)
         .all()
     )

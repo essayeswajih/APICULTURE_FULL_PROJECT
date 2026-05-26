@@ -76,35 +76,84 @@
     </div>
   </div>
 
-  <h3>Existing Products</h3>
-  <div class="row">
-    <div class="col-md-4" *ngFor="let product of products; trackBy: trackById">
-      <div class="card mb-3">
-        <img src="{{ product.image_url || 'https://via.placeholder.com/200?text=Product' }}" class="card-img-top" alt="Product" loading="lazy">
-        <div class="card-body" style="height: 300px; overflow-y: auto;">
-          <h5 class="card-title">{{ product.name }}</h5>
-          <p class="card-text">{{ product.description || 'No description' }}</p>
-          <p class="card-text">Price: {{ product.price | number:'1.2-2' }}DT</p>
-          <p class="card-text" *ngIf="product.discounted_price && product.discounted_price < product.price">
-            Discounted Price: {{ product.discounted_price | number:'1.2-2' }}DT
-          </p>
-          <p class="card-text">Stock: {{ product.stock_quantity }}</p>
-          <p class="card-text">Category: {{ product.category_id }}</p>
-          <p class="card-text">Discounted: {{ product.discounted_price || 'N/A' }}DT</p>
-          <p class="card-text">VIP Price: {{ product.vip_price || 'N/A' }}DT</p>
-          <p class="card-text" *ngIf="product.promo">Promo: Yes</p>
-          @if( product.rating && product.rating > 0 ){
-            <p class="card-text">Rating: {{ product.rating }}</p>
-            <p class="card-text" *ngIf="product.num_ratings">Number of Ratings: {{ product.num_ratings }}</p>
-          }
-          <p class="card-text" *ngIf="product.buzzent">Marketing Text: {{ product.buzzent }}</p>
-          <p class="card-text" *ngIf="product.shipping_cost">Shipping Cost: {{ product.shipping_cost | number:'1.2-2' }}DT</p>
-        </div>
-        <div class="card-footer d-flex justify-content-between">
-          <button class="btn btn-outline-warning me-2" (click)="editProduct(product)">Edit</button>
-          <button class="btn btn-danger" (click)="deleteProduct(product.id)">Delete</button>
-        </div>
-      </div>
-    </div>
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <h3 class="mb-0">Existing Products</h3>
+    <span class="text-muted">{{ products.length }} products</span>
+  </div>
+
+  <div class="table-responsive product-list-table">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th scope="col">
+            <button type="button" class="sort-header" (click)="sortByColumn('id')">ID {{ getSortIcon('id') }}</button>
+          </th>
+          <th scope="col">Image</th>
+          <th scope="col">
+            <button type="button" class="sort-header" (click)="sortByColumn('name')">Name {{ getSortIcon('name') }}</button>
+          </th>
+          <th scope="col">
+            <button type="button" class="sort-header" (click)="sortByColumn('price')">Price {{ getSortIcon('price') }}</button>
+          </th>
+          <th scope="col">
+            <button type="button" class="sort-header" (click)="sortByColumn('discounted_price')">Discount {{ getSortIcon('discounted_price') }}</button>
+          </th>
+          <th scope="col">
+            <button type="button" class="sort-header" (click)="sortByColumn('vip_price')">VIP {{ getSortIcon('vip_price') }}</button>
+          </th>
+          <th scope="col">
+            <button type="button" class="sort-header" (click)="sortByColumn('stock_quantity')">Stock {{ getSortIcon('stock_quantity') }}</button>
+          </th>
+          <th scope="col">
+            <button type="button" class="sort-header" (click)="sortByColumn('category_name')">Category {{ getSortIcon('category_name') }}</button>
+          </th>
+          <th scope="col">
+            <button type="button" class="sort-header" (click)="sortByColumn('promo')">Promo {{ getSortIcon('promo') }}</button>
+          </th>
+          <th scope="col">
+            <button type="button" class="sort-header" (click)="sortByColumn('rating')">Rating {{ getSortIcon('rating') }}</button>
+          </th>
+          <th scope="col">
+            <button type="button" class="sort-header" (click)="sortByColumn('num_ratings')">Ratings {{ getSortIcon('num_ratings') }}</button>
+          </th>
+          <th scope="col">
+            <button type="button" class="sort-header" (click)="sortByColumn('shipping_cost')">Shipping {{ getSortIcon('shipping_cost') }}</button>
+          </th>
+          <th scope="col" class="text-end">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of sortedProducts; trackBy: trackById">
+          <td>{{ product.id }}</td>
+          <td>
+            <img
+              [src]="product.image_url || 'https://via.placeholder.com/200?text=Product'"
+              class="product-list-image"
+              [alt]="product.name"
+              loading="lazy"
+            >
+          </td>
+          <td class="product-name-cell">
+            <strong>{{ product.name }}</strong>
+            <small class="d-block text-muted">{{ product.buzzent || product.description || 'No description' }}</small>
+          </td>
+          <td>{{ product.price | number:'1.2-2' }}DT</td>
+          <td>{{ product.discounted_price || 'N/A' }}</td>
+          <td>{{ product.vip_price || 'N/A' }}</td>
+          <td>{{ product.stock_quantity }}</td>
+          <td>{{ getCategoryName(product.category_id) }}</td>
+          <td>{{ product.promo ? 'Yes' : 'No' }}</td>
+          <td>{{ product.rating || 'N/A' }}</td>
+          <td>{{ product.num_ratings || 'N/A' }}</td>
+          <td>{{ product.shipping_cost || 'N/A' }}</td>
+          <td>
+            <div class="d-flex justify-content-end gap-2">
+              <button class="btn btn-outline-warning btn-sm" (click)="editProduct(product)">Edit</button>
+              <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.id)">Delete</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

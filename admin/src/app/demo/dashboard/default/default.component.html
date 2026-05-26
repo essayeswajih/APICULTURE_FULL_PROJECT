@@ -58,11 +58,11 @@
                 <td>{{ order.telephone }}</td>
                 <td class="text-end">
                   <span class="d-block">
-                    <i class="badge-circle {{ order.status_type }} f-10 m-r-5"></i>
-                    {{ order.status }}
+                    <i class="badge-circle {{ getStatusClass(order.status) }} f-10 m-r-5"></i>
+                    {{ formatStatus(order.status) }}
                   </span>
                 </td>
-                <td class="text-end">{{ order.total_amount }}</td>
+                <td class="text-end">{{ order.total_amount | number: '1.0-3' }} DT</td>
               </tr>
             }
           </tbody>
@@ -78,27 +78,33 @@
     <app-sales-report-chart />
   </div>
   <div class="col-md-12 col-xl-4">
-    <h5 class="mb-3">Transaction History</h5>
+    <h5 class="mb-3">Order History</h5>
     <div class="card">
       <div class="list-group list-group-flush">
-        @for (history of transaction; track history) {
-          <a href="javascript:" class="list-group-item list-group-item-action px-3">
+        @for (order of recentOrder; track order.id) {
+          <a
+            [href]="'https://apiculturegalai.tn/client-order-view?ordercode=' + order.code"
+            class="list-group-item list-group-item-action px-3"
+          >
             <div class="d-flex">
               <div class="flex-shrink-0">
-                <div class="avatar avatar-s rounded-circle {{ history.background }}">
-                  <i class="f-16" antIcon type="{{ history.icon }}" theme="outline"></i>
+                <div class="avatar avatar-s rounded-circle {{ getStatusClass(order.status) }}">
+                  <i class="f-16" antIcon type="{{ getStatusIcon(order.status) }}" theme="outline"></i>
                 </div>
               </div>
               <div class="flex-grow-1 ms-3">
-                <h6 class="mb-1">{{ history.title }}</h6>
-                <p class="mb-0 text-muted">{{ history.time }}</p>
+                <h6 class="mb-1">Order #{{ order.id }}</h6>
+                <p class="mb-0 text-muted">{{ order.username }} &middot; {{ order.created_at | date: 'mediumDate' }}</p>
               </div>
               <div class="flex-shrink-0 text-end">
-                <h6 class="mb-1">{{ history.amount }}</h6>
-                <p class="mb-0 text-muted">{{ history.percentage }}</p>
+                <h6 class="mb-1">{{ order.total_amount | number: '1.0-3' }} DT</h6>
+                <p class="mb-0 text-muted text-capitalize">{{ formatStatus(order.status) }}</p>
               </div>
             </div>
           </a>
+        }
+        @if (!recentOrder.length) {
+          <div class="list-group-item px-3 text-muted">No recent orders yet.</div>
         }
       </div>
     </div>

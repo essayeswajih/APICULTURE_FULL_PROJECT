@@ -1,43 +1,57 @@
 // angular import
-import { Component, viewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 
 // project import
+import { Api } from 'src/app/services/api';
 
 // third party
-import { NgApexchartsModule, ChartComponent, ApexOptions } from 'ng-apexcharts';
+import { NgApexchartsModule, ApexOptions } from 'ng-apexcharts';
+
+type StatusKey = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'change_requested' | 'back';
 
 @Component({
   selector: 'app-analytics-chart',
-  imports: [NgApexchartsModule],
+  imports: [CommonModule, NgApexchartsModule],
   templateUrl: './analytics-chart.component.html',
   styleUrl: './analytics-chart.component.scss'
 })
-export class AnalyticsChartComponent {
+export class AnalyticsChartComponent implements OnInit {
   // public props
-  chart = viewChild.required<ChartComponent>('chart');
   chartOptions!: Partial<ApexOptions>;
+  reportItems = [
+    { label: 'Delivered orders', value: '0', detail: '0% fulfillment', class: 'text-success' },
+    { label: 'Open orders', value: '0', detail: 'Pending, processing, shipped', class: 'text-primary' }
+  ];
+  isLoading = true;
+
+  private readonly months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  private readonly statusLabels: Record<StatusKey, string> = {
+    pending: 'Pending',
+    processing: 'Processing',
+    shipped: 'Shipped',
+    delivered: 'Delivered',
+    cancelled: 'Cancelled',
+    change_requested: 'Change requested',
+    back: 'Returned'
+  };
 
   //  constructor
-  constructor() {
+  constructor(private api: Api) {
     this.chartOptions = {
       chart: {
-        type: 'line',
+        type: 'area',
         height: 340,
         toolbar: {
           show: false
         },
         background: 'transparent'
       },
-      plotOptions: {
-        bar: {
-          columnWidth: '45%',
-          borderRadius: 4
-        }
-      },
-      colors: ['#FFB814'],
+      dataLabels: { enabled: false },
+      colors: ['#52c41a', '#1677ff', '#ffb814'],
       stroke: {
         curve: 'smooth',
-        width: 1.5
+        width: 2
       },
       grid: {
         strokeDashArray: 4,
@@ -45,25 +59,23 @@ export class AnalyticsChartComponent {
       },
       series: [
         {
-          data: [58, 90, 38, 83, 63, 75, 35, 55]
+          name: 'Delivered',
+          data: []
+        },
+        {
+          name: 'Open',
+          data: []
+        },
+        {
+          name: 'Issues',
+          data: []
         }
       ],
       xaxis: {
-        type: 'datetime',
-        categories: [
-          '2018-05-19T00:00:00.000Z',
-          '2018-06-19T00:00:00.000Z',
-          '2018-07-19T01:30:00.000Z',
-          '2018-08-19T02:30:00.000Z',
-          '2018-09-19T03:30:00.000Z',
-          '2018-10-19T04:30:00.000Z',
-          '2018-11-19T05:30:00.000Z',
-          '2018-12-19T06:30:00.000Z'
-        ],
+        categories: this.months,
         labels: {
-          format: 'MMM',
           style: {
-            colors: ['#222', '#222', '#222', '#222', '#222', '#222', '#222']
+            colors: Array(12).fill('#222')
           }
         },
         axisBorder: {
@@ -74,11 +86,97 @@ export class AnalyticsChartComponent {
         }
       },
       yaxis: {
-        show: false
+        min: 0,
+        labels: {
+          formatter: (value) => Math.round(value).toString()
+        }
       },
       tooltip: {
-        theme: 'light'
+        theme: 'light',
+        y: {
+          formatter: (value) => `${Math.round(value)} orders`
+        }
       }
     };
+  }
+
+  ngOnInit() {
+    this.api.getMonthlyStatus().subscribe({
+      next: (statusByMonth) => {
+        this.updateReport(statusByMonth);
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading analytics report', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private updateReport(statusByMonth: Partial<Record<StatusKey, number[]>>) {
+    const delivered = this.normalizeSeries(statusByMonth.delivered);
+    const open = this.sumSeries([
+      this.normalizeSeries(statusByMonth.pending),
+      this.normalizeSeries(statusByMonth.processing),
+      this.normalizeSeries(statusByMonth.shipped),
+      this.normalizeSeries(statusByMonth.change_requested)
+    ]);
+    const issues = this.sumSeries([
+      this.normalizeSeries(statusByMonth.cancelled),
+      this.normalizeSeries(statusByMonth.back)
+    ]);
+
+    const deliveredTotal = this.total(delivered);
+    const openTotal = this.total(open);
+    const issuesTotal = this.total(issues);
+    const orderTotal = deliveredTotal + openTotal + issuesTotal;
+    const fulfillmentRate = orderTotal ? Math.round((deliveredTotal / orderTotal) * 100) : 0;
+    const mostActiveStatus = this.getMostActiveStatus(statusByMonth);
+
+    this.reportItems = [
+      {
+        label: 'Delivered orders',
+        value: deliveredTotal.toLocaleString(),
+        detail: `${fulfillmentRate}% fulfillment`,
+        class: 'text-success'
+      },
+      {
+        label: 'Open orders',
+        value: openTotal.toLocaleString(),
+        detail: mostActiveStatus ? `Most active: ${mostActiveStatus}` : 'Pending, processing, shipped',
+        class: 'text-primary'
+      }
+    ];
+
+    this.chartOptions = {
+      ...this.chartOptions,
+      series: [
+        { name: 'Delivered', data: delivered },
+        { name: 'Open', data: open },
+        { name: 'Issues', data: issues }
+      ]
+    };
+  }
+
+  private normalizeSeries(series?: number[]) {
+    return Array.from({ length: 12 }, (_, index) => Number(series?.[index] || 0));
+  }
+
+  private sumSeries(seriesList: number[][]) {
+    return Array.from({ length: 12 }, (_, index) => seriesList.reduce((sum, series) => sum + series[index], 0));
+  }
+
+  private total(series: number[]) {
+    return series.reduce((sum, value) => sum + value, 0);
+  }
+
+  private getMostActiveStatus(statusByMonth: Partial<Record<StatusKey, number[]>>) {
+    const totals = Object.entries(statusByMonth).map(([status, series]) => ({
+      status: status as StatusKey,
+      total: this.total(this.normalizeSeries(series))
+    }));
+    const mostActive = totals.sort((a, b) => b.total - a.total)[0];
+
+    return mostActive?.total ? this.statusLabels[mostActive.status] : '';
   }
 }

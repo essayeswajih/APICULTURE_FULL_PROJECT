@@ -14,7 +14,7 @@ import { SalesReportChartComponent } from 'src/app/theme/shared/apexchart/sales-
 import { IconService, IconDirective } from '@ant-design/icons-angular';
 import { FallOutline, GiftOutline, MessageOutline, RiseOutline, SettingOutline } from '@ant-design/icons-angular/icons';
 import { CardComponent } from 'src/app/theme/shared/components/card/card.component';
-import { Api } from 'src/app/services/api';
+import { Api, Order } from 'src/app/services/api';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -46,38 +46,42 @@ export class DefaultComponent {
     this.api.getAnalytics().subscribe((data) => {
       this.AnalyticEcommerce = data;
     });
-    this.api.getRecentOrders().subscribe((data) => {
+    this.api.getRecentOrders(3).subscribe((data) => {
       this.recentOrder = data;
     });
   }
-  recentOrder = [];
+  recentOrder: Order[] = [];
 
   AnalyticEcommerce = [];
 
-  transaction = [
-    {
-      background: 'text-success bg-light-success',
-      icon: 'gift',
-      title: 'Order #002434',
-      time: 'Today, 2:00 AM',
-      amount: '+ $1,430',
-      percentage: '78%'
-    },
-    {
-      background: 'text-primary bg-light-primary',
-      icon: 'message',
-      title: 'Order #984947',
-      time: '5 August, 1:45 PM',
-      amount: '- $302',
-      percentage: '8%'
-    },
-    {
-      background: 'text-danger bg-light-danger',
-      icon: 'setting',
-      title: 'Order #988784',
-      time: '7 hours ago',
-      amount: '- $682',
-      percentage: '16%'
+  getStatusClass(status: string) {
+    switch (status) {
+      case 'delivered':
+        return 'text-success bg-light-success';
+      case 'cancelled':
+      case 'back':
+        return 'text-danger bg-light-danger';
+      case 'shipped':
+      case 'processing':
+        return 'text-primary bg-light-primary';
+      default:
+        return 'text-warning bg-light-warning';
     }
-  ];
+  }
+
+  getStatusIcon(status: string) {
+    if (status === 'delivered') {
+      return 'gift';
+    }
+
+    if (status === 'cancelled' || status === 'back') {
+      return 'setting';
+    }
+
+    return 'message';
+  }
+
+  formatStatus(status: string) {
+    return status.replace(/_/g, ' ');
+  }
 }

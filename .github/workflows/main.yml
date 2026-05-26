@@ -21,7 +21,6 @@ jobs:
           script_stop: true
           script: |
             cd ~/workspace/APICULTURE_FULL_PROJECT
-            git pull --ff-only
             git fetch origin main
             git reset --hard origin/main
             docker compose down --remove-orphans

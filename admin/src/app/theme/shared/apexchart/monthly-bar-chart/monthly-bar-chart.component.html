@@ -1,5 +1,8 @@
 <div class="d-flex align-items-center justify-content-between mb-3">
   <h5 class="mb-0">Top 10 Products ({{ currentPeriod }})</h5>
+  @if (isLoading) {
+    <span class="text-muted small">Loading...</span>
+  }
 
   <div class="d-flex gap-2 chart-income">
     <div

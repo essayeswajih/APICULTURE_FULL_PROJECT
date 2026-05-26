@@ -49,6 +49,9 @@ export enum OrderStatus {
   PROCESSING = 'processing',
   SHIPPED = 'shipped',
   DELIVERED = 'delivered',
+  CANCELLED = 'cancelled',
+  CHANGE_REQUESTED = 'change_requested',
+  BACK = 'back',
 }
 
 export interface Order {
@@ -378,10 +381,11 @@ export class Api {
   }
 
   // ✅ Recent Orders
-  getRecentOrders(): Observable<any[]> {
+  getRecentOrders(limit = 10): Observable<Order[]> {
     return this.http
-      .get<any[]>(`${this.apiUrl}/analytics/recent-orders`, {
-        headers: this.getAuthHeaders()
+      .get<Order[]>(`${this.apiUrl}/analytics/recent-orders`, {
+        headers: this.getAuthHeaders(),
+        params: new HttpParams().set('limit', limit)
       })
       .pipe(catchError(this.handleError));
   }

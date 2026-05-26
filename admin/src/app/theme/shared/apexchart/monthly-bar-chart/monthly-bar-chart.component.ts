@@ -13,6 +13,8 @@ export class MonthlyBarChartComponent implements OnInit {
   chartOptions!: Partial<ApexOptions>;
 
   currentPeriod: 'week' | 'month' = 'week';
+  isLoading = false;
+  private topProductsCache: Partial<Record<'week' | 'month', any[]>> = {};
 
   constructor(private api: Api) {}
 
@@ -54,30 +56,42 @@ export class MonthlyBarChartComponent implements OnInit {
 
   // Load top products from backend
   loadTopProducts(period: 'week' | 'month') {
+    const cachedProducts = this.topProductsCache[period];
+    if (cachedProducts) {
+      this.updateChart(cachedProducts);
+      return;
+    }
+
+    this.isLoading = true;
     this.api.getTopProducts(period).subscribe({
       next: (response: any[]) => {
-        // map backend fields to chart
-        const categories = response.map(item => item.name);       // product names
-        const data = response.map(item => item.total_sold);       // quantities sold
-
-        // update chart options (force re-render)
-        this.chartOptions = {
-          ...this.chartOptions,
-          series: [
-            {
-              name: 'Sales',
-              data
-            }
-          ],
-          xaxis: {
-            categories
-          }
-        };
+        this.topProductsCache[period] = response;
+        this.updateChart(response);
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error fetching top products:', error);
+        this.isLoading = false;
       }
     });
+  }
+
+  private updateChart(products: any[]) {
+    const categories = products.map(item => item.name);
+    const data = products.map(item => item.total_sold);
+
+    this.chartOptions = {
+      ...this.chartOptions,
+      series: [
+        {
+          name: 'Sales',
+          data
+        }
+      ],
+      xaxis: {
+        categories
+      }
+    };
   }
 
   // Toggle week/month
