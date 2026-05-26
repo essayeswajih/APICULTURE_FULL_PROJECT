@@ -749,7 +749,8 @@ def get_top_products_crud(period: str, db: Session):
         .join(Order, OrderItem.order_id == Order.id)
         .outerjoin(Product, OrderItem.product_id == Product.id)
         .filter(Order.created_at >= start_date)
-        .filter(Order.status == OrderStatus.DELIVERED)
+        .filter(Order.status.notin_([OrderStatus.CANCELLED, OrderStatus.BACK]))
+        .filter(OrderItem.quantity > 0)
         .group_by(OrderItem.product_id, Product.name)
         .order_by(desc(func.sum(OrderItem.quantity)))
         .limit(10)
@@ -759,7 +760,7 @@ def get_top_products_crud(period: str, db: Session):
     return [
         {
             "product_id": r.product_id,
-            "name": r.name,
+            "name": r.name or f"Product #{r.product_id}",
             "total_sold": int(r.total_sold)
         }
         for r in results

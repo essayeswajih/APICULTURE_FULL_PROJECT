@@ -85,8 +85,8 @@ export class MonthlyBarChartComponent implements OnInit {
   }
 
   private updateChart(products: any[]) {
-    const categories = products.map(item => item.name);
-    const data = products.map(item => item.total_sold);
+    const categories = products.map(item => item.name || `Product #${item.product_id}`);
+    const data = products.map(item => Number(item.total_sold || 0));
 
     this.chartOptions = {
       ...this.chartOptions,
