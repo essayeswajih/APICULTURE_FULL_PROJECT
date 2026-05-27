@@ -138,13 +138,16 @@ export class Api {
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'An unknown error occurred!';
 
-    // Use optional chaining to safely access message
-    if (error.error?.message) {
-      // Client-side or network error
-      errorMessage = `Error: ${error.error.message}`;
+    if (error.status === 0) {
+      errorMessage = 'Network error: the server could not be reached.';
+    } else if (error.error?.detail) {
+      errorMessage = `Error ${error.status}: ${error.error.detail}`;
+    } else if (error.error?.error) {
+      errorMessage = `Error ${error.status}: ${error.error.error}`;
+    } else if (error.error?.message) {
+      errorMessage = `Error ${error.status}: ${error.error.message}`;
     } else {
-      // Backend returned an unsuccessful response code
-      errorMessage = `Error ${error.status}: ${error.error?.detail || error.message}`;
+      errorMessage = `Error ${error.status}: ${error.message}`;
     }
 
     return throwError(() => new Error(errorMessage));
@@ -320,6 +323,22 @@ export class Api {
   getAllImages(): Observable<{ images: string[] }> {
     return this.http
       .get<{ images: string[] }>(`${this.apiUrl}/images`, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+  renameImage(filename: string, newFilename: string): Observable<{ filename: string; url: string }> {
+    return this.http
+      .put<{ filename: string; url: string }>(
+        `${this.apiUrl}/images/${encodeURIComponent(filename)}`,
+        { filename: newFilename },
+        { headers: this.getAuthHeaders() }
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  deleteImage(filename: string): Observable<void> {
+    return this.http
+      .delete<void>(`${this.apiUrl}/images/${encodeURIComponent(filename)}`, { headers: this.getAuthHeaders() })
       .pipe(catchError(this.handleError));
   }
 

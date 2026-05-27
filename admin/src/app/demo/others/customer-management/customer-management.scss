@@ -526,6 +526,19 @@ td small {
   gap: 14px;
 }
 
+.vip-export-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+}
+
 .vip-status,
 .vip-rule,
 .vip-info-list > div {
@@ -625,5 +638,9 @@ td small {
 
   .totals-panel {
     max-width: none;
+  }
+
+  .vip-export-actions {
+    grid-template-columns: 1fr;
   }
 }

@@ -21,8 +21,17 @@ jobs:
           script_stop: true
           script: |
             cd ~/workspace/APICULTURE_FULL_PROJECT
+
+            BACKUP_DATE=$(date +"%Y-%m-%d_%H-%M-%S")
+            BACKUP_DIR="../backup/$BACKUP_DATE"
+            mkdir -p "$BACKUP_DIR"
+
+            tar --exclude='./.git' -czf "$BACKUP_DIR/project_$BACKUP_DATE.tar.gz" .
+            docker compose exec -T postgres-db pg_dump -U apiculturefromtn -d apiculture > "$BACKUP_DIR/database_$BACKUP_DATE.sql"
+
             git fetch origin main
-            git reset --hard origin/main
+            git pull --ff-only origin main
+            mkdir -p uploads
             docker compose down --remove-orphans
             docker compose build
             docker compose up -d

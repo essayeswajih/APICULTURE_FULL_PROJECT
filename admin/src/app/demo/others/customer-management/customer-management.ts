@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Api, Order, VipCard } from '../../../services/api';
 
 import { IconService } from '@ant-design/icons-angular';
 import {
   CreditCardOutline,
+  DownloadOutline,
   HistoryOutline,
+  PrinterOutline,
   ReloadOutline,
   SafetyCertificateOutline,
   StopOutline
@@ -113,6 +115,7 @@ const CODE_39_PATTERNS: Record<string, string> = {
 })
 export class CustomerManagement implements OnInit {
   private iconService = inject(IconService);
+  @ViewChild('vipCardExport') private vipCardExport?: ElementRef<HTMLElement>;
 
   orders: Order[] = [];
   customers: CustomerSummary[] = [];
@@ -146,7 +149,9 @@ export class CustomerManagement implements OnInit {
     this.iconService.addIcon(
       ...[
         CreditCardOutline,
+        DownloadOutline,
         HistoryOutline,
+        PrinterOutline,
         ReloadOutline,
         SafetyCertificateOutline,
         StopOutline
@@ -356,6 +361,75 @@ export class CustomerManagement implements OnInit {
     });
   }
 
+  downloadVipCardImage(): void {
+    const cardElement = this.vipCardExport?.nativeElement;
+
+    if (!cardElement || !this.selectedVipCustomer) {
+      return;
+    }
+
+    this.renderElementToPng(cardElement)
+      .then((dataUrl) => {
+        const link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = `${this.getVipExportName()}.png`;
+        link.click();
+      })
+      .catch(() => {
+        this.errorMessage = 'Unable to export this VIP card as an image.';
+        this.cdr.detectChanges();
+      });
+  }
+
+  printVipCard(): void {
+    const cardElement = this.vipCardExport?.nativeElement;
+
+    if (!cardElement) {
+      return;
+    }
+
+    const printWindow = window.open('', '_blank', 'width=960,height=720');
+
+    if (!printWindow) {
+      this.errorMessage = 'Please allow popups to print this VIP card.';
+      return;
+    }
+
+    const clonedCard = cardElement.cloneNode(true) as HTMLElement;
+    this.inlineComputedStyles(cardElement, clonedCard);
+
+    printWindow.document.open();
+    printWindow.document.write(`
+      <!doctype html>
+      <html>
+        <head>
+          <title>${this.escapeHtml(this.vipTitle)}</title>
+          <style>
+            * { box-sizing: border-box; }
+            body {
+              min-height: 100vh;
+              margin: 0;
+              padding: 24px;
+              display: grid;
+              place-items: center;
+              background: #ffffff;
+            }
+            @page { size: A4 portrait; margin: 14mm; }
+            @media print {
+              body { min-height: auto; padding: 0; }
+            }
+          </style>
+        </head>
+        <body>${clonedCard.outerHTML}</body>
+      </html>
+    `);
+    printWindow.document.close();
+    printWindow.focus();
+    window.setTimeout(() => {
+      printWindow.print();
+    }, 300);
+  }
+
   trackCustomer(_: number, customer: CustomerSummary): string {
     return customer.key;
   }
@@ -454,6 +528,90 @@ export class CustomerManagement implements OnInit {
       default:
         return 'default';
     }
+  }
+
+  private renderElementToPng(element: HTMLElement): Promise<string> {
+    const rect = element.getBoundingClientRect();
+    const width = Math.ceil(rect.width);
+    const height = Math.ceil(rect.height);
+    const clone = element.cloneNode(true) as HTMLElement;
+
+    this.inlineComputedStyles(element, clone);
+    clone.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+    clone.style.width = `${width}px`;
+    clone.style.height = `${height}px`;
+    clone.style.margin = '0';
+
+    const serialized = new XMLSerializer().serializeToString(clone);
+    const svg = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
+        <foreignObject width="100%" height="100%">${serialized}</foreignObject>
+      </svg>
+    `;
+    const svgUrl = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml;charset=utf-8' }));
+    const scale = Math.max(2, window.devicePixelRatio || 1);
+
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+
+      image.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = width * scale;
+        canvas.height = height * scale;
+
+        const context = canvas.getContext('2d');
+        if (!context) {
+          URL.revokeObjectURL(svgUrl);
+          reject(new Error('Canvas context unavailable'));
+          return;
+        }
+
+        context.scale(scale, scale);
+        context.drawImage(image, 0, 0, width, height);
+        URL.revokeObjectURL(svgUrl);
+        resolve(canvas.toDataURL('image/png'));
+      };
+
+      image.onerror = () => {
+        URL.revokeObjectURL(svgUrl);
+        reject(new Error('VIP card image render failed'));
+      };
+
+      image.src = svgUrl;
+    });
+  }
+
+  private inlineComputedStyles(source: Element, target: Element): void {
+    if (target instanceof HTMLElement) {
+      const computed = window.getComputedStyle(source);
+      target.style.cssText = Array.from(computed)
+        .map((property) => `${property}:${computed.getPropertyValue(property)};`)
+        .join('');
+    }
+
+    Array.from(source.children).forEach((sourceChild, index) => {
+      const targetChild = target.children.item(index);
+
+      if (targetChild) {
+        this.inlineComputedStyles(sourceChild, targetChild);
+      }
+    });
+  }
+
+  private getVipExportName(): string {
+    const name = this.selectedVipCustomer?.displayName || 'vip-card';
+    const code = this.selectedVipCard?.code || 'pending';
+
+    return `${name}-${code}`
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+  }
+
+  private escapeHtml(value: string): string {
+    const container = document.createElement('div');
+    container.innerText = value;
+    return container.innerHTML;
   }
 
   private groupOrdersByCustomer(orders: Order[]): CustomerSummary[] {

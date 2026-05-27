@@ -255,7 +255,7 @@
   <ng-container *nzModalContent>
     @if (selectedVipCustomer) {
       <div class="vip-modal-grid">
-        <div class="vip-card-stack">
+        <div class="vip-card-stack" #vipCardExport>
           <section class="vip-card-preview" [class.locked]="!selectedVipCard?.approved">
             <div class="vip-card-topline">
               <span>Apiculture Galai</span>
@@ -373,6 +373,17 @@
               <span>Last order</span>
               <strong>{{ selectedVipCustomer.lastOrderDate | date:'mediumDate' }}</strong>
             </div>
+          </div>
+
+          <div class="vip-export-actions">
+            <button nz-button nzType="default" (click)="downloadVipCardImage()">
+              <span nz-icon nzType="download"></span>
+              Image PNG
+            </button>
+            <button nz-button nzType="default" (click)="printVipCard()">
+              <span nz-icon nzType="printer"></span>
+              Print / PDF
+            </button>
           </div>
 
           <button

@@ -7,6 +7,13 @@
       <button class="btn btn-upload" (click)="uploadImage()" [disabled]="!selectedFile">Upload Image</button>
     </div>
 
+    <div *ngIf="actionMessage" class="alert alert-success py-2" role="status">
+      {{ actionMessage }}
+    </div>
+    <div *ngIf="actionError" class="alert alert-danger py-2" role="alert">
+      {{ actionError }}
+    </div>
+
     <!-- Upload Progress -->
     <div *ngIf="uploadProgress > 0 && uploadProgress < 100" class="upload-progress">
       <div class="progress">
@@ -19,7 +26,14 @@
     <!-- Last Uploaded Image Preview -->
     <div *ngIf="uploadedUrl" class="preview-image">
       <p class="mb-2">Last Uploaded Image:</p>
-      <img [src]="uploadedUrl" alt="Uploaded Image" class="img-fluid" style="max-height: 250px;" />
+      <div class="image-item preview-item">
+        <img [src]="uploadedUrl" alt="Uploaded Image" class="img-fluid" />
+        <div class="image-actions" aria-label="Image actions">
+          <button type="button" class="btn btn-light btn-sm" (click)="copyImageAddress(uploadedUrl)">Copy address</button>
+          <button type="button" class="btn btn-light btn-sm" (click)="renameImage(uploadedUrl)">Rename</button>
+          <button type="button" class="btn btn-danger btn-sm" (click)="deleteImage(uploadedUrl)">Delete</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -31,6 +45,14 @@
     <div class="gallery-grid">
       <div class="image-item" *ngFor="let image of images; let i = index">
         <img [src]="image" [alt]="'Image ' + (i + 1)" loading="lazy" />
+        <div class="image-actions" aria-label="Image actions">
+          <button type="button" class="btn btn-light btn-sm" (click)="copyImageAddress(image)">Copy address</button>
+          <button type="button" class="btn btn-light btn-sm" (click)="renameImage(image)">Rename</button>
+          <button type="button" class="btn btn-danger btn-sm" (click)="deleteImage(image)">Delete</button>
+        </div>
+        <div class="image-filename" [title]="getFilename(image)">
+          {{ getFilename(image) }}
+        </div>
       </div>
     </div>
     <div *ngIf="images.length === 0" class="text-muted text-center">
