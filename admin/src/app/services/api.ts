@@ -101,6 +101,16 @@ export interface Story {
   updated_at: string;
 }
 
+export interface LayoutImage {
+  id: number;
+  key: string;
+  label: string;
+  image_url: string;
+  kind: 'background' | 'image' | string;
+  created_at?: string;
+  updated_at?: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -320,6 +330,22 @@ export class Api {
   deleteImage(filename: string): Observable<void> {
     return this.http
       .delete<void>(`${this.apiUrl}/images/${encodeURIComponent(filename)}`, { headers: this.getAuthHeaders() })
+      .pipe(catchError(this.handleError));
+  }
+
+  getLayoutImages(): Observable<LayoutImage[]> {
+    return this.http
+      .get<LayoutImage[]>(`${this.apiUrl}/layout-images`)
+      .pipe(catchError(this.handleError));
+  }
+
+  updateLayoutImage(key: string, imageUrl: string): Observable<LayoutImage> {
+    return this.http
+      .put<LayoutImage>(
+        `${this.apiUrl}/layout-images/${encodeURIComponent(key)}`,
+        { image_url: imageUrl },
+        { headers: this.getAuthHeaders() }
+      )
       .pipe(catchError(this.handleError));
   }
 

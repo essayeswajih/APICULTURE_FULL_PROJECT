@@ -114,6 +114,16 @@ export interface PublicStats {
   store_locations: number;
 }
 
+export interface LayoutImage {
+  id: number;
+  key: string;
+  label: string;
+  image_url: string;
+  kind: 'background' | 'image' | string;
+  created_at?: string;
+  updated_at?: string;
+}
+
 
 @Injectable({
   providedIn: 'root',
@@ -381,6 +391,12 @@ export class Api {
     getPublicStats(): Observable<PublicStats> {
     return this.http
       .get<PublicStats>(`${this.apiUrl}/public-stats`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getLayoutImages(): Observable<LayoutImage[]> {
+    return this.http
+      .get<LayoutImage[]>(`${this.apiUrl}/layout-images`)
       .pipe(catchError(this.handleError));
   }
 

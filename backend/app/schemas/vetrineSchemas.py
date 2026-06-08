@@ -189,6 +189,23 @@ class PublicStats(BaseModel):
     happy_customers: int
     store_locations: int
 
+class LayoutImageBase(BaseModel):
+    key: str
+    label: str
+    image_url: str
+    kind: str = "background"
+
+    class Config:
+        from_attributes = True
+
+class LayoutImageUpdate(BaseModel):
+    image_url: str
+
+class LayoutImageResponse(LayoutImageBase):
+    id: int
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
 class VipCardBase(BaseModel):
     id: Optional[int] = None
     customer_key: str

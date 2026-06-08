@@ -143,3 +143,13 @@ class Story(Base):
     created_at = Column(DateTime, default=datetime.now)
     updated_at = Column(DateTime, default=datetime.now, onupdate=datetime.now)
     periority = Column(Integer, nullable=True)  # Optional field for story priority or order
+
+class LayoutImage(Base):
+    __tablename__ = "layout_images"
+    id = Column(Integer, primary_key=True, index=True)
+    key = Column(String, nullable=False, unique=True, index=True)
+    label = Column(String, nullable=False)
+    image_url = Column(Text, nullable=False)
+    kind = Column(String, nullable=False, default="background")
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)

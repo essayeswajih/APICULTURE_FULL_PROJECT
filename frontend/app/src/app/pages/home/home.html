@@ -70,7 +70,7 @@
       </div>
     </div>
 
-    <section style="background-image: url('/assets/images/3d-rendering-hexagonal-texture-background_23-2150796428.avif');background-repeat: no-repeat;background-size: cover;">
+    <section [ngStyle]="{'background-image': 'url(' + layoutImage('home_hero_background') + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover'}">
       <div class="container-lg">
         <div class="row">
           <div class="col-lg-6 pt-5 mt-5">
@@ -164,7 +164,7 @@
 
             <div class="banner-blocks">
             
-              <div class="banner-ad d-flex align-items-center large bg-info block-1" style="background: url('/assets/images/imgbanner1.png') no-repeat; background-size: cover;">
+              <div class="banner-ad d-flex align-items-center large bg-info block-1" [ngStyle]="{'background-image': 'url(' + layoutImage('home_promo_banner_large') + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover'}">
                 <div class="banner-content p-5">
                   <div class="content-wrapper text-light">
                     <h3 class="banner-title text-light">Offre valable jusqu’à fin 2026</h3>
@@ -174,7 +174,7 @@
                 </div>
               </div>
               
-              <div class="banner-ad bg-success-subtle block-2" style="background:url('/assets/images/imgbanner2.png') no-repeat;background-size: cover">
+              <div class="banner-ad bg-success-subtle block-2" [ngStyle]="{'background-image': 'url(' + layoutImage('home_promo_banner_top') + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover'}">
                 <div class="banner-content align-items-center p-5">
                   <div class="content-wrapper text-light">
                     <h3 class="banner-title text-light">Offres combinées</h3>
@@ -184,7 +184,7 @@
                 </div>
               </div>
 
-              <div class="banner-ad bg-danger block-3" style="background:url('/assets/images/imgbanner3.png') no-repeat;background-size: cover">
+              <div class="banner-ad bg-danger block-3" [ngStyle]="{'background-image': 'url(' + layoutImage('home_promo_banner_bottom') + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover'}">
                 <div class="banner-content align-items-center p-5">
                   <div class="content-wrapper text-light">
                     <h3 class="banner-title text-light">Articles en solde</h3>
@@ -207,7 +207,7 @@
     <section id="reduction-newsletter">
       <div class="container-lg">
 
-        <div class="bg-secondary text-light py-5 my-5" style="background: url('/assets/images/banner-newsletter.jpg') no-repeat; background-size: cover;">
+        <div class="bg-secondary text-light py-5 my-5" [ngStyle]="{'background-image': 'url(' + layoutImage('home_newsletter_background') + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover'}">
           <div class="container">
             <div class="row justify-content-center">
               <div class="col-md-5 p-3">
@@ -395,7 +395,7 @@
                 </div>
               </div>
               <div class="col-md-5">
-                <img src="/assets/images/banner-onlineapp.png" alt="phone" class="img-fluid">
+                <img [src]="layoutImage('home_app_image')" alt="phone" class="img-fluid">
               </div>
             </div>
           </div>

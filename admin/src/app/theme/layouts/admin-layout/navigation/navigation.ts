@@ -129,6 +129,14 @@ export const NavigationItems: NavigationItem[] = [
         icon: 'picture'
       },
       {
+        id: 'layout',
+        title: 'Layout',
+        type: 'item',
+        classes: 'nav-item',
+        url: '/layout',
+        icon: 'layout'
+      },
+      {
         id: 'stories',
         title: 'Stories',
         type: 'item',

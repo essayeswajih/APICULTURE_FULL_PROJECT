@@ -57,6 +57,11 @@ export const routes: Routes = [
           import('./demo/others/images/images').then(c => c.Images)
       },
       {
+        path: 'layout',
+        loadComponent: () =>
+          import('./demo/others/layout/layout').then(c => c.Layout)
+      },
+      {
         path: 'storie-management',
         loadComponent: () =>
           import('./demo/others/story-management/story-management').then(c => c.StoryManagement)

@@ -5,9 +5,9 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from controller.Oauth2C import get_current_user
 from db.database import get_db
-from models.vetrineModels import Product, Order, OrderItem, CartItem, Category
+from models.vetrineModels import LayoutImage, Product, Order, OrderItem, CartItem, Category
 from models.Oauth2Models import User
-from schemas.vetrineSchemas import CategoryBase, OrederStatus, ProductBase, OrderCreate, CartItemBase, OrderItemBase, OrderBase, PublicStats, StoryBase, SubCategoryBase, VipCardApprove, VipCardBase, VipCardValidation, CartPricingRequest, CartPricingResponse
+from schemas.vetrineSchemas import CategoryBase, LayoutImageResponse, LayoutImageUpdate, OrederStatus, ProductBase, OrderCreate, CartItemBase, OrderItemBase, OrderBase, PublicStats, StoryBase, SubCategoryBase, VipCardApprove, VipCardBase, VipCardValidation, CartPricingRequest, CartPricingResponse
 from crud.vetrineCrud import (
     create_category, create_story, create_subcategory, delete_category, delete_order, delete_product, delete_story, delete_subcategory, get_This_year_sales_crud, get_categories, get_category_by_id,
     get_products, get_product_by_id, create_product, get_orders, create_order,
@@ -20,12 +20,74 @@ from config.limiter_config import limiter
 
 router = APIRouter()
 
+DEFAULT_LAYOUT_IMAGES = [
+    {
+        "key": "home_hero_background",
+        "label": "Home hero background",
+        "image_url": "/assets/images/3d-rendering-hexagonal-texture-background_23-2150796428.avif",
+        "kind": "background",
+    },
+    {
+        "key": "home_promo_banner_large",
+        "label": "Large promo banner",
+        "image_url": "/assets/images/imgbanner1.png",
+        "kind": "background",
+    },
+    {
+        "key": "home_promo_banner_top",
+        "label": "Top promo banner",
+        "image_url": "/assets/images/imgbanner2.png",
+        "kind": "background",
+    },
+    {
+        "key": "home_promo_banner_bottom",
+        "label": "Bottom promo banner",
+        "image_url": "/assets/images/imgbanner3.png",
+        "kind": "background",
+    },
+    {
+        "key": "home_newsletter_background",
+        "label": "Newsletter background",
+        "image_url": "/assets/images/banner-newsletter.jpg",
+        "kind": "background",
+    },
+    {
+        "key": "home_app_image",
+        "label": "Mobile app image",
+        "image_url": "/assets/images/banner-onlineapp.png",
+        "kind": "image",
+    },
+]
+
+def ensure_layout_images(db: Session):
+    for item in DEFAULT_LAYOUT_IMAGES:
+        exists = db.query(LayoutImage).filter(LayoutImage.key == item["key"]).first()
+        if not exists:
+            db.add(LayoutImage(**item))
+    db.commit()
+
 # Role Check - Admin Access
 def check_admin(current_user: User = Depends(get_current_user)):
     #if current_user.role != 'admin':
     #    raise HTTPException(status_code=403, detail="Not authorized")
     if not current_user:
         raise HTTPException(status_code=401, detail="Not authorized")
+
+@router.get("/layout-images", response_model=List[LayoutImageResponse])
+def get_layout_images(db: Session = Depends(get_db)):
+    ensure_layout_images(db)
+    return db.query(LayoutImage).order_by(LayoutImage.id).all()
+
+@router.put("/layout-images/{image_key}", response_model=LayoutImageResponse, dependencies=[Depends(check_admin)])
+def update_layout_image(image_key: str, payload: LayoutImageUpdate, db: Session = Depends(get_db)):
+    ensure_layout_images(db)
+    layout_image = db.query(LayoutImage).filter(LayoutImage.key == image_key).first()
+    if not layout_image:
+        raise HTTPException(status_code=404, detail="Layout image not found")
+    layout_image.image_url = payload.image_url.strip()
+    db.commit()
+    db.refresh(layout_image)
+    return layout_image
 
 # Route to get all products with filtering options
 @router.get("/products", response_model=List[ProductBase])

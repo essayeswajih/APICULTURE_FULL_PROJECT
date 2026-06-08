@@ -9,7 +9,7 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { Api, Category, Product } from '../../services/api';
+import { Api, Category, LayoutImage, Product } from '../../services/api';
 import { HttpClientModule } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
 import { CartItem } from '../boutique/boutique';
@@ -57,6 +57,14 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     happyCustomers: 0,
     storeLocations: 0,
   };
+  layoutImages: Record<string, string> = {
+    home_hero_background: '/assets/images/3d-rendering-hexagonal-texture-background_23-2150796428.avif',
+    home_promo_banner_large: '/assets/images/imgbanner1.png',
+    home_promo_banner_top: '/assets/images/imgbanner2.png',
+    home_promo_banner_bottom: '/assets/images/imgbanner3.png',
+    home_newsletter_background: '/assets/images/banner-newsletter.jpg',
+    home_app_image: '/assets/images/banner-onlineapp.png',
+  };
 
 
   // Preloader control
@@ -85,6 +93,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     this.loadProducts();
     this.loadCategories();
     this.loadPublicStats();
+    this.loadLayoutImages();
   }
 
   ngAfterViewInit(): void {
@@ -195,6 +204,25 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         console.error('Failed to load public stats:', err);
       },
     });
+  }
+
+  private loadLayoutImages(): void {
+    this.apiService.getLayoutImages().subscribe({
+      next: (images: LayoutImage[]) => {
+        this.layoutImages = images.reduce(
+          (acc, image) => ({ ...acc, [image.key]: image.image_url }),
+          { ...this.layoutImages }
+        );
+        this.cdRef.detectChanges();
+      },
+      error: (err) => {
+        console.error('Failed to load layout images:', err);
+      },
+    });
+  }
+
+  layoutImage(key: string): string {
+    return this.layoutImages[key] || '';
   }
 
   // mohamed: keep the stats display readable (e.g., 14000 -> 14k+).
