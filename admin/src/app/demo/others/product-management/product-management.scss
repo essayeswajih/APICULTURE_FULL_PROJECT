@@ -28,3 +28,94 @@ border-radius:6px;
 background:#fafafa;
 transition:0.2s;
 }
+
+.promo-countdown-card {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.promo-countdown-admin {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.85fr) minmax(320px, 1.15fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.promo-countdown-preview {
+  min-height: 260px;
+  padding: 24px;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at top right, rgba(250, 173, 20, 0.32), transparent 35%),
+    linear-gradient(135deg, #141a17 0%, #263126 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h3 {
+    color: #fff;
+    font-size: 30px;
+    line-height: 1.1;
+    margin: 12px 0;
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.76);
+    margin: 0 0 20px;
+  }
+}
+
+.campaign-label {
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(250, 173, 20, 0.16);
+  color: #ffd666;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.deadline-pill {
+  width: fit-content;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.74);
+  font-weight: 700;
+
+  &.active {
+    background: #237804;
+    color: #fff;
+  }
+}
+
+.promo-countdown-form {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+
+  label {
+    color: #3f4650;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+}
+
+.switch-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0;
+}
+
+@media (max-width: 900px) {
+  .promo-countdown-admin {
+    grid-template-columns: 1fr;
+  }
+}

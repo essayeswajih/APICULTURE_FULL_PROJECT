@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Api, Product, Category, SubCategory } from '../../../services/api';
+import { Api, Product, Category, SubCategory, PromoCountdown } from '../../../services/api';
 import gsap from 'gsap';
 
 /* NG ZORRO */
@@ -55,6 +55,16 @@ export class ProductManagement implements OnInit {
   editProductId: number | null = null;
 
   searchTerm: string = '';
+  promoCountdown: PromoCountdown | null = null;
+  promoCountdownForm = {
+    title: 'Promo products end soon',
+    subtitle: 'Limited-time prices on selected beekeeping products.',
+    ends_at: '',
+    active: false
+  };
+  promoCountdownMessage = '';
+  promoCountdownError = '';
+  isSavingPromoCountdown = false;
 
   // Pagination controls
   pageIndex = 1;
@@ -91,10 +101,84 @@ export class ProductManagement implements OnInit {
 
   ngOnInit() {
     this.loadProducts();
+    this.loadPromoCountdown();
     this.apiService.getCategories()
       .subscribe(categories => this.categories = categories);
       this.apiService.getSubCategories()
       .subscribe(subcategories => this.subcategories = subcategories);
+  }
+
+  loadPromoCountdown() {
+    this.apiService.getPromoCountdown().subscribe({
+      next: (setting) => {
+        this.promoCountdown = setting;
+        this.promoCountdownForm = {
+          title: setting.title || 'Promo products end soon',
+          subtitle: setting.subtitle || 'Limited-time prices on selected beekeeping products.',
+          ends_at: this.toDatetimeLocal(setting.ends_at),
+          active: setting.active
+        };
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Promo countdown load error:', err);
+        this.promoCountdownError = err.message || 'Could not load promo countdown settings.';
+      }
+    });
+  }
+
+  savePromoCountdown() {
+    if (!this.promoCountdownForm.title.trim()) {
+      this.promoCountdownError = 'Please add a campaign title.';
+      this.promoCountdownMessage = '';
+      return;
+    }
+
+    this.isSavingPromoCountdown = true;
+    this.promoCountdownMessage = '';
+    this.promoCountdownError = '';
+
+    const payload = {
+      title: this.promoCountdownForm.title.trim(),
+      subtitle: this.promoCountdownForm.subtitle?.trim() || null,
+      ends_at: this.fromDatetimeLocal(this.promoCountdownForm.ends_at),
+      active: this.promoCountdownForm.active
+    };
+
+    this.apiService.updatePromoCountdown(payload).subscribe({
+      next: (setting) => {
+        this.promoCountdown = setting;
+        this.promoCountdownForm.ends_at = this.toDatetimeLocal(setting.ends_at);
+        this.isSavingPromoCountdown = false;
+        this.promoCountdownMessage = 'Promo countdown updated.';
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Promo countdown save error:', err);
+        this.isSavingPromoCountdown = false;
+        this.promoCountdownError = err.message || 'Could not save promo countdown settings.';
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
+  private toDatetimeLocal(value?: string | null): string {
+    if (!value) {
+      return '';
+    }
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) {
+      return '';
+    }
+    const offsetDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    return offsetDate.toISOString().slice(0, 16);
+  }
+
+  private fromDatetimeLocal(value: string): string | null {
+    if (!value) {
+      return null;
+    }
+    return new Date(value).toISOString();
   }
 
   loadProducts() {

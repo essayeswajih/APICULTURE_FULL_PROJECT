@@ -153,3 +153,13 @@ class LayoutImage(Base):
     kind = Column(String, nullable=False, default="background")
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
+class PromoCountdown(Base):
+    __tablename__ = "promo_countdown"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, nullable=False, default="Promo products end soon")
+    subtitle = Column(Text, nullable=True)
+    ends_at = Column(DateTime, nullable=True)
+    active = Column(Boolean, default=False, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)

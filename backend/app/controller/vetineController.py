@@ -5,9 +5,9 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from controller.Oauth2C import get_current_user
 from db.database import get_db
-from models.vetrineModels import LayoutImage, Product, Order, OrderItem, CartItem, Category
+from models.vetrineModels import LayoutImage, Product, PromoCountdown, Order, OrderItem, CartItem, Category
 from models.Oauth2Models import User
-from schemas.vetrineSchemas import CategoryBase, LayoutImageResponse, LayoutImageUpdate, OrederStatus, ProductBase, OrderCreate, CartItemBase, OrderItemBase, OrderBase, PublicStats, StoryBase, SubCategoryBase, VipCardApprove, VipCardBase, VipCardValidation, CartPricingRequest, CartPricingResponse
+from schemas.vetrineSchemas import CategoryBase, LayoutImageResponse, LayoutImageUpdate, OrederStatus, ProductBase, PromoCountdownResponse, PromoCountdownUpdate, OrderCreate, CartItemBase, OrderItemBase, OrderBase, PublicStats, StoryBase, SubCategoryBase, VipCardApprove, VipCardBase, VipCardValidation, CartPricingRequest, CartPricingResponse
 from crud.vetrineCrud import (
     create_category, create_story, create_subcategory, delete_category, delete_order, delete_product, delete_story, delete_subcategory, get_This_year_sales_crud, get_categories, get_category_by_id,
     get_products, get_product_by_id, create_product, get_orders, create_order,
@@ -66,6 +66,19 @@ def ensure_layout_images(db: Session):
             db.add(LayoutImage(**item))
     db.commit()
 
+def ensure_promo_countdown(db: Session):
+    setting = db.query(PromoCountdown).order_by(PromoCountdown.id).first()
+    if not setting:
+        setting = PromoCountdown(
+            title="Promo products end soon",
+            subtitle="Limited-time prices on selected beekeeping products.",
+            active=False,
+        )
+        db.add(setting)
+        db.commit()
+        db.refresh(setting)
+    return setting
+
 # Role Check - Admin Access
 def check_admin(current_user: User = Depends(get_current_user)):
     #if current_user.role != 'admin':
@@ -88,6 +101,21 @@ def update_layout_image(image_key: str, payload: LayoutImageUpdate, db: Session 
     db.commit()
     db.refresh(layout_image)
     return layout_image
+
+@router.get("/promo-countdown", response_model=PromoCountdownResponse)
+def get_promo_countdown(db: Session = Depends(get_db)):
+    return ensure_promo_countdown(db)
+
+@router.put("/promo-countdown", response_model=PromoCountdownResponse, dependencies=[Depends(check_admin)])
+def update_promo_countdown(payload: PromoCountdownUpdate, db: Session = Depends(get_db)):
+    setting = ensure_promo_countdown(db)
+    setting.title = payload.title.strip() or "Promo products end soon"
+    setting.subtitle = payload.subtitle
+    setting.ends_at = payload.ends_at
+    setting.active = payload.active
+    db.commit()
+    db.refresh(setting)
+    return setting
 
 # Route to get all products with filtering options
 @router.get("/products", response_model=List[ProductBase])

@@ -206,6 +206,23 @@ class LayoutImageResponse(LayoutImageBase):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
+class PromoCountdownBase(BaseModel):
+    title: str = "Promo products end soon"
+    subtitle: Optional[str] = None
+    ends_at: Optional[datetime] = None
+    active: bool = False
+
+    class Config:
+        from_attributes = True
+
+class PromoCountdownUpdate(PromoCountdownBase):
+    pass
+
+class PromoCountdownResponse(PromoCountdownBase):
+    id: int
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
 class VipCardBase(BaseModel):
     id: Optional[int] = None
     customer_key: str

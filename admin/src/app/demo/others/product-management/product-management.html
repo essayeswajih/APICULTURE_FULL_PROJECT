@@ -29,6 +29,47 @@
   </nz-card>
 </div>
 
+<nz-card class="promo-countdown-card mb-4">
+  <div class="promo-countdown-admin">
+    <div class="promo-countdown-preview">
+      <span class="campaign-label">Promo campaign</span>
+      <h3>{{ promoCountdownForm.title || 'Promo products end soon' }}</h3>
+      <p>{{ promoCountdownForm.subtitle || 'Limited-time prices on selected beekeeping products.' }}</p>
+      <div class="deadline-pill" [class.active]="promoCountdownForm.active">
+        {{ promoCountdownForm.active ? 'Active countdown' : 'Hidden on home page' }}
+      </div>
+    </div>
+
+    <div class="promo-countdown-form">
+      <label>Campaign title</label>
+      <input nz-input [(ngModel)]="promoCountdownForm.title" placeholder="Promo products end soon" />
+
+      <label>Subtitle</label>
+      <textarea
+        nz-input
+        rows="2"
+        [(ngModel)]="promoCountdownForm.subtitle"
+        placeholder="Limited-time prices on selected beekeeping products."
+      ></textarea>
+
+      <label>Countdown deadline</label>
+      <input nz-input type="datetime-local" [(ngModel)]="promoCountdownForm.ends_at" />
+
+      <label class="switch-line">
+        <nz-switch [(ngModel)]="promoCountdownForm.active"></nz-switch>
+        <span>Show countdown on home page</span>
+      </label>
+
+      <div *ngIf="promoCountdownMessage" class="alert alert-success py-2 mb-2">{{ promoCountdownMessage }}</div>
+      <div *ngIf="promoCountdownError" class="alert alert-danger py-2 mb-2">{{ promoCountdownError }}</div>
+
+      <button nz-button nzType="primary" (click)="savePromoCountdown()" [disabled]="isSavingPromoCountdown">
+        {{ isSavingPromoCountdown ? 'Saving...' : 'Save countdown' }}
+      </button>
+    </div>
+  </div>
+</nz-card>
+
 <!-- Products Table -->
 <nz-card nzTitle="Products List">
 <!-- Replace your current <nz-table> with this -->

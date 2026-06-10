@@ -9,7 +9,7 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { Api, Category, LayoutImage, Product } from '../../services/api';
+import { Api, Category, LayoutImage, Product, PromoCountdown } from '../../services/api';
 import { HttpClientModule } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
 import { CartItem } from '../boutique/boutique';
@@ -65,10 +65,19 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     home_newsletter_background: '/assets/images/banner-newsletter.jpg',
     home_app_image: '/assets/images/banner-onlineapp.png',
   };
+  promoCountdown: PromoCountdown | null = null;
+  promoTimeLeft = {
+    days: '00',
+    hours: '00',
+    minutes: '00',
+    seconds: '00',
+    expired: true,
+  };
 
 
   // Preloader control
   private preloaderTimeout?: any;
+  private promoCountdownInterval?: any;
   private productsLoaded = false;
   private categoriesLoaded = false;
 
@@ -94,6 +103,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     this.loadCategories();
     this.loadPublicStats();
     this.loadLayoutImages();
+    this.loadPromoCountdown();
   }
 
   ngAfterViewInit(): void {
@@ -103,6 +113,9 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.preloaderTimeout) {
       clearTimeout(this.preloaderTimeout);
+    }
+    if (this.promoCountdownInterval) {
+      clearInterval(this.promoCountdownInterval);
     }
   }
 
@@ -219,6 +232,82 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         console.error('Failed to load layout images:', err);
       },
     });
+  }
+
+  private loadPromoCountdown(): void {
+    this.apiService.getPromoCountdown().subscribe({
+      next: (countdown) => {
+        this.promoCountdown = countdown;
+        this.startPromoCountdown();
+        this.cdRef.detectChanges();
+      },
+      error: (err) => {
+        console.error('Failed to load promo countdown:', err);
+      },
+    });
+  }
+
+  private startPromoCountdown(): void {
+    if (this.promoCountdownInterval) {
+      clearInterval(this.promoCountdownInterval);
+    }
+
+    this.updatePromoCountdown();
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.promoCountdownInterval = setInterval(() => {
+        this.updatePromoCountdown();
+      }, 1000);
+    }
+  }
+
+  private updatePromoCountdown(): void {
+    const endsAt = this.promoCountdown?.ends_at;
+    const endTime = endsAt ? new Date(endsAt).getTime() : 0;
+    const remaining = endTime - Date.now();
+
+    if (!this.promoCountdown?.active || !endTime || remaining <= 0) {
+      this.promoTimeLeft = {
+        days: '00',
+        hours: '00',
+        minutes: '00',
+        seconds: '00',
+        expired: true,
+      };
+      this.cdRef.detectChanges();
+      return;
+    }
+
+    const totalSeconds = Math.floor(remaining / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    this.promoTimeLeft = {
+      days: this.padTime(days),
+      hours: this.padTime(hours),
+      minutes: this.padTime(minutes),
+      seconds: this.padTime(seconds),
+      expired: false,
+    };
+    this.cdRef.detectChanges();
+  }
+
+  private padTime(value: number): string {
+    return value.toString().padStart(2, '0');
+  }
+
+  get promoProducts(): Product[] {
+    const productsById = new Map<number, Product>();
+    [...this.featuredProducts, ...this.popularProducts, ...this.latestProducts]
+      .filter((product) => product.promo)
+      .forEach((product) => productsById.set(product.id, product));
+    return Array.from(productsById.values());
+  }
+
+  get showPromoCountdown(): boolean {
+    return Boolean(this.promoCountdown?.active && !this.promoTimeLeft.expired && this.promoProducts.length);
   }
 
   layoutImage(key: string): string {

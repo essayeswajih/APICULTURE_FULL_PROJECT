@@ -124,6 +124,16 @@ export interface LayoutImage {
   updated_at?: string;
 }
 
+export interface PromoCountdown {
+  id: number;
+  title: string;
+  subtitle?: string | null;
+  ends_at?: string | null;
+  active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
 
 @Injectable({
   providedIn: 'root',
@@ -397,6 +407,12 @@ export class Api {
   getLayoutImages(): Observable<LayoutImage[]> {
     return this.http
       .get<LayoutImage[]>(`${this.apiUrl}/layout-images`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getPromoCountdown(): Observable<PromoCountdown> {
+    return this.http
+      .get<PromoCountdown>(`${this.apiUrl}/promo-countdown`)
       .pipe(catchError(this.handleError));
   }
 

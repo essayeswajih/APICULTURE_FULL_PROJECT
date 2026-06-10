@@ -202,6 +202,50 @@
       </div>
     </section>
 
+    <section *ngIf="showPromoCountdown" class="promo-countdown-section">
+      <div class="container-lg">
+        <div class="promo-countdown-panel">
+          <div class="promo-copy">
+            <span class="promo-eyebrow">Limited promo</span>
+            <h2>{{ promoCountdown?.title }}</h2>
+            <p>{{ promoCountdown?.subtitle || 'Selected promo products are available for a limited time only.' }}</p>
+            <a routerLink="/boutique" class="btn btn-dark rounded-pill px-4 py-3">Shop promo products</a>
+          </div>
+
+          <div class="promo-timer" aria-label="Promotion countdown">
+            <div class="time-box">
+              <strong>{{ promoTimeLeft.days }}</strong>
+              <span>Days</span>
+            </div>
+            <div class="time-box">
+              <strong>{{ promoTimeLeft.hours }}</strong>
+              <span>Hours</span>
+            </div>
+            <div class="time-box">
+              <strong>{{ promoTimeLeft.minutes }}</strong>
+              <span>Minutes</span>
+            </div>
+            <div class="time-box urgent">
+              <strong>{{ promoTimeLeft.seconds }}</strong>
+              <span>Seconds</span>
+            </div>
+          </div>
+
+          <div class="promo-products-strip" aria-label="Promo products">
+            <button
+              type="button"
+              class="promo-product-chip"
+              *ngFor="let product of promoProducts | slice:0:4"
+              (click)="goToProductBySlug(product.slug ?? '')"
+            >
+              <img [src]="product.image_url" [alt]="product.name" />
+              <span>{{ product.name }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <app-featured-products [products]="featuredProducts"></app-featured-products>
 
     <section id="reduction-newsletter">
