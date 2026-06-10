@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, Inject, OnInit, OnDestroy, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { gsap } from 'gsap';
 import { isPlatformBrowser } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
@@ -22,7 +22,7 @@ export interface CartItem {
   selector: 'app-boutique',
   templateUrl: './boutique.html',
   styleUrls: ['./boutique.scss'],
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -35,6 +35,7 @@ export class Boutique implements OnInit, OnDestroy {
   isLoading: boolean = false;
   error: string | null = null;
   searchQuery: string = '';
+  isPromoPage = false;
   
   private destroy$ = new Subject<void>();
 
@@ -58,11 +59,13 @@ export class Boutique implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.updatePromoPageState();
     this.loadCategories();
     this.route.queryParams.pipe(
       takeUntil(this.destroy$)
     ).subscribe({
       next: params => {
+        this.updatePromoPageState();
         this.isLoading = true;
         this.error = null;
         const categoryFromUrl = params['category']?.toLowerCase() || 'Tous';
@@ -217,17 +220,23 @@ export class Boutique implements OnInit, OnDestroy {
   }
 
   private loadProducts(): void {
+    this.updatePromoPageState();
     this.isLoading = true;
     this.apiService.getProducts(this.selectedCategory.name, this.sortBy, this.searchQuery).pipe(
       takeUntil(this.destroy$)
     ).subscribe({
       next: (products) => {
+        let filteredProducts = this.isPromoPage
+          ? products.filter(product => product.promo)
+          : products;
+
         // Filter by subcategory if one is selected
         if (this.selectedSubcategory) {
-          this.products = products.filter(p => p.subcategory_id === this.selectedSubcategory.id);
+          filteredProducts = filteredProducts.filter(p => p.subcategory_id === this.selectedSubcategory.id);
         } else {
-          this.products = products;
+          this.products = filteredProducts;
         }
+        this.products = filteredProducts;
         this.isLoading = false;
         if (isPlatformBrowser(this.platformId)) {
           // this.animateProducts();
@@ -265,7 +274,9 @@ export class Boutique implements OnInit, OnDestroy {
   }
 
   private updateRoute(): void {
-    this.router.navigate([], {
+    const routeCommands = this.isPromoPage ? ['/boutique/promo'] : [];
+
+    this.router.navigate(routeCommands, {
       relativeTo: this.route,
       queryParams: { 
         category: this.selectedCategory.name !== 'Tous' ? this.selectedCategory.name : null,
@@ -274,6 +285,10 @@ export class Boutique implements OnInit, OnDestroy {
       },
       queryParamsHandling: 'merge'
     });
+  }
+
+  private updatePromoPageState(): void {
+    this.isPromoPage = this.router.url.split('?')[0].replace(/\/$/, '') === '/boutique/promo';
   }
 
   private animateProducts(): void {

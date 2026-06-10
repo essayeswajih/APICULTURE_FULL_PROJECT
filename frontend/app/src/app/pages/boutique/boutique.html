@@ -3,8 +3,12 @@
   <section class="hero py-6 text-center bg-light-amber position-relative"  style="background-image: url('/assets/images/pexels-pixabay-301378.jpg'); background-size: cover; background-position:bottom;">
     <div class="container-md">
       <div class="hero-overlay"></div>
-      <h1 class="display-3 text-amber mb-4 contact-section">Notre Boutique Apicole</h1>
-      <p class="lead text-success mb-0 contact-section">Découvrez notre sélection de matériel apicole et produits de la ruche.</p>
+      <h1 class="display-3 text-amber mb-4 contact-section">
+        {{ isPromoPage ? 'Produits en promotion' : 'Notre Boutique Apicole' }}
+      </h1>
+      <p class="lead text-success mb-0 contact-section">
+        {{ isPromoPage ? 'Profitez des offres en cours avant la fin du compte a rebours.' : 'Découvrez notre sélection de matériel apicole et produits de la ruche.' }}
+      </p>
     </div>
   </section>
   <section class="container mt-4">
@@ -74,6 +78,14 @@
     }
 
     <!-- Product Grid -->
+    <div *ngIf="isPromoPage" class="promo-list-banner mb-4">
+      <div>
+        <span>Offres limitees</span>
+        <strong>{{ products.length }} produit{{ products.length > 1 ? 's' : '' }} en promotion</strong>
+      </div>
+      <a routerLink="/boutique" class="btn btn-outline-warning">Voir toute la boutique</a>
+    </div>
+
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
       @for (product of products; track trackByProductId($index, product)) {
         <div class="col">
@@ -128,6 +140,12 @@
           </div>
         </div>
       }
+    </div>
+
+    <div *ngIf="!isLoading && products.length === 0" class="empty-products text-center py-5">
+      <h3>{{ isPromoPage ? 'Aucun produit en promotion pour le moment.' : 'Aucun produit trouve.' }}</h3>
+      <p>Revenez bientot ou explorez toute la boutique.</p>
+      <a routerLink="/boutique" class="btn btn-warning text-white">Voir la boutique</a>
     </div>
   </section>
 </main>

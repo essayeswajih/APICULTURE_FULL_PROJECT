@@ -13,6 +13,7 @@ import { SingleProduct } from "./pages/single-product/single-product";
 
 export const routes: Routes = [
   { path: '', component: Home },
+  { path: 'boutique/promo', component: Boutique },
   { path: 'boutique', component: Boutique },
 
   { path: 'a-propos', component: About },
