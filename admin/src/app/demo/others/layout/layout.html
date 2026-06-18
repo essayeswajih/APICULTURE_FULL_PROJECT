@@ -102,26 +102,23 @@
       </div>
     </section>
 
-    <section class="preview-app">
+    <section
+      class="preview-app editable-image"
+      [style.background-color]="'#fbbf24'"
+      [style.background-image]="getImage('home_app_download_background') ? 'url(' + getImage('home_app_download_background') + ')' : 'none'"
+    >
+      <button
+        type="button"
+        class="edit-image-btn"
+        title="Change image"
+        (click)="openEditModal(layoutImages[6])"
+        [disabled]="!layoutImages[6]"
+      >
+        <i class="ti ti-pencil"></i>
+      </button>
       <div>
         <h3>Download App</h3>
-        <p>Image block</p>
-      </div>
-      <div
-        class="app-image editable-image"
-        [style.background-color]="'#fbbf24'"
-        [style.background-image]="getImage('home_app_download_background') ? 'url(' + getImage('home_app_download_background') + ')' : 'none'"
-      >
-        <img [src]="getImage('home_app_image')" alt="Mobile app" />
-        <button
-          type="button"
-          class="edit-image-btn"
-          title="Change image"
-          (click)="openEditModal(layoutImages[6])"
-          [disabled]="!layoutImages[6]"
-        >
-          <i class="ti ti-pencil"></i>
-        </button>
+        <p>Background image</p>
       </div>
     </section>
 

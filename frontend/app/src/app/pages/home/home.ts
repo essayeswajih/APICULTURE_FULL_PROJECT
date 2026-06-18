@@ -63,7 +63,6 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     home_promo_banner_top: '/assets/images/imgbanner2.png',
     home_promo_banner_bottom: '/assets/images/imgbanner3.png',
     home_newsletter_background: '/assets/images/banner-newsletter.jpg',
-    home_app_image: '/assets/images/banner-onlineapp.png',
     home_app_download_background: '',
   };
   layoutTexts: Record<string, string> = {

@@ -209,6 +209,41 @@
   }
 }
 
+.app-download-panel {
+  width: min(100%, 1040px);
+  min-height: 280px;
+  margin: 0 auto;
+  padding: 2.5rem 2.5rem 2.25rem;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 18px 44px rgba(31, 37, 32, 0.12);
+  display: flex;
+  align-items: center;
+
+  .container {
+    width: 100%;
+  }
+
+  h2 {
+    margin: 0.75rem 0 0.5rem;
+    color: #1f2520;
+    font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+    line-height: 1.1;
+    font-weight: 800;
+  }
+
+  p {
+    max-width: 520px;
+    color: #3f463d;
+    font-size: 1.02rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .d-flex {
+    margin-bottom: 0;
+  }
+}
+
 body.preloader-site {
   overflow: hidden !important;
 }
@@ -248,6 +283,11 @@ body.preloader-site {
   .promo-products-strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .app-download-panel {
+    padding: 2rem 1.5rem;
+    min-height: 240px;
+  }
 }
 
 @media screen and (max-width: 575px) {
@@ -265,5 +305,11 @@ body.preloader-site {
 
   .promo-products-strip {
     grid-template-columns: 1fr;
+  }
+
+  .app-download-panel {
+    border-radius: 24px;
+    padding: 1.5rem 1rem;
+    min-height: 220px;
   }
 }
