@@ -209,38 +209,6 @@
   }
 }
 
-.app-download-panel {
-  width: 100%;
-  min-height: 340px;
-  margin: 0;
-  padding: 3rem 3.25rem;
-  border-radius: 40px;
-  overflow: hidden;
-  box-shadow: 0 18px 44px rgba(31, 37, 32, 0.12);
-  display: flex;
-  align-items: center;
-  border: 1px solid rgba(31, 37, 32, 0.08);
-
-  .container {
-    width: 100%;
-  }
-
-  h2 {
-    margin: 0;
-    color: #1f2520;
-    font-size: clamp(1.8rem, 2.6vw, 2.6rem);
-    line-height: 1.1;
-    font-weight: 800;
-  }
-
-  p {
-    max-width: 520px;
-    color: #3f463d;
-    font-size: 1.02rem;
-    margin: 0.75rem 0 0;
-  }
-}
-
 body.preloader-site {
   overflow: hidden !important;
 }
@@ -280,11 +248,6 @@ body.preloader-site {
   .promo-products-strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .app-download-panel {
-    padding: 2.25rem 1.5rem;
-    min-height: 280px;
-  }
 }
 
 @media screen and (max-width: 575px) {
@@ -302,11 +265,5 @@ body.preloader-site {
 
   .promo-products-strip {
     grid-template-columns: 1fr;
-  }
-
-  .app-download-panel {
-    border-radius: 28px;
-    padding: 1.75rem 1rem;
-    min-height: 240px;
   }
 }

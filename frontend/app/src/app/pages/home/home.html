@@ -434,21 +434,22 @@
         'background-position': 'center'
       }"
     >
-      <div
-        class="app-download-panel"
-        [ngStyle]="{
-          'background-color': '#ffc107',
-          'background-image': layoutImage('home_app_download_background') ? 'url(' + layoutImage('home_app_download_background') + ')' : 'none',
-          'background-repeat': 'no-repeat',
-          'background-size': 'cover',
-          'background-position': 'center'
-        }"
-      >
-        <div class="container-lg">
-          <div class="row justify-content-center align-items-center">
-            <div class="col-lg-6 col-md-7">
-              <h2 class="mt-4">{{ layoutText('home_app_download_title') }}</h2>
-              <p>{{ layoutText('home_app_download_subtitle') }}</p>
+      <div class="container-lg">
+        <div
+          class="bg-warning pt-5 rounded-5"
+          [ngStyle]="{
+            'background-image': layoutImage('home_app_download_background') ? 'url(' + layoutImage('home_app_download_background') + ')' : 'none',
+            'background-repeat': 'no-repeat',
+            'background-size': 'cover',
+            'background-position': 'center'
+          }"
+        >
+          <div class="container">
+            <div class="row justify-content-center align-items-center">
+              <div class="col-md-4">
+                <h2 class="mt-4">{{ layoutText('home_app_download_title') }}</h2>
+                <p>{{ layoutText('home_app_download_subtitle') }}</p>
+              </div>
             </div>
           </div>
         </div>
