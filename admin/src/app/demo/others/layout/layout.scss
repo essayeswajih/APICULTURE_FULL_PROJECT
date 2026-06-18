@@ -163,16 +163,17 @@
 }
 
 .preview-app {
-  width: min(100%, 1040px);
-  min-height: 280px;
+  width: min(100%, 1120px);
+  min-height: 340px;
   margin: 0 auto;
   display: flex;
   align-items: center;
-  padding: 2.5rem 2.5rem 2.25rem;
+  padding: 3rem 3.25rem;
   color: #1f2937;
   background: #fbbf24;
-  border-radius: 32px;
+  border-radius: 40px;
   box-shadow: 0 18px 44px rgba(31, 37, 32, 0.12);
+  border: 1px solid rgba(31, 37, 32, 0.08);
 
   h3,
   p {
@@ -347,15 +348,15 @@
   }
 
   .preview-app {
-    padding: 2rem 1.5rem;
-    min-height: 240px;
+    padding: 2.25rem 1.5rem;
+    min-height: 280px;
   }
 }
 
 @media (max-width: 575px) {
   .preview-app {
-    border-radius: 24px;
-    padding: 1.5rem 1rem;
-    min-height: 220px;
+    border-radius: 28px;
+    padding: 1.75rem 1rem;
+    min-height: 240px;
   }
 }
