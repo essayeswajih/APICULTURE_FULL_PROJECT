@@ -104,8 +104,6 @@
 
     <section
       class="preview-app editable-image"
-      [style.background-color]="'#fbbf24'"
-      [style.background-image]="getImage('home_app_download_background') ? 'url(' + getImage('home_app_download_background') + ')' : 'none'"
     >
       <button
         type="button"
@@ -116,7 +114,13 @@
       >
         <i class="ti ti-pencil"></i>
       </button>
-      <div class="bg-warning pt-5 rounded-5">
+      <div
+        class="bg-warning pt-5 rounded-5"
+        [style.background-image]="getImage('home_app_download_background') ? 'url(' + getImage('home_app_download_background') + ')' : 'none'"
+        [style.background-repeat]="'no-repeat'"
+        [style.background-size]="'cover'"
+        [style.background-position]="'center'"
+      >
         <div class="container">
           <div class="row justify-content-center align-items-center">
             <div class="col-md-4">
