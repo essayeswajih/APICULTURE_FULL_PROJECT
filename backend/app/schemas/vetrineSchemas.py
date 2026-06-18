@@ -206,6 +206,23 @@ class LayoutImageResponse(LayoutImageBase):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
+class LayoutTextBase(BaseModel):
+    key: str
+    label: str
+    text_value: str
+    kind: str = "text"
+
+    class Config:
+        from_attributes = True
+
+class LayoutTextUpdate(BaseModel):
+    text_value: str
+
+class LayoutTextResponse(LayoutTextBase):
+    id: int
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+
 class PromoCountdownBase(BaseModel):
     title: str = "Promo products end soon"
     subtitle: Optional[str] = None

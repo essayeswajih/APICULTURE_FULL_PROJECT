@@ -1,4 +1,4 @@
-
+﻿
 <div>
   <!-- Ramadan Topbar 
     <div class="ramadan-topbar">
@@ -167,9 +167,9 @@
               <div class="banner-ad d-flex align-items-center large bg-info block-1" [ngStyle]="{'background-image': 'url(' + layoutImage('home_promo_banner_large') + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover'}">
                 <div class="banner-content p-5">
                   <div class="content-wrapper text-light">
-                    <h3 class="banner-title text-light">Offre valable jusqu’à fin 2026</h3>
-                    <p>Réductions jusqu'à 20%</p>
-                    <a routerLink="/boutique" class="btn-link text-white">Shop Now</a>
+                    <h3 class="banner-title text-light">{{ layoutText('home_promo_banner_large_title') }}</h3>
+                    <p>{{ layoutText('home_promo_banner_large_subtitle') }}</p>
+                    <a routerLink="/boutique" class="btn-link text-white">{{ layoutText('home_promo_banner_large_cta') }}</a>
                   </div>
                 </div>
               </div>
@@ -177,9 +177,9 @@
               <div class="banner-ad bg-success-subtle block-2" [ngStyle]="{'background-image': 'url(' + layoutImage('home_promo_banner_top') + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover'}">
                 <div class="banner-content align-items-center p-5">
                   <div class="content-wrapper text-light">
-                    <h3 class="banner-title text-light">Offres combinées</h3>
-                    <p>Réductions jusqu'à 20%</p>
-                    <a routerLink="/boutique" class="btn-link text-white">Shop Now</a>
+                    <h3 class="banner-title text-light">{{ layoutText('home_promo_banner_top_title') }}</h3>
+                    <p>{{ layoutText('home_promo_banner_top_subtitle') }}</p>
+                    <a routerLink="/boutique" class="btn-link text-white">{{ layoutText('home_promo_banner_top_cta') }}</a>
                   </div>
                 </div>
               </div>
@@ -187,9 +187,9 @@
               <div class="banner-ad bg-danger block-3" [ngStyle]="{'background-image': 'url(' + layoutImage('home_promo_banner_bottom') + ')', 'background-repeat': 'no-repeat', 'background-size': 'cover'}">
                 <div class="banner-content align-items-center p-5">
                   <div class="content-wrapper text-light">
-                    <h3 class="banner-title text-light">Articles en solde</h3>
-                    <p>Réductions jusqu'à 40%</p>
-                    <a routerLink="/boutique" class="btn-link text-white">Shop Now</a>
+                    <h3 class="banner-title text-light">{{ layoutText('home_promo_banner_bottom_title') }}</h3>
+                    <p>{{ layoutText('home_promo_banner_bottom_subtitle') }}</p>
+                    <a routerLink="/boutique" class="btn-link text-white">{{ layoutText('home_promo_banner_bottom_cta') }}</a>
                   </div>
                 </div>
               </div>
@@ -246,7 +246,7 @@
       </div>
     </section>
 
-    <app-featured-products [products]="featuredProducts"></app-featured-products>
+    <app-featured-products [products]="featuredProducts" [promoTimeLeft]="promoTimeLeft"></app-featured-products>
 
     <section id="reduction-newsletter">
       <div class="container-lg">
@@ -256,9 +256,9 @@
             <div class="row justify-content-center">
               <div class="col-md-5 p-3">
                 <div class="section-header">
-                  <h2 class="section-title display-5 text-light">Bénéficiez de 10 % de réduction sur votre premier achat</h2>
+                  <h2 class="section-title display-5 text-light">{{ layoutText('home_newsletter_title') }}</h2>
                 </div>
-                <p>Inscrivez-vous et enregistrez-vous dès maintenant pour devenir membre.</p>
+                <p>{{ layoutText('home_newsletter_subtitle') }}</p>
               </div>
               <div class="col-md-5 p-3">
                 <form [formGroup]="subForm" (ngSubmit)="sub()">
@@ -308,8 +308,8 @@
         
       </div>
     </section>
-    <app-popular-products [products]="popularProducts"></app-popular-products>
-    <app-latest-products [products]="latestProducts"></app-latest-products>
+    <app-popular-products [products]="popularProducts" [promoTimeLeft]="promoTimeLeft"></app-popular-products>
+    <app-latest-products [products]="latestProducts" [promoTimeLeft]="promoTimeLeft"></app-latest-products>
 
 <section id="latest-blog" class="pb-4">
   <div class="container-lg">
@@ -424,15 +424,24 @@
 
   </div>
 </section>
-    <section class="pb-4 my-4">
+    <section
+      class="pb-4 my-4"
+      [ngStyle]="{
+        'background-color': '#ffc107',
+        'background-image': layoutImage('home_app_download_background') ? 'url(' + layoutImage('home_app_download_background') + ')' : 'none',
+        'background-repeat': 'no-repeat',
+        'background-size': 'cover',
+        'background-position': 'center'
+      }"
+    >
       <div class="container-lg">
 
-        <div class="bg-warning pt-5 rounded-5">
+        <div class="pt-5 rounded-5">
           <div class="container">
             <div class="row justify-content-center align-items-center">
               <div class="col-md-4">
-                <h2 class="mt-4">Download Apiculture Galai App</h2>
-                <p>Online Orders made easy, fast and reliable</p>
+                <h2 class="mt-4">{{ layoutText('home_app_download_title') }}</h2>
+                <p>{{ layoutText('home_app_download_subtitle') }}</p>
                 <div class="d-flex gap-2 flex-wrap mb-5">
                   <a href="#" title="App store"><img src="/assets/images/img-app-store.png" alt="app-store"></a>
                   <a href="#" title="Google Play"><img src="/assets/images/img-google-play.png" alt="google-play"></a>
@@ -557,3 +566,4 @@
     </div>
   </div>
 </section>
+

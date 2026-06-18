@@ -5,9 +5,9 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from controller.Oauth2C import get_current_user
 from db.database import get_db
-from models.vetrineModels import LayoutImage, Product, PromoCountdown, Order, OrderItem, CartItem, Category
+from models.vetrineModels import LayoutImage, LayoutText, Product, PromoCountdown, Order, OrderItem, CartItem, Category
 from models.Oauth2Models import User
-from schemas.vetrineSchemas import CategoryBase, LayoutImageResponse, LayoutImageUpdate, OrederStatus, ProductBase, PromoCountdownResponse, PromoCountdownUpdate, OrderCreate, CartItemBase, OrderItemBase, OrderBase, PublicStats, StoryBase, SubCategoryBase, VipCardApprove, VipCardBase, VipCardValidation, CartPricingRequest, CartPricingResponse
+from schemas.vetrineSchemas import CategoryBase, LayoutImageResponse, LayoutImageUpdate, LayoutTextResponse, LayoutTextUpdate, OrederStatus, ProductBase, PromoCountdownResponse, PromoCountdownUpdate, OrderCreate, CartItemBase, OrderItemBase, OrderBase, PublicStats, StoryBase, SubCategoryBase, VipCardApprove, VipCardBase, VipCardValidation, CartPricingRequest, CartPricingResponse
 from crud.vetrineCrud import (
     create_category, create_story, create_subcategory, delete_category, delete_order, delete_product, delete_story, delete_subcategory, get_This_year_sales_crud, get_categories, get_category_by_id,
     get_products, get_product_by_id, create_product, get_orders, create_order,
@@ -57,6 +57,93 @@ DEFAULT_LAYOUT_IMAGES = [
         "image_url": "/assets/images/banner-onlineapp.png",
         "kind": "image",
     },
+    {
+        "key": "home_app_download_background",
+        "label": "App download background",
+        "image_url": "",
+        "kind": "background",
+    },
+]
+
+DEFAULT_LAYOUT_TEXTS = [
+    {
+        "key": "home_promo_banner_large_title",
+        "label": "Large promo banner title",
+        "text_value": "Offre valable jusqu’à fin 2026",
+        "kind": "text",
+    },
+    {
+        "key": "home_promo_banner_large_subtitle",
+        "label": "Large promo banner subtitle",
+        "text_value": "Réductions jusqu'à 20%",
+        "kind": "text",
+    },
+    {
+        "key": "home_promo_banner_large_cta",
+        "label": "Large promo banner button",
+        "text_value": "Shop Now",
+        "kind": "text",
+    },
+    {
+        "key": "home_promo_banner_top_title",
+        "label": "Top promo banner title",
+        "text_value": "Offres combinées",
+        "kind": "text",
+    },
+    {
+        "key": "home_promo_banner_top_subtitle",
+        "label": "Top promo banner subtitle",
+        "text_value": "Réductions jusqu'à 20%",
+        "kind": "text",
+    },
+    {
+        "key": "home_promo_banner_top_cta",
+        "label": "Top promo banner button",
+        "text_value": "Shop Now",
+        "kind": "text",
+    },
+    {
+        "key": "home_promo_banner_bottom_title",
+        "label": "Bottom promo banner title",
+        "text_value": "Articles en solde",
+        "kind": "text",
+    },
+    {
+        "key": "home_promo_banner_bottom_subtitle",
+        "label": "Bottom promo banner subtitle",
+        "text_value": "Réductions jusqu'à 40%",
+        "kind": "text",
+    },
+    {
+        "key": "home_promo_banner_bottom_cta",
+        "label": "Bottom promo banner button",
+        "text_value": "Shop Now",
+        "kind": "text",
+    },
+    {
+        "key": "home_newsletter_title",
+        "label": "Newsletter title",
+        "text_value": "Bénéficiez de 10 % de réduction sur votre premier achat",
+        "kind": "text",
+    },
+    {
+        "key": "home_newsletter_subtitle",
+        "label": "Newsletter subtitle",
+        "text_value": "Inscrivez-vous et enregistrez-vous dès maintenant pour devenir membre.",
+        "kind": "text",
+    },
+    {
+        "key": "home_app_download_title",
+        "label": "App download title",
+        "text_value": "Download Apiculture Galai App",
+        "kind": "text",
+    },
+    {
+        "key": "home_app_download_subtitle",
+        "label": "App download subtitle",
+        "text_value": "Online Orders made easy, fast and reliable",
+        "kind": "text",
+    },
 ]
 
 def ensure_layout_images(db: Session):
@@ -64,6 +151,13 @@ def ensure_layout_images(db: Session):
         exists = db.query(LayoutImage).filter(LayoutImage.key == item["key"]).first()
         if not exists:
             db.add(LayoutImage(**item))
+    db.commit()
+
+def ensure_layout_texts(db: Session):
+    for item in DEFAULT_LAYOUT_TEXTS:
+        exists = db.query(LayoutText).filter(LayoutText.key == item["key"]).first()
+        if not exists:
+            db.add(LayoutText(**item))
     db.commit()
 
 def ensure_promo_countdown(db: Session):
@@ -101,6 +195,22 @@ def update_layout_image(image_key: str, payload: LayoutImageUpdate, db: Session 
     db.commit()
     db.refresh(layout_image)
     return layout_image
+
+@router.get("/layout-texts", response_model=List[LayoutTextResponse])
+def get_layout_texts(db: Session = Depends(get_db)):
+    ensure_layout_texts(db)
+    return db.query(LayoutText).order_by(LayoutText.id).all()
+
+@router.put("/layout-texts/{text_key}", response_model=LayoutTextResponse, dependencies=[Depends(check_admin)])
+def update_layout_text(text_key: str, payload: LayoutTextUpdate, db: Session = Depends(get_db)):
+    ensure_layout_texts(db)
+    layout_text = db.query(LayoutText).filter(LayoutText.key == text_key).first()
+    if not layout_text:
+        raise HTTPException(status_code=404, detail="Layout text not found")
+    layout_text.text_value = payload.text_value.strip()
+    db.commit()
+    db.refresh(layout_text)
+    return layout_text
 
 @router.get("/promo-countdown", response_model=PromoCountdownResponse)
 def get_promo_countdown(db: Session = Depends(get_db)):

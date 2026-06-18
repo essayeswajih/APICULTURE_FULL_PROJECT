@@ -69,6 +69,15 @@
               </div>
             }
 
+            @if (hasActivePromoCountdown(p)) {
+              <div class="promo-countdown-chip promo-countdown-chip--compact" aria-label="Promotion countdown">
+                <span class="promo-countdown-chip__label">Se termine dans</span>
+                <span class="promo-countdown-chip__time">
+                  {{ promoTimeLeft?.days }}d {{ promoTimeLeft?.hours }}h {{ promoTimeLeft?.minutes }}m {{ promoTimeLeft?.seconds }}s
+                </span>
+              </div>
+            }
+
             <div class="button-area p-3 pt-0">
               <div class="row g-1 mt-0 mb-3">
                 <div class="col-12">

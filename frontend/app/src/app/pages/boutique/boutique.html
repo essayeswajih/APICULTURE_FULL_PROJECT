@@ -118,6 +118,14 @@
               <span *ngIf="product.num_ratings">({{product.num_ratings}})</span>
             </div>
               </h5>
+            @if (hasActivePromoCountdown(product)) {
+              <div class="promo-countdown-chip promo-countdown-chip--compact" aria-label="Promotion countdown">
+                <span class="promo-countdown-chip__label">Se termine dans</span>
+                <span class="promo-countdown-chip__time">
+                  {{ promoTimeLeft.days }}d {{ promoTimeLeft.hours }}h {{ promoTimeLeft.minutes }}m {{ promoTimeLeft.seconds }}s
+                </span>
+              </div>
+            }
                      @if(product.discounted_price && product.discounted_price < product.price) {
                         <span class="d-block" style="margin-bottom: 5px;">     
                           <p class="card-text text-danger" style="display: inline-block !important; margin-right:5px;">{{ product.discounted_price }} DT</p>    

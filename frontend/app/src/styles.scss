@@ -608,3 +608,34 @@ a.btn-link.text-light:after {
 .text-dark {
   white-space: pre-line;
 }
+
+.promo-countdown-chip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(249, 95, 9, 0.12), rgba(255, 193, 7, 0.18));
+  border: 1px solid rgba(249, 95, 9, 0.16);
+  color: #8a3a00;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.promo-countdown-chip--compact {
+  margin-bottom: 0.85rem;
+}
+
+.promo-countdown-chip__label {
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.promo-countdown-chip__time {
+  color: #222;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}

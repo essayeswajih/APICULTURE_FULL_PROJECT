@@ -9,7 +9,7 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { Api, Category, LayoutImage, Product, PromoCountdown } from '../../services/api';
+import { Api, Category, LayoutImage, LayoutText, Product, PromoCountdown, PromoTimeLeft } from '../../services/api';
 import { HttpClientModule } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
 import { CartItem } from '../boutique/boutique';
@@ -64,9 +64,25 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     home_promo_banner_bottom: '/assets/images/imgbanner3.png',
     home_newsletter_background: '/assets/images/banner-newsletter.jpg',
     home_app_image: '/assets/images/banner-onlineapp.png',
+    home_app_download_background: '',
+  };
+  layoutTexts: Record<string, string> = {
+    home_promo_banner_large_title: 'Offre valable jusqu’à fin 2026',
+    home_promo_banner_large_subtitle: "Réductions jusqu'à 20%",
+    home_promo_banner_large_cta: 'Shop Now',
+    home_promo_banner_top_title: 'Offres combinées',
+    home_promo_banner_top_subtitle: "Réductions jusqu'à 20%",
+    home_promo_banner_top_cta: 'Shop Now',
+    home_promo_banner_bottom_title: 'Articles en solde',
+    home_promo_banner_bottom_subtitle: "Réductions jusqu'à 40%",
+    home_promo_banner_bottom_cta: 'Shop Now',
+    home_newsletter_title: 'Bénéficiez de 10 % de réduction sur votre premier achat',
+    home_newsletter_subtitle: 'Inscrivez-vous et enregistrez-vous dès maintenant pour devenir membre.',
+    home_app_download_title: 'Download Apiculture Galai App',
+    home_app_download_subtitle: 'Online Orders made easy, fast and reliable',
   };
   promoCountdown: PromoCountdown | null = null;
-  promoTimeLeft = {
+  promoTimeLeft: PromoTimeLeft = {
     days: '00',
     hours: '00',
     minutes: '00',
@@ -103,6 +119,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     this.loadCategories();
     this.loadPublicStats();
     this.loadLayoutImages();
+    this.loadLayoutTexts();
     this.loadPromoCountdown();
   }
 
@@ -234,6 +251,21 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  private loadLayoutTexts(): void {
+    this.apiService.getLayoutTexts().subscribe({
+      next: (texts: LayoutText[]) => {
+        this.layoutTexts = texts.reduce(
+          (acc, text) => ({ ...acc, [text.key]: text.text_value }),
+          { ...this.layoutTexts }
+        );
+        this.cdRef.detectChanges();
+      },
+      error: (err) => {
+        console.error('Failed to load layout texts:', err);
+      },
+    });
+  }
+
   private loadPromoCountdown(): void {
     this.apiService.getPromoCountdown().subscribe({
       next: (countdown) => {
@@ -312,6 +344,10 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
 
   layoutImage(key: string): string {
     return this.layoutImages[key] || '';
+  }
+
+  layoutText(key: string): string {
+    return this.layoutTexts[key] || '';
   }
 
   // mohamed: keep the stats display readable (e.g., 14000 -> 14k+).

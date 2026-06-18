@@ -124,6 +124,16 @@ export interface LayoutImage {
   updated_at?: string;
 }
 
+export interface LayoutText {
+  id: number;
+  key: string;
+  label: string;
+  text_value: string;
+  kind: 'text' | string;
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface PromoCountdown {
   id: number;
   title: string;
@@ -132,6 +142,14 @@ export interface PromoCountdown {
   active: boolean;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface PromoTimeLeft {
+  days: string;
+  hours: string;
+  minutes: string;
+  seconds: string;
+  expired: boolean;
 }
 
 
@@ -407,6 +425,12 @@ export class Api {
   getLayoutImages(): Observable<LayoutImage[]> {
     return this.http
       .get<LayoutImage[]>(`${this.apiUrl}/layout-images`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getLayoutTexts(): Observable<LayoutText[]> {
+    return this.http
+      .get<LayoutText[]>(`${this.apiUrl}/layout-texts`)
       .pipe(catchError(this.handleError));
   }
 

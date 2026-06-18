@@ -107,46 +107,91 @@
         <h3>Download App</h3>
         <p>Image block</p>
       </div>
-      <div class="app-image editable-image">
+      <div
+        class="app-image editable-image"
+        [style.background-color]="'#fbbf24'"
+        [style.background-image]="getImage('home_app_download_background') ? 'url(' + getImage('home_app_download_background') + ')' : 'none'"
+      >
         <img [src]="getImage('home_app_image')" alt="Mobile app" />
         <button
           type="button"
           class="edit-image-btn"
           title="Change image"
-          (click)="openEditModal(layoutImages[5])"
-          [disabled]="!layoutImages[5]"
+          (click)="openEditModal(layoutImages[6])"
+          [disabled]="!layoutImages[6]"
         >
           <i class="ti ti-pencil"></i>
         </button>
       </div>
     </section>
+
+    <section class="preview-texts">
+      <div class="section-head">
+        <h3>Text content</h3>
+        <p>Edit the homepage copy used in promo, newsletter, and app sections.</p>
+      </div>
+
+      <div class="text-grid">
+        <article class="text-card editable-image" *ngFor="let text of layoutTexts">
+          <button
+            type="button"
+            class="edit-image-btn"
+            title="Change text"
+            (click)="openTextEditModal(text)"
+          >
+            <i class="ti ti-pencil"></i>
+          </button>
+          <span class="text-label">{{ text.label }}</span>
+          <p class="text-value">{{ text.text_value }}</p>
+        </article>
+      </div>
+    </section>
   </div>
 
-  <div class="modal-backdrop-custom" *ngIf="selectedImage" (click)="closeModal()"></div>
-  <div class="modal-shell" *ngIf="selectedImage" role="dialog" aria-modal="true" aria-labelledby="layoutImageModalTitle">
+  <div class="modal-backdrop-custom" *ngIf="selectedImage || selectedText" (click)="closeModal()"></div>
+  <div class="modal-shell" *ngIf="selectedImage || selectedText" role="dialog" aria-modal="true" aria-labelledby="layoutImageModalTitle">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 id="layoutImageModalTitle">Change {{ selectedImage.label }}</h3>
+        <h3 id="layoutImageModalTitle">Change {{ selectedImage?.label || selectedText?.label }}</h3>
         <button type="button" class="btn-close" aria-label="Close" (click)="closeModal()"></button>
       </div>
 
       <div class="modal-body">
-        <label for="layoutImageUrl" class="form-label">Image URL</label>
-        <input
-          id="layoutImageUrl"
-          type="url"
-          class="form-control"
-          [(ngModel)]="imageUrl"
-          placeholder="https://... or /assets/images/example.jpg"
-        />
-        <div class="modal-preview" *ngIf="imageUrl">
-          <img [src]="imageUrl" alt="New layout preview" />
-        </div>
+        <ng-container *ngIf="modalMode === 'image'; else textEditor">
+          <label for="layoutImageUrl" class="form-label">Image URL</label>
+          <input
+            id="layoutImageUrl"
+            type="url"
+            class="form-control"
+            [(ngModel)]="imageUrl"
+            placeholder="https://... or /assets/images/example.jpg"
+          />
+          <div class="modal-preview" *ngIf="imageUrl">
+            <img [src]="imageUrl" alt="New layout preview" />
+          </div>
+        </ng-container>
+
+        <ng-template #textEditor>
+          <label for="layoutTextValue" class="form-label">Text value</label>
+          <textarea
+            id="layoutTextValue"
+            class="form-control"
+            rows="4"
+            [(ngModel)]="textValue"
+            placeholder="Enter the homepage text"
+          ></textarea>
+        </ng-template>
       </div>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-light" (click)="closeModal()" [disabled]="isSaving">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="saveImage()" [disabled]="isSaving">
+        <button *ngIf="modalMode === 'image'" type="button" class="btn btn-outline-danger" (click)="clearSelectedImage()" [disabled]="isSaving">
+          Remove image
+        </button>
+        <button *ngIf="modalMode === 'image'" type="button" class="btn btn-primary" (click)="saveImage()" [disabled]="isSaving">
+          {{ isSaving ? 'Saving...' : 'Save changes' }}
+        </button>
+        <button *ngIf="modalMode === 'text'" type="button" class="btn btn-primary" (click)="saveText()" [disabled]="isSaving">
           {{ isSaving ? 'Saving...' : 'Save changes' }}
         </button>
       </div>

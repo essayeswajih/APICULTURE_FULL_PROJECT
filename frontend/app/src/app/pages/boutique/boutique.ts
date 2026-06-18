@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { gsap } from 'gsap';
 import { isPlatformBrowser } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
-import { Api, Category, Product } from '../../services/api';
+import { Api, Category, Product, PromoCountdown, PromoTimeLeft } from '../../services/api';
 import { ToastrService } from 'ngx-toastr';
 import { Cart } from '../../services/cart';
 
@@ -36,8 +36,17 @@ export class Boutique implements OnInit, OnDestroy {
   error: string | null = null;
   searchQuery: string = '';
   isPromoPage = false;
+  promoCountdown: PromoCountdown | null = null;
+  promoTimeLeft: PromoTimeLeft = {
+    days: '00',
+    hours: '00',
+    minutes: '00',
+    seconds: '00',
+    expired: true,
+  };
   
   private destroy$ = new Subject<void>();
+  private promoCountdownInterval?: ReturnType<typeof setInterval>;
 
   // mohamed: normalize names for subcategory URL matching
   private normalizeName(name: string): string {
@@ -61,6 +70,9 @@ export class Boutique implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.updatePromoPageState();
     this.loadCategories();
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadPromoCountdown();
+    }
     this.route.queryParams.pipe(
       takeUntil(this.destroy$)
     ).subscribe({
@@ -127,6 +139,9 @@ export class Boutique implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    if (this.promoCountdownInterval) {
+      clearInterval(this.promoCountdownInterval);
+    }
   }
 
   private loadCategories(): void {
@@ -291,6 +306,72 @@ export class Boutique implements OnInit, OnDestroy {
     this.isPromoPage = this.router.url.split('?')[0].replace(/\/$/, '') === '/boutique/promo';
   }
 
+  private loadPromoCountdown(): void {
+    this.apiService.getPromoCountdown().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (countdown) => {
+        this.promoCountdown = countdown;
+        this.startPromoCountdown();
+        this.cdRef.markForCheck();
+      },
+      error: (err) => {
+        console.error('Failed to load promo countdown:', err);
+      }
+    });
+  }
+
+  private startPromoCountdown(): void {
+    if (this.promoCountdownInterval) {
+      clearInterval(this.promoCountdownInterval);
+    }
+
+    this.updatePromoCountdown();
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.promoCountdownInterval = setInterval(() => {
+        this.updatePromoCountdown();
+      }, 1000);
+    }
+  }
+
+  private updatePromoCountdown(): void {
+    const endsAt = this.promoCountdown?.ends_at;
+    const endTime = endsAt ? new Date(endsAt).getTime() : 0;
+    const remaining = endTime - Date.now();
+
+    if (!this.promoCountdown?.active || !endTime || remaining <= 0) {
+      this.promoTimeLeft = {
+        days: '00',
+        hours: '00',
+        minutes: '00',
+        seconds: '00',
+        expired: true,
+      };
+      this.cdRef.markForCheck();
+      return;
+    }
+
+    const totalSeconds = Math.floor(remaining / 1000);
+    const days = Math.floor(totalSeconds / 86400);
+    const hours = Math.floor((totalSeconds % 86400) / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+
+    this.promoTimeLeft = {
+      days: this.padTime(days),
+      hours: this.padTime(hours),
+      minutes: this.padTime(minutes),
+      seconds: this.padTime(seconds),
+      expired: false,
+    };
+    this.cdRef.markForCheck();
+  }
+
+  private padTime(value: number): string {
+    return value.toString().padStart(2, '0');
+  }
+
   private animateProducts(): void {
     if (isPlatformBrowser(this.platformId)) {
       gsap.from('.product-card', {
@@ -388,7 +469,7 @@ export class Boutique implements OnInit, OnDestroy {
     }
       this.cdRef.detectChanges();
   }
-    getStars(n: any) {
+  getStars(n: any) {
     const value = Number(n);
 
     if (!Number.isFinite(value) || value <= 0) {
@@ -399,5 +480,9 @@ export class Boutique implements OnInit, OnDestroy {
     const stars = Math.min(Math.floor(value), 5);
 
     return Array(stars).fill(0);
+  }
+
+  hasActivePromoCountdown(product: Product): boolean {
+    return Boolean(product.promo && this.promoTimeLeft && !this.promoTimeLeft.expired);
   }
 }

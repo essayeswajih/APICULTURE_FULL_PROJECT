@@ -1,6 +1,6 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, Inject, Input, PLATFORM_ID } from '@angular/core';
-import { Api, Product } from '../services/api';
+import { Api, Product, PromoTimeLeft } from '../services/api';
 import { CartItem } from '../pages/boutique/boutique';
 import { ToastrService } from 'ngx-toastr';
 import { Cart } from '../services/cart';
@@ -25,6 +25,7 @@ export class FeaturedProducts {
   ) {}
   
   @Input() products: Product[] = [];
+  @Input() promoTimeLeft: PromoTimeLeft | null = null;
   swiperConfig = {
     slidesPerView: 4,
     spaceBetween: 20,
@@ -76,6 +77,10 @@ export class FeaturedProducts {
   }
   goToProductBySlug(slug: string): void {
     this.RouterS.navigate(['/product', slug]);
+  }
+
+  hasActivePromoCountdown(product: Product): boolean {
+    return Boolean(product.promo && this.promoTimeLeft && !this.promoTimeLeft.expired);
   }
 
   /*products = [

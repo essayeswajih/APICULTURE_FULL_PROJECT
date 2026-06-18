@@ -154,6 +154,16 @@ class LayoutImage(Base):
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
+class LayoutText(Base):
+    __tablename__ = "layout_texts"
+    id = Column(Integer, primary_key=True, index=True)
+    key = Column(String, nullable=False, unique=True, index=True)
+    label = Column(String, nullable=False)
+    text_value = Column(Text, nullable=False, default="")
+    kind = Column(String, nullable=False, default="text")
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
 class PromoCountdown(Base):
     __tablename__ = "promo_countdown"
     id = Column(Integer, primary_key=True, index=True)
