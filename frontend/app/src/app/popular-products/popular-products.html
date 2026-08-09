@@ -19,13 +19,11 @@
 
     <!-- ✔ Swiper Web Component -->
     <swiper-container
+      #popularSwiper
+      init="false"
       [slides-per-view]="4"
       [space-between]="20"
       navigation="true"
-      [loop]="swiperConfig.loop"
-      [speed]="swiperConfig.speed"
-      [autoplay]="swiperConfig.autoplay"
-      [allow-touch-move]="true"
       navigation-prev-el=".products-carousel-prev-popular"
       navigation-next-el=".products-carousel-next-popular"
       [breakpoints]="swiperConfig.breakpoints"

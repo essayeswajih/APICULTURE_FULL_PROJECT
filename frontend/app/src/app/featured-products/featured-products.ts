@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, Inject, Input, PLATFORM_ID } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Inject, Input, PLATFORM_ID, ViewChild } from '@angular/core';
 import { Api, Product, PromoTimeLeft } from '../services/api';
 import { CartItem } from '../pages/boutique/boutique';
 import { ToastrService } from 'ngx-toastr';
@@ -13,7 +13,8 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
   styleUrl: './featured-products.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class FeaturedProducts {
+export class FeaturedProducts implements AfterViewInit {
+  @ViewChild('featuredSwiper') featuredSwiper?: ElementRef<HTMLElement>;
   constructor(
     private activatedRoute: ActivatedRoute,
     private apiService: Api,
@@ -48,6 +49,23 @@ export class FeaturedProducts {
       1200: { slidesPerView: 4 },
     }
   };
+  ngAfterViewInit(): void {
+    const el = this.featuredSwiper?.nativeElement as any;
+    if (!el) return;
+    Object.assign(el, {
+      loop: this.swiperConfig.loop,
+      speed: this.swiperConfig.speed,
+      autoplay: this.swiperConfig.autoplay,
+      slidesPerView: this.swiperConfig.slidesPerView,
+      spaceBetween: this.swiperConfig.spaceBetween,
+      breakpoints: this.swiperConfig.breakpoints,
+      navigation: {
+        nextEl: '.products-carousel-next-featured',
+        prevEl: '.products-carousel-prev-featured',
+      },
+    });
+    el.initialize?.();
+  }
   addToCart(product: Product): void {
     if (isPlatformBrowser(this.platformId)) {
       const storedCart = localStorage.getItem('cartItems');

@@ -21,17 +21,13 @@
 
     <!-- ✔ Swiper Web Component -->
     <swiper-container
+      #featuredSwiper
+      init="false"
       [slides-per-view]="4"
       [space-between]="20"
       navigation="true"
-      [loop]="swiperConfig.loop"
-      [speed]="swiperConfig.speed"
-      [autoplay]="swiperConfig.autoplay"
-      [allow-touch-move]="true"
       [breakpoints]="swiperConfig.breakpoints"
       class="mySwiper"
-      navigation-prev-el=".products-carousel-prev-featured"
-      navigation-next-el=".products-carousel-next-featured"
     >
       <!-- ✔ Web Component slides -->
       <swiper-slide *ngFor="let p of products">

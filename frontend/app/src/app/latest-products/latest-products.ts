@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, Inject, Input, PLATFORM_ID } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, Inject, Input, PLATFORM_ID, ViewChild } from '@angular/core';
 import { Api, Product, PromoTimeLeft } from '../services/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -14,7 +14,8 @@ import { CartItem } from '../pages/boutique/boutique';
   styleUrls: ['./latest-products.scss'],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class LatestProducts {
+export class LatestProducts implements AfterViewInit {
+  @ViewChild('latestSwiper') latestSwiper?: ElementRef<HTMLElement>;
     constructor(
     private activatedRoute: ActivatedRoute,
     private apiService: Api,
@@ -42,6 +43,21 @@ export class LatestProducts {
       1200: { slidesPerView: 4 },
     },
   };
+  ngAfterViewInit(): void {
+    const el = this.latestSwiper?.nativeElement as any;
+    if (!el) return;
+    Object.assign(el, {
+      loop: this.swiperConfig.loop,
+      speed: this.swiperConfig.speed,
+      autoplay: this.swiperConfig.autoplay,
+      breakpoints: this.swiperConfig.breakpoints,
+      navigation: {
+        nextEl: '.products-carousel-next-latest',
+        prevEl: '.products-carousel-prev-latest',
+      },
+    });
+    el.initialize?.();
+  }
   addToCart(product: Product): void {
     if (isPlatformBrowser(this.platformId)) {
       const storedCart = localStorage.getItem('cartItems');
