@@ -1,4 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
+
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -10,70 +11,120 @@ import {
   PLATFORM_ID,
   ViewChild
 } from '@angular/core';
-import { Api, Product, PromoTimeLeft } from '../services/api';
-import { CartItem } from '../pages/boutique/boutique';
-import { ToastrService } from 'ngx-toastr';
-import { Cart } from '../services/cart';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+
+import {
+  Api,
+  Product,
+  PromoTimeLeft
+} from '../services/api';
+
+import {
+  CartItem
+} from '../pages/boutique/boutique';
+
+import {
+  ToastrService
+} from 'ngx-toastr';
+
+import {
+  Cart
+} from '../services/cart';
+
+import {
+  Router,
+  RouterLink
+} from '@angular/router';
+
 
 @Component({
   selector: 'app-featured-products',
-  imports: [CommonModule, RouterLink],
+
+  imports: [
+    CommonModule,
+    RouterLink
+  ],
+
   templateUrl: './featured-products.html',
+
   styleUrl: './featured-products.scss',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+
+  schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
+  ],
 })
 export class FeaturedProducts implements AfterViewInit {
 
   @ViewChild('featuredSwiper')
   featuredSwiper?: ElementRef;
 
-  // 👇 References to your existing buttons
-  @ViewChild('featuredPrevBtn')
-  featuredPrevBtn?: ElementRef<HTMLButtonElement>;
+  @Input()
+  products: Product[] = [];
 
-  @ViewChild('featuredNextBtn')
-  featuredNextBtn?: ElementRef<HTMLButtonElement>;
+  @Input()
+  promoTimeLeft: PromoTimeLeft | null = null;
 
-  @Input() products: Product[] = [];
-  @Input() promoTimeLeft: PromoTimeLeft | null = null;
 
   constructor(
-    private activatedRoute: ActivatedRoute,
     private apiService: Api,
+
     private RouterS: Router,
-    @Inject(PLATFORM_ID) private platformId: Object,
+
+    @Inject(PLATFORM_ID)
+    private platformId: Object,
+
     private cdRef: ChangeDetectorRef,
+
     private toastService: ToastrService,
+
     private cartService: Cart
   ) {}
 
+
+  /*
+   * Swiper configuration
+   */
   swiperConfig = {
+
     loop: true,
 
-    // Smooth continuous movement
+    /*
+     * 7000ms = 7 seconds
+     *
+     * delay: 0 gives continuous movement
+     */
     speed: 7000,
 
     autoplay: {
+
       delay: 0,
+
       disableOnInteraction: false,
+
       pauseOnMouseEnter: true,
 
-      // LEFT → RIGHT
-      reverseDirection: true,
+      /*
+       * Continuous movement direction
+       */
+      reverseDirection: true
+
     },
 
     freeMode: {
+
       enabled: true,
-      momentum: false,
+
+      momentum: false
+
     },
 
     loopAdditionalSlides: 3,
 
     slidesPerView: 4,
+
     spaceBetween: 20,
 
     breakpoints: {
+
       320: {
         slidesPerView: 1
       },
@@ -89,172 +140,318 @@ export class FeaturedProducts implements AfterViewInit {
       1200: {
         slidesPerView: 4
       }
+
     }
+
   };
 
+
+  /*
+   * Initialize Swiper
+   */
   ngAfterViewInit(): void {
 
-    const swiperEl = this.featuredSwiper?.nativeElement as any;
+    const swiperEl =
+      this.featuredSwiper?.nativeElement as any;
 
-    const prevButton =
-      this.featuredPrevBtn?.nativeElement;
+    if (!swiperEl) {
+      console.warn(
+        'Featured Swiper element not found'
+      );
 
-    const nextButton =
-      this.featuredNextBtn?.nativeElement;
+      return;
+    }
+
+
+    /*
+     * Give Angular/Web Component a moment
+     * to finish rendering the slides.
+     */
+    setTimeout(() => {
+
+      Object.assign(
+        swiperEl,
+        {
+
+          loop:
+            this.swiperConfig.loop,
+
+          speed:
+            this.swiperConfig.speed,
+
+          autoplay:
+            this.swiperConfig.autoplay,
+
+          freeMode:
+            this.swiperConfig.freeMode,
+
+          loopAdditionalSlides:
+            this.swiperConfig.loopAdditionalSlides,
+
+          slidesPerView:
+            this.swiperConfig.slidesPerView,
+
+          spaceBetween:
+            this.swiperConfig.spaceBetween,
+
+          breakpoints:
+            this.swiperConfig.breakpoints
+
+        }
+      );
+
+
+      /*
+       * Initialize Swiper
+       */
+      if (
+        typeof swiperEl.initialize === 'function'
+      ) {
+
+        swiperEl.initialize();
+
+      }
+
+    }, 0);
+
+  }
+
+
+  /*
+   * PREVIOUS BUTTON
+   *
+   * Directly controls the Swiper instance.
+   */
+  slidePrev(): void {
+
+    const swiperEl =
+      this.featuredSwiper?.nativeElement as any;
 
     if (!swiperEl) {
       return;
     }
 
-    if (!prevButton || !nextButton) {
+    const swiper =
+      swiperEl.swiper;
+
+    if (!swiper) {
+      console.warn(
+        'Swiper instance is not ready'
+      );
+
       return;
     }
 
-    Object.assign(swiperEl, {
-
-      loop: this.swiperConfig.loop,
-
-      speed: this.swiperConfig.speed,
-
-      autoplay: this.swiperConfig.autoplay,
-
-      freeMode: this.swiperConfig.freeMode,
-
-      loopAdditionalSlides:
-        this.swiperConfig.loopAdditionalSlides,
-
-      slidesPerView:
-        this.swiperConfig.slidesPerView,
-
-      spaceBetween:
-        this.swiperConfig.spaceBetween,
-
-      breakpoints:
-        this.swiperConfig.breakpoints,
-
-      // 👇 IMPORTANT
-      // Pass the actual HTML buttons
-      navigation: {
-        prevEl: prevButton,
-        nextEl: nextButton,
-      },
-
-    });
-
-    // Initialize Swiper
-    swiperEl.initialize();
+    swiper.slidePrev();
 
   }
 
 
+  /*
+   * NEXT BUTTON
+   *
+   * Directly controls the Swiper instance.
+   */
+  slideNext(): void {
+
+    const swiperEl =
+      this.featuredSwiper?.nativeElement as any;
+
+    if (!swiperEl) {
+      return;
+    }
+
+    const swiper =
+      swiperEl.swiper;
+
+    if (!swiper) {
+      console.warn(
+        'Swiper instance is not ready'
+      );
+
+      return;
+    }
+
+    swiper.slideNext();
+
+  }
+
+
+  /*
+   * Add product to cart
+   */
   addToCart(product: Product): void {
 
-    if (isPlatformBrowser(this.platformId)) {
-
-      const storedCart =
-        localStorage.getItem('cartItems');
-
-      let cartItems: CartItem[] =
-        storedCart
-          ? JSON.parse(storedCart)
-          : [];
-
-      const existingItem =
-        cartItems.find(
-          item => item.id === product.id
-        );
-
-      if (existingItem) {
-
-        existingItem.quantity += 1;
-
-      } else {
-
-        const cartItem: CartItem = {
-
-          id: product.id,
-
-          name: product.name,
-
-          image: product.image_url ?? null,
-
-          price:
-            product.discounted_price &&
-            product.discounted_price > 0
-              ? product.discounted_price
-              : product.price,
-
-          quantity: 1,
-
-          shipping_cost:
-            product.shipping_cost || 9
-        };
-
-        cartItems.push(cartItem);
-
-        this.cartService.add();
-      }
-
-      this.toastService.success(
-        'Produit ajouté au panier',
-        'Succès',
-        {
-          timeOut: 2000,
-          positionClass: 'toast-bottom-right',
-          progressBar: true,
-          closeButton: true,
-        }
-      );
-
-      localStorage.setItem(
-        'cartItems',
-        JSON.stringify(cartItems)
-      );
-
-      this.cdRef.detectChanges();
+    if (
+      !isPlatformBrowser(this.platformId)
+    ) {
+      return;
     }
+
+
+    const storedCart =
+      localStorage.getItem('cartItems');
+
+
+    let cartItems: CartItem[] =
+      storedCart
+        ? JSON.parse(storedCart)
+        : [];
+
+
+    const existingItem =
+      cartItems.find(
+        item =>
+          item.id === product.id
+      );
+
+
+    if (existingItem) {
+
+      existingItem.quantity += 1;
+
+    } else {
+
+      const cartItem: CartItem = {
+
+        id: product.id,
+
+        name: product.name,
+
+        image:
+          product.image_url ?? null,
+
+        price:
+          product.discounted_price &&
+          product.discounted_price > 0
+            ? product.discounted_price
+            : product.price,
+
+        quantity: 1,
+
+        shipping_cost:
+          product.shipping_cost || 9
+
+      };
+
+
+      cartItems.push(
+        cartItem
+      );
+
+
+      this.cartService.add();
+
+    }
+
+
+    this.toastService.success(
+      'Produit ajouté au panier',
+      'Succès',
+      {
+
+        timeOut: 2000,
+
+        positionClass:
+          'toast-bottom-right',
+
+        progressBar: true,
+
+        closeButton: true
+
+      }
+    );
+
+
+    localStorage.setItem(
+      'cartItems',
+      JSON.stringify(cartItems)
+    );
+
+
+    this.cdRef.detectChanges();
+
   }
 
 
+  /*
+   * Navigate to product by ID
+   */
   goToProduct(id: number): void {
-    this.RouterS.navigate(['/product', id]);
+
+    this.RouterS.navigate([
+      '/product',
+      id
+    ]);
+
   }
 
 
-  goToProductBySlug(slug: string): void {
-    this.RouterS.navigate(['/product', slug]);
+  /*
+   * Navigate to product by slug
+   */
+  goToProductBySlug(
+    slug: string
+  ): void {
+
+    this.RouterS.navigate([
+      '/product',
+      slug
+    ]);
+
   }
 
 
+  /*
+   * Check active promotion countdown
+   */
   hasActivePromoCountdown(
     product: Product
   ): boolean {
 
     return Boolean(
+
       product.promo &&
+
       this.promoTimeLeft &&
+
       !this.promoTimeLeft.expired
+
     );
+
   }
 
 
+  /*
+   * Generate rating stars
+   */
   getStars(n: any) {
 
-    const value = Number(n);
+    const value =
+      Number(n);
+
 
     if (
       !Number.isFinite(value) ||
       value <= 0
     ) {
+
       return [];
+
     }
 
-    const stars = Math.min(
-      Math.floor(value),
-      5
-    );
 
-    return Array(stars).fill(0);
+    const stars =
+      Math.min(
+        Math.floor(value),
+        5
+      );
+
+
+    return Array(
+      stars
+    ).fill(0);
+
   }
 
 }
