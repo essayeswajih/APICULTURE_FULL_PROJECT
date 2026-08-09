@@ -34,8 +34,12 @@ export class FeaturedProducts implements AfterViewInit {
       delay: 0,
       disableOnInteraction: false,
       pauseOnMouseEnter: true,
-      reverseDirection: true,
     },
+    freeMode: {
+      enabled: true,
+      momentum: false,
+    },
+    loopAdditionalSlides: 3,
     slidesPerView: 4,
     spaceBetween: 20,
     navigation: {
@@ -56,6 +60,8 @@ export class FeaturedProducts implements AfterViewInit {
       loop: this.swiperConfig.loop,
       speed: this.swiperConfig.speed,
       autoplay: this.swiperConfig.autoplay,
+      freeMode: this.swiperConfig.freeMode,
+      loopAdditionalSlides: this.swiperConfig.loopAdditionalSlides,
       slidesPerView: this.swiperConfig.slidesPerView,
       spaceBetween: this.swiperConfig.spaceBetween,
       breakpoints: this.swiperConfig.breakpoints,

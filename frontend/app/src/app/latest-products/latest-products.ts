@@ -34,8 +34,12 @@ export class LatestProducts implements AfterViewInit {
       delay: 0,
       disableOnInteraction: false,
       pauseOnMouseEnter: true,
-      reverseDirection: true,
     },
+    freeMode: {
+      enabled: true,
+      momentum: false,
+    },
+    loopAdditionalSlides: 3,
     breakpoints: {
       320: { slidesPerView: 1 },
       768: { slidesPerView: 2 },
@@ -50,6 +54,8 @@ export class LatestProducts implements AfterViewInit {
       loop: this.swiperConfig.loop,
       speed: this.swiperConfig.speed,
       autoplay: this.swiperConfig.autoplay,
+      freeMode: this.swiperConfig.freeMode,
+      loopAdditionalSlides: this.swiperConfig.loopAdditionalSlides,
       breakpoints: this.swiperConfig.breakpoints,
       navigation: {
         nextEl: '.products-carousel-next-latest',
