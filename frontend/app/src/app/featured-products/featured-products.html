@@ -25,14 +25,20 @@
 
             <div class="swiper-buttons">
 
+              <!-- Previous -->
               <button
+                #featuredPrevBtn
                 class="products-carousel-prev-featured btn btn-primary"
+                type="button"
               >
                 ❮
               </button>
 
+              <!-- Next -->
               <button
+                #featuredNextBtn
                 class="products-carousel-next-featured btn btn-primary"
+                type="button"
               >
                 ❯
               </button>
@@ -59,8 +65,6 @@
       class="mySwiper"
     >
 
-      <!-- Products -->
-
       <swiper-slide
         *ngFor="let p of products"
       >
@@ -70,15 +74,11 @@
           style="cursor: pointer;"
         >
 
-          <!-- Product image -->
-
           <div
             (click)="goToProductBySlug(p.slug ?? '')"
           >
 
-            <figure
-              class="product-image mb-3"
-            >
+            <figure class="product-image mb-3">
 
               <img
                 [src]="p.image_url"
@@ -95,14 +95,10 @@
             class="d-flex flex-column text-center"
           >
 
-            <!-- Product name -->
-
             <h3 class="fs-6 fw-normal">
               {{ p.name }}
             </h3>
 
-
-            <!-- Rating -->
 
             <div>
 
@@ -112,9 +108,7 @@
                   star of getStars(p.rating);
                   track $index
                 ) {
-
                   ⭐
-
                 }
 
               </span>
@@ -125,8 +119,6 @@
 
             </div>
 
-
-            <!-- Discounted price -->
 
             @if (
               p?.discounted_price != 0 &&
@@ -169,8 +161,6 @@
 
             }
 
-            <!-- Normal price -->
-
             @else {
 
               <div
@@ -187,8 +177,6 @@
 
             }
 
-
-            <!-- Promotion countdown -->
 
             @if (hasActivePromoCountdown(p)) {
 
@@ -217,8 +205,6 @@
             }
 
 
-            <!-- Add to cart -->
-
             <div
               class="button-area p-3 pt-0"
             >
@@ -227,9 +213,7 @@
                 class="row g-1 mt-0 mb-3"
               >
 
-                <div
-                  class="col-12"
-                >
+                <div class="col-12">
 
                   <button
                     class="btn btn-primary rounded-1 p-2 fs-7"

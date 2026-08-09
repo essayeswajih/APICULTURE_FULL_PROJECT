@@ -28,6 +28,13 @@ export class FeaturedProducts implements AfterViewInit {
   @ViewChild('featuredSwiper')
   featuredSwiper?: ElementRef;
 
+  // 👇 References to your existing buttons
+  @ViewChild('featuredPrevBtn')
+  featuredPrevBtn?: ElementRef<HTMLButtonElement>;
+
+  @ViewChild('featuredNextBtn')
+  featuredNextBtn?: ElementRef<HTMLButtonElement>;
+
   @Input() products: Product[] = [];
   @Input() promoTimeLeft: PromoTimeLeft | null = null;
 
@@ -44,7 +51,7 @@ export class FeaturedProducts implements AfterViewInit {
   swiperConfig = {
     loop: true,
 
-    // Smooth movement
+    // Smooth continuous movement
     speed: 7000,
 
     autoplay: {
@@ -52,8 +59,7 @@ export class FeaturedProducts implements AfterViewInit {
       disableOnInteraction: false,
       pauseOnMouseEnter: true,
 
-      // IMPORTANT:
-      // Makes the carousel move from LEFT to RIGHT
+      // LEFT → RIGHT
       reverseDirection: true,
     },
 
@@ -66,11 +72,6 @@ export class FeaturedProducts implements AfterViewInit {
 
     slidesPerView: 4,
     spaceBetween: 20,
-
-    navigation: {
-      nextEl: '.products-carousel-next-featured',
-      prevEl: '.products-carousel-prev-featured',
-    },
 
     breakpoints: {
       320: {
@@ -93,13 +94,23 @@ export class FeaturedProducts implements AfterViewInit {
 
   ngAfterViewInit(): void {
 
-    const el = this.featuredSwiper?.nativeElement as any;
+    const swiperEl = this.featuredSwiper?.nativeElement as any;
 
-    if (!el) {
+    const prevButton =
+      this.featuredPrevBtn?.nativeElement;
+
+    const nextButton =
+      this.featuredNextBtn?.nativeElement;
+
+    if (!swiperEl) {
       return;
     }
 
-    Object.assign(el, {
+    if (!prevButton || !nextButton) {
+      return;
+    }
+
+    Object.assign(swiperEl, {
 
       loop: this.swiperConfig.loop,
 
@@ -121,32 +132,37 @@ export class FeaturedProducts implements AfterViewInit {
       breakpoints:
         this.swiperConfig.breakpoints,
 
+      // 👇 IMPORTANT
+      // Pass the actual HTML buttons
       navigation: {
-        nextEl: '.products-carousel-next-featured',
-        prevEl: '.products-carousel-prev-featured',
+        prevEl: prevButton,
+        nextEl: nextButton,
       },
 
     });
 
-    // Initialize Swiper only after configuration
-    if (el.initialize) {
-      el.initialize();
-    }
+    // Initialize Swiper
+    swiperEl.initialize();
+
   }
+
 
   addToCart(product: Product): void {
 
     if (isPlatformBrowser(this.platformId)) {
 
-      const storedCart = localStorage.getItem('cartItems');
+      const storedCart =
+        localStorage.getItem('cartItems');
 
-      let cartItems: CartItem[] = storedCart
-        ? JSON.parse(storedCart)
-        : [];
+      let cartItems: CartItem[] =
+        storedCart
+          ? JSON.parse(storedCart)
+          : [];
 
-      const existingItem = cartItems.find(
-        item => item.id === product.id
-      );
+      const existingItem =
+        cartItems.find(
+          item => item.id === product.id
+        );
 
       if (existingItem) {
 
@@ -155,8 +171,11 @@ export class FeaturedProducts implements AfterViewInit {
       } else {
 
         const cartItem: CartItem = {
+
           id: product.id,
+
           name: product.name,
+
           image: product.image_url ?? null,
 
           price:
@@ -196,15 +215,21 @@ export class FeaturedProducts implements AfterViewInit {
     }
   }
 
+
   goToProduct(id: number): void {
     this.RouterS.navigate(['/product', id]);
   }
+
 
   goToProductBySlug(slug: string): void {
     this.RouterS.navigate(['/product', slug]);
   }
 
-  hasActivePromoCountdown(product: Product): boolean {
+
+  hasActivePromoCountdown(
+    product: Product
+  ): boolean {
+
     return Boolean(
       product.promo &&
       this.promoTimeLeft &&
@@ -212,11 +237,15 @@ export class FeaturedProducts implements AfterViewInit {
     );
   }
 
+
   getStars(n: any) {
 
     const value = Number(n);
 
-    if (!Number.isFinite(value) || value <= 0) {
+    if (
+      !Number.isFinite(value) ||
+      value <= 0
+    ) {
       return [];
     }
 
@@ -227,4 +256,5 @@ export class FeaturedProducts implements AfterViewInit {
 
     return Array(stars).fill(0);
   }
+
 }
