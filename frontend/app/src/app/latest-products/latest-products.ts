@@ -37,13 +37,7 @@ import { CartItem } from '../pages/boutique/boutique';
 export class LatestProducts implements AfterViewInit {
 
   @ViewChild('latestSwiper')
-  latestSwiper?: ElementRef<HTMLElement>;
-
-  @ViewChild('latestPrevBtn')
-  latestPrevBtn?: ElementRef<HTMLButtonElement>;
-
-  @ViewChild('latestNextBtn')
-  latestNextBtn?: ElementRef<HTMLButtonElement>;
+  latestSwiper?: ElementRef<any>;
 
   @Input()
   products: Product[] = [];
@@ -64,12 +58,16 @@ export class LatestProducts implements AfterViewInit {
   swiperConfig = {
     loop: true,
 
+    // Lower value = faster movement
     speed: 7000,
 
     autoplay: {
       delay: 0,
       disableOnInteraction: false,
       pauseOnMouseEnter: true,
+
+      // RIGHT ➜ LEFT / LEFT ➜ RIGHT
+      // true = reverse direction
       reverseDirection: true,
     },
 
@@ -79,6 +77,10 @@ export class LatestProducts implements AfterViewInit {
     },
 
     loopAdditionalSlides: 3,
+
+    slidesPerView: 4,
+
+    spaceBetween: 20,
 
     breakpoints: {
       320: {
@@ -102,19 +104,9 @@ export class LatestProducts implements AfterViewInit {
   ngAfterViewInit(): void {
 
     const swiperEl =
-      this.latestSwiper?.nativeElement as any;
-
-    const prevButton =
-      this.latestPrevBtn?.nativeElement;
-
-    const nextButton =
-      this.latestNextBtn?.nativeElement;
+      this.latestSwiper?.nativeElement;
 
     if (!swiperEl) {
-      return;
-    }
-
-    if (!prevButton || !nextButton) {
       return;
     }
 
@@ -131,19 +123,65 @@ export class LatestProducts implements AfterViewInit {
       loopAdditionalSlides:
         this.swiperConfig.loopAdditionalSlides,
 
-      breakpoints:
-        this.swiperConfig.breakpoints,
+      slidesPerView:
+        this.swiperConfig.slidesPerView,
 
-      navigation: {
-        prevEl: prevButton,
-        nextEl: nextButton
-      }
+      spaceBetween:
+        this.swiperConfig.spaceBetween,
+
+      breakpoints:
+        this.swiperConfig.breakpoints
 
     });
 
-    if (swiperEl.initialize) {
+    // Initialize Swiper
+    if (typeof swiperEl.initialize === 'function') {
       swiperEl.initialize();
     }
+  }
+
+  /**
+   * Previous button
+   */
+  previousSlide(): void {
+
+    const swiperEl =
+      this.latestSwiper?.nativeElement;
+
+    if (!swiperEl) {
+      return;
+    }
+
+    const swiper =
+      swiperEl.swiper;
+
+    if (!swiper) {
+      return;
+    }
+
+    swiper.slidePrev();
+  }
+
+  /**
+   * Next button
+   */
+  nextSlide(): void {
+
+    const swiperEl =
+      this.latestSwiper?.nativeElement;
+
+    if (!swiperEl) {
+      return;
+    }
+
+    const swiper =
+      swiperEl.swiper;
+
+    if (!swiper) {
+      return;
+    }
+
+    swiper.slideNext();
   }
 
   addToCart(product: Product): void {
@@ -216,6 +254,7 @@ export class LatestProducts implements AfterViewInit {
   }
 
   goToProduct(id: number): void {
+
     this.RouterS.navigate([
       '/product',
       id
@@ -223,6 +262,7 @@ export class LatestProducts implements AfterViewInit {
   }
 
   goToProductBySlug(slug: string): void {
+
     this.RouterS.navigate([
       '/product',
       slug

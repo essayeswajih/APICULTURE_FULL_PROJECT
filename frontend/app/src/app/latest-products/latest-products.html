@@ -1,12 +1,16 @@
-<section id="latest-products" class="products-carousel">
-
+<section
+  id="latest-products"
+  class="products-carousel"
+>
   <div class="container-lg overflow-hidden py-5">
 
     <div class="row">
 
       <div class="col-md-12">
 
-        <div class="section-header d-flex flex-wrap justify-content-between my-4">
+        <div
+          class="section-header d-flex flex-wrap justify-content-between my-4"
+        >
 
           <h2 class="section-title">
             Produits récents
@@ -23,18 +27,20 @@
 
             <div class="swiper-buttons">
 
+              <!-- Previous -->
               <button
-                #latestPrevBtn
                 type="button"
                 class="products-carousel-prev-latest btn btn-primary"
+                (click)="previousSlide()"
               >
                 ❮
               </button>
 
+              <!-- Next -->
               <button
-                #latestNextBtn
                 type="button"
                 class="products-carousel-next-latest btn btn-primary"
+                (click)="nextSlide()"
               >
                 ❯
               </button>
@@ -50,7 +56,7 @@
     </div>
 
 
-    <!-- ✔ Swiper Web Component -->
+    <!-- Swiper Web Component -->
 
     <swiper-container
       #latestSwiper
@@ -61,20 +67,26 @@
       class="mySwiper"
     >
 
-      <!-- ✔ Web Component slides -->
+      <!-- Product slides -->
 
-      <swiper-slide *ngFor="let p of products">
+      <swiper-slide
+        *ngFor="let p of products"
+      >
 
         <div
           class="product-item"
           style="cursor:pointer;"
         >
 
+          <!-- Product image -->
+
           <div
             (click)="goToProductBySlug(p.slug ?? '')"
           >
 
-            <figure class="product-image mb-3">
+            <figure
+              class="product-image mb-3"
+            >
 
               <img
                 [src]="p.image_url"
@@ -87,12 +99,20 @@
           </div>
 
 
-          <div class="d-flex flex-column text-center">
+          <!-- Product information -->
+
+          <div
+            class="d-flex flex-column text-center"
+          >
+
+            <!-- Product name -->
 
             <h3 class="fs-6 fw-normal">
               {{ p.name }}
             </h3>
 
+
+            <!-- Rating -->
 
             <div>
 
@@ -114,6 +134,8 @@
             </div>
 
 
+            <!-- Price -->
+
             @if (
               p?.discounted_price != 0 &&
               p?.discounted_price != null
@@ -128,13 +150,21 @@
                   class="d-flex justify-content-center align-items-center gap-2"
                 >
 
+                  <!-- Old price -->
+
                   <del>
                     {{ p?.price }}DT
                   </del>
 
-                  <span class="text-dark fw-semibold">
+                  <!-- Discounted price -->
+
+                  <span
+                    class="text-dark fw-semibold"
+                  >
                     {{ p?.discounted_price }}DT
                   </span>
+
+                  <!-- Discount percentage -->
 
                   <span
                     class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary"
@@ -155,11 +185,15 @@
 
             @else {
 
+              <!-- Normal price -->
+
               <div
                 class="d-flex justify-content-center align-items-center gap-2"
               >
 
-                <span class="text-dark fw-semibold">
+                <span
+                  class="text-dark fw-semibold"
+                >
                   {{ p?.price }}DT
                 </span>
 
@@ -168,6 +202,8 @@
             }
 
 
+            <!-- Promotion countdown -->
+
             @if (hasActivePromoCountdown(p)) {
 
               <div
@@ -175,11 +211,15 @@
                 aria-label="Promotion countdown"
               >
 
-                <span class="promo-countdown-chip__label">
+                <span
+                  class="promo-countdown-chip__label"
+                >
                   Se termine dans
                 </span>
 
-                <span class="promo-countdown-chip__time">
+                <span
+                  class="promo-countdown-chip__time"
+                >
                   {{ promoTimeLeft?.days }}d
                   {{ promoTimeLeft?.hours }}h
                   {{ promoTimeLeft?.minutes }}m
@@ -191,9 +231,15 @@
             }
 
 
-            <div class="button-area p-3 pt-0">
+            <!-- Add to cart -->
 
-              <div class="row g-1 mt-0 mb-3">
+            <div
+              class="button-area p-3 pt-0"
+            >
+
+              <div
+                class="row g-1 mt-0 mb-3"
+              >
 
                 <div class="col-12">
 
@@ -220,5 +266,5 @@
     </swiper-container>
 
   </div>
-
 </section>
+
