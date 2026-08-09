@@ -27,6 +27,14 @@ export class FeaturedProducts {
   @Input() products: Product[] = [];
   @Input() promoTimeLeft: PromoTimeLeft | null = null;
   swiperConfig = {
+    loop: true,
+    speed: 4500,
+    autoplay: {
+      delay: 0,
+      disableOnInteraction: false,
+      pauseOnMouseEnter: true,
+      reverseDirection: true,
+    },
     slidesPerView: 4,
     spaceBetween: 20,
     navigation: {
