@@ -1,318 +1,224 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  CUSTOM_ELEMENTS_SCHEMA,
-  ElementRef,
-  Inject,
-  Input,
-  PLATFORM_ID,
-  ViewChild
-} from '@angular/core';
+<section id="latest-products" class="products-carousel">
 
-import { Api, Product, PromoTimeLeft } from '../services/api';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { Cart } from '../services/cart';
-import { CartItem } from '../pages/boutique/boutique';
+  <div class="container-lg overflow-hidden py-5">
 
-@Component({
-  selector: 'app-latest-products',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './latest-products.html',
-  styleUrls: ['./latest-products.scss'],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-})
-export class LatestProducts implements AfterViewInit {
+    <div class="row">
 
-  @ViewChild('latestSwiper')
-  latestSwiper?: ElementRef<HTMLElement>;
+      <div class="col-md-12">
 
-  // 👇 References to the existing buttons
-  @ViewChild('latestPrevBtn')
-  latestPrevBtn?: ElementRef<HTMLButtonElement>;
+        <div class="section-header d-flex flex-wrap justify-content-between my-4">
 
-  @ViewChild('latestNextBtn')
-  latestNextBtn?: ElementRef<HTMLButtonElement>;
+          <h2 class="section-title">
+            Produits récents
+          </h2>
 
+          <div class="d-flex align-items-center">
 
-  @Input() products: Product[] = [];
+            <a
+              href="https://apiculturegalai.tn/boutique"
+              class="btn btn-primary me-2"
+            >
+              View All
+            </a>
 
-  @Input() promoTimeLeft: PromoTimeLeft | null = null;
+            <div class="swiper-buttons">
 
+              <button
+                #latestPrevBtn
+                type="button"
+                class="products-carousel-prev-latest btn btn-primary"
+              >
+                ❮
+              </button>
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private apiService: Api,
-    private RouterS: Router,
-    @Inject(PLATFORM_ID) private platformId: Object,
-    private cdRef: ChangeDetectorRef,
-    private toastService: ToastrService,
-    private cartService: Cart
-  ) {}
+              <button
+                #latestNextBtn
+                type="button"
+                class="products-carousel-next-latest btn btn-primary"
+              >
+                ❯
+              </button>
 
+            </div>
 
-  swiperConfig = {
+          </div>
 
-    loop: true,
+        </div>
 
-    // Smooth continuous movement
-    speed: 7000,
+      </div>
 
-    autoplay: {
-      delay: 0,
+    </div>
 
-      disableOnInteraction: false,
 
-      pauseOnMouseEnter: true,
+    <!-- ✔ Swiper Web Component -->
 
-      // 👇 Move from LEFT → RIGHT
-      reverseDirection: true,
-    },
+    <swiper-container
+      #latestSwiper
+      init="false"
+      [slides-per-view]="4"
+      [space-between]="20"
+      [breakpoints]="swiperConfig.breakpoints"
+      class="mySwiper"
+    >
 
-    freeMode: {
-      enabled: true,
-      momentum: false,
-    },
+      <!-- ✔ Web Component slides -->
 
-    loopAdditionalSlides: 3,
+      <swiper-slide *ngFor="let p of products">
 
-    breakpoints: {
+        <div
+          class="product-item"
+          style="cursor:pointer;"
+        >
 
-      320: {
-        slidesPerView: 1
-      },
+          <div
+            (click)="goToProductBySlug(p.slug ?? '')"
+          >
 
-      768: {
-        slidesPerView: 2
-      },
+            <figure class="product-image mb-3">
 
-      992: {
-        slidesPerView: 3
-      },
+              <img
+                [src]="p.image_url"
+                class="tab-image"
+                [alt]="p.name"
+              >
 
-      1200: {
-        slidesPerView: 4
-      },
+            </figure>
 
-    },
+          </div>
 
-  };
 
+          <div class="d-flex flex-column text-center">
 
-  ngAfterViewInit(): void {
+            <h3 class="fs-6 fw-normal">
+              {{ p.name }}
+            </h3>
 
-    const swiperEl =
-      this.latestSwiper?.nativeElement as any;
 
-    const prevButton =
-      this.latestPrevBtn?.nativeElement;
+            <div>
 
-    const nextButton =
-      this.latestNextBtn?.nativeElement;
+              <span class="rating">
 
+                @for (
+                  star of getStars(p.rating);
+                  track $index
+                ) {
+                  ⭐
+                }
 
-    if (!swiperEl) {
-      return;
-    }
+              </span>
 
+              <span *ngIf="p.num_ratings">
+                ({{ p.num_ratings }})
+              </span>
 
-    if (!prevButton || !nextButton) {
-      return;
-    }
+            </div>
 
 
-    Object.assign(swiperEl, {
+            @if (
+              p?.discounted_price != 0 &&
+              p?.discounted_price != null
+            ) {
 
-      loop:
-        this.swiperConfig.loop,
+              @if (
+                p?.discounted_price! < p?.price! &&
+                p?.discounted_price! > 0
+              ) {
 
-      speed:
-        this.swiperConfig.speed,
+                <div
+                  class="d-flex justify-content-center align-items-center gap-2"
+                >
 
-      autoplay:
-        this.swiperConfig.autoplay,
+                  <del>
+                    {{ p?.price }}DT
+                  </del>
 
-      freeMode:
-        this.swiperConfig.freeMode,
+                  <span class="text-dark fw-semibold">
+                    {{ p?.discounted_price }}DT
+                  </span>
 
-      loopAdditionalSlides:
-        this.swiperConfig.loopAdditionalSlides,
+                  <span
+                    class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary"
+                  >
+                    {{
+                      (
+                        (p?.price! - p?.discounted_price!)
+                        / p?.price! * 100
+                      ) | number:'1.0-0'
+                    }}% OFF
+                  </span>
 
-      breakpoints:
-        this.swiperConfig.breakpoints,
+                </div>
 
+              }
 
-      // 👇 IMPORTANT
-      // Give Swiper the actual HTML buttons
-      navigation: {
+            }
 
-        prevEl:
-          prevButton,
+            @else {
 
-        nextEl:
-          nextButton,
+              <div
+                class="d-flex justify-content-center align-items-center gap-2"
+              >
 
-      },
+                <span class="text-dark fw-semibold">
+                  {{ p?.price }}DT
+                </span>
 
-    });
+              </div>
 
+            }
 
-    // Initialize Swiper
-    if (swiperEl.initialize) {
-      swiperEl.initialize();
-    }
 
-  }
+            @if (hasActivePromoCountdown(p)) {
 
+              <div
+                class="promo-countdown-chip promo-countdown-chip--compact"
+                aria-label="Promotion countdown"
+              >
 
-  addToCart(product: Product): void {
+                <span class="promo-countdown-chip__label">
+                  Se termine dans
+                </span>
 
-    if (isPlatformBrowser(this.platformId)) {
+                <span class="promo-countdown-chip__time">
+                  {{ promoTimeLeft?.days }}d
+                  {{ promoTimeLeft?.hours }}h
+                  {{ promoTimeLeft?.minutes }}m
+                  {{ promoTimeLeft?.seconds }}s
+                </span>
 
-      const storedCart =
-        localStorage.getItem('cartItems');
+              </div>
 
-      let cartItems: CartItem[] =
-        storedCart
-          ? JSON.parse(storedCart)
-          : [];
+            }
 
 
-      const existingItem =
-        cartItems.find(
-          item => item.id === product.id
-        );
+            <div class="button-area p-3 pt-0">
 
+              <div class="row g-1 mt-0 mb-3">
 
-      if (existingItem) {
+                <div class="col-12">
 
-        existingItem.quantity += 1;
+                  <button
+                    type="button"
+                    class="btn btn-primary rounded-1 p-2 fs-7"
+                    (click)="addToCart(p)"
+                  >
+                    Add to Cart
+                  </button>
 
-      }
+                </div>
 
-      else {
+              </div>
 
-        const cartItem: CartItem = {
+            </div>
 
-          id:
-            product.id,
+          </div>
 
-          name:
-            product.name,
+        </div>
 
-          image:
-            product.image_url ?? null,
+      </swiper-slide>
 
-          price:
-            (
-              product.discounted_price &&
-              product.discounted_price > 0
-            )
-              ? product.discounted_price
-              : product.price,
+    </swiper-container>
 
-          quantity:
-            1,
+  </div>
 
-          shipping_cost:
-            product.shipping_cost || 9
-
-        };
-
-
-        cartItems.push(cartItem);
-
-        this.cartService.add();
-
-      }
-
-
-      this.toastService.success(
-        'Produit ajouté au panier',
-        'Succès',
-        {
-          timeOut: 2000,
-          positionClass: 'toast-bottom-right',
-          progressBar: true,
-          closeButton: true,
-        }
-      );
-
-
-      localStorage.setItem(
-        'cartItems',
-        JSON.stringify(cartItems)
-      );
-
-
-      this.cdRef.detectChanges();
-
-    }
-
-  }
-
-
-  goToProduct(id: number): void {
-
-    this.RouterS.navigate([
-      '/product',
-      id
-    ]);
-
-  }
-
-
-  goToProductBySlug(slug: string): void {
-
-    this.RouterS.navigate([
-      '/product',
-      slug
-    ]);
-
-  }
-
-
-  hasActivePromoCountdown(
-    product: Product
-  ): boolean {
-
-    return Boolean(
-      product.promo &&
-      this.promoTimeLeft &&
-      !this.promoTimeLeft.expired
-    );
-
-  }
-
-
-  getStars(n: any) {
-
-    const value =
-      Number(n);
-
-
-    if (
-      !Number.isFinite(value) ||
-      value <= 0
-    ) {
-
-      return [];
-
-    }
-
-
-    const stars =
-      Math.min(
-        Math.floor(value),
-        5
-      );
-
-
-    return Array(stars).fill(0);
-
-  }
-
-}
+</section>
