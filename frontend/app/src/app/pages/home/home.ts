@@ -9,7 +9,7 @@ import {
   PLATFORM_ID,
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { Api, Category, LayoutImage, LayoutText, Product, PromoCountdown } from '../../services/api';
+import { Api, Category, LayoutImage, LayoutText, Product, PromoCountdown, PromoTimeLeft } from '../../services/api';
 import { HttpClientModule } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
 import { CartItem } from '../boutique/boutique';
