@@ -360,6 +360,17 @@ h1,h2,h3,h4,h5,h6 {
 .products-carousel .swiper, .products-carousel .swiper-container {
   overflow: visible;
 }
+.products-carousel swiper-container {
+  width: 100%;
+  max-width: 100%;
+}
+.products-carousel swiper-slide {
+  height: auto;
+}
+.products-carousel .product-item figure img {
+  max-width: 100%;
+  object-fit: contain;
+}
 
 /* product-grid */
 input[type=number]::-webkit-inner-spin-button, 

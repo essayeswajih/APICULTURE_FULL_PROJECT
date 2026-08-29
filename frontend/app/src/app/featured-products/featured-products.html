@@ -35,7 +35,7 @@
         <div class="product-item" style="cursor:pointer;">
           <div (click)="goToProductBySlug(p.slug ?? '')">
             <figure  class="product-image mb-3">
-              <img [src]="p.image_url" class="tab-image" [alt]="p.name">
+              <img [src]="p.image_url" class="tab-image" [alt]="p.name" loading="lazy" decoding="async">
             </figure>
           </div>
 
