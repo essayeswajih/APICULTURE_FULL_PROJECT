@@ -1,4 +1,4 @@
-﻿
+
 <div>
   <!-- Ramadan Topbar 
     <div class="ramadan-topbar">
@@ -426,24 +426,25 @@
 </section>
     <section class="pb-4 my-4">
       <div class="container-lg">
-        <div
-          class="bg-warning pt-5 rounded-5"
-          [ngStyle]="{
-            'background-image': layoutImage('home_app_download_background') ? 'url(' + layoutImage('home_app_download_background') + ')' : 'none',
-            'background-repeat': 'no-repeat',
-            'background-size': 'cover',
-            'background-position': 'center'
-          }"
-        >
+
+        <div class="bg-warning pt-5 rounded-5">
           <div class="container">
             <div class="row justify-content-center align-items-center">
               <div class="col-md-4">
-                <h2 class="mt-4">{{ layoutText('home_app_download_title') }}</h2>
-                <p>{{ layoutText('home_app_download_subtitle') }}</p>
+                <h2 class="mt-4">Download Apiculture Galai App</h2>
+                <p>Online Orders made easy, fast and reliable</p>
+                <div class="d-flex gap-2 flex-wrap mb-5">
+                  <a href="#" title="App store"><img src="/assets/images/img-app-store.png" alt="app-store"></a>
+                  <a href="#" title="Google Play"><img src="/assets/images/img-google-play.png" alt="google-play"></a>
+                </div>
+              </div>
+              <div class="col-md-5">
+                <img src="/assets/images/banner-onlineapp.png" alt="phone" class="img-fluid">
               </div>
             </div>
           </div>
         </div>
+        
       </div>
     </section>
 

@@ -12,14 +12,19 @@
 .stories-preview-swiper {
   width: 100%;
   padding: 16px 0;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
 
   .swiper-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
     padding: 0 12px;
     transition-timing-function: linear !important;
   }
 
   .swiper-slide {
+    flex: 0 0 auto;
     width: auto !important;
     height: auto;
   }
@@ -40,8 +45,7 @@
     box-shadow: 0 8px 24px rgba(0,0,0,0.5);
   }
 
-  width: calc(100% - 24px);
-  max-width: 150px;
+  width: 104px;
   aspect-ratio: 9 / 16;
 
   @media (min-width: 768px) {
