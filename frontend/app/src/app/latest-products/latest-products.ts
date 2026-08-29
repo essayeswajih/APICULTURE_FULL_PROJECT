@@ -23,7 +23,14 @@ export class LatestProducts {
     private cdRef: ChangeDetectorRef,
     private toastService: ToastrService,
     private cartService: Cart
-  ) {}
+  ) {
+    this.useIosSafeSwiperMode =
+      isPlatformBrowser(this.platformId) &&
+      /iP(ad|hone|od)|Macintosh/.test(navigator.userAgent) &&
+      navigator.maxTouchPoints > 1;
+  }
+  useIosSafeSwiperMode = false;
+
   @Input() products: Product[] = [];
   @Input() promoTimeLeft: PromoTimeLeft | null = null;
   swiperConfig = {

@@ -91,6 +91,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
 
 
   // Preloader control
+  private readonly homeCarouselProductLimit = 24;
   private preloaderTimeout?: any;
   private promoCountdownInterval?: any;
   private productsLoaded = false;
@@ -173,6 +174,10 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  private limitHomeCarouselProducts(products: Product[]): Product[] {
+    return products.slice(0, this.homeCarouselProductLimit);
+  }
+
   private checkIfDesktop(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.isDesktop = window.innerWidth >= 920;
@@ -186,10 +191,10 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
       latestProducts: this.apiService.getLatestProducts(),
     }).subscribe({
       next: ({ featuredProducts, popularProducts, latestProducts }) => {
-        this.featuredProducts = featuredProducts;
-        this.popularProducts = popularProducts;
-        this.latestProducts = latestProducts;
-        this.products = latestProducts;
+        this.featuredProducts = this.limitHomeCarouselProducts(featuredProducts);
+        this.popularProducts = this.limitHomeCarouselProducts(popularProducts);
+        this.latestProducts = this.limitHomeCarouselProducts(latestProducts);
+        this.products = this.latestProducts;
         this.productsLoaded = true;
         this.checkAllDataLoaded();
         this.cdRef.detectChanges();
