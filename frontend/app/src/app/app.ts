@@ -140,6 +140,7 @@ menuItems = [
     route: ['/contact']
   }
 ];
+  /*
   // Disable right click
  @HostListener('document:contextmenu', ['$event'])
   onRightClick(event: MouseEvent) {
@@ -164,5 +165,5 @@ menuItems = [
     if (event.key === 'F12') {
       event.preventDefault();
     }//
-  }
+  }*/
 } 
