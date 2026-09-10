@@ -125,6 +125,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.checkIfDesktop();
+    this.cdRef.detectChanges();
   }
 
   ngOnDestroy(): void {
@@ -275,17 +276,20 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
       next: (countdown) => {
         this.promoCountdown = countdown;
         this.startPromoCountdown();
+        this.cdRef.markForCheck();
         this.cdRef.detectChanges();
       },
       error: (err) => {
         console.error('Failed to load promo countdown:', err);
       },
     });
+    this.cdRef.detectChanges();
   }
 
   private startPromoCountdown(): void {
     if (this.promoCountdownInterval) {
       clearInterval(this.promoCountdownInterval);
+      
     }
 
     this.updatePromoCountdown();
@@ -293,8 +297,10 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       this.promoCountdownInterval = setInterval(() => {
         this.updatePromoCountdown();
+        this.cdRef.markForCheck();
       }, 1000);
     }
+    this.cdRef.detectChanges();
   }
 
   private updatePromoCountdown(): void {
