@@ -71,6 +71,7 @@ export class VideoStories implements AfterViewInit, OnDestroy {
     if (!this.isBrowser) return;
     this.loadStories();
     setTimeout(() => this.initPreviewSwiper());
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy() {
@@ -93,6 +94,7 @@ export class VideoStories implements AfterViewInit, OnDestroy {
         console.error('Failed to load stories:', err);
       },
     });
+    this.cdr.detectChanges();
   }
   private destroySwipers() {
     if (this.previewSwiper) {
@@ -104,6 +106,7 @@ export class VideoStories implements AfterViewInit, OnDestroy {
       this.viewerSwiper.destroy(true, true);
       this.viewerSwiper = null;
     }
+    this.cdr.detectChanges();
   }
 
   // ------------------------------------------------
@@ -115,6 +118,7 @@ export class VideoStories implements AfterViewInit, OnDestroy {
     if (this.currentIndex >= 0) {
       this.closeStory();
     }
+    this.cdr.detectChanges();
   }
 
   // ------------------------------------------------
@@ -154,6 +158,7 @@ export class VideoStories implements AfterViewInit, OnDestroy {
         observeParents: true,
       });
     });
+    this.cdr.detectChanges();
   }
 
   // ------------------------------------------------
@@ -194,6 +199,7 @@ export class VideoStories implements AfterViewInit, OnDestroy {
     });
 
     this.resetProgress();
+    this.cdr.detectChanges();
   }
 
   // ------------------------------------------------
@@ -208,6 +214,7 @@ export class VideoStories implements AfterViewInit, OnDestroy {
     setTimeout(() => {
       this.initViewerSwiper(index);
     }, 50);
+    this.cdr.detectChanges();
   }
 
   closeStory() {
@@ -218,6 +225,7 @@ export class VideoStories implements AfterViewInit, OnDestroy {
       this.viewerSwiper.destroy(true, true);
       this.viewerSwiper = null;
     }
+    this.cdr.detectChanges();
   }
 
   nextStory() {
@@ -228,6 +236,7 @@ export class VideoStories implements AfterViewInit, OnDestroy {
     } else {
       this.closeStory();
     }
+    this.cdr.detectChanges();
   }
 
   prevStory() {
@@ -236,6 +245,7 @@ export class VideoStories implements AfterViewInit, OnDestroy {
     if (this.currentIndex > 0) {
       this.viewerSwiper.slidePrev();
     }
+    this.cdr.detectChanges();
   }
 
   // ------------------------------------------------
@@ -266,11 +276,13 @@ export class VideoStories implements AfterViewInit, OnDestroy {
     };
 
     this.animationFrame = requestAnimationFrame(animate);
+    this.cdr.detectChanges();
   }
 
   resetProgress() {
     this.progress = 0;
     this.startProgress();
+    this.cdr.detectChanges();
   }
 
   stopProgress() {
@@ -278,6 +290,7 @@ export class VideoStories implements AfterViewInit, OnDestroy {
       cancelAnimationFrame(this.animationFrame);
       this.animationFrame = null;
     }
+    this.cdr.detectChanges();
   }
 
   // ------------------------------------------------
@@ -302,5 +315,7 @@ export class VideoStories implements AfterViewInit, OnDestroy {
     }
 
     event.stopPropagation();
+    this.cdr.detectChanges();
   }
+  
 }

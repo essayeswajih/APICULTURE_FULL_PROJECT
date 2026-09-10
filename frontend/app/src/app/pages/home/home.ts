@@ -173,6 +173,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
     if (this.productsLoaded && this.categoriesLoaded) {
       this.hidePreloader();
     }
+    this.cdRef.detectChanges();
   }
 
   private limitHomeCarouselProducts(products: Product[]): Product[] {
@@ -206,6 +207,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         this.checkAllDataLoaded(); // Don't block forever
       },
     });
+    this.cdRef.detectChanges();
   }
 
   private loadCategories(): void {
@@ -222,6 +224,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         this.checkAllDataLoaded(); // Always unblock
       },
     });
+    this.cdRef.detectChanges();
   }
 
   // mohamed: fetch homepage counters from backend.
@@ -233,12 +236,13 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
           happyCustomers: stats.happy_customers,
           storeLocations: stats.store_locations,
         };
-        this.cdRef.detectChanges();
+        this.cdRef.markForCheck();
       },
       error: (err) => {
         console.error('Failed to load public stats:', err);
       },
     });
+    this.cdRef.detectChanges();
   }
 
   private loadLayoutImages(): void {
@@ -248,12 +252,13 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
           (acc, image) => ({ ...acc, [image.key]: image.image_url }),
           { ...this.layoutImages }
         );
-        this.cdRef.detectChanges();
+        this.cdRef.markForCheck();
       },
       error: (err) => {
         console.error('Failed to load layout images:', err);
       },
     });
+    this.cdRef.detectChanges();
   }
 
   private loadLayoutTexts(): void {
@@ -263,12 +268,13 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
           (acc, text) => ({ ...acc, [text.key]: text.text_value }),
           { ...this.layoutTexts }
         );
-        this.cdRef.detectChanges();
+        this.cdRef.markForCheck();
       },
       error: (err) => {
         console.error('Failed to load layout texts:', err);
       },
     });
+    this.cdRef.detectChanges();
   }
 
   private loadPromoCountdown(): void {
