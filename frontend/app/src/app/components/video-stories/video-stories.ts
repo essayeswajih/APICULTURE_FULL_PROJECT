@@ -44,7 +44,7 @@ export class VideoStories implements AfterViewInit, OnDestroy {
   currentIndex = -1;
   progress = 0;
 
-  private readonly STORY_DURATION_MS = 30000000;
+  private readonly STORY_DURATION_MS = 300000;
 
   private previewSwiper: Swiper | null = null;
   private viewerSwiper: Swiper | null = null;
@@ -88,13 +88,12 @@ export class VideoStories implements AfterViewInit, OnDestroy {
           title: story.title,
           openInNewTab: true, // Open in new tab for better UX
         }));
-        this.cdr.markForCheck();
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Failed to load stories:', err);
       },
     });
-    this.cdr.detectChanges();
   }
   private destroySwipers() {
     if (this.previewSwiper) {

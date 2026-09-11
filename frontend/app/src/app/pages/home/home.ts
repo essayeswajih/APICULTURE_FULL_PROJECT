@@ -199,12 +199,13 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         this.products = this.latestProducts;
         this.productsLoaded = true;
         this.checkAllDataLoaded();
-        this.cdRef.detectChanges();
+        this.cdRef.markForCheck();
       },
       error: (err) => {
         console.error('Failed to load products:', err);
         this.productsLoaded = true;
         this.checkAllDataLoaded(); // Don't block forever
+        this.cdRef.markForCheck();
       },
     });
     this.cdRef.detectChanges();
@@ -216,7 +217,7 @@ export class Home implements OnInit, AfterViewInit, OnDestroy {
         this.categories = categories;
         this.categoriesLoaded = true;
         this.checkAllDataLoaded();
-        this.cdRef.detectChanges();
+        this.cdRef.markForCheck();
       },
       error: (err) => {
         console.error('Failed to load categories:', err);
